@@ -12,6 +12,7 @@ import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.RippleView;
 
+import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goOverInfoPage;
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
@@ -60,7 +61,8 @@ public class RegisterActivity extends InitActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.code_bt:
                 Show(RegisterActivity.this, "发送验证码中", true, null);
-                rp.CodeCountDown(phone_ed.getText().length(), phone_ed.getText().toString());
+                rp.CheckAccount(phone_ed.getText().toString());
+
                 break;
             case R.id.commit_img:
                 Show(RegisterActivity.this, "", true, null);
@@ -107,14 +109,19 @@ public class RegisterActivity extends InitActivity implements View.OnClickListen
 
     @Override
     public void OverInfo() {
-
+        Cancle();
         goOverInfoPage(RegisterActivity.this, phone_ed.getText().toString(), pass_ed.getText().toString(), code_ed.getText().toString());
     }
 
     @Override
     public void onFailed(String msg) {
-
+        Cancle();
         ToastUtil.toast2_bottom(this, msg);
+    }
+
+    @Override
+    public void SendCode() {
+        rp.CodeCountDown(phone_ed.getText().length(), phone_ed.getText().toString());
     }
 
     @Override

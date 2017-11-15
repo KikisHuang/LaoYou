@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/user_head_img"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/test_head_icon"
+        android:text="wifi名称"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="小覃"
+                android:ellipsize="end"
+                android:maxEms="15"
+                android:layout_gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/black0"
+                android:layout_weight="1"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/distance_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/content6"
+                android:layout_gravity="center"
+                android:text="0.05km"
+                android:textSize="11dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/age_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pink_corners"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:text="22岁"
+                android:textColor="@color/white"
+                android:textSize="7dp" />
+
+            <ImageView
+                android:id="@+id/sex_img"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/pink_corners"
+                android:padding="2dp"
+                android:src="@mipmap/woman_icon" />
+
+            <LinearLayout
+                android:id="@+id/tag_layout"
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:orientation="horizontal">
+
+                <!--     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="match_parent"
+                         android:text="英雄联盟"
+                         android:textColor="@color/white"
+                         android:paddingLeft="5dp"
+                         android:paddingRight="5dp"
+                         android:layout_marginLeft="5dp"
+                         android:background="@drawable/dark_blue_corners"
+                         android:textSize="10dp" />
+
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="match_parent"
+                         android:text="绝地求生"
+                         android:textColor="@color/white"
+                         android:paddingLeft="5dp"
+                         android:paddingRight="5dp"
+                         android:layout_marginLeft="5dp"
+                         android:background="@drawable/dark_blue_corners"
+                         android:textSize="10dp" />-->
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/content_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:ellipsize="end"
+            android:maxEms="20"
+            android:singleLine="true"
+            android:text="艾欧尼亚来队友，快来"
+            android:textColor="@color/content12"
+            android:textSize="11dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

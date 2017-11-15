@@ -61,6 +61,12 @@ public class Interface {
      */
     public static final String GETREGISTERCODE = "main/getRegisterCode.app";
     /**
+     * 检测账号接口;
+     * 参数: account = 账号;
+     * 返回成功code是1
+     */
+    public static final String CHECKACCOUNT = "main/checkAccount.app";
+    /**
      * 申请查询\实名认证接口;
      * 接口会校验是否已经提交过，与是第一次提交还是被拒绝后的重新提交
      * name=名字, idcard=身份证, idcardImg=手持身份证自拍(文件), idcardImg2=身份证证件 正面(文件), idcardImg3=身份证证件 背面(文件)
@@ -77,4 +83,15 @@ public class Interface {
      */
     public static final String FEEDBACKPASSWORDERROR = "query/modify/feedbackPasswordError.app";
 
+    /**
+     * 网吧平台新增接口 /  获取系统设置 里面有个参数 hideBannerFlag
+     * * 隐藏Banner标记，默认0
+     * 1为隐藏，0为不隐藏
+     */
+    public static final String GETSETTING = "setting/select/getSetting.app";
+
+    /**
+     * 第三方微信登录接口
+     */
+    public static final String WECHATLogin = "login/wx.app";
 }

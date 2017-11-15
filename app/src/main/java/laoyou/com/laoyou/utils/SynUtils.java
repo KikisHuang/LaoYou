@@ -42,8 +42,10 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -688,6 +690,7 @@ public class SynUtils {
 
     /**
      * 隐藏手机号码中间部分;
+     *
      * @param pNumber
      * @return
      */
@@ -705,5 +708,39 @@ public class SynUtils {
             return sb.toString();
         }
         return "";
+    }
+
+    /**
+     * 开发中;
+     */
+    public static void Indevelopment(Context context) {
+        ToastUtil.toast2_bottom(context, "功能开发中,尽情期待...");
+    }
+
+    /**
+     * 获取本地SHA1 方法;
+     */
+    public static String sHA1(Context context) {
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), PackageManager.GET_SIGNATURES);
+            byte[] cert = info.signatures[0].toByteArray();
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            byte[] publicKey = md.digest(cert);
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < publicKey.length; i++) {
+                String appendString = Integer.toHexString(0xFF & publicKey[i])
+                        .toUpperCase(Locale.US);
+                if (appendString.length() == 1)
+                    hexString.append("0");
+                hexString.append(appendString);
+                hexString.append(":");
+            }
+            String result = hexString.toString();
+            return result.substring(0, result.length() - 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

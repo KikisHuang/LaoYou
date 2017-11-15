@@ -161,7 +161,7 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
     @Override
     public void setHeadImgAndName(String imgPath, String name) {
         Glide.with(OverInfoActivity.this).load(imgPath).bitmapTransform(new CropCircleTransformation(OverInfoActivity.this)).into(head_img);
-        nickname_ed.setText(pass);
+        nickname_ed.setText(name);
         onCommit();
     }
 }

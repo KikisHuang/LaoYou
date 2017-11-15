@@ -147,6 +147,7 @@ public class RegisterPresenter implements HttpResultListener {
             //获取验证码回调;
             case Fields.REQUEST1:
                 listener.onRegisterFailedMsg("已发送验证码到手机..");
+                //开启下一步开关;
                 listener.onForbid();
                 sflag = true;
                 new Thread(regisRunnable = new Runnable() {
@@ -167,6 +168,9 @@ public class RegisterPresenter implements HttpResultListener {
                     }
                 }).start();
                 break;
+            case Fields.REQUEST2:
+                listener.SendCode();
+                break;
         }
     }
 
@@ -177,11 +181,25 @@ public class RegisterPresenter implements HttpResultListener {
 
     @Override
     public void onParseError(Exception e) {
-
+        Log.i(TAG, "解析异常 Error ===" + e);
     }
 
     @Override
     public void onFailed(String response, int code, int tag) {
         listener.onFailed(response);
+    }
+
+    /**
+     * 检测账号是否注册过;
+     */
+    public void CheckAccount(String account) {
+        if (account.length() == 11) {
+            Map<String, String> map = getParamsMap();
+            map.put("account", account);
+            httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.CHECKACCOUNT);
+        } else
+            listener.onPhoneLengthError();
+
+
     }
 }

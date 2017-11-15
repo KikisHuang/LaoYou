@@ -15,27 +15,17 @@ public interface HomeListener {
 
     void onDetails(UserInfoBean ub);
 
-    void onCertificaTion();
-
     void IsLogin(boolean b);
-
-    void unCheck();
-
-    void CheckOK(String passwd);
-
-    void Refuse(String msg);
-
-    void onTime(int time);
 
     void onCheckStatus(int status);
 
     void onLogout();
 
-    void onOutSideGo(String  url);
+    void onOutSideGo(String url);
 
-    void onNormalPassSize(String passwd);
+    void BannerHide();
 
-    void onMinPassSize(String passwd);
+    void BannerShow();
 
-//    void onStatus(CheckStatusBean csb);
+    void onForbidSlide();
 }

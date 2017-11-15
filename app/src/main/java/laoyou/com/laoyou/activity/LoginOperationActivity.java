@@ -1,10 +1,11 @@
 package laoyou.com.laoyou.activity;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.umeng.socialize.UMShareAPI;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.LoginOperationListener;
@@ -29,6 +30,9 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
     private LinearLayout register_layout;
     private static LoginOperationActivity instance;
 
+    private UMShareAPI mShareAPI;
+
+
     @Override
     protected void click() {
         wechat_img.setOnClickListener(this);
@@ -43,7 +47,11 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
         wechat_img = f(R.id.wechat_img);
         login_layout = f(R.id.login_layout);
         register_layout = f(R.id.register_layout);
+
+        mShareAPI = UMShareAPI.get(this);
+
         lp = new LoginOperationPresenter(this);
+
     }
 
     @Override
@@ -67,7 +75,7 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.wechat_img:
-                ToastUtil.toast2_bottom(this, "功能开发中，敬请期待...");
+                lp.WechatLogin(LoginOperationActivity.this,mShareAPI);
                 break;
             case R.id.login_layout:
                 goLoginPage(this);
@@ -81,10 +89,21 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == Fields.ACRESULET2) {
             if (getHomeInstance() != null)
                 getHomeInstance().onRefresh();
             finish();
         }
+    }
+    @Override
+    public void onWechatLoginSucceed(String accessToken, String openid, String url) {
+
+    }
+
+    @Override
+    public void onWechatLoginFailed() {
+        ToastUtil.toast2_bottom(LoginOperationActivity.this,Fields.WECHATLOGINERROR);
     }
 }

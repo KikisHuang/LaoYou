@@ -11,8 +11,10 @@ import laoyou.com.laoyou.activity.LoginActivity;
 import laoyou.com.laoyou.activity.LoginOperationActivity;
 import laoyou.com.laoyou.activity.OutSideActivity;
 import laoyou.com.laoyou.activity.OverInfoActivity;
+import laoyou.com.laoyou.activity.QueryActivity;
 import laoyou.com.laoyou.activity.RegisterActivity;
 import laoyou.com.laoyou.activity.SendPhoneCodeActivity;
+import laoyou.com.laoyou.activity.WifiActivity;
 
 /**
  * Created by lian on 2017/10/25.
@@ -105,6 +107,24 @@ public class IntentUtils {
     public static void goOutSidePage(Context context, String url) {
         Intent intent = new Intent(context, OutSideActivity.class);
         intent.putExtra("outside_url", url);
+        startPage(context, intent);
+    }
+    /**
+     * 获取Wifi页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goWifiPage(Context context) {
+        Intent intent = new Intent(context, WifiActivity.class);
+        startPage(context, intent);
+    }
+    /**
+     * 查询密码页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goQueryPassPage(Context context) {
+        Intent intent = new Intent(context, QueryActivity.class);
         startPage(context, intent);
     }
 

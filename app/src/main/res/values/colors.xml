@@ -23,12 +23,16 @@
     <color name="content9">#ededed</color>
     <color name="content10">#9d9d9d</color>
     <color name="content11">#e6e6e6</color>
+    <color name="content12">#bdbdbd</color>
 
     <color name="piecha1">#FCFCFC</color>
     <color name="piecha2">#40daf1</color>
     <color name="piecha3">#3c4eb9</color>
     <color name="piecha4">#00abff</color>
     <color name="piecha5">#1b70ef</color>
+
+    <color name="sex_woman">#f1cbd1</color>
+    <color name="sex_man">#bdd6f5</color>
 
 
     <!-- 白色渐变 -->
@@ -76,6 +80,7 @@
     <color name="blue5">#0066cc</color>
     <color name="blue6">#00B8EE</color>
     <color name="blue7">#4999d3</color>
+    <color name="blue_content">#016cff</color>
     <color name="blue_gps">#0066cc</color>
     <color name="blue_white1">#F5F6F7</color>
 

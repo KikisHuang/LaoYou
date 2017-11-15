@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -32,14 +30,12 @@ import laoyou.com.laoyou.bean.PageTopBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HomeListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
-import laoyou.com.laoyou.utils.CheckThread;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.homeViewPageUtils;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.CheckThread.ThreadInstance;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
@@ -69,7 +65,7 @@ public class HomePresenter implements HttpResultListener {
     private int prePosition = 0;
     private LinearLayout mLinearLayoutDot;
     private boolean ONEIMGFLAG = false;
-    private RotateAnimation animation = null;
+
 
     public HomePresenter(HomeListener listener, ViewPager mViewPager, LayoutInflater inflater, Context context, LinearLayout mLinearLayoutDot) {
         this.listener = listener;
@@ -84,7 +80,7 @@ public class HomePresenter implements HttpResultListener {
 
     public void Presenter() {
         handInit();
-        getBanner();
+        BannerHideOfShow();
         IsLogin();
     }
 
@@ -117,11 +113,6 @@ public class HomePresenter implements HttpResultListener {
                         case 1:
                             mViewPager.setCurrentItem(currentPosition);
                             break;
-                        case 11:
-                            int time = msg.getData().getInt("time");
-                            listener.onTime(time);
-                            break;
-
                     }
                 }
             };
@@ -168,35 +159,24 @@ public class HomePresenter implements HttpResultListener {
             case Fields.REQUEST4:
                 CheckID();
                 break;
+            case Fields.REQUEST5:
+                try {
+                    JSONObject ob = getJsonOb(response);
+                    int flag = ob.optInt("hideBannerFlag");
+                    if (flag == 0)
+                        listener.BannerShow();
+                    else if (flag == 1)
+                        listener.BannerHide();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
             case Fields.REQUEST3:
                 try {
                     JSONObject ob = getJsonOb(response);
                     CheckStatusBean cb = new Gson().fromJson(String.valueOf(ob), CheckStatusBean.class);
                     listener.onCheckStatus(cb.getStatus());
-                    //	status  审核状态 0未审核，1已通过，-1已拒绝，2密码错误要求复检,3重新上传
-                    switch (cb.getStatus()) {
-                        case 0:
-                            listener.unCheck();
-                            QueryPassData();
-                            break;
-                        case 1:
-                            CloseQueryThread();
-                            listener.CheckOK(cb.getPassword());
-                            break;
-                        case -1:
-                            CloseQueryThread();
-                            listener.Refuse(cb.getFailReasons());
-                            break;
-                        case 2:
-                            QueryPassData();
-                            listener.unCheck();
-                            break;
-                        case 3:
-                            QueryPassData();
-                            listener.unCheck();
-                            break;
-                    }
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -206,22 +186,6 @@ public class HomePresenter implements HttpResultListener {
         }
     }
 
-    private void CloseQueryThread() {
-        if (ThreadInstance() != null)
-            ThreadInstance().ClearThread();
-        Fields.CHECKFLAG = false;
-    }
-
-    /**
-     * 启动线程查询审核数据;
-     */
-    private void QueryPassData() {
-        Fields.CHECKFLAG = true;
-        if (ThreadInstance() == null) {
-            CheckThread check = new CheckThread(handler);
-            check.start();
-        }
-    }
 
     /**
      * 圆点初始化;
@@ -307,8 +271,8 @@ public class HomePresenter implements HttpResultListener {
     @Override
     public void onFailed(String response, int code, int tag) {
         //未实名认证;
-        if (tag == Fields.REQUEST3)
-            listener.onCertificaTion();
+        if (tag == Fields.REQUEST3 && code == 0)
+            listener.onCheckStatus(0);
         else
             listener.onFailed(response);
     }
@@ -336,44 +300,7 @@ public class HomePresenter implements HttpResultListener {
             listener.IsLogin(false);
     }
 
-    public void RegainPassWord() {
-        Map<String, String> m = getKeyMap();
-        httpUtils.OkHttpsGet(m, this, Fields.REQUEST4, Interface.URL + Interface.FEEDBACKPASSWORDERROR);
-    }
-
-    public void startAnima(ImageView refresh_img) {
-        if (animation == null) {
-            /** 设置旋转动画 */
-            animation = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF,
-                    0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            animation.setDuration(2000);//设置动画持续时间
-            /** 常用方法 */
-            animation.setRepeatCount(9999);//设置重复次数
-            //animation.setFillAfter(boolean);//动画执行完后是否停留在执行完的状态
-            //animation.setStartOffset(long startOffset);//执行前的等待时间
-            refresh_img.setAnimation(animation);
-        }
-    }
-
-    public void stopAnima(ImageView refresh_img) {
-        if (animation != null) {
-            refresh_img.clearAnimation();
-            animation.cancel();
-            animation = null;
-        }
-
-    }
-
-    /**
-     * 密码长度判断，以防密码过长;
-     *
-     * @param len
-     * @param passwd
-     */
-    public void checkPassLength(int len, String passwd) {
-        if (len > 10)
-            listener.onMinPassSize(passwd);
-        else
-            listener.onNormalPassSize(passwd);
+    public void BannerHideOfShow() {
+        httpUtils.OkHttpsGet(null, this, Fields.REQUEST5, Interface.URL + Interface.GETSETTING);
     }
 }

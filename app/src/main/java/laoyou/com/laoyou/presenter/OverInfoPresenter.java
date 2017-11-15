@@ -146,8 +146,17 @@ public class OverInfoPresenter implements HttpResultListener {
         }
     }
 
+    /**
+     * 判断是完善信息还是第一次添加信息;
+     *
+     * @param phone
+     * @param pass
+     * @param code
+     */
     public void Changejudge(String phone, String pass, String code) {
-        if (!phone.isEmpty() && !pass.isEmpty() && code.isEmpty())
+        if (phone == null || pass == null) {
+            listener.setHeadImgAndName("", "");
+        } else if (!phone.isEmpty() && !pass.isEmpty() && code.isEmpty())
             listener.setHeadImgAndName(phone, pass);
     }
 }

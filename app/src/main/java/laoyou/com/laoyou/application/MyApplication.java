@@ -4,6 +4,9 @@ import android.app.Application;
 import android.util.Log;
 
 import com.tencent.smtt.sdk.QbSdk;
+import com.umeng.socialize.Config;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.cookie.CookieJarImpl;
 import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
@@ -12,6 +15,7 @@ import com.zhy.http.okhttp.log.LoggerInterceptor;
 import java.util.concurrent.TimeUnit;
 
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.utils.Fields;
 import okhttp3.OkHttpClient;
 
 /**
@@ -26,6 +30,19 @@ public class MyApplication extends Application {
         SPreferences.setContext(getApplicationContext());
         OkHttpInit();
         QBX5Init();
+        UmengInt();
+    }
+
+    /**
+     * 友盟初始化;
+     */
+    private void UmengInt() {
+
+        UMShareAPI.get(this);//初始化sdk
+        //开启debug模式，方便定位错误，具体错误检查方式可以查看http://dev.umeng.com/social/android/quick-integration的报错必看，正式发布，请关闭该模式
+        Config.DEBUG = true;
+        //微信
+        PlatformConfig.setWeixin(Fields.WECHATAPPID, Fields.WECHATAPPSECRET);
     }
 
     /**

@@ -143,6 +143,11 @@ public class SlidePopupWindow implements View.OnClickListener {
                         SPreferences.saveUserToken("");
                         if (getHomeInstance() != null)
                             getHomeInstance().onLogout();
+
+//                        if (ThreadInstance() != null){
+//                            ThreadInstance().ClearThread();
+//                            Fields.CHECKFLAG = false;
+//                        }
                         popupWindow.dismiss();
                     }
                 }).show();

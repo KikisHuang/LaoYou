@@ -50,6 +50,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/white"
                 android:hint="请输入姓名"
+                android:singleLine="true"
                 android:textColorHint="@color/content3"
                 android:textSize="16dp"
                 android:theme="@style/Gary_EditText" />
@@ -71,6 +72,7 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
                 android:background="@color/white"
+                android:singleLine="true"
                 android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ"
                 android:hint="请输入正确身份证号码"
                 android:textColorHint="@color/content3"
