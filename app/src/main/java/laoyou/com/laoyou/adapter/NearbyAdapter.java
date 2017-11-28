@@ -15,15 +15,18 @@ import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.NearbyBean;
+
+import static laoyou.com.laoyou.utils.SynUtils.getDistanceKM;
 
 /**
  * Created by lian on 2017/11/15.
  */
 public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHolder> {
     private Context context;
-    private List<String> list;
+    private List<NearbyBean> list;
 
-    public NearbyAdapter(Context context, List<String> list) {
+    public NearbyAdapter(Context context, List<NearbyBean> list) {
         this.context = context;
         this.list = list;
     }
@@ -38,8 +41,13 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.name_tv.setText(list.get(position));
-        Glide.with(context).load(R.drawable.test_head_icon).thumbnail(0.2f).bitmapTransform(new RoundedCornersTransformation(context, 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(holder.user_head_img);
+        holder.name_tv.setText(list.get(position).getName());
+        Glide.with(context).load(list.get(position).getHeadImgUrl()).thumbnail(0.2f).bitmapTransform(new RoundedCornersTransformation(context, 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(holder.user_head_img);
+
+        if (list.get(position).getDistance() > 1000)
+            holder.distance_tv.setText(getDistanceKM(list.get(position).getDistance() / 1000 ));
+        else
+            holder.distance_tv.setText(list.get(position).getDistance() + "m");
 
     }
 

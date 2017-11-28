@@ -1,16 +1,14 @@
 package laoyou.com.laoyou.activity;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.adapter.InfoAdapter;
+import laoyou.com.laoyou.bean.AddressBean;
+import laoyou.com.laoyou.view.HorizontalListView;
 
 /**
  * Created by lian on 2017/11/4.
@@ -18,25 +16,28 @@ import laoyou.com.laoyou.R;
 public class TestActivity extends InitActivity implements View.OnClickListener {
 
     private static final String TAG = "TestActivity";
-    private RecyclerView recyclerView;
-    private List<String> list;
+
+    private HorizontalListView listview;
+    private InfoAdapter adapter;
+    private List<AddressBean> ab;
 
     @Override
     protected void click() {
+
     }
 
 
     @Override
     protected void init() {
         setContentView(R.layout.test_layout);
-        recyclerView = f(R.id.recyclerView);
-        list = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            list.add("Tag List" + i);
-        }
-        HomeAdapter adapter = new HomeAdapter();
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+        listview = f(R.id.listview);
+        ab = new ArrayList<>();
+        AddressBean a = new AddressBean();
+        a.setIdentifier("123");
+        a.setFaceUrl("http://www.18183.com/uploads/allimg/140616/61-140616111040.jpg");
+        ab.add(a);
+        adapter = new InfoAdapter(this, ab);
+        listview.setAdapter(adapter);
     }
 
 
@@ -54,35 +55,4 @@ public class TestActivity extends InitActivity implements View.OnClickListener {
         super.onDestroy();
     }
 
-    class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
-
-
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
-                    TestActivity.this).inflate(R.layout.wifi_item, parent,
-                    false));
-            return holder;
-        }
-
-        @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
-            holder.tv.setText(list.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return list.size();
-        }
-
-        class MyViewHolder extends RecyclerView.ViewHolder {
-
-            TextView tv;
-
-            public MyViewHolder(View view) {
-                super(view);
-                tv = (TextView) view.findViewById(R.id.wifi_name);
-            }
-        }
-    }
 }

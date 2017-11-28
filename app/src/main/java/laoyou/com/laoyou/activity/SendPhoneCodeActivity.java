@@ -7,11 +7,11 @@ import android.widget.ImageView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.SendCodeListener;
 import laoyou.com.laoyou.presenter.SendCodePresenter;
-import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goForGetPassPage;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.SynUtils.setTitles;
 
 /**
@@ -57,7 +57,7 @@ public class SendPhoneCodeActivity extends InitActivity implements View.OnClickL
     @Override
     public void onError() {
 
-        ToastUtil.toast2_bottom(this, Fields.NETWORKERROR);
+        ToastUtil.toast2_bottom(this, gets(R.string.networkerror));
     }
 
     @Override

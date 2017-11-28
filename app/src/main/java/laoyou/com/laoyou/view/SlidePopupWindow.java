@@ -16,8 +16,8 @@ import com.bumptech.glide.Glide;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.dialog.MyAlertDialog;
-import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
@@ -38,14 +38,13 @@ public class SlidePopupWindow implements View.OnClickListener {
     private static LinearLayout login_ll, layout_1, layout_2, layout_3;
     private static PopupWindow popupWindow;
     private Context mContext;
-    private String HeadImg;
-    private String name;
+    private UserInfoBean info;
     private int status;
 
-    public SlidePopupWindow(Context context, String HeadImg, String name, int status) {
+
+    public SlidePopupWindow(Context context, UserInfoBean info, int status) {
         this.mContext = context;
-        this.HeadImg = HeadImg;
-        this.name = name;
+        this.info = info;
         this.status = status;
     }
 
@@ -104,9 +103,9 @@ public class SlidePopupWindow implements View.OnClickListener {
         layout_2 = (LinearLayout) contentView.findViewById(R.id.layout_2);
         layout_3 = (LinearLayout) contentView.findViewById(R.id.layout_3);
 
-        Glide.with(mContext).load(HeadImg).bitmapTransform(new CropCircleTransformation(mContext)).into(user_icon);
+        Glide.with(mContext).load(info.getHeadImgUrl()).bitmapTransform(new CropCircleTransformation(mContext)).into(user_icon);
 
-        user_name.setText(name);
+        user_name.setText(info.getName());
     }
 
     /**
@@ -125,7 +124,7 @@ public class SlidePopupWindow implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_ll:
-                goOverInfoPage(mContext, HeadImg, name, "");
+                goOverInfoPage(mContext, info.getHeadImgUrl(), info.getName(), "",info.getSex());
                 popupWindow.dismiss();
                 break;
             case R.id.layout_1:
@@ -140,14 +139,9 @@ public class SlidePopupWindow implements View.OnClickListener {
                 new MyAlertDialog(mContext).builder().setCancelable(true).setTitle("提示").setMsg("是否退出登录？").setNegativeButton("取消", null).setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        SPreferences.saveUserToken("");
+
                         if (getHomeInstance() != null)
                             getHomeInstance().onLogout();
-
-//                        if (ThreadInstance() != null){
-//                            ThreadInstance().ClearThread();
-//                            Fields.CHECKFLAG = false;
-//                        }
                         popupWindow.dismiss();
                     }
                 }).show();

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import laoyou.com.laoyou.activity.AddressbookActivity;
 import laoyou.com.laoyou.activity.CertificationActivity;
 import laoyou.com.laoyou.activity.ChangePassWordActivity;
 import laoyou.com.laoyou.activity.ForgetPasswordActivity;
@@ -109,6 +110,7 @@ public class IntentUtils {
         intent.putExtra("outside_url", url);
         startPage(context, intent);
     }
+
     /**
      * 获取Wifi页面;
      *
@@ -118,6 +120,7 @@ public class IntentUtils {
         Intent intent = new Intent(context, WifiActivity.class);
         startPage(context, intent);
     }
+
     /**
      * 查询密码页面;
      *
@@ -129,16 +132,29 @@ public class IntentUtils {
     }
 
     /**
-     * 完善资料页面;
+     * 通讯录页面;
      *
      * @param context 上下文;
      */
-    public static void goOverInfoPage(Context context, String phone, String pass, String code) {
+    public static void goAddressBookPage(Context context) {
+        Intent intent = new Intent(context, AddressbookActivity.class);
+        startPage(context, intent);
+    }
+
+    /**
+     * 完善资料页面;
+     *
+     * @param context 上下文;
+     * @param sex
+     */
+    public static void goOverInfoPage(Context context, String phone, String pass, String code, int sex) {
 
         Intent intent = new Intent(context, OverInfoActivity.class);
         intent.putExtra("register_phone_of_headimg", phone);
         intent.putExtra("register_pass_of_name", pass);
         intent.putExtra("register_code", code);
+        intent.putExtra("register_sex", sex + "");
+
 //        startPage(context, intent);
         ((Activity) context).startActivityForResult(intent, Fields.ACRESULET1);
     }

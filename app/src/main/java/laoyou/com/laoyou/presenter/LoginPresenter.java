@@ -9,6 +9,7 @@ import org.json.JSONException;
 
 import java.util.Map;
 
+import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.LoginListener;
 import laoyou.com.laoyou.save.SPreferences;
@@ -17,8 +18,10 @@ import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.FilesUtil.getParamsMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
+import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
+import static laoyou.com.laoyou.utils.SynUtils.validPhoneNumber;
 
 /**
  * Created by lian on 2017/10/26.
@@ -75,17 +78,17 @@ public class LoginPresenter implements HttpResultListener {
     }
 
     public void Login(String phone, String pass) {
-        if (!phone.isEmpty() && !pass.isEmpty() && phone.length() == 11) {
+        if (!phone.isEmpty() && !pass.isEmpty() &&validPhoneNumber(phone)) {
             Map<String, String> map = getParamsMap();
             map.put("account", phone);
             map.put("password", pass);
             httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.LOGIN);
         } else if (phone.isEmpty())
-            listener.onError(Fields.PHONENULLMSG);
-        else if (phone.length() != 11)
-            listener.onError(Fields.PHONEUNCORRECTMSG);
+            listener.onError(gets(R.string.phonenullmsg));
+        else if (!validPhoneNumber(phone))
+            listener.onError(gets(R.string.phoneuncorrectmsg));
         else if (pass.isEmpty())
-            listener.onError(Fields.PASSNULLMSG);
+            listener.onError(gets(R.string.passnullmsg));
 
 
     }
@@ -102,7 +105,7 @@ public class LoginPresenter implements HttpResultListener {
 
     @Override
     public void onError(Request request, Exception e) {
-        listener.onError(Fields.NETWORKERROR);
+        listener.onError(gets(R.string.networkerror));
     }
 
     @Override

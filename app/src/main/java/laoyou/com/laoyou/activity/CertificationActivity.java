@@ -29,6 +29,7 @@ import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.DeviceUtils.getIMEI;
 import static laoyou.com.laoyou.utils.IPUtils.isWifi;
 import static laoyou.com.laoyou.utils.PhotoUtils.getMULTIPLEPhotoTag;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.SynUtils.setTitles;
 
 /**
@@ -199,7 +200,7 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
 
     @Override
     public void onSucceed() {
-        ToastUtil.toast2_bottom(CertificationActivity.this, Fields.IDUPLOADSUCCEED);
+        ToastUtil.toast2_bottom(CertificationActivity.this, gets(R.string.iduploadsucceed));
         setResult(Fields.ACRESULET3);
         finish();
     }

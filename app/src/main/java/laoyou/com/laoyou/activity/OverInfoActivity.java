@@ -14,8 +14,10 @@ import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.dialog.ActionSheetDialog;
 import laoyou.com.laoyou.listener.OverInfoListener;
 import laoyou.com.laoyou.presenter.OverInfoPresenter;
+import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.RippleView;
@@ -23,7 +25,9 @@ import me.iwf.photopicker.PhotoPicker;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
+import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.SynUtils.setTitles;
 
 /**
@@ -33,7 +37,7 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
 
     private static final String TAG = "OverInfoActivity";
     private ImageView head_img;
-    private EditText nickname_ed;
+    private EditText nickname_ed, sex_ed;
     private RippleView commit_bt;
     private File headFile = null;
     private OverInfoPresenter op;
@@ -42,11 +46,13 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
     private String phone = "";
     private String pass = "";
     private String code = "";
+    private int sex;
 
     @Override
     protected void click() {
         commit_bt.setOnClickListener(this);
         head_img.setOnClickListener(this);
+        sex_ed.setOnClickListener(this);
     }
 
     @Override
@@ -57,12 +63,18 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
         commit_bt = f(R.id.commit_bt);
         nickname_ed = f(R.id.nickname_ed);
         head_img = f(R.id.head_img);
+        sex_ed = f(R.id.sex_ed);
 
         phone = getIntent().getStringExtra("register_phone_of_headimg");
         pass = getIntent().getStringExtra("register_pass_of_name");
         code = getIntent().getStringExtra("register_code");
+        sex = Integer.parseInt(getIntent().getStringExtra("register_sex"));
         op.Changejudge(phone, pass, code);
 
+        if (sex == 1)
+            sex_ed.setText(gets(R.string.man));
+        else
+            sex_ed.setText(gets(R.string.woman));
     }
 
     @Override
@@ -90,7 +102,7 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
     private void Compress(List<String> list) {
         Luban.with(this)
                 .load(list)                                   // 传人要压缩的图片列表
-                .ignoreBy(900)                               // 忽略不压缩图片的大小
+                .ignoreBy(300)                               // 忽略不压缩图片的大小
 //                .setTargetDir(FileManager.getSaveFilePath() + "gxLuban")// 设置压缩后文件存储位置
                 .setCompressListener(new OnCompressListener() { //设置回调
                     @Override
@@ -123,22 +135,46 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
             case R.id.commit_bt:
                 if (clickFlag) {
                     Show(OverInfoActivity.this, "请稍候", true, null);
-                    op.CheckInfo(headFile, nickname_ed.getText().toString(), phone, pass, code);
+                    op.CheckInfo(headFile, nickname_ed.getText().toString(), phone, pass, code, sex);
                 }
+                break;
+
+            case R.id.sex_ed:
+                new ActionSheetDialog(this).builder().addSheetItem(gets(R.string.man), ActionSheetDialog.SheetItemColor.Black, new ActionSheetDialog.OnSheetItemClickListener() {
+                    @Override
+                    public void onClick(int which) {
+                        sex_ed.setText(gets(R.string.man));
+                        sex = 1;
+                    }
+                }).addSheetItem(gets(R.string.woman), ActionSheetDialog.SheetItemColor.Black, new ActionSheetDialog.OnSheetItemClickListener() {
+                    @Override
+                    public void onClick(int which) {
+                        sex_ed.setText(gets(R.string.woman));
+                        sex = 0;
+                    }
+                }).show();
                 break;
         }
     }
 
     @Override
-    public void onSucced() {
-        ToastUtil.toast2_bottom(OverInfoActivity.this, Fields.REGISTERSUCCEED);
-        setResult(Fields.ACRESULET1);
-        finish();
+    public void onSucced(int flag) {
+        Cancle();
+        if (flag == 1)
+            op.getImIdentifier();
+
+        if (flag == 2) {
+            ToastUtil.toast2_bottom(OverInfoActivity.this, gets(R.string.changeinfook));
+            setResult(Fields.ACRESULET1);
+            finish();
+        }
+
     }
 
     @Override
     public void onFailed(String msg) {
         ToastUtil.toast2_bottom(OverInfoActivity.this, msg);
+        Cancle();
     }
 
     @Override
@@ -156,12 +192,37 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
     @Override
     public void onErrorMsg(String msg) {
         ToastUtil.toast2_bottom(OverInfoActivity.this, msg);
+        Cancle();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Cancle();
     }
 
     @Override
     public void setHeadImgAndName(String imgPath, String name) {
-        Glide.with(OverInfoActivity.this).load(imgPath).bitmapTransform(new CropCircleTransformation(OverInfoActivity.this)).into(head_img);
-        nickname_ed.setText(name);
-        onCommit();
+        if (!imgPath.isEmpty() && !name.isEmpty()) {
+            Glide.with(OverInfoActivity.this).load(imgPath).bitmapTransform(new CropCircleTransformation(OverInfoActivity.this)).into(head_img);
+            nickname_ed.setText(name);
+            nickname_ed.setSelection(name.length());
+            onCommit();
+        }
+    }
+
+    @Override
+    public void onImSucceed() {
+        ToastUtil.toast2_bottom(OverInfoActivity.this, gets(R.string.registersucceed));
+        setResult(Fields.ACRESULET1);
+        finish();
+    }
+
+    @Override
+    public void onImFailed(String msg) {
+        ToastUtil.toast2_bottom(OverInfoActivity.this, msg);
+        SPreferences.saveUserToken("");
+        setResult(Fields.ACRESULET3);
+        finish();
     }
 }

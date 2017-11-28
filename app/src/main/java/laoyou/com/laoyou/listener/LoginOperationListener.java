@@ -8,4 +8,7 @@ public interface LoginOperationListener {
 
     void onWechatLoginFailed();
 
+    void onFailed(String response);
+
+    void onSucceed();
 }

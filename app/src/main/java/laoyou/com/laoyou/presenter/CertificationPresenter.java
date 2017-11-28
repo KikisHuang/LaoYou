@@ -8,15 +8,18 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.IpBean;
 import laoyou.com.laoyou.listener.CertificationListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
+import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * Created by lian on 2017/10/25.
@@ -38,15 +41,15 @@ public class CertificationPresenter implements HttpResultListener {
         if (!name.isEmpty() && !id.isEmpty() && frontFile != null && tailFile != null && handFile != null)
             CommitAutonym(name, id, frontFile, tailFile, handFile, ip, imei);
         else if (name.isEmpty())
-            listener.onCheckFailed(Fields.NAMENULLMSG);
+            listener.onCheckFailed(gets(R.string.namenullmsg));
         else if (id.isEmpty())
-            listener.onCheckFailed(Fields.IDNULLMSG);
+            listener.onCheckFailed(gets(R.string.idnullmsg));
         else if (frontFile == null)
-            listener.onCheckFailed(Fields.FRONTIDNULLMSG);
+            listener.onCheckFailed(gets(R.string.frontidnullmsg));
         else if (tailFile == null)
-            listener.onCheckFailed(Fields.TAILIDNULLMSG);
+            listener.onCheckFailed(gets(R.string.tailidnullmsg));
         else if (handFile == null)
-            listener.onCheckFailed(Fields.HANDIDNULLMSG);
+            listener.onCheckFailed(gets(R.string.handidnullmsg));
     }
 
     private void CommitAutonym(String name, String id, File frontFile, File tailFile, File handFile, String ip, String imei) {
@@ -55,12 +58,16 @@ public class CertificationPresenter implements HttpResultListener {
         map.put("idcard", id);
         map.put("deviceName", android.os.Build.MODEL);
 
-        if (!Fields.address.isEmpty())
-            map.put("address", Fields.address);
-        if (Fields.Longitude > 0)
-            map.put("longitude", String.valueOf(Fields.Longitude));
-        if (Fields.Latitud > 0)
-            map.put("latitude", String.valueOf(Fields.Latitud));
+        String address = SPreferences.getAddress();
+        String Longitude = SPreferences.getLongitude();
+        String Latitud = SPreferences.getLatitud();
+
+        if (address!=null||!address.isEmpty())
+            map.put("address", address);
+        if (Double.parseDouble(Longitude) > 0)
+            map.put("longitude", String.valueOf(Longitude));
+        if (Double.parseDouble(Latitud)  > 0)
+            map.put("latitude", String.valueOf(Latitud));
         if (!ip.isEmpty())
             map.put("ip", ip);
         if (!imei.isEmpty())
@@ -88,7 +95,7 @@ public class CertificationPresenter implements HttpResultListener {
 
     @Override
     public void onError(Request request, Exception e) {
-        listener.onError(Fields.NETWORKERROR);
+        listener.onError(gets(R.string.networkerror));
     }
 
     @Override

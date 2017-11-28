@@ -5,12 +5,17 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Map;
 
+import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.activity.OverInfoActivity;
+import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.OverInfoListener;
 import laoyou.com.laoyou.save.SPreferences;
@@ -19,11 +24,13 @@ import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.FilesUtil.getFileMap;
-import static laoyou.com.laoyou.utils.FilesUtil.getParamsMap;
+import static laoyou.com.laoyou.utils.JsonUtils.getFileMap;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
+import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.PhotoUtils.getMULTIPLEPhoto;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * Created by lian on 2017/10/26.
@@ -33,6 +40,9 @@ public class OverInfoPresenter implements HttpResultListener {
     private OverInfoListener listener;
     private File file;
     private String name;
+    private int sex;
+    //1注册,2修改;
+    private int flag = 0;
 
     public OverInfoPresenter(OverInfoListener listener) {
         this.listener = listener;
@@ -81,7 +91,7 @@ public class OverInfoPresenter implements HttpResultListener {
             case Fields.REQUEST1:
                 try {
                     SPreferences.saveUserToken(getJsonSring(response));
-                    ChangeInfo(file, name);
+                    ChangeInfo(file);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -89,15 +99,48 @@ public class OverInfoPresenter implements HttpResultListener {
                 break;
 
             case Fields.REQUEST2:
-                listener.onSucced();
+                listener.onSucced(flag);
+                break;
+            case Fields.REQUEST3:
+                try {
+                    JSONObject ob = getJsonOb(response);
+                    UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
 
+                    if (ub.getCloudTencentAccount() != null && !ub.getCloudTencentAccount().isEmpty()) {
+                        SPreferences.saveIdentifier(ub.getCloudTencentAccount());
+                        getImUserSig(ub.getCloudTencentAccount());
+                    } else
+                        listener.onImFailed(gets(R.string.get_im_info_error));
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "Error === " + e);
+                    e.printStackTrace();
+                }
+                break;
+            case Fields.REQUEST4:
+                Log.i(TAG, "user sig ===" + response);
+                SPreferences.saveUserSig(response);
+                listener.onImSucceed();
                 break;
         }
     }
 
-    private void ChangeInfo(File file, String name) {
+    /**
+     * 获取IM UserSig;
+     *
+     * @param id
+     */
+    private void getImUserSig(String id) {
+        Map<String, String> map = getParamsMap();
+        map.put("identifier", id);
+        httpUtils.OkHttpsPost(map, this, Fields.REQUEST4, Interface.URL + Interface.GETUSERSIG, null, null);
+    }
+
+
+    private void ChangeInfo(File file) {
         Map<String, String> map = getKeyMap();
         map.put("name", name);
+        map.put("sex", String.valueOf(sex));
 
         if (file != null) {
             Map<String, File> f = getFileMap();
@@ -109,7 +152,7 @@ public class OverInfoPresenter implements HttpResultListener {
 
     @Override
     public void onError(Request request, Exception e) {
-        listener.onErrorMsg(Fields.NETWORKERROR);
+        listener.onErrorMsg(gets(R.string.networkerror));
     }
 
     public void onParseError(Exception e) {
@@ -118,7 +161,18 @@ public class OverInfoPresenter implements HttpResultListener {
 
     @Override
     public void onFailed(String response, int code, int tag) {
-        listener.onFailed(response);
+        switch (tag) {
+            case Fields.REQUEST3:
+                listener.onImFailed(gets(R.string.get_im_info_error));
+                break;
+            case Fields.REQUEST4:
+                listener.onImFailed(gets(R.string.get_im_info_error));
+                break;
+            default:
+                listener.onFailed(response);
+
+        }
+
     }
 
     public void Register(String phone, String pass, String code) {
@@ -129,20 +183,23 @@ public class OverInfoPresenter implements HttpResultListener {
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.REGISTER);
     }
 
-    public void CheckInfo(File headFile, String name, String phone, String pass, String code) {
-
+    public void CheckInfo(File headFile, String name, String phone, String pass, String code, int sex) {
+        this.sex = sex;
+        this.name = name;
+        //修改信息;
         if (!phone.isEmpty() && !pass.isEmpty() && code.isEmpty())
-            ChangeInfo(headFile, name);
+            ChangeInfo(headFile);
+            //注册创建信息;
         else {
             if (headFile != null && !name.isEmpty()) {
                 file = headFile;
-                this.name = name;
+
                 Register(phone, pass, code);
 //            httpUtils.OkHttpsPost();
             } else if (headFile == null)
-                listener.onErrorMsg(Fields.HEADNULLMSG);
+                listener.onErrorMsg(gets(R.string.headnullmsg));
             else if (name.isEmpty())
-                listener.onErrorMsg(Fields.NICKNAMENULLMSG);
+                listener.onErrorMsg(gets(R.string.nicknamenullmsg));
         }
     }
 
@@ -154,9 +211,20 @@ public class OverInfoPresenter implements HttpResultListener {
      * @param code
      */
     public void Changejudge(String phone, String pass, String code) {
-        if (phone == null || pass == null) {
+        if (code != null && !code.isEmpty()) {
+            flag = 1;
             listener.setHeadImgAndName("", "");
-        } else if (!phone.isEmpty() && !pass.isEmpty() && code.isEmpty())
+        } else if (!phone.isEmpty() && !pass.isEmpty() && code.isEmpty()) {
+            flag = 2;
             listener.setHeadImgAndName(phone, pass);
+        }
+    }
+
+    /**
+     * 获取腾讯Im Identifier;
+     */
+    public void getImIdentifier() {
+        Map<String, String> map = getKeyMap();
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST3, Interface.URL + Interface.MYINFODETAILS);
     }
 }

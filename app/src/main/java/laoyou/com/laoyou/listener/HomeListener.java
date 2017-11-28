@@ -1,5 +1,8 @@
 package laoyou.com.laoyou.listener;
 
+import java.util.List;
+
+import laoyou.com.laoyou.bean.NearbyBean;
 import laoyou.com.laoyou.bean.PageTopBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 
@@ -28,4 +31,8 @@ public interface HomeListener {
     void BannerShow();
 
     void onForbidSlide();
+
+    void RefreshRecyclerView(List<NearbyBean> nblist);
+
+    void onEnable(boolean b);
 }

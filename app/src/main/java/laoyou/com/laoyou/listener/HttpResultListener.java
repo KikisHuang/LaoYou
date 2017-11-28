@@ -37,5 +37,4 @@ public interface HttpResultListener {
     void onFailed(String response, int code, int tag);
 
 
-
 }

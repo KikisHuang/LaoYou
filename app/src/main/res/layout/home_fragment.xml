@@ -7,7 +7,6 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -24,20 +23,29 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center|left"
-            app:civ_border_color="@color/graye6"
             android:src="@mipmap/test_icon"
+            app:civ_border_color="@color/graye6"
             app:civ_border_width="0.5dp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
             android:gravity="center|left"
-            android:text="首页"
+            android:text="@string/home_page"
             android:textColor="@color/black"
             android:textSize="23dp" />
 
+        <ImageView
+            android:id="@+id/show_hide_img"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/menu_icon"
+            android:visibility="gone"
+            />
     </LinearLayout>
+
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinatorlayout"
@@ -47,6 +55,7 @@
         android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true">
@@ -64,10 +73,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:fitsSystemWindows="true"
                     android:orientation="vertical"
                     android:padding="10dp"
-                    android:background="@color/white"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.2">
 
@@ -193,7 +202,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:text="查询上网密码"
+                                    android:text="@string/query_internet_pass"
                                     android:textColor="@color/white"
                                     android:textSize="13dp" />
                             </LinearLayout>
@@ -254,7 +263,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:text="附近的网吧"
+                                    android:text="@string/cybercafe"
                                     android:textColor="@color/white"
                                     android:textSize="13dp" />
                             </LinearLayout>
@@ -275,15 +284,16 @@
                                     android:layout_height="55dp"
                                     android:layout_gravity="center"
                                     android:layout_marginBottom="10dp"
-                                    android:src="@mipmap/logo_icon" />
+                                    android:src="@mipmap/community_icon" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:text="玩家社区"
+                                    android:text="@string/DoNews"
                                     android:textColor="@color/white"
                                     android:textSize="13dp" />
+
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -320,6 +330,7 @@
                             android:layout_height="match_parent"
                             android:visibility="gone" />
                     </FrameLayout>
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
@@ -329,8 +340,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="附近的人"
                         android:layout_marginTop="10dp"
+                        android:text="@string/nearbyuser"
                         android:textColor="@color/black"
                         android:textSize="16dp" />
                 </LinearLayout>
@@ -340,14 +351,22 @@
 
         </android.support.design.widget.AppBarLayout>
 
+        <com.liaoinstan.springview.widget.SpringView
+            android:id="@+id/springview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:scrollbars="none"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </com.liaoinstan.springview.widget.SpringView>
+
     </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/cancle_tv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center|left"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/blue_all"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/confirm_tv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center|right"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/gray11"
+            android:textSize="15sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/member_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:text="选择成员"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/search_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@mipmap/search_icon2" />
+
+            <EditText
+                android:id="@+id/search_ed"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:background="@color/white"
+                android:hint="搜索"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/search_img"
+            android:layout_width="35dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center|right"
+            android:layout_marginRight="5dp"
+            android:src="@mipmap/search_icon" />
+    </FrameLayout>
+
+    <laoyou.com.laoyou.view.HorizontalListView
+        android:id="@+id/infolistView"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:scrollbars="none"></laoyou.com.laoyou.view.HorizontalListView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"></ListView>
+
+        <ListView
+            android:id="@+id/sratch_listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:background="@color/white"
+            android:visibility="gone"></ListView>
+
+        <TextView
+            android:id="@+id/none_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center|top"
+            android:paddingTop="70dp"
+            android:text="暂时还没有成员"
+            android:textColor="@color/gray99"
+            android:textSize="17sp"
+            android:visibility="gone"
+            />
+    </FrameLayout>
+</LinearLayout>

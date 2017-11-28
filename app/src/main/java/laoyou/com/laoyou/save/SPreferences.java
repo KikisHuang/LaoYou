@@ -16,13 +16,40 @@ public class SPreferences {
      */
     private static final String KEY_USER_TOKEN = "Laoyou_token";
     /**
+     * 纬度;
+     */
+    private static final String LATITUD = "Laoyou_Latitud";
+    /**
+     * 经度;
+     */
+    private static final String LONGITUDE = "Laoyou_Longitude";
+    /**
+     * 地址信息;
+     */
+    private static final String ADDRESS = "Laoyou_Address";
+    /**
      * 用户UUID(启动次数统计);
      */
     private static final String KEY_UUID = "User_UUID";
+    /**
+     * 腾讯IM账号;
+     */
+    private static final String IM_IDENTIFIER = "Im_Identifier";
+    /**
+     * 腾讯IMUserSig;
+     */
+    private static final String IM_USERSIG = "Im_UserSig";
+    /**
+     * 保存用户头像;
+     */
+    private static final String USER_HEAD_IMG = "User_Head_Img";
+    /**
+     * 临时存储聊天对象头像(仅用于单聊);
+     */
+    private static final String TEMPORARY_USER_HEAD = "Temporary_User_Head";
 
     /**
-
-    /**
+     * /**
      * 保存登录Token;
      */
     public static void saveUserToken(String token) {
@@ -36,6 +63,103 @@ public class SPreferences {
         return getString(KEY_USER_TOKEN);
     }
 
+    /**
+     * 保存用户头像;
+     */
+    public static void saveTemporaryImg(String str) {
+        saveString(TEMPORARY_USER_HEAD, str);
+    }
+
+    /**
+     * 获取用户头像;
+     */
+    public static String getTemporaryImg() {
+        return getString(TEMPORARY_USER_HEAD);
+    }
+
+    /**
+     * 保存腾讯Im账号;
+     */
+    public static void saveIdentifier(String str) {
+        saveString(IM_IDENTIFIER, str);
+    }
+
+    /**
+     * 获取Im账号;
+     */
+    public static String getIdentifier() {
+        return getString(IM_IDENTIFIER);
+    }
+    /**
+     * 保存腾讯ImUserSig;
+     */
+    public static void saveUserSig(String str) {
+        saveString(IM_USERSIG, str);
+    }
+
+    /**
+     * 获取ImUserSIg;
+     */
+    public static String getUserSig() {
+        return getString(IM_USERSIG);
+    }
+
+
+    /**
+     * 保存用户头像;
+     */
+    public static void saveUserHeadImg(String str) {
+        saveString(USER_HEAD_IMG, str);
+    }
+
+    /**
+     * 获取用户头像;
+     */
+    public static String getUserHeadImg() {
+        return getString(USER_HEAD_IMG);
+    }
+
+    /**
+     * 保存地址信息
+     */
+    public static void saveAddress(String latitud) {
+        saveString(ADDRESS, latitud);
+    }
+
+    /**
+     * 获取地址信息;
+     */
+    public static String getAddress() {
+        return getString(ADDRESS);
+    }
+
+    /**
+     * 保存纬度
+     */
+    public static void saveLatitud(String latitud) {
+        saveString(LATITUD, latitud);
+    }
+
+    /**
+     * 获取纬度;
+     */
+    public static String getLatitud() {
+        return getString(LATITUD);
+    }
+
+    /**
+     * 保存经度
+     */
+    public static void saveLongitude(String longitude) {
+        saveString(LONGITUDE, longitude);
+    }
+
+    /**
+     * 获取经度;
+     */
+    public static String getLongitude() {
+        return getString(LONGITUDE);
+    }
 
     /**
      * 读取String方法;
@@ -56,12 +180,14 @@ public class SPreferences {
     private static boolean getBoolean(String key) {
         return getSharedPreferences().getBoolean(key, true);
     }
+
     /**
      * 获取UUID;
      */
     public static String getUserUUID() {
         return getString(KEY_UUID);
     }
+
     /**
      * 保存UUID;
      */
@@ -108,4 +234,6 @@ public class SPreferences {
     public static void setContext(Context context) {
         SPreferences.context = context.getApplicationContext();
     }
+
+
 }

@@ -110,7 +110,7 @@ public class httpUtils {
                         listener.onSucceed(response, reqTag);
                     } else {
                         Log.i(TAG, "失败返回数据 ====" + response);
-                        listener.onFailed(ErrorMsg(response, code), code, code);
+                        listener.onFailed(ErrorMsg(response, code), code, reqTag);
                     }
                     Cancle();
                 } catch (Exception e) {

@@ -4,29 +4,54 @@
     android:id="@+id/mFlCardBack"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/circle_angle_blue"
+    android:background="@drawable/circle_angle_green"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/wifi_layout"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/white_corners1"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="10dp">
 
         <ImageView
+            android:id="@+id/wifi_icon"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@mipmap/wifi_connect_icon" />
+            android:src="@mipmap/exclamation_mark" />
 
         <TextView
+            android:id="@+id/wifi_name"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="一键连接Wifi"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginTop="10dp"
             android:textColor="@color/white"
-            android:textSize="12dp" />
+            android:textSize="17dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/wifi_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="连接成功，安全保护中"
+            android:textColor="@color/white"
+            android:textSize="13dp" />
+
+        <Button
+            android:id="@+id/connetion_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="一键连接"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/white_corners2"
+            android:textSize="12dp"
+            />
     </LinearLayout>
 </FrameLayout>

@@ -47,7 +47,7 @@ public class Interface {
      * 参数: key = 用户key
      * 返回成功code是1
      */
-    public static final String MYINFODETAILS = "user/getMyDetails.app";
+    public static final String MYINFODETAILS = "user/select/getMyDetails.app";
     /**
      * 忘记密码（修改新密码）接口;
      * newPassword=新密码，code=验证码
@@ -93,5 +93,23 @@ public class Interface {
     /**
      * 第三方微信登录接口
      */
-    public static final String WECHATLogin = "login/wx.app";
+    public static final String WECHATLogin = "main/wx.app";
+
+    /**
+     * gps定位接口
+     */
+    public static final String GPSLOCATION = "user/modify/gpsLocation.app";
+    /**
+     * 获取附近的人接口
+     */
+    public static final String GETNEARBYUSER = "user/select/getNearbyUser.app";
+
+    /**
+     * 为用户重新创建腾讯云账号接口
+     */
+    public static final String CREATECLOUDTENCENTACCOUNT = "cloudTencent/modify/createCloudTencentAccount.app";
+    /**
+     * 获取腾讯云的userSig,要用POST请求,因为担心乱码问题
+     */
+    public static final String GETUSERSIG = "cloudTencent/getUsersig.app";
 }

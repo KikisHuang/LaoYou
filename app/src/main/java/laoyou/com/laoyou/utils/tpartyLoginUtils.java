@@ -12,6 +12,8 @@ import java.util.Map;
 
 import laoyou.com.laoyou.listener.LoginOperationListener;
 
+import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
+
 /**
  * Created by lian on 2017/6/9.
  * 友盟登录、分享工具类;
@@ -44,12 +46,14 @@ public class tpartyLoginUtils {
 
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                Log.i(TAG, "Throwable ===" + throwable);
                 listener.onWechatLoginFailed();
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media, int i) {
                 Log.i(TAG, "授权取消");
+                Cancle();
             }
         };
         return umAuthListener;

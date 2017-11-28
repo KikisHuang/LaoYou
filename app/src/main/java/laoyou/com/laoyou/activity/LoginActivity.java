@@ -17,6 +17,7 @@ import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goSendPhoneCodePage;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.SynUtils.setTitles;
 
 /**
@@ -101,7 +102,7 @@ public class LoginActivity extends InitActivity implements View.OnClickListener,
 
     @Override
     public void onSucceed() {
-        ToastUtil.toast2_bottom(LoginActivity.this, Fields.LOGINOK);
+        ToastUtil.toast2_bottom(LoginActivity.this, gets(R.string.loginok));
         setResult(Fields.ACRESULET2);
         finish();
     }

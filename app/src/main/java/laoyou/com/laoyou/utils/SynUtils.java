@@ -22,7 +22,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.text.SpannableString;
@@ -34,6 +33,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.tencent.qcloud.presentation.event.MessageEvent;
+import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,7 +53,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.activity.LoginOperationActivity;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.tencent.model.FriendshipInfo;
+import laoyou.com.laoyou.tencent.model.GroupInfo;
+import laoyou.com.laoyou.tencent.model.UserInfo;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goRegisterPage;
 
@@ -379,6 +385,17 @@ public class SynUtils {
     }
 
     /**
+     * 字母判断;
+     */
+    public static boolean isChinesePunctuation(String str) {
+        if (str.matches("^[A-Za-z]+$"))
+            return true;
+        else
+            return false;
+    }
+
+
+    /**
      * 获取通知栏权限是否开启
      */
 
@@ -417,18 +434,18 @@ public class SynUtils {
         return false;
     }
 
-    /**
+   /* *//**
      * 进入设置系统应用权限界面;
      * 方法1;
      *
      * @param context
-     */
+     *//*
     public static void requestPermission(Context context) {
         // TODO Auto-generated method stub
         // 6.0以上系统才可以判断权限
         Intent intent = new Intent(Settings.ACTION_SETTINGS);
         context.startActivity(intent);
-    }
+    }*/
 
     /**
      * 进入设置系统应用权限界面;
@@ -742,5 +759,143 @@ public class SynUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 根据资源的名字获取其ID值
+     */
+    public static int getIdByName(Context context, String className, String name) {
+        String packageName = context.getPackageName();
+        Class r = null;
+        int id = 0;
+
+        try {
+            r = Class.forName(packageName + ".R");
+            Class[] classes = r.getClasses();
+            Class desireClass = null;
+
+            for (int i = 0; i < classes.length; ++i) {
+                if (classes[i].getName().split("\\$")[1].equals(className)) {
+                    desireClass = classes[i];
+                    break;
+                }
+            }
+            if (desireClass != null) {
+                id = desireClass.getField(name).getInt(desireClass);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        return id;
+    }
+
+    /**
+     * @param phoneNumber 手机号
+     * @return 有效则返回true, 无效则返回false
+     * @function 判断手机号是否有效
+     */
+    public static boolean validPhoneNumber(String phoneNumber) {
+        return phoneNumber.length() == 11 && phoneNumber.matches("[0-9]{1,}");
+    }
+
+    private static final double EARTH_RADIUS = 6378137.0;
+
+    // 返回单位是米
+    public static double getDistance(double longitude1, double latitude1,
+                                     double longitude2, double latitude2) {
+        double Lat1 = rad(latitude1);
+        double Lat2 = rad(latitude2);
+        double a = Lat1 - Lat2;
+        double b = rad(longitude1) - rad(longitude2);
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
+                + Math.cos(Lat1) * Math.cos(Lat2)
+                * Math.pow(Math.sin(b / 2), 2)));
+        s = s * EARTH_RADIUS;
+        s = Math.round(s * 10000) / 10000;
+        return s;
+    }
+
+    private static double rad(double d) {
+        return d * Math.PI / 180.0;
+    }
+
+    /**
+     * 过千简略显示方法;
+     *
+     * @param num
+     * @return
+     */
+    public static String getDistanceKM(double num) {
+        DecimalFormat df = new DecimalFormat("######0.0");
+        DecimalFormat df1 = new DecimalFormat("######0");
+
+        String a = "";
+        if (num > 1000) {
+            double c = num / 1000;
+            a = String.valueOf(df.format(c)) + "km";
+        } else
+            a = String.valueOf(df1.format(num));
+        return a;
+    }
+
+    /**
+     * 判断是否为汉字;
+     *
+     * @param str
+     * @return
+     */
+    public static boolean ChineseJudge(String str) {
+
+        char[] chars = str.toCharArray();
+        boolean isGB2312 = false;
+        for (int i = 0; i < chars.length; i++) {
+            byte[] bytes = ("" + chars[i]).getBytes();
+            if (bytes.length == 2) {
+                int[] ints = new int[2];
+                ints[0] = bytes[0] & 0xff;
+                ints[1] = bytes[1] & 0xff;
+                if (ints[0] >= 0x81 && ints[0] <= 0xFE && ints[1] >= 0x40 && ints[1] <= 0xFE) {
+                    isGB2312 = true;
+                    break;
+                }
+            }
+        }
+        return isGB2312;
+    }
+
+    /**
+     * 获取GetString 通用方法;
+     *
+     * @param res
+     * @return
+     */
+    public static String gets(int res) {
+        return SPreferences.context.getString(res);
+    }
+    /**
+     * 登出通用方法;
+     *
+     * @param context
+     * @return
+     */
+    public static void LogOut(Context context) {
+        SPreferences.saveUserToken("");
+
+        TlsBusiness.logout(UserInfo.getInstance().getId());
+        UserInfo.getInstance().setId(null);
+        MessageEvent.getInstance().clear();
+        FriendshipInfo.getInstance().clear();
+        GroupInfo.getInstance().clear();
+        Intent intent = new Intent(context, LoginOperationActivity.class);
+        context.startActivity(intent);
     }
 }

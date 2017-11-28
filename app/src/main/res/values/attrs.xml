@@ -11,4 +11,11 @@
         <attr name="alphaFactor" format="float" />
         <attr name="hover" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="SideBar">
+        <attr name="scaleSize" format="integer"/>
+        <attr name="scaleItemCount" format="integer"/>
+        <attr name="scaleWidth" format="dimension"/>
+    </declare-styleable>
+
 </resources>

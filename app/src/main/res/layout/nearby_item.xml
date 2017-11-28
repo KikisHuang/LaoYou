@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/content6"
                 android:layout_gravity="center"
-                android:text="0.05km"
+                android:text=""
                 android:textSize="11dp"
                 />
         </LinearLayout>
@@ -114,7 +114,7 @@
             android:ellipsize="end"
             android:maxEms="20"
             android:singleLine="true"
-            android:text="艾欧尼亚来队友，快来"
+            android:text=""
             android:textColor="@color/content12"
             android:textSize="11dp" />
 

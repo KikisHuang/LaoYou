@@ -1,10 +1,11 @@
 package laoyou.com.laoyou.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by lian on 2017/10/30.
  */
-public class UserInfoBean {
-
+public class UserInfoBean implements Serializable{
     /**
      * account : 13878141913
      * createTime : 2017-10-30 10:31:37
@@ -24,6 +25,55 @@ public class UserInfoBean {
     private String phone;
     private boolean status;
     private int uid;
+    private String cloudTencentAccount;
+
+    public String getCloudTencentAccount() {
+        return cloudTencentAccount;
+    }
+
+    public void setCloudTencentAccount(String cloudTencentAccount) {
+        this.cloudTencentAccount = cloudTencentAccount;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    private double latitude;
+    private double 	longitude ;
+
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public String getWxOpenId() {
+        return wxOpenId;
+    }
+
+    public void setWxOpenId(String wxOpenId) {
+        this.wxOpenId = wxOpenId;
+    }
+
+    private int sex;
+    private String wxOpenId;
+
 
     public String getAccount() {
         return account;

@@ -13,9 +13,13 @@ import laoyou.com.laoyou.presenter.LoginOperationPresenter;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 
+import static laoyou.com.laoyou.activity.MainActivity.MainInstance;
+import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
+import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goRegisterPage;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * Created by lian on 2017/10/25.
@@ -75,7 +79,8 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.wechat_img:
-                lp.WechatLogin(LoginOperationActivity.this,mShareAPI);
+                Show(LoginOperationActivity.this, "登录中", true, null);
+                lp.getWeChatInfo(LoginOperationActivity.this, mShareAPI);
                 break;
             case R.id.login_layout:
                 goLoginPage(this);
@@ -92,18 +97,44 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Fields.ACRESULET2) {
+            if (MainInstance() != null)
+                MainInstance().IMInit();
+
             if (getHomeInstance() != null)
                 getHomeInstance().onRefresh();
             finish();
         }
     }
+
     @Override
     public void onWechatLoginSucceed(String accessToken, String openid, String url) {
-
+        lp.WeChatLogin(accessToken, openid, url);
     }
 
     @Override
     public void onWechatLoginFailed() {
-        ToastUtil.toast2_bottom(LoginOperationActivity.this,Fields.WECHATLOGINERROR);
+        ToastUtil.toast2_bottom(LoginOperationActivity.this, gets(R.string.wechatloginerror));
+        Cancle();
+    }
+
+    @Override
+    public void onFailed(String response) {
+        Cancle();
+    }
+
+    @Override
+    public void onSucceed() {
+        Cancle();
+        ToastUtil.toast2_bottom(this, gets(R.string.loginok));
+
+        if (getHomeInstance() != null)
+            getHomeInstance().onRefresh();
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Cancle();
     }
 }

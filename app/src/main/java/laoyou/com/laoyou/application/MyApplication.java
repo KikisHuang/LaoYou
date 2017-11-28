@@ -1,8 +1,15 @@
 package laoyou.com.laoyou.application;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.tencent.TIMGroupReceiveMessageOpt;
+import com.tencent.TIMManager;
+import com.tencent.TIMOfflinePushListener;
+import com.tencent.TIMOfflinePushNotification;
+import com.tencent.qalsdk.sdk.MsfSdkUtils;
 import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
@@ -14,7 +21,9 @@ import com.zhy.http.okhttp.log.LoggerInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
+import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.tencent.utils.Foreground;
 import laoyou.com.laoyou.utils.Fields;
 import okhttp3.OkHttpClient;
 
@@ -23,15 +32,44 @@ import okhttp3.OkHttpClient;
  */
 public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
+    private static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        MultiDex.install(this);
+        Foreground.init(this);
+        context = getApplicationContext();
         SPreferences.setContext(getApplicationContext());
         OkHttpInit();
         QBX5Init();
         UmengInt();
+        initTecentIM();
     }
+
+    private void initTecentIM() {
+        if (MsfSdkUtils.isMainProcess(this)) {
+            TIMManager.getInstance().setOfflinePushListener(new TIMOfflinePushListener() {
+                @Override
+                public void handleNotification(TIMOfflinePushNotification timOfflinePushNotification) {
+                    if (timOfflinePushNotification.getGroupReceiveMsgOpt() == TIMGroupReceiveMessageOpt.ReceiveAndNotify) {
+                        //消息设置为需要提醒;
+                        timOfflinePushNotification.doNotify(getApplicationContext(), R.mipmap.logo_icon);
+                        //注册推送服务;
+                        registerPush();
+                    }
+                }
+            });
+        }
+        //初始化SDK基本设置;
+//        InitBusiness.start(getApplicationContext());
+
+    }
+
+    private void registerPush() {
+
+    }
+
 
     /**
      * 友盟初始化;
@@ -70,7 +108,6 @@ public class MyApplication extends Application {
             @Override
             public void onCoreInitFinished() {
                 //x5内核初始化完成回调接口，此接口回调并表示已经加载起来了x5，有可能特殊情况下x5内核加载失败，切换到系统内核。
-
             }
 
             @Override
@@ -79,5 +116,9 @@ public class MyApplication extends Application {
                 Log.e("@@", "加载内核是否成功:" + b);
             }
         });
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }

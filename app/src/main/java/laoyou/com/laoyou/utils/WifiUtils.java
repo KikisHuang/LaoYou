@@ -1,5 +1,8 @@
 package laoyou.com.laoyou.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 
@@ -70,4 +73,20 @@ public class WifiUtils {
         }
         return null;
     }
+
+
+    //是否连接WIFI
+    public static boolean isWifiConnected(Context context)
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if(wifiNetworkInfo.isConnected())
+        {
+            return true ;
+        }
+
+        return false ;
+    }
 }
+
+

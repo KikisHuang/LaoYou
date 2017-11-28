@@ -20,7 +20,7 @@ public class BaseActivity extends InitActivity {
 
     @Override
     protected void init() {
-
+        setContentView(R.layout.loading_layout);
     }
 
     @Override
@@ -30,23 +30,23 @@ public class BaseActivity extends InitActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                // 判断退出
-                if (timeDValue == 0) {
-                    ToastUtil.toast2_bottom(this, getResources().getString(R.string.appfinish), 1000);
-                    timeDValue = System.currentTimeMillis();
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // 判断退出
+            if (timeDValue == 0) {
+                ToastUtil.toast2_bottom(this, getResources().getString(R.string.appfinish), 1000);
+                timeDValue = System.currentTimeMillis();
+                return true;
+            } else {
+                timeDValue = System.currentTimeMillis() - timeDValue;
+                if (timeDValue >= 1500) { // 大于1.5秒不处理。
+                    timeDValue = 0;
                     return true;
-                } else {
-                    timeDValue = System.currentTimeMillis() - timeDValue;
-                    if (timeDValue >= 1500) { // 大于1.5秒不处理。
-                        timeDValue = 0;
-                        return true;
-                    } else {// 退出应用
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                        System.exit(0);
-                    }
+                } else {// 退出应用
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                    System.exit(0);
                 }
             }
+        }
         return super.onKeyDown(keyCode, event);
     }
 }

@@ -97,20 +97,20 @@ public class RegisterActivity extends InitActivity implements View.OnClickListen
 
     @Override
     public void onPhoneLengthError() {
-
+        Cancle();
         ToastUtil.toast2_bottom(RegisterActivity.this, "请输入正确的手机号!");
     }
 
     @Override
     public void onRegisterFailedMsg(String msg) {
-
+        Cancle();
         ToastUtil.toast2_bottom(RegisterActivity.this, msg);
     }
 
     @Override
     public void OverInfo() {
         Cancle();
-        goOverInfoPage(RegisterActivity.this, phone_ed.getText().toString(), pass_ed.getText().toString(), code_ed.getText().toString());
+        goOverInfoPage(RegisterActivity.this, phone_ed.getText().toString(), pass_ed.getText().toString(), code_ed.getText().toString(), 1);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class RegisterActivity extends InitActivity implements View.OnClickListen
 
     @Override
     public void SendCode() {
-        rp.CodeCountDown(phone_ed.getText().length(), phone_ed.getText().toString());
+        rp.CodeCountDown(phone_ed.getText().toString());
     }
 
     @Override
@@ -137,6 +137,8 @@ public class RegisterActivity extends InitActivity implements View.OnClickListen
             setResult(Fields.ACRESULET2);
             finish();
         }
+        if (resultCode == Fields.ACRESULET3)
+            finish();
 
     }
 }

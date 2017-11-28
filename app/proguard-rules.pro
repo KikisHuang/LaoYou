@@ -540,6 +540,19 @@
 -keep class laoyou.com.laoyou.bean.**{*;}
 ####gson####
 
+
+
+####腾讯云通信IM####
+-keep class com.tencent.**{*;}
+-dontwarn com.tencent.**
+
+-keep class tencent.**{*;}
+-dontwarn tencent.**
+
+-keep class qalsdk.**{*;}
+-dontwarn qalsdk.**
+####腾讯云通信IM####
+
 ####极光推送####
 -dontoptimize
 -dontpreverify

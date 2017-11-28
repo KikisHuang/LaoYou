@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import java.util.Map;
 
+import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.RegisterListener;
 import laoyou.com.laoyou.utils.Fields;
@@ -16,7 +17,10 @@ import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.FilesUtil.getParamsMap;
+import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
+import static laoyou.com.laoyou.utils.SynUtils.validPhoneNumber;
+
 
 /**
  * Created by lian on 2017/10/26.
@@ -108,11 +112,10 @@ public class RegisterPresenter implements HttpResultListener {
     /**
      * 开启倒计时;
      *
-     * @param length
      * @param phone
      */
-    public void CodeCountDown(int length, String phone) {
-        if (length == 11) {
+    public void CodeCountDown(String phone) {
+        if (validPhoneNumber(phone)) {
             getPhoneCode(phone);
         } else
             listener.onPhoneLengthError();
@@ -127,18 +130,18 @@ public class RegisterPresenter implements HttpResultListener {
     }
 
     public void CommitData(String phone, String pass, String code, boolean codeOk) {
-        if (!phone.isEmpty() && phone.length() == 11 && !pass.isEmpty() && !code.isEmpty() && codeOk)
+        if (!phone.isEmpty() && validPhoneNumber(phone) && !pass.isEmpty() && !code.isEmpty() && codeOk)
             listener.OverInfo();
         else if (phone.isEmpty())
-            listener.onRegisterFailedMsg(Fields.PHONENULLMSG);
-        else if (phone.length() != 11)
-            listener.onRegisterFailedMsg(Fields.PHONEUNCORRECTMSG);
+            listener.onRegisterFailedMsg(gets(R.string.phonenullmsg));
+        else if (!validPhoneNumber(phone))
+            listener.onRegisterFailedMsg(gets(R.string.phoneuncorrectmsg));
         else if (pass.isEmpty())
-            listener.onRegisterFailedMsg(Fields.PASSNULLMSG);
+            listener.onRegisterFailedMsg(gets(R.string.passnullmsg));
         else if (code.isEmpty())
-            listener.onRegisterFailedMsg(Fields.CODENULLMSG);
+            listener.onRegisterFailedMsg(gets(R.string.codenullmsg));
         else if (!codeOk)
-            listener.onRegisterFailedMsg(Fields.DONTGETCODE);
+            listener.onRegisterFailedMsg(gets(R.string.dontgetcode));
     }
 
     @Override
@@ -176,7 +179,7 @@ public class RegisterPresenter implements HttpResultListener {
 
     @Override
     public void onError(Request request, Exception e) {
-        listener.onFailed(Fields.NETWORKERROR);
+        listener.onFailed(gets(R.string.networkerror));
     }
 
     @Override
@@ -190,16 +193,15 @@ public class RegisterPresenter implements HttpResultListener {
     }
 
     /**
-     * 检测账号是否注册过;
+     * 检测账号是否注册过,检测完毕如未注册发送验证码;
      */
     public void CheckAccount(String account) {
-        if (account.length() == 11) {
+        if (validPhoneNumber(account)) {
             Map<String, String> map = getParamsMap();
             map.put("account", account);
             httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.CHECKACCOUNT);
         } else
             listener.onPhoneLengthError();
-
 
     }
 }

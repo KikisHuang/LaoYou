@@ -7,4 +7,7 @@ public interface WifiListener {
     void onConnectionFailed(String ssid);
 
     void onConnectionSucceed(String ssid);
+
+    void onConnected();
+    void onUnConnected();
 }

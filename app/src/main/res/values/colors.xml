@@ -82,6 +82,10 @@
     <color name="blue7">#4999d3</color>
     <color name="blue_content">#016cff</color>
     <color name="blue_gps">#0066cc</color>
+    <color name="blue8">#006cff</color>
+    <color name="blue_all">#5facf8</color>
+
+
     <color name="blue_white1">#F5F6F7</color>
 
     <color name="line10">#F5F5F5</color>
@@ -117,7 +121,7 @@
     <color name="green4">#00BB00</color>
     <color name="green5">#48B267</color>
     <color name="green6">#4EA45D</color>
-    <color name="green7">#78DEAB</color>
+    <color name="green7">#06d199</color>
     <color name="orange1">#f88c52</color>
     <color name="orange2">#ff3300</color>
     <color name="orange3">#f34f19</color>
@@ -152,7 +156,7 @@
     <color name="cherry2">#ec83c8</color>
     <color name="home_bottom1">#666666</color>
     <color name="theme_color">#fee262</color>
-    <color name="btn_red">#fc6676</color>
+
     <color name="btn_gray">#e0e0e0</color>
     <color name="bg">#fafafa</color>
     <color name="bg2">#f3f3fd</color>
@@ -472,4 +476,31 @@
     <color name="darkblue">#00008B</color>
     <!-- 暗蓝色 -->
     <color name="navy">#000080</color>
+
+
+
+    <color name="transparent">#00000000</color>
+
+    <color name="background">#F9F7F8</color>
+    <color name="background_gray1">#EBEBEB</color>
+    <color name="background_gray2">#E6E6E6</color>
+    <color name="background_gray3">#D4D4D4</color>
+    <color name="background_gray4">#EFEFF4</color>
+    <color name="line">#DDDDDD</color>
+    <color name="line_btn">#BBBBBB</color>
+    <color name="text_gray1">#777777</color>
+    <color name="text_gray2">#767676</color>
+    <color name="text_blue1">#1173CB</color>
+    <color name="text_blue2">#1173CA</color>
+    <color name="panel_black">#25272A</color>
+    <color name="btn_red">#D63F41</color>
+    <color name="btn_red_hover">#E8484B</color>
+    <color name="btn_blue">#0F73CB</color>
+    <color name="btn_blue_hover">#1E86E4</color>
+    <color name="btn_text">#FFFFFF</color>
+    <color name="btn_text_hover">#CCFFFFFF</color>
+    <!--蒙版-->
+    <color name="colorMask">#66000000</color>
+
+
 </resources>

@@ -34,6 +34,7 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
 
     private TextView refuse_tv, again_query_tv, regain_tv;
     private EditText refuse_ed;
+    private LinearLayout game_layout;
 
     @Override
     protected void click() {
@@ -41,6 +42,7 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
         again_query_tv.setOnClickListener(this);
         regain_tv.setOnClickListener(this);
         return_img.setOnClickListener(this);
+        game_layout.setOnClickListener(this);
     }
 
     @Override
@@ -60,6 +62,7 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
         refuse_ed = f(R.id.refuse_ed);
         regain_tv = f(R.id.regain_tv);
         return_img = f(R.id.return_img);
+        game_layout = f(R.id.game_layout);
 
         hp = new QueryPresenter(this);
         HideOver();
@@ -91,6 +94,9 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
 
             case R.id.return_img:
                 finish();
+                break;
+            case R.id.game_layout:
+
                 break;
         }
     }

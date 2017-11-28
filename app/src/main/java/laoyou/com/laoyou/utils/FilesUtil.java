@@ -5,8 +5,6 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Kikis on 2017/10/12.
@@ -165,12 +163,4 @@ public class FilesUtil {
         return fileSizeLong;
     }
 
-    public static Map<String, String> getParamsMap() {
-        Map<String, String> map = new HashMap<>();
-        return map;
-    }
-    public static Map<String, File> getFileMap() {
-        Map<String, File> map = new HashMap<>();
-        return map;
-    }
 }

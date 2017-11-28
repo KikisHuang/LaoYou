@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.CheckStatusBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
@@ -28,6 +29,7 @@ import static laoyou.com.laoyou.utils.CheckThread.ThreadInstance;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * Created by lian on 2017/10/25.
@@ -165,7 +167,7 @@ public class QueryPresenter implements HttpResultListener {
 
     @Override
     public void onError(Request request, Exception e) {
-        listener.onError(Fields.NETWORKERROR);
+        listener.onError(gets(R.string.networkerror));
     }
 
     @Override

@@ -1,37 +1,34 @@
 package laoyou.com.laoyou.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.adapter.WifiAdapter;
 import laoyou.com.laoyou.dialog.MyAlertDialog;
 import laoyou.com.laoyou.listener.WifiListener;
+import laoyou.com.laoyou.presenter.WifiPresenter;
 import laoyou.com.laoyou.receiver.WifiReceiver;
-import laoyou.com.laoyou.utils.WifiUtils;
+import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
-import static laoyou.com.laoyou.dialog.CustomProgress.Show;
-import static laoyou.com.laoyou.utils.WifiUtils.createWifiConfig;
 
 /**
  * Created by lian on 2017/11/4.
@@ -39,7 +36,6 @@ import static laoyou.com.laoyou.utils.WifiUtils.createWifiConfig;
 public class WifiActivity extends InitActivity implements View.OnClickListener, WifiListener {
 
     private static final String TAG = "TestActivity";
-    private Button button;
     private ListView listView;
     private List<ScanResult> list;
 
@@ -48,19 +44,22 @@ public class WifiActivity extends InitActivity implements View.OnClickListener, 
     private static WifiActivity activity;
 
     private String ssid = "";
-    private AnimatorSet mRightOutSet, mLeftInSet;
-    private FrameLayout mFlContainer,mFlCardBack,mFlCardFront;
+    private FrameLayout mFlContainer;
 
-    private boolean mIsShowBack;
+    private ImageView wifi_icon;
+    private TextView wifi_name, wifi_state;
+    private Button connetion_bt;
+
+    private WifiPresenter wp;
 
     @Override
     protected void click() {
-        button.setOnClickListener(this);
         mFlContainer.setOnClickListener(this);
+        connetion_bt.setOnClickListener(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Show(WifiActivity.this, "正在自动获取Wifi", true, null);
+             /*   Show(WifiActivity.this, "正在自动获取Wifi", true, null);
                 //createWifiConfig主要用于构建一个WifiConfiguration，代码中的例子主要用于连接不需要密码的Wifi
                 //WifiManager的addNetwork接口，传入WifiConfiguration后，得到对应的NetworkId
                 int netId = wifiManager.addNetwork(createWifiConfig(list.get(position).SSID, "11223344", WifiUtils.WIFICIPHER_WPA, wifiManager));
@@ -75,7 +74,7 @@ public class WifiActivity extends InitActivity implements View.OnClickListener, 
                 //如果上文的enableNetwork成功，那么reconnect同样连接netId对应的网络
                 //若失败，则连接之前成功过的网络
                 boolean reconnect = wifiManager.reconnect();
-                Log.d("Kikis - Test", "reconnect: " + reconnect);
+                Log.d("Kikis - Test", "reconnect: " + reconnect);*/
 
             }
         });
@@ -91,66 +90,41 @@ public class WifiActivity extends InitActivity implements View.OnClickListener, 
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         activity = this;
         openWifi();
-        button = f(R.id.button);
+
         listView = f(R.id.listView);
+
+        wifi_icon = f(R.id.wifi_icon);
+        wifi_name = f(R.id.wifi_name);
+        wifi_state = f(R.id.wifi_state);
+        connetion_bt = f(R.id.connetion_bt);
+
         list = new ArrayList<>();
         registerWiFiReceiver();
-
+        wp = new WifiPresenter(this);
 
         mFlContainer = f(R.id.mFlContainer);
-        mFlCardBack = f(R.id.mFlCardBack);
-        mFlCardFront = f(R.id.mFlCardFront);
-        setAnimators(); // 设置动画
-        setCameraDistance(); // 设置镜头距离
+
+        LayoutHideOfShow(true);
     }
 
-    // 设置动画
-    private void setAnimators() {
-        mRightOutSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.anim_out);
-        mLeftInSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.anim_in);
-
-        // 设置点击事件
-        mRightOutSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                mFlContainer.setClickable(false);
-                button.setClickable(false);
-            }
-        });
-        mLeftInSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                mFlContainer.setClickable(true);
-                button.setClickable(true);
-            }
-        });
-    }
-
-    // 改变视角距离, 贴近屏幕
-    private void setCameraDistance() {
-        int distance = 16000;
-        float scale = getResources().getDisplayMetrics().density * distance;
-        mFlCardFront.setCameraDistance(scale);
-        mFlCardBack.setCameraDistance(scale);
-    }
-    // 翻转卡片
-    public void flipCard() {
-        // 正面朝上
-        if (!mIsShowBack) {
-            mRightOutSet.setTarget(mFlCardFront);
-            mLeftInSet.setTarget(mFlCardBack);
-            mRightOutSet.start();
-            mLeftInSet.start();
-            mIsShowBack = true;
-        } else { // 背面朝上
-            mRightOutSet.setTarget(mFlCardBack);
-            mLeftInSet.setTarget(mFlCardFront);
-            mRightOutSet.start();
-            mLeftInSet.start();
-            mIsShowBack = false;
+    private void LayoutHideOfShow(boolean flag) {
+        if(flag){
+            wifi_icon.setVisibility(View.GONE);
+            wifi_name.setVisibility(View.GONE);
+            wifi_state.setVisibility(View.GONE);
+            connetion_bt.setVisibility(View.GONE);
+        }else {
+            wifi_icon.setVisibility(View.VISIBLE);
+            wifi_name.setVisibility(View.VISIBLE);
+            wifi_state.setVisibility(View.VISIBLE);
+            connetion_bt.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        wp.WifiConnected(this);
     }
 
     private void registerWiFiReceiver() {
@@ -166,27 +140,27 @@ public class WifiActivity extends InitActivity implements View.OnClickListener, 
 
     @Override
     protected void initData() {
+        WifiListInit();
+    }
 
+    private void WifiListInit() {
+        list = wifiManager.getScanResults();
+        Log.i(TAG, " wifi info Size  ===" + list.size());
+        if (list == null) {
+            ToastUtil.toast2_bottom(this, "wifi未打开！");
+        } else {
+            if (list.size() > 0)
+                listView.setAdapter(new WifiAdapter(this, list));
+            else
+                ToastUtil.toast2_bottom(this, "没有搜索到附近Wifi...");
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button:
-            /*    list = wifiManager.getScanResults();
-                Log.i(TAG, " wifi info Size  ===" + list.size());
-                if (list == null) {
-                    ToastUtil.toast2_bottom(this, "wifi未打开！");
-                } else {
-                    if (list.size() > 0)
-                        listView.setAdapter(new MyAdapter(this, list));
-                    else
-                        ToastUtil.toast2_bottom(this, "没有搜索到附近Wifi...");
-                }*/
-                flipCard();
-                break;
-            case R.id.mFlContainer:
-                flipCard();
+            case R.id.connetion_bt:
+
                 break;
         }
     }
@@ -198,7 +172,6 @@ public class WifiActivity extends InitActivity implements View.OnClickListener, 
         if (!wifiManager.isWifiEnabled()) {
             wifiManager.setWifiEnabled(true);
         }
-
     }
 
     @Override
@@ -220,50 +193,25 @@ public class WifiActivity extends InitActivity implements View.OnClickListener, 
         }
     }
 
-    public class MyAdapter extends BaseAdapter {
+    @Override
+    public void onConnected() {
+        LayoutHideOfShow(false);
+        connetion_bt.setVisibility(View.GONE);
+        Glide.with(WifiActivity.this).load(R.mipmap.wifi_connect_icon).into(wifi_icon);
+//        wifi_state.setText(Fields.WIFICONNECTED);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        wifi_name.setText(wifiInfo.getSSID());
+    }
 
-        LayoutInflater inflater;
-        List<ScanResult> list;
-
-        public MyAdapter(Context context, List<ScanResult> list) {
-            // TODO Auto-generated constructor stub
-            this.inflater = LayoutInflater.from(context);
-            this.list = list;
-        }
-
-        @Override
-        public int getCount() {
-            // TODO Auto-generated method stub
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            // TODO Auto-generated method stub
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            // TODO Auto-generated method stub
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // TODO Auto-generated method stub
-            View view = null;
-            view = inflater.inflate(R.layout.wifi_item, null);
-            ScanResult scanResult = list.get(position);
-            TextView textView = (TextView) view.findViewById(R.id.wifi_name);
-            textView.setText(scanResult.SSID);
-            TextView signalStrenth = (TextView) view.findViewById(R.id.wifi_level);
-            signalStrenth.setText(String.valueOf(Math.abs(scanResult.level)));
-
-            return view;
-        }
+    @Override
+    public void onUnConnected() {
+        LayoutHideOfShow(false);
+        wifi_name.setVisibility(View.GONE);
+        Glide.with(WifiActivity.this).load(R.mipmap.exclamation_mark).into(wifi_icon);
+//        wifi_state.setText(Fields.WIFIUNCONNECTED);
 
     }
+
 
     @Override
     protected void onDestroy() {

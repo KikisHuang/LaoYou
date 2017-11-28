@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.Map;
 
+import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.ChangePassListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.utils.Fields;
@@ -12,6 +13,7 @@ import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * Created by lian on 2017/10/25.
@@ -33,9 +35,9 @@ public class ChangePassPresenter implements HttpResultListener {
         if (!old.isEmpty() && !news.isEmpty())
             Commit(old, news);
         else if (old.isEmpty())
-            listener.VerifyFailed(Fields.CODENULLMSG);
+            listener.VerifyFailed(gets(R.string.codenullmsg));
         else if (news.isEmpty())
-            listener.VerifyFailed(Fields.NEWPASSNULLMSG);
+            listener.VerifyFailed(gets(R.string.newpassnullmsg));
 
     }
 
@@ -55,7 +57,7 @@ public class ChangePassPresenter implements HttpResultListener {
 
     @Override
     public void onError(Request request, Exception e) {
-        listener.onErrorMsg(Fields.NETWORKERROR);
+        listener.onErrorMsg(gets(R.string.networkerror));
     }
 
     @Override

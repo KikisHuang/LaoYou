@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,6 +86,16 @@ public class JsonUtils {
         map.put(Fields.KEY, SPreferences.getUserToken());
         return map;
     }
+
+    public static Map<String, String> getParamsMap() {
+        Map<String, String> map = new HashMap<>();
+        return map;
+    }
+    public static Map<String, File> getFileMap() {
+        Map<String, File> map = new HashMap<>();
+        return map;
+    }
+
     /**
      * 获取Code通用方法;
      *

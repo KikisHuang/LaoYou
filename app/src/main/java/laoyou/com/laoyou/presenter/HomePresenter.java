@@ -3,6 +3,7 @@ package laoyou.com.laoyou.presenter;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,11 +26,15 @@ import java.util.Map;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.PageTopBannerAdapter;
 import laoyou.com.laoyou.bean.CheckStatusBean;
+import laoyou.com.laoyou.bean.NearbyBean;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.bean.PageTopBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
+import laoyou.com.laoyou.listener.AppBarStateChangeListener;
 import laoyou.com.laoyou.listener.HomeListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
+import laoyou.com.laoyou.listener.SpringListener;
+import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.homeViewPageUtils;
@@ -39,14 +44,16 @@ import okhttp3.Request;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
+import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.SynUtils.startPlay;
 import static laoyou.com.laoyou.utils.SynUtils.stopPlay;
 
 /**
  * Created by lian on 2017/10/25.
  */
-public class HomePresenter implements HttpResultListener {
+public class HomePresenter extends AppBarStateChangeListener implements HttpResultListener, SpringListener {
     private static final String TAG = "HomePresenter";
     private HomeListener listener;
     private Handler handler;
@@ -65,7 +72,10 @@ public class HomePresenter implements HttpResultListener {
     private int prePosition = 0;
     private LinearLayout mLinearLayoutDot;
     private boolean ONEIMGFLAG = false;
-
+    private int page = 0;
+    private boolean RefreshFlag;
+    private List<NearbyBean> Nblist;
+    public SpringListener springlistener;
 
     public HomePresenter(HomeListener listener, ViewPager mViewPager, LayoutInflater inflater, Context context, LinearLayout mLinearLayoutDot) {
         this.listener = listener;
@@ -76,12 +86,31 @@ public class HomePresenter implements HttpResultListener {
         mImageViewDotList = new ArrayList<>();
         this.inflater = inflater;
         this.context = context;
+        springlistener = this;
     }
 
     public void Presenter() {
         handInit();
         BannerHideOfShow();
         IsLogin();
+        getPeopleNearby(true);
+    }
+
+    private void getPeopleNearby(boolean flag) {
+        /**
+         * 如果没有经纬度，不能获取附近的人信息;
+         */
+        if (SPreferences.getLatitud() != null && Double.parseDouble(SPreferences.getLatitud()) > 0) {
+            RefreshFlag = flag;
+            Map<String, String> map = getParamsMap();
+            map.put("page", String.valueOf(page));
+            map.put("pageSize", String.valueOf(page + Fields.SIZE));
+            map.put("latitude", String.valueOf(SPreferences.getLatitud()));
+            map.put("longitude", String.valueOf(SPreferences.getLongitude()));
+
+            httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETNEARBYUSER);
+        }
+
     }
 
     public void getUseDetails() {
@@ -167,6 +196,25 @@ public class HomePresenter implements HttpResultListener {
                         listener.BannerShow();
                     else if (flag == 1)
                         listener.BannerHide();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case Fields.REQUEST6:
+                try {
+                    JSONArray ar = getJsonAr(response);
+                    if (ar.length() > 1) {
+                        if (RefreshFlag)
+                            Nblist = new ArrayList<>();
+                        for (int i = 0; i < ar.length(); i++) {
+                            NearbyBean pb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), NearbyBean.class);
+                            Nblist.add(pb);
+                        }
+
+                        listener.RefreshRecyclerView(Nblist);
+                    } else if (RefreshFlag && ar.length() <= 0)
+                        listener.onForbidSlide();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -260,7 +308,7 @@ public class HomePresenter implements HttpResultListener {
 
     @Override
     public void onError(Request request, Exception e) {
-        listener.onError(Fields.NETWORKERROR);
+        listener.onError(gets(R.string.networkerror));
     }
 
     @Override
@@ -277,30 +325,94 @@ public class HomePresenter implements HttpResultListener {
             listener.onFailed(response);
     }
 
+    /**
+     * 开启广告自动滚动：
+     */
     public void start() {
         if (!ONEIMGFLAG)
             startPlay(handler, mViewPager, 0);
     }
 
+    /**
+     * 关闭广告自动滚动：
+     */
     public void stop() {
         if (!ONEIMGFLAG)
             stopPlay();
     }
 
+    /**
+     * 广告标点递增;
+     */
     public void current() {
         if (!ONEIMGFLAG)
             currentPosition++;
     }
 
+    /**
+     * 登录判断;
+     */
     public void IsLogin() {
         if (LoginStatusQuery()) {
+            getPeopleNearby(true);
             getUseDetails();
             listener.IsLogin(true);
         } else
             listener.IsLogin(false);
     }
 
+    /**
+     * 广告隐藏或显示的事件监听;
+     */
     public void BannerHideOfShow() {
         httpUtils.OkHttpsGet(null, this, Fields.REQUEST5, Interface.URL + Interface.GETSETTING);
+    }
+
+    @Override
+    public void IsonRefresh(int init) {
+        page = 0;
+        getPeopleNearby(true);
+    }
+
+    @Override
+    public void IsonLoadmore(int move) {
+        page += move;
+        getPeopleNearby(false);
+    }
+
+    /**
+     * AppBarLayout状态事件监听,设置SpringView的enable，防止滑动事件冲突;
+     *
+     * @param appbar_layout
+     */
+    public void setAppBarLayoutStateChangeListener(AppBarLayout appbar_layout) {
+        appbar_layout.addOnOffsetChangedListener(this);
+    }
+
+    /**
+     * 移除监听;
+     *
+     * @param appbar_layout
+     */
+    public void removeAppBarLayoutStateChangeListener(AppBarLayout appbar_layout) {
+        appbar_layout.removeOnOffsetChangedListener(this);
+    }
+
+    @Override
+    public void onStateChanged(AppBarLayout appBarLayout, State state) {
+        switch (state) {
+            //展开状态;
+            case EXPANDED:
+                listener.onEnable(false);
+                break;
+            //折叠状态;
+            case COLLAPSED:
+                listener.onEnable(true);
+                break;
+            //中间状态;
+            default:
+                listener.onEnable(false);
+                break;
+        }
     }
 }
