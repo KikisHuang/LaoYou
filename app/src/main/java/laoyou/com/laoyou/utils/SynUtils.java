@@ -39,6 +39,8 @@ import android.widget.TextView;
 import com.tencent.qcloud.presentation.event.MessageEvent;
 import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
 
+import org.json.JSONArray;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -664,6 +666,7 @@ public class SynUtils {
 
         return appDir + "/" + fileName;
     }
+
     /**
      * 保存文件到指定路径,并刷新系统相册;
      */
@@ -939,5 +942,9 @@ public class SynUtils {
 
         return bitmap;
 
+    }
+
+    public static boolean ArrayIsNull(JSONArray ar) {
+        return ar.length() > 0 ? false : true;
     }
 }

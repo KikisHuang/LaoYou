@@ -396,6 +396,12 @@
     <string name="mouse">鼠标</string>
     <string name="keyboard">键盘</string>
     <string name="display">显示器</string>
+    <string name="walkroute_error">路线规划失败，错误码：</string>
+    <string name="not_route_paths">没有获得路线规划路径</string>
+    <string name="walk">步行</string>
+    <string name="drive">驾车</string>
+    <string name="ride">骑行</string>
+    <string name="parse_error">解析异常</string>
 
 
 </resources>

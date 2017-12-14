@@ -68,7 +68,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private PageTopBean pb = null;
 
     private RecyclerView recyclerView;
-
+    private LinearLayoutManager mLayoutManager;
     private SpringView springview;
 
     private AppBarLayout appbar_layout;
@@ -116,7 +116,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         banner_layout.setLayoutParams(lp);
 
 
-
         mViewPager = f(R.id.vp_main);
         mLinearLayoutDot = f(R.id.ll_main_dot);
 
@@ -138,8 +137,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         wifi_layout = f(R.id.wifi_layout);
         player_community_layout = f(R.id.player_community_layout);
 
-        FrameLayout.LayoutParams lp1= new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp1.gravity = Gravity.CENTER|Gravity.LEFT;
+        FrameLayout.LayoutParams lp1 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp1.gravity = Gravity.CENTER | Gravity.LEFT;
         mViewPager.setLayoutParams(lp1);
         mViewPager.setClipChildren(false);
         ViewPagerScroller scroller = new ViewPagerScroller(getActivity());
@@ -147,7 +146,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         scroller.initViewPagerScroll(mViewPager);//这个是设置切换过渡时间为2秒
 
         recyclerView = f(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
         //设置ViewPager切换效果，即实现画廊效果
 //        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mViewPager.setPageMargin(0);
@@ -177,7 +177,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             ImageView im = new ImageView(getActivity());
 
             im.setLayoutParams(lp);
-            Glide.with(getActivity()).load(Fields.Catalina).bitmapTransform(new CenterCrop(getActivity()),new RoundedCornersTransformation(getActivity(), 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(im);
+            Glide.with(getActivity()).load(Fields.Catalina).bitmapTransform(new CenterCrop(getActivity()), new RoundedCornersTransformation(getActivity(), 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(im);
             dynamic_layout.addView(im);
         }
     }
@@ -230,15 +230,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-        if (LoginStatusQuery()) {
+        if (LoginStatusQuery() || v.getId() == R.id.show_hide_img) {
             switch (v.getId()) {
-              /*  case R.id.camera_img:
-                    if (info != null) {
-                        SlidePopupWindow spw = new SlidePopupWindow(getActivity(), info, Status);
-                        spw.ScreenPopupWindow();
-                    } else
-                        SPreferences.saveUserToken("");
-                    break;*/
                 case R.id.banner_img:
                     if (pb != null)
                         goOutSidePage(getActivity(), pb.getHttpUrl());
@@ -259,6 +252,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     Indevelopment(getActivity());
                     break;
                 case R.id.show_hide_img:
+                    mLayoutManager.scrollToPositionWithOffset(0, 0);
+                    mLayoutManager.setStackFromEnd(true);
                     appbar_layout.setExpanded(true);
                     break;
                 case R.id.topic_circle_layout:
@@ -338,18 +333,22 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void RefreshRecyclerView(List<NearbyBean> nblist) {
-        list = nblist;
-        Log.i(TAG, " list size ==" + list.size());
-        if (adapter == null) {
-            adapter = new HomeStatusAdapter(getActivity(), list);
-            recyclerView.setAdapter(adapter);
-        } else
-            adapter.notifyDataSetChanged();
+        if (nblist.size() > 0) {
+            list = nblist;
+            Log.i(TAG, " list size ==" + list.size());
+            if (adapter == null) {
+                adapter = new HomeStatusAdapter(getActivity(), list);
+                recyclerView.setAdapter(adapter);
+            } else
+                adapter.notifyDataSetChanged();
 
+        }
     }
 
     @Override
     public void onEnable(boolean b) {
+
+
         if (b)
             showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_SHOW, 500);
         else if (show_hide_img.getVisibility() == View.VISIBLE)

@@ -58,7 +58,7 @@
                 android:layout_weight="1"
                 android:fitsSystemWindows="true"
                 app:contentScrim="@color/white8"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -284,6 +284,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
+                        android:overScrollMode="never"
                         android:scrollbars="none">
 
                         <LinearLayout

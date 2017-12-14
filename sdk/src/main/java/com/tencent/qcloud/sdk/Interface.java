@@ -144,4 +144,12 @@ public class Interface {
      * 获取市接口;
      */
     public static final String GETCITYBYPAGE = "area/select/getCityByPage.app";
+    /**
+     * 游戏资讯接口;
+     */
+    public static final String GETNEWSTYPE = "news/select/getNewsType.app";
+    /**
+     * 获取游戏资讯列表接口;
+     */
+    public static final String GETBYPAGE = "news/select/getByPage.app";
 }

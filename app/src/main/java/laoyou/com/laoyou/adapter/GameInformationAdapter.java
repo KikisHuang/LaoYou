@@ -13,16 +13,17 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.GameInfoBean;
 import laoyou.com.laoyou.utils.Fields;
 
 /**
  * Created by lian on 2017/11/18.
  */
 public class GameInformationAdapter extends BaseAdapter {
-    private List<String> list = null;
+    private List<GameInfoBean> list = null;
     private Context mContext;
 
-    public GameInformationAdapter(Context mContext, List<String> list) {
+    public GameInformationAdapter(Context mContext, List<GameInfoBean> list) {
         this.mContext = mContext.getApplicationContext();
         this.list = list;
     }

@@ -16,4 +16,6 @@ public interface FriendInfoView {
      * @param users 资料列表
      */
     void showUserInfo(List<TIMUserProfile> users);
+
+
 }

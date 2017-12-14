@@ -11,6 +11,8 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.GameInformationAdapter;
+import laoyou.com.laoyou.bean.GameInfoBean;
+import laoyou.com.laoyou.bean.GameTypeBean;
 import laoyou.com.laoyou.listener.GameInformationListener;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.presenter.GameInformationPresenter;
@@ -31,13 +33,15 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
     private ListView listView;
     private GameInformationAdapter adapter;
 
-    private List<String> list;
+    private List<GameInfoBean> list;
     private GameInformationPresenter gp;
+    private String id;
 
-    public static GameInformationFragment setTag(int tag) {
+    public static GameInformationFragment setTag(int tag, String id) {
         GameInformationFragment f = new GameInformationFragment();
         Bundle args = new Bundle();
         args.putString("Tag", String.valueOf(tag));
+        args.putString("Id", String.valueOf(id));
         f.setArguments(args);
         return f;
     }
@@ -46,6 +50,7 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tag = Integer.parseInt(getArguments() != null ? getArguments().getString("Tag") : "0");
+        id = getArguments() != null ? getArguments().getString("Id") : "";
     }
 
     @Override
@@ -53,8 +58,6 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
 
     }
 
-    private void getData() {
-    }
 
     @Override
     protected int initContentView() {
@@ -81,7 +84,7 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
 
     @Override
     protected void initData() {
-        getData();
+        gp.getGameInfo(id);
     }
 
     @Override
@@ -115,7 +118,7 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
     }
 
     @Override
-    public void onGameTypeInforMation() {
+    public void onGameTypeInforMation(List<GameTypeBean> list) {
 
     }
 }

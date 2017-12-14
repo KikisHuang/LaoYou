@@ -3,6 +3,7 @@ package com.tencent.qcloud.presentation.presenter;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.tencent.TIMAddFriendRequest;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMDelFriendType;
@@ -22,11 +23,23 @@ import com.tencent.qcloud.presentation.event.FriendshipEvent;
 import com.tencent.qcloud.presentation.viewfeatures.FriendInfoView;
 import com.tencent.qcloud.presentation.viewfeatures.FriendshipManageView;
 import com.tencent.qcloud.presentation.viewfeatures.FriendshipMessageView;
+import com.tencent.qcloud.presentation.viewfeatures.SearchListener;
+import com.tencent.qcloud.sdk.Interface;
+import com.tencent.qcloud.sdk.SearchBean;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import okhttp3.Call;
+
+import static com.tencent.qcloud.presentation.presenter.GroupInfoPresenter.getCode;
 
 /**
  * 好友关系链管理逻辑
@@ -39,27 +52,33 @@ public class FriendshipManagerPresenter {
     private FriendshipMessageView friendshipMessageView;
     private FriendshipManageView friendshipManageView;
     private FriendInfoView friendInfoView;
+    private SearchListener listener;
     private final int PAGE_SIZE = 20;
     private int index;
     private long pendSeq, decideSeq, recommendSeq;
     private boolean isEnd;
 
     public FriendshipManagerPresenter(FriendshipMessageView view) {
-        this(view, null, null);
+        this(view, null, null, null);
     }
 
     public FriendshipManagerPresenter(FriendInfoView view) {
-        this(null, null, view);
+        this(null, null, view, null);
+    }
+
+    public FriendshipManagerPresenter(SearchListener view) {
+        this(null, null, null, view);
     }
 
     public FriendshipManagerPresenter(FriendshipManageView view) {
-        this(null, view, null);
+        this(null, view, null, null);
     }
 
-    public FriendshipManagerPresenter(FriendshipMessageView view1, FriendshipManageView view2, FriendInfoView view3) {
+    public FriendshipManagerPresenter(FriendshipMessageView view1, FriendshipManageView view2, FriendInfoView view3, SearchListener view4) {
         friendshipManageView = view2;
         friendshipMessageView = view1;
         friendInfoView = view3;
+        listener = view4;
     }
 
 
@@ -186,6 +205,39 @@ public class FriendshipManagerPresenter {
         });
     }
 
+    public void searchFriend(String name) {
+
+        OkHttpUtils.get()
+                .url(Interface.URL + Interface.SEARCHUSER)
+                .addParams("name", name)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            int code = getCode(response);
+                            if (code == 1) {
+                                List<SearchBean> infoList = new ArrayList<>();
+                                JSONArray ar = new JSONObject(response).optJSONArray("data");
+                                for (int i = 0; i < ar.length(); i++) {
+                                    SearchBean sb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), SearchBean.class);
+                                    if (sb.getCloudTencentAccount() != null && !sb.getCloudTencentAccount().isEmpty())
+                                        infoList.add(sb);
+                                }
+                                listener.onShowInfo(infoList);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
+    }
 
     /**
      * 按照名称搜索好友
@@ -211,6 +263,7 @@ public class FriendshipManagerPresenter {
                 public void onSuccess(TIMUserSearchSucc data) {
                     int getNum = data.getInfoList().size() + (index - 1) * PAGE_SIZE;
                     isEnd = getNum == data.getTotalNum();
+
                     friendInfoView.showUserInfo(data.getInfoList());
                 }
             });
@@ -481,22 +534,24 @@ public class FriendshipManagerPresenter {
     public static void delBlackList(List<String> identfiy, TIMValueCallBack<List<TIMFriendResult>> callBack) {
         TIMFriendshipManager.getInstance().delBlackList(identfiy, callBack);
     }
+
     /**
      * 拉取任何人的资料
+     *
      * @param list
      */
-    public  void getUserProFile(List<String> list) {
+    public void getUserProFile(List<String> list) {
         //获取用户资料
-        TIMFriendshipManager.getInstance().getFriendsProfile(list, new TIMValueCallBack<List<TIMUserProfile>>(){
+        TIMFriendshipManager.getInstance().getFriendsProfile(list, new TIMValueCallBack<List<TIMUserProfile>>() {
             @Override
-            public void onError(int code, String desc){
+            public void onError(int code, String desc) {
                 //错误码code和错误描述desc，可用于定位请求失败原因
                 //错误码code列表请参见错误码表
                 Log.e(TAG, "getUsersProfile failed: " + code + " desc");
             }
 
             @Override
-            public void onSuccess(List<TIMUserProfile> result){
+            public void onSuccess(List<TIMUserProfile> result) {
 
                 if (friendshipMessageView != null) {
                     friendshipMessageView.onSystemInfo(result);
@@ -504,4 +559,5 @@ public class FriendshipManagerPresenter {
             }
         });
     }
+
 }

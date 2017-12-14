@@ -3,6 +3,7 @@ package com.tencent.qcloud.presentation.event;
 
 import com.tencent.TIMGroupAssistantListener;
 import com.tencent.TIMGroupCacheInfo;
+import com.tencent.TIMGroupManager;
 import com.tencent.TIMGroupMemberInfo;
 import com.tencent.TIMGroupSettings;
 import com.tencent.TIMManager;
@@ -32,6 +33,17 @@ public class GroupEvent extends Observable implements TIMGroupAssistantListener 
         TIMManager.getInstance().enableGroupInfoStorage(true);
         TIMManager.getInstance().setGroupAssistantListener(this);
         TIMGroupSettings settings = new TIMGroupSettings();
+
+        //设置群成员资料拉取字段，这里只关心群名片、群角色
+        TIMGroupSettings.Options memberOpt = settings.new Options();
+        long memberFlags = 0;
+        memberFlags |= TIMGroupManager.TIM_GET_GROUP_MEM_INFO_FLAG_NAME_CARD
+                | TIMGroupManager.TIM_GET_GROUP_MEM_INFO_FLAG_ROLE_INFO
+                |TIMGroupManager.TIM_GET_GROUP_BASE_INFO_FLAG_FACE_URL;
+        memberOpt.setFlags(memberFlags);
+        settings.setMemberInfoOptions(memberOpt);
+
+        //初始化群设置
         TIMManager.getInstance().initGroupSettings(settings);
 
     }

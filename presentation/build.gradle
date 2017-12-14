@@ -50,5 +50,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':sdk')
     compile project(':tlslibrary')
+    //图片选择器 https://github.com/donglua/PhotoPicker
+    compile 'me.iwf.photopicker:PhotoPicker:0.8.4@aar'
+    compile 'com.zhy:okhttputils:2.6.2'
+
 }
 

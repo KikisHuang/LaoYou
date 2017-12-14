@@ -17,6 +17,7 @@ import laoyou.com.laoyou.utils.ToastUtil;
 import static laoyou.com.laoyou.activity.MainActivity.MainInstance;
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
+import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
 import static laoyou.com.laoyou.fragment.MyFragment.SettingInstance;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goRegisterPage;
@@ -100,9 +101,8 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
         if (resultCode == Fields.ACRESULET2) {
             if (MainInstance() != null)
                 MainInstance().IMInit();
-/*
             if (getHomeInstance() != null)
-                getHomeInstance().onRefresh();*/
+                getHomeInstance().onRefresh();
             finish();
         }
     }
@@ -131,8 +131,8 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
             MainInstance().IMInit();
         if(SettingInstance()!=null)
             SettingInstance().mp.getUseDetails();
-   /*     if (getHomeInstance() != null)
-            getHomeInstance().onRefresh();*/
+        if (getHomeInstance() != null)
+            getHomeInstance().onRefresh();
         finish();
     }
 

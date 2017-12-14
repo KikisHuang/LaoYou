@@ -213,17 +213,25 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
             case Fields.REQUEST6:
                 try {
                     JSONArray ar = getJsonAr(response);
-                    if (ar.length() > 1) {
+
+                    Log.i(TAG, "RefreshFlag ===" + RefreshFlag);
+                    if (ar.length() > 0) {
                         if (RefreshFlag)
                             Nblist = new ArrayList<>();
+
                         for (int i = 0; i < ar.length(); i++) {
                             NearbyBean pb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), NearbyBean.class);
                             Nblist.add(pb);
                         }
 
                         listener.RefreshRecyclerView(Nblist);
-                    } else if (RefreshFlag && ar.length() <= 0)
-                        listener.onForbidSlide();
+                    } else {
+                        if (RefreshFlag)
+                            listener.onForbidSlide();
+                        else
+                            listener.onFailed(gets(R.string.The_bottom));
+                    }
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();

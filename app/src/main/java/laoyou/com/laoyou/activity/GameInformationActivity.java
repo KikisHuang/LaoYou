@@ -9,9 +9,9 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.TabPagerAdapter;
+import laoyou.com.laoyou.bean.GameTypeBean;
 import laoyou.com.laoyou.listener.GameInformationListener;
 import laoyou.com.laoyou.presenter.GameInformationPresenter;
-import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.view.CustomViewPager;
 
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -27,7 +27,7 @@ public class GameInformationActivity extends InitActivity implements GameInforma
     private CustomViewPager viewPager;
     private TabLayout mTab;
     //游戏分类名称集合;
-    private List<String> tablist;
+    private List<GameTypeBean> tablist;
     private GameInformationPresenter gp;
     private TabPagerAdapter adapter;
 
@@ -54,7 +54,6 @@ public class GameInformationActivity extends InitActivity implements GameInforma
 
     @Override
     protected void initData() {
-        gp.getGameTypeDataList();
     }
 
     @Override
@@ -68,30 +67,17 @@ public class GameInformationActivity extends InitActivity implements GameInforma
     }
 
     @Override
-    public void onGameTypeInforMation() {
-        tablist.add("test1");
-        tablist.add("test2");
-        tablist.add("test3");
-        tablist.add("test4");
-        tablist.add("test4");
-        tablist.add("test4");
-        tablist.add("test4");
-        tablist.add("test4");
-
-        mTab.addTab(mTab.newTab().setText(tablist.get(0)));
-        mTab.addTab(mTab.newTab().setText(tablist.get(1)));
-        mTab.addTab(mTab.newTab().setText(tablist.get(2)));
-        mTab.addTab(mTab.newTab().setText(tablist.get(3)));
-        mTab.addTab(mTab.newTab().setText(tablist.get(4)));
-        mTab.addTab(mTab.newTab().setText(tablist.get(5)));
-        mTab.addTab(mTab.newTab().setText(tablist.get(6)));
-        mTab.addTab(mTab.newTab().setText(tablist.get(7)));
+    public void onGameTypeInforMation(List<GameTypeBean> list) {
+        tablist = list;
+        for (GameTypeBean gb : tablist) {
+            mTab.addTab(mTab.newTab().setText(gb.getName()));
+        }
         setPager();
     }
 
 
     private void setPager() {
-        adapter = new TabPagerAdapter(getSupportFragmentManager(), tablist, Fields.ISGAME);
+        adapter = new TabPagerAdapter(getSupportFragmentManager(), tablist);
         viewPager.setAdapter(adapter);
         mTab.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

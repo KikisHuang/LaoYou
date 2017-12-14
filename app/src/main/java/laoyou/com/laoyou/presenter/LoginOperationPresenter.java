@@ -3,6 +3,7 @@ package laoyou.com.laoyou.presenter;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.tencent.qcloud.sdk.Interface;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
@@ -18,7 +19,6 @@ import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.LoginOperationListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
-import com.tencent.qcloud.sdk.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
@@ -57,6 +57,7 @@ public class LoginOperationPresenter implements HttpResultListener {
                 try {
                     String key = getJsonSring(response);
                     SPreferences.saveUserToken(key);
+                    //REQUEST2
                     getImIdentifier(this);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -74,6 +75,7 @@ public class LoginOperationPresenter implements HttpResultListener {
                     if (ub.getCloudTencentAccount() != null && !ub.getCloudTencentAccount().isEmpty()) {
                         Log.i(TAG, "详情获得的id ===" + ub.getCloudTencentAccount());
                         SPreferences.saveIdentifier(ub.getCloudTencentAccount());
+                        //REQUEST4
                         getImUserSig(ub.getCloudTencentAccount(), this);
                     } else
                         CreateUserIm(this);

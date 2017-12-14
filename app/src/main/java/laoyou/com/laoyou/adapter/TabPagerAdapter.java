@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
+import laoyou.com.laoyou.bean.GameTypeBean;
 import laoyou.com.laoyou.fragment.CommentFragment;
 import laoyou.com.laoyou.fragment.FindSonFragment;
 import laoyou.com.laoyou.fragment.GameInformationFragment;
@@ -16,12 +17,18 @@ import laoyou.com.laoyou.utils.Fields;
  */
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
     private List<String> list;
-    private int flag;
+    private List<GameTypeBean> games;
+    private int flag = Fields.ISGAME;
 
     public TabPagerAdapter(FragmentManager fm, List<String> strings, int flag) {
         super(fm);
         this.list = strings;
         this.flag = flag;
+    }
+
+    public TabPagerAdapter(FragmentManager fm, List<GameTypeBean> strings) {
+        super(fm);
+        this.games = strings;
     }
 
     @Override
@@ -30,7 +37,7 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
             case Fields.ISFIND:
                 return FindSonFragment.setTag(position);
             case Fields.ISGAME:
-                return GameInformationFragment.setTag(position);
+                return GameInformationFragment.setTag(position, games.get(position).getId());
 
             default:
                 return CommentFragment.setTag(position, flag);

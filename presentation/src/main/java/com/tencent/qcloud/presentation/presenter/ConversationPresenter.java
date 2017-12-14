@@ -1,21 +1,21 @@
 package com.tencent.qcloud.presentation.presenter;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.tencent.TIMConversation;
 import com.tencent.TIMConversationType;
-import com.tencent.TIMElem;
 import com.tencent.TIMGroupCacheInfo;
+import com.tencent.TIMGroupDetailInfo;
+import com.tencent.TIMGroupManager;
 import com.tencent.TIMManager;
 import com.tencent.TIMMessage;
-import com.tencent.TIMMessageDraft;
 import com.tencent.TIMValueCallBack;
 import com.tencent.qcloud.presentation.event.FriendshipEvent;
 import com.tencent.qcloud.presentation.event.GroupEvent;
 import com.tencent.qcloud.presentation.event.MessageEvent;
 import com.tencent.qcloud.presentation.event.RefreshEvent;
 import com.tencent.qcloud.presentation.viewfeatures.ConversationView;
+import com.tencent.qcloud.presentation.viewfeatures.GroupInfoView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +25,13 @@ import java.util.Observer;
 /**
  * 会话界面逻辑
  */
-public class ConversationPresenter implements Observer {
+public class ConversationPresenter implements Observer,TIMValueCallBack<List<TIMGroupDetailInfo>> {
 
     private static final String TAG = "ConversationPresenter";
     private ConversationView view;
+    private GroupInfoView listener;
 
-    public ConversationPresenter(ConversationView view){
+    public ConversationPresenter(ConversationView view, GroupInfoView listener) {
         //注册消息监听
         MessageEvent.getInstance().addObserver(this);
         //注册刷新监听
@@ -40,25 +41,26 @@ public class ConversationPresenter implements Observer {
         //注册群关系监听
         GroupEvent.getInstance().addObserver(this);
         this.view = view;
+        this.listener = listener;
     }
 
     @Override
     public void update(Observable observable, Object data) {
-        if (observable instanceof MessageEvent){
+        if (observable instanceof MessageEvent) {
             TIMMessage msg = (TIMMessage) data;
             view.updateMessage(msg);
-        }else if (observable instanceof FriendshipEvent){
+        } else if (observable instanceof FriendshipEvent) {
             FriendshipEvent.NotifyCmd cmd = (FriendshipEvent.NotifyCmd) data;
-            switch (cmd.type){
+            switch (cmd.type) {
                 case ADD_REQ:
                 case READ_MSG:
                 case ADD:
                     view.updateFriendshipMessage();
                     break;
             }
-        }else if (observable instanceof GroupEvent){
+        } else if (observable instanceof GroupEvent) {
             GroupEvent.NotifyCmd cmd = (GroupEvent.NotifyCmd) data;
-            switch (cmd.type){
+            switch (cmd.type) {
                 case UPDATE:
                 case ADD:
                     view.updateGroupInfo((TIMGroupCacheInfo) cmd.data);
@@ -68,17 +70,16 @@ public class ConversationPresenter implements Observer {
                     break;
 
             }
-        }else if (observable instanceof RefreshEvent){
+        } else if (observable instanceof RefreshEvent) {
             view.refresh();
         }
     }
 
 
-
-    public void getConversation(){
+    public void getConversation() {
         List<TIMConversation> list = TIMManager.getInstance().getConversionList();
         List<TIMConversation> result = new ArrayList<>();
-        for (TIMConversation conversation : list){
+        for (TIMConversation conversation : list) {
             if (conversation.getType() == TIMConversationType.System) continue;
             result.add(conversation);
             conversation.getMessage(1, null, new TIMValueCallBack<List<TIMMessage>>() {
@@ -104,11 +105,24 @@ public class ConversationPresenter implements Observer {
      * 删除会话
      *
      * @param type 会话类型
-     * @param id 会话对象id
+     * @param id   会话对象id
      */
-    public boolean delConversation(TIMConversationType type, String id){
+    public boolean delConversation(TIMConversationType type, String id) {
         return TIMManager.getInstance().deleteConversationAndLocalMsgs(type, id);
     }
 
 
+    public void getGroupDetails(List<String> id) {
+        TIMGroupManager.getInstance().getGroupDetailInfo(id, this);
+    }
+
+    @Override
+    public void onError(int i, String s) {
+
+    }
+
+    @Override
+    public void onSuccess(List<TIMGroupDetailInfo> timGroupDetailInfos) {
+        listener.showGroupInfo(timGroupDetailInfos);
+    }
 }
