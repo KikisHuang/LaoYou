@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background_gray4"
+    android:background="@color/white"
     tools:context=".tencent.ui.ChatActivity">
 
     <LinearLayout
@@ -55,12 +55,6 @@
             android:text="@string/search_cancel" />
 
     </LinearLayout>
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@id/title"
-        android:background="@color/line" />
     <TextView
         android:id="@+id/noResult"
         android:layout_width="wrap_content"
@@ -75,6 +69,7 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/divider" />
+        android:layout_below="@id/title"
+        android:divider="@null"/>
 
 </RelativeLayout>

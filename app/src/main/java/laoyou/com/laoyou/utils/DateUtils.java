@@ -35,14 +35,17 @@ public class DateUtils {
         return times;
     }
     public static String timedateMMdd(String time) {
-        SimpleDateFormat sdr = new SimpleDateFormat("MM-dd HH:mm:");
+        SimpleDateFormat sdr = new SimpleDateFormat("MM-dd HH:mm");
         @SuppressWarnings("unused")
         long lcc = Long.valueOf(time);
         int i = Integer.parseInt(time);
         String times = sdr.format(new Date(i * 1000L));
         return times;
     }
-
+    public static String getTime(Date date) {//可根据需要自行截取数据显示
+        SimpleDateFormat format = new SimpleDateFormat("yyyy - MM - dd");
+        return format.format(date);
+    }
     /**
      * 判断是否为今天(效率比较高)
      *

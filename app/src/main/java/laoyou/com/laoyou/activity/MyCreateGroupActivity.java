@@ -131,13 +131,13 @@ public class MyCreateGroupActivity extends InitActivity implements AddressBookLi
     }
 
     @Override
-    public void onSelected(String identifier, String faceUrl, int pos) {
+    public void onSelected(List<AddressBean> list, int pos) {
         if (pos == 10293) {
             for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getIdentifier().equals(identifier) && list.get(i).getFaceUrl().equals(faceUrl)) {
+                if (list.get(i).getIdentifier().equals(list.get(pos).getIdentifier()) && list.get(i).getFaceUrl().equals(list.get(pos).getFaceUrl())) {
                     list.get(i).setAddFlag(!list.get(i).isAddFlag());
                     adapter.notifyDataSetChanged();
-                    ap.AddOfCancle(list.get(i).isAddFlag(), identifier, faceUrl);
+                    ap.AddOfCancle(list.get(i).isAddFlag(), list.get(pos).getIdentifier(), list.get(pos).getFaceUrl(), list.get(pos).getNickName());
                     break;
                 }
             }
@@ -158,13 +158,13 @@ public class MyCreateGroupActivity extends InitActivity implements AddressBookLi
         } else {
             list.get(pos).setAddFlag(!list.get(pos).isAddFlag());
             adapter.notifyDataSetChanged();
-            ap.AddOfCancle(list.get(pos).isAddFlag(), identifier, faceUrl);
+            ap.AddOfCancle(list.get(pos).isAddFlag(), list.get(pos).getIdentifier(), list.get(pos).getFaceUrl(), list.get(pos).getNickName());
         }
 
     }
 
     @Override
-    public void onAdd(String identifier, String faceUrl) {
+    public void onAdd(String faceUrl, String identifier, String name) {
 
         if (addGroupPeopleList.size() == 1 && addGroupPeopleList.get(0).getIdentifier().isEmpty()) {
             Log.i(TAG, "clear集合 ===");
@@ -172,14 +172,15 @@ public class MyCreateGroupActivity extends InitActivity implements AddressBookLi
         }
         AddressBean ab = new AddressBean();
         ab.setIdentifier(identifier);
+        ab.setNickName(name);
         ab.setFaceUrl(faceUrl);
         addGroupPeopleList.add(ab);
         infoadapter.notifyDataSetChanged();
-        Log.i(TAG, "添加信息  size ===" + addGroupPeopleList.size() + " id ==" + identifier + " face ==" + faceUrl);
+        Log.i(TAG, "添加信息  size ===" + addGroupPeopleList.size() + " id ==" + identifier + " face ==" + name);
     }
 
     @Override
-    public void onCancle(String identifier, String faceUrl) {
+    public void onCancle(String faceUrl, String identifier, String name) {
 
         for (int i = 0; i < addGroupPeopleList.size(); i++) {
 
@@ -199,7 +200,7 @@ public class MyCreateGroupActivity extends InitActivity implements AddressBookLi
     @Override
     public void onCreateGroupSuccess(String msg) {
         ConversationInstance().presenter.getConversation();
-        ToastUtil.toast2_bottom(this,msg);
+        ToastUtil.toast2_bottom(this, msg);
         finish();
     }
 

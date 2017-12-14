@@ -4,16 +4,21 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+
     <!-- 辅助、内容、标签、关键字  -->
     <color name="content1">#999999</color>
     <!-- 主要文字、评论  -->
     <color name="content2">#202020</color>
-    <!-- 次要文字1  -->
-    <color name="content3">#cccccc</color>
-    <!-- 次要文字2  -->
-    <color name="content4">#666666</color>
+    <!-- 次要文字 -->
+    <color name="content3">#8e8e8e</color>
+    <!-- 辅助文字  -->
+    <color name="content4">#c4c8ce</color>
+    <!-- 卡片投影  -->
+    <color name="card_shade">#eaeaea</color>
+    <!-- 辅助线、框  -->
+    <color name="line_color">#f7f7f7</color>
     <!-- 底部点亮文字、专辑、框  -->
-    <color name="content5">#ff6259</color>
+    <color name="content5">#c8cdd3</color>
     <!-- 导航分类 -->
     <color name="content6">#a6a6a6</color>
     <!-- 部分底色 -->
@@ -24,6 +29,7 @@
     <color name="content10">#9d9d9d</color>
     <color name="content11">#e6e6e6</color>
     <color name="content12">#bdbdbd</color>
+    <color name="frame">#f0f6ff</color>
 
     <color name="piecha1">#FCFCFC</color>
     <color name="piecha2">#40daf1</color>
@@ -33,6 +39,9 @@
 
     <color name="sex_woman">#f1cbd1</color>
     <color name="sex_man">#bdd6f5</color>
+
+    <color name="back_text_color">#7ebdfa</color>
+    <color name="background_color">#63d8fa</color>
 
 
     <!-- 白色渐变 -->
@@ -46,7 +55,10 @@
     <color name="white8">#88FFFFFF</color>
     <color name="white9">#99FFFFFF</color>
     <color name="white">#fefefe</color>
-    <color name="whitefc">#FCFCFC</color>
+    <color name="whitetr">#80FFFFFF</color>
+    <color name="whitefc">#fcfcfc</color>
+    <color name="whiteff">#ffffff</color>
+    <color name="whitefb">#fbfbfb</color>
     <!-- 黑色渐变 -->
     <color name="black1">#11000000</color>
     <color name="black2">#22000000</color>
@@ -60,7 +72,8 @@
     <color name="black11">#484858</color>
     <color name="black13">#343434</color>
 
-    <color name="black">#202020</color>
+    <color name="black">#2d2d2d</color>
+
     <color name="black0">#000000</color>
 
     <color name="blackg">#6E6E6E</color>
@@ -80,10 +93,15 @@
     <color name="blue5">#0066cc</color>
     <color name="blue6">#00B8EE</color>
     <color name="blue7">#4999d3</color>
+    <color name="blue9">#5890ff</color>
     <color name="blue_content">#016cff</color>
     <color name="blue_gps">#0066cc</color>
     <color name="blue8">#006cff</color>
     <color name="blue_all">#5facf8</color>
+    <color name="blue_text">#31a9ff</color>
+    <color name="blue_grade">#5791ff</color>
+    <color name="blue_ba">#00dbff</color>
+    <color name="text_blue">#598eff</color>
 
 
     <color name="blue_white1">#F5F6F7</color>
@@ -476,7 +494,6 @@
     <color name="darkblue">#00008B</color>
     <!-- 暗蓝色 -->
     <color name="navy">#000080</color>
-
 
 
     <color name="transparent">#00000000</color>

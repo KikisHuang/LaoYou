@@ -13,11 +13,11 @@ public interface AddressBookListener {
 
     void ongetFriendData(List<AddressBean> result);
 
-    void onSelected(String identifier, String faceUrl, int pos);
+    void onAdd(String faceUrl, String identifier, String name);
 
-    void onAdd(String identifier, String faceUrl);
-
-    void onCancle(String identifier, String faceUrl);
+    void onCancle(String faceUrl, String identifier, String name);
 
     void onCreateGroupSuccess(String gets);
+
+    void onSelected(List<AddressBean> list, int pos);
 }

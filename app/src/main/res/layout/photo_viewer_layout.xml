@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black0"
+    >
+
+    <laoyou.com.laoyou.view.BigPhotoViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></laoyou.com.laoyou.view.BigPhotoViewPager>
+
+    <TextView
+        android:id="@+id/page_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:textColor="@color/white"
+        android:layout_marginBottom="20dp"
+        android:textSize="14sp" />
+</FrameLayout>

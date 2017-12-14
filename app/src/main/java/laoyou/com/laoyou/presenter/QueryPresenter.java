@@ -8,6 +8,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.google.gson.Gson;
+import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,13 +20,12 @@ import laoyou.com.laoyou.bean.CheckStatusBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.QueryListener;
-import laoyou.com.laoyou.utils.CheckThread;
+import laoyou.com.laoyou.thread.CheckThread;
 import laoyou.com.laoyou.utils.Fields;
-import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.CheckThread.ThreadInstance;
+import static laoyou.com.laoyou.thread.CheckThread.ThreadInstance;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;

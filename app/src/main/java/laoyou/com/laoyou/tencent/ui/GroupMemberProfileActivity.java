@@ -9,11 +9,13 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMGroupManager;
 import com.tencent.TIMGroupMemberResult;
 import com.tencent.TIMGroupMemberRoleType;
 import com.tencent.TIMValueCallBack;
+import com.tencent.qcloud.ui.CircleImageView;
 import com.tencent.qcloud.ui.LineControllerView;
 import com.tencent.qcloud.ui.ListPickerDialog;
 import com.tencent.qcloud.ui.TemplateTitle;
@@ -29,16 +31,16 @@ import laoyou.com.laoyou.tencent.model.UserInfo;
 
 public class GroupMemberProfileActivity extends FragmentActivity {
 
-    private String userIdentify, groupIdentify, userCard,groupType;
+    private String userIdentify, groupIdentify, userCard, groupType, userName;
     private TIMGroupMemberRoleType currentUserRole;
     private GroupMemberProfile profile;
     private LineControllerView setManager;
+    private String faceUrl;
     private String[] quietingOpt;
     private String[] quietOpt;
-    private long[] quietTimeOpt = new long[] {600, 3600, 24*3600};
-
+    private long[] quietTimeOpt = new long[]{600, 3600, 24 * 3600};
+    private CircleImageView user_head;
     private final int CARD_REQ = 100;
-
 
 
     @Override
@@ -47,18 +49,26 @@ public class GroupMemberProfileActivity extends FragmentActivity {
         setContentView(R.layout.activity_group_member_profile);
         profile = (GroupMemberProfile) getIntent().getSerializableExtra("data");
         userIdentify = profile.getIdentify();
+        faceUrl = profile.getAvatarUrl();
+        userName = profile.getUserName();
         groupIdentify = getIntent().getStringExtra("groupId");
         groupType = getIntent().getStringExtra("type");
         userCard = profile.getNameCard();
 
         currentUserRole = GroupInfo.getInstance().getRole(groupIdentify);
 
-        quietingOpt = new String[] {getString(R.string.group_member_quiet_cancel)};
-        quietOpt = new String[] {getString(R.string.group_member_quiet_ten_min),
+        quietingOpt = new String[]{getString(R.string.group_member_quiet_cancel)};
+        quietOpt = new String[]{getString(R.string.group_member_quiet_ten_min),
                 getString(R.string.group_member_quiet_one_hour),
                 getString(R.string.group_member_quiet_one_day),
         };
         TemplateTitle title = (TemplateTitle) findViewById(R.id.GroupMemTitle);
+        CircleImageView user_head = (CircleImageView) findViewById(R.id.user_head);
+        if (!faceUrl.isEmpty())
+            Glide.with(this).load(faceUrl).into(user_head);
+        else
+            Glide.with(this).load(R.drawable.head_other).into(user_head);
+
         title.setBackListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,9 +77,9 @@ public class GroupMemberProfileActivity extends FragmentActivity {
             }
         });
         TextView tvName = (TextView) findViewById(R.id.name);
-        tvName.setText(userIdentify);
+        tvName.setText(userName);
         TextView tvKick = (TextView) findViewById(R.id.kick);
-        tvKick.setVisibility(canManage()&&!groupType.equals(GroupInfo.privateGroup)? View.VISIBLE:View.GONE);
+        tvKick.setVisibility(canManage() ? View.VISIBLE : View.GONE);
         tvKick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,13 +99,13 @@ public class GroupMemberProfileActivity extends FragmentActivity {
             }
         });
         setManager = (LineControllerView) findViewById(R.id.manager);
-        setManager.setVisibility(currentUserRole == TIMGroupMemberRoleType.Owner && currentUserRole != profile.getRole() &&!groupType.equals(GroupInfo.privateGroup) ? View.VISIBLE : View.GONE);
+        setManager.setVisibility(currentUserRole == TIMGroupMemberRoleType.Owner && currentUserRole != profile.getRole() && !groupType.equals(GroupInfo.privateGroup) ? View.VISIBLE : View.GONE);
         setManager.setSwitch(profile.getRole() == TIMGroupMemberRoleType.Admin);
         setManager.setCheckListener(checkListener);
         final LineControllerView setQuiet = (LineControllerView) findViewById(R.id.setQuiet);
-        setQuiet.setVisibility(canManage()&&!groupType.equals(GroupInfo.privateGroup) ? View.VISIBLE : View.GONE);
-        if (canManage()){
-            if (isQuiet()){
+        setQuiet.setVisibility(canManage() && !groupType.equals(GroupInfo.privateGroup) ? View.VISIBLE : View.GONE);
+        if (canManage()) {
+            if (isQuiet()) {
                 setQuiet.setContent(getString(R.string.group_member_quiet_ing));
             }
             setQuiet.setOnClickListener(new View.OnClickListener() {
@@ -113,12 +123,12 @@ public class GroupMemberProfileActivity extends FragmentActivity {
 
                                         @Override
                                         public void onSuccess() {
-                                            if (getQuietTime(which) == 0){
+                                            if (getQuietTime(which) == 0) {
                                                 setQuiet.setContent("");
-                                            }else{
+                                            } else {
                                                 setQuiet.setContent(getString(R.string.group_member_quiet_ing));
                                             }
-                                            profile.setQuietTime(getQuietTime(which) + Calendar.getInstance().getTimeInMillis()/1000);
+                                            profile.setQuietTime(getQuietTime(which) + Calendar.getInstance().getTimeInMillis() / 1000);
                                         }
                                     });
                         }
@@ -128,7 +138,7 @@ public class GroupMemberProfileActivity extends FragmentActivity {
         }
         LineControllerView nameCard = (LineControllerView) findViewById(R.id.groupCard);
         nameCard.setContent(userCard);
-        if (UserInfo.getInstance().getId().equals(userIdentify)){
+        if (UserInfo.getInstance().getId().equals(userIdentify)) {
             nameCard.setCanNav(true);
             nameCard.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -138,7 +148,7 @@ public class GroupMemberProfileActivity extends FragmentActivity {
                         public void onEdit(String text, TIMCallBack callBack) {
                             TIMGroupManager.getInstance().modifyGroupMemberInfoSetNameCard(groupIdentify, userIdentify, text, callBack);
                         }
-                    },20);
+                    }, 20);
                 }
             });
         }
@@ -152,28 +162,29 @@ public class GroupMemberProfileActivity extends FragmentActivity {
     }
 
 
-    private boolean canManage(){
-        if ((currentUserRole == TIMGroupMemberRoleType.Owner && profile.getRole() != TIMGroupMemberRoleType.Owner) ||
-                (currentUserRole == TIMGroupMemberRoleType.Admin && profile.getRole() == TIMGroupMemberRoleType.Normal)) return true;
-        return false;
+    private boolean canManage() {
+        if ((currentUserRole == TIMGroupMemberRoleType.Owner && profile.getRole() != TIMGroupMemberRoleType.Owner) || (currentUserRole == TIMGroupMemberRoleType.Admin && profile.getRole() == TIMGroupMemberRoleType.Normal)) {
+            return true;
+        } else
+            return false;
     }
 
-    private String[] getQuietOption(){
-        if (!isQuiet()){
+    private String[] getQuietOption() {
+        if (!isQuiet()) {
             return quietOpt;
-        }else{
+        } else {
             return quietingOpt;
         }
     }
 
-    private long getQuietTime(int which){
-        if (!isQuiet()){
+    private long getQuietTime(int which) {
+        if (!isQuiet()) {
             return quietTimeOpt[which];
         }
         return 0;
     }
 
-    private void setBackResult(boolean isKick){
+    private void setBackResult(boolean isKick) {
         Intent mIntent = new Intent();
         mIntent.putExtra("data", profile);
         mIntent.putExtra("isKick", isKick);
@@ -188,7 +199,7 @@ public class GroupMemberProfileActivity extends FragmentActivity {
                     new TIMCallBack() {
                         @Override
                         public void onError(int i, String s) {
-                            switch (i){
+                            switch (i) {
                                 case 10004:
                                     Toast.makeText(GroupMemberProfileActivity.this, getString(R.string.group_member_manage_set_type_err), Toast.LENGTH_SHORT).show();
                                     break;
@@ -214,8 +225,8 @@ public class GroupMemberProfileActivity extends FragmentActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CARD_REQ){
-            if (resultCode == RESULT_OK){
+        if (requestCode == CARD_REQ) {
+            if (resultCode == RESULT_OK) {
                 LineControllerView nameCard = (LineControllerView) findViewById(R.id.groupCard);
                 nameCard.setContent(data.getStringExtra(EditActivity.RETURN_EXTRA));
                 profile.setName(data.getStringExtra(EditActivity.RETURN_EXTRA));
@@ -225,8 +236,8 @@ public class GroupMemberProfileActivity extends FragmentActivity {
     }
 
 
-    private boolean isQuiet(){
+    private boolean isQuiet() {
         if (profile == null) return false;
-        return profile.getQuietTime() != 0 && profile.getQuietTime() > Calendar.getInstance().getTimeInMillis()/1000;
+        return profile.getQuietTime() != 0 && profile.getQuietTime() > Calendar.getInstance().getTimeInMillis() / 1000;
     }
 }

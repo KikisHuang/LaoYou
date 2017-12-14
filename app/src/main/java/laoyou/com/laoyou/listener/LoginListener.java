@@ -13,4 +13,7 @@ public interface LoginListener {
     void onFailed(String msg);
 
     void onError(String msg);
+
+    void onImFailed(String msg);
+
 }

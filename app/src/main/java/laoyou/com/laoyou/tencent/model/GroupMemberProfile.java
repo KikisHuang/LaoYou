@@ -12,8 +12,8 @@ import laoyou.com.laoyou.R;
 /**
  * 群成员数据
  */
-public class GroupMemberProfile implements ProfileSummary,Serializable {
-
+public class GroupMemberProfile implements ProfileSummary, Serializable {
+    //群名片;
     private String name;
     private String id;
     private long quietTime;
@@ -24,7 +24,10 @@ public class GroupMemberProfile implements ProfileSummary,Serializable {
         this.faceUrl = faceUrl;
     }
 
-    public GroupMemberProfile(TIMGroupMemberInfo info){
+    //用户名称;
+    private String username;
+
+    public GroupMemberProfile(TIMGroupMemberInfo info) {
         name = info.getNameCard();
         id = info.getUser();
         quietTime = info.getSilenceSeconds();
@@ -52,10 +55,11 @@ public class GroupMemberProfile implements ProfileSummary,Serializable {
      */
     @Override
     public String getName() {
-        if (!name.equals("")){
+        if (!name.equals("")) {
             return name;
         }
-        return id;
+//      return id;
+        return username;
     }
 
     /**
@@ -87,7 +91,7 @@ public class GroupMemberProfile implements ProfileSummary,Serializable {
     /**
      * 获取身份
      */
-    public TIMGroupMemberRoleType getRole(){
+    public TIMGroupMemberRoleType getRole() {
         return roleType;
     }
 
@@ -95,17 +99,28 @@ public class GroupMemberProfile implements ProfileSummary,Serializable {
     /**
      * 获取群名片
      */
-    public String getNameCard(){
+    public String getNameCard() {
         if (name == null) return "";
         return name;
     }
+    /**
+     * 获取用户昵称;
+     */
+    public String getUserName() {
+        if (username == null) return "";
+        return username;
+    }
 
-    public long getQuietTime(){
+    public long getQuietTime() {
         return quietTime;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setUserName(String name) {
+        this.username = name;
     }
 
     public void setId(String id) {

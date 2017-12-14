@@ -45,8 +45,16 @@ public class OutSidePresenter implements HttpResultListener {
     }
 
     public void Presetner( WebView webView, String url) {
+//        if(Build.VERSION.SDK_INT<18)
+            webView.loadUrl(url);
+        /*else
+        webView.evaluateJavascript(url, new ValueCallback<String>() {
+            @Override
+            public void onReceiveValue(String s) {
 
-        webView.loadUrl(url);
+            }
+        });*/
+
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         webView.setWebViewClient(new OutSideWebViewClient());
         webView.setWebChromeClient(new OutSideWebChromeClient(listener));

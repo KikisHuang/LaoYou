@@ -44,6 +44,10 @@ public class SPreferences {
      */
     private static final String USER_HEAD_IMG = "User_Head_Img";
     /**
+     * 保存用户名称;
+     */
+    private static final String USER_NAME = "User_Name";
+    /**
      * 临时存储聊天对象头像(仅用于单聊);
      */
     private static final String TEMPORARY_USER_HEAD = "Temporary_User_Head";
@@ -117,6 +121,19 @@ public class SPreferences {
      */
     public static String getUserHeadImg() {
         return getString(USER_HEAD_IMG);
+    }
+    /**
+     * 保存用户名称;
+     */
+    public static void saveUserName(String str) {
+        saveString(USER_NAME, str);
+    }
+
+    /**
+     * 获取用户名称;
+     */
+    public static String getUserName() {
+        return getString(USER_NAME);
     }
 
     /**

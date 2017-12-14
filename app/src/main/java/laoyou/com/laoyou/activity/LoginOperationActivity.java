@@ -10,13 +10,14 @@ import com.umeng.socialize.UMShareAPI;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.LoginOperationListener;
 import laoyou.com.laoyou.presenter.LoginOperationPresenter;
+import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.activity.MainActivity.MainInstance;
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
-import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
+import static laoyou.com.laoyou.fragment.MyFragment.SettingInstance;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goRegisterPage;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -99,9 +100,9 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
         if (resultCode == Fields.ACRESULET2) {
             if (MainInstance() != null)
                 MainInstance().IMInit();
-
+/*
             if (getHomeInstance() != null)
-                getHomeInstance().onRefresh();
+                getHomeInstance().onRefresh();*/
             finish();
         }
     }
@@ -126,10 +127,19 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
     public void onSucceed() {
         Cancle();
         ToastUtil.toast2_bottom(this, gets(R.string.loginok));
-
-        if (getHomeInstance() != null)
-            getHomeInstance().onRefresh();
+        if (MainInstance() != null)
+            MainInstance().IMInit();
+        if(SettingInstance()!=null)
+            SettingInstance().mp.getUseDetails();
+   /*     if (getHomeInstance() != null)
+            getHomeInstance().onRefresh();*/
         finish();
+    }
+
+    @Override
+    public void onImFailed(String msg) {
+        ToastUtil.toast2_bottom(LoginOperationActivity.this, msg);
+        SPreferences.saveUserToken("");
     }
 
     @Override

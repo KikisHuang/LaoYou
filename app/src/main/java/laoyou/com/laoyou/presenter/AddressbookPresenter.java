@@ -53,11 +53,11 @@ public class AddressbookPresenter {
         });
     }
 
-    public void AddOfCancle(boolean add, String identifier, String faceUrl) {
+    public void AddOfCancle(boolean add, String identifier, String faceUrl, String name) {
         if (!add) {
-            listener.onCancle(identifier, faceUrl);
+            listener.onCancle(faceUrl, identifier,name);
         } else
-            listener.onAdd(identifier, faceUrl);
+            listener.onAdd(faceUrl, identifier,name);
     }
 
     public void CreateGroup(List<AddressBean> list) {
@@ -67,12 +67,17 @@ public class AddressbookPresenter {
             for (int i = 0; i < list.size(); i++) {
                 info.add(list.get(i).getIdentifier());
 
-                if (i <= 1)
+                if (i <= 2)
                     groupName += list.get(i).getNickName().isEmpty() ? list.get(i).getIdentifier() : list.get(i).getNickName();
-                if (i < 1)
+                if (i + 1 != list.size())
                     groupName += "，";
             }
-            GroupManagerPresenter.createGroup(groupName,
+            int remainder = 30;
+            String name = "";
+            if (groupName.length() > 30)
+               name =  groupName.substring(0, groupName.length() - remainder);
+
+              GroupManagerPresenter.createGroup(groupName,
                     GroupInfo.privateGroup,
                     info,
                     new TIMValueCallBack<String>() {

@@ -1,16 +1,19 @@
 package laoyou.com.laoyou.presenter;
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
+import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import laoyou.com.laoyou.R;
@@ -20,10 +23,12 @@ import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.OverInfoListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
-import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
+import top.zibin.luban.OnCompressListener;
 
+import static laoyou.com.laoyou.utils.ComPressUtils.Compress;
+import static laoyou.com.laoyou.utils.ImUtils.getImUserSig;
 import static laoyou.com.laoyou.utils.JsonUtils.getFileMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
@@ -35,7 +40,7 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
 /**
  * Created by lian on 2017/10/26.
  */
-public class OverInfoPresenter implements HttpResultListener {
+public class OverInfoPresenter implements HttpResultListener, OnCompressListener {
     private static final String TAG = "OverInfoPresenter";
     private OverInfoListener listener;
     private File file;
@@ -100,6 +105,7 @@ public class OverInfoPresenter implements HttpResultListener {
 
             case Fields.REQUEST2:
                 listener.onSucced(flag);
+
                 break;
             case Fields.REQUEST3:
                 try {
@@ -108,7 +114,7 @@ public class OverInfoPresenter implements HttpResultListener {
 
                     if (ub.getCloudTencentAccount() != null && !ub.getCloudTencentAccount().isEmpty()) {
                         SPreferences.saveIdentifier(ub.getCloudTencentAccount());
-                        getImUserSig(ub.getCloudTencentAccount());
+                        getImUserSig(ub.getCloudTencentAccount(), this);
                     } else
                         listener.onImFailed(gets(R.string.get_im_info_error));
 
@@ -123,17 +129,6 @@ public class OverInfoPresenter implements HttpResultListener {
                 listener.onImSucceed();
                 break;
         }
-    }
-
-    /**
-     * 获取IM UserSig;
-     *
-     * @param id
-     */
-    private void getImUserSig(String id) {
-        Map<String, String> map = getParamsMap();
-        map.put("identifier", id);
-        httpUtils.OkHttpsPost(map, this, Fields.REQUEST4, Interface.URL + Interface.GETUSERSIG, null, null);
     }
 
 
@@ -226,5 +221,24 @@ public class OverInfoPresenter implements HttpResultListener {
     public void getImIdentifier() {
         Map<String, String> map = getKeyMap();
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST3, Interface.URL + Interface.MYINFODETAILS);
+    }
+
+    public void CompressFile(Context context, List<String> p, int size) {
+        Compress(context, p, this, size);
+    }
+
+    @Override
+    public void onStart() {
+
+    }
+
+    @Override
+    public void onSuccess(File file) {
+        listener.onCompressSucceed(file);
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        listener.onErrorMsg(gets(R.string.compress_error));
     }
 }

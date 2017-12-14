@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
+import laoyou.com.laoyou.view.RoundAngleImageView;
 
 
 /**
@@ -63,7 +65,11 @@ public class homeViewPageUtils {
         for (int i = 0; i < images.size() + 2; i++) {
             PageTopBannerBean pb = new PageTopBannerBean();
             View view = inflater.inflate(R.layout.top_img_item, null);
-            ImageView  imageView = (ImageView) view.findViewById(R.id.top_img);
+            RoundAngleImageView imageView = (RoundAngleImageView) view.findViewById(R.id.top_img);
+
+            int w = (int) (DeviceUtils.getWindowWidth(context) * 3 / 4);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(w, (int) (w * 1.5 / 3));
+            imageView.setLayoutParams(lp);
 
             if (imageView != null)
                 imageView.setVisibility(View.VISIBLE);

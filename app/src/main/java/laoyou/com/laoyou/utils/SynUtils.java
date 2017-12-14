@@ -13,6 +13,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.XmlResourceParser;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -22,6 +23,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.text.SpannableString;
@@ -52,14 +54,11 @@ import java.util.Timer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.activity.LoginOperationActivity;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.model.UserInfo;
-
-import static laoyou.com.laoyou.utils.IntentUtils.goRegisterPage;
 
 
 /**
@@ -248,6 +247,17 @@ public class SynUtils {
         return "";
     }
 
+    /**
+     * Agency FB Bold 字体
+     */
+    private static Typeface typeface;
+
+    public static Typeface getTypeface(Context context) {
+        if (typeface == null) {
+            typeface = Typeface.createFromAsset(context.getAssets(), "fonts/Agency_FB_Bold.ttf");
+        }
+        return typeface;
+    }
 
     /**
      * Wifi环境判断
@@ -654,27 +664,40 @@ public class SynUtils {
 
         return appDir + "/" + fileName;
     }
-
     /**
-     * 子页面标题设置;
-     *
-     * @param ac
+     * 保存文件到指定路径,并刷新系统相册;
      */
-    public static void setTitles(final Activity ac) {
+    public static boolean saveImageToGallery(Context context, Bitmap bmp) {
+        // 首先保存图片
+        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "hoop";
+        File appDir = new File(storePath);
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = System.currentTimeMillis() + ".jpg";
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            //通过io流的方式来压缩保存图片
+            boolean isSuccess = bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
 
-        ac.findViewById(R.id.back_img).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ac.finish();
+            //把文件插入到系统图库
+            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), fileName, null);
+
+            //保存图片后发送广播通知更新数据库
+            Uri uri = Uri.fromFile(file);
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+            if (isSuccess) {
+                return true;
+            } else {
+                return false;
             }
-        });
-        ac.findViewById(R.id.register_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goRegisterPage(ac);
-                ac.finish();
-            }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**
@@ -881,6 +904,7 @@ public class SynUtils {
     public static String gets(int res) {
         return SPreferences.context.getString(res);
     }
+
     /**
      * 登出通用方法;
      *
@@ -889,6 +913,8 @@ public class SynUtils {
      */
     public static void LogOut(Context context) {
         SPreferences.saveUserToken("");
+        SPreferences.saveIdentifier("");
+        SPreferences.saveUserSig("");
 
         TlsBusiness.logout(UserInfo.getInstance().getId());
         UserInfo.getInstance().setId(null);
@@ -897,5 +923,21 @@ public class SynUtils {
         GroupInfo.getInstance().clear();
         Intent intent = new Intent(context, LoginOperationActivity.class);
         context.startActivity(intent);
+    }
+
+    //view 转bitmap
+
+    public static Bitmap convertViewToBitmap(View view) {
+
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+
+        view.buildDrawingCache();
+
+        Bitmap bitmap = view.getDrawingCache();
+
+        return bitmap;
+
     }
 }

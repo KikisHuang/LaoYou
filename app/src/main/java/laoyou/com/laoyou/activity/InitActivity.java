@@ -17,10 +17,11 @@ import android.widget.EditText;
 public abstract class InitActivity extends FragmentActivity {
     private static final String TAG = "InitActivity";
     protected long timeDValue = 0; // 计算时间差值，判断是否需要退出
-
+    protected Bundle savedInstanceState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.savedInstanceState = savedInstanceState;
         super.onCreate(savedInstanceState);
         init();
         click();

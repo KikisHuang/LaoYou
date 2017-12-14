@@ -89,6 +89,7 @@
 
     <!-- settings fragment -->
     <string name="setting_logout">退出登录</string>
+    <string name="setting_logout_succeed">成功退出登录</string>
     <string name="setting_logout_fail">退出登录失败，请稍后重试</string>
     <string name="setting_friend_confirm">好友申请</string>
     <string name="setting_black_list">黑名单</string>
@@ -96,8 +97,10 @@
     <string name="setting_about">关于</string>
     <string name="setting_friend_need_confirm">需验证</string>
     <string name="setting_nick_name_change">修改昵称</string>
+    <string name="setting_signature_change">修改签名</string>
     <string name="setting_friend_confirm_change_err">修改验证类型失败</string>
 
+    <string name="change_pass">修改密码</string>
 
     <!-- Add newfriend activity -->
     <string name="search_default">搜索</string>
@@ -337,10 +340,62 @@
     <string name="msg">消息</string>
     <string name="home_page">首页</string>
     <string name="nearbyuser">附近的人</string>
-    <string name="query_internet_pass">查询上网密码</string>
+    <string name="query_internet_pass">查询密码</string>
     <string name="cybercafe">附近的网吧</string>
     <string name="DoNews">玩家社区</string>
     <string name="group_create_msg">欢迎来到该群^.^</string>
     <string name="get_im_info_error">注册成功，但是获取Im信息时发生了异常，请重新登录</string>
+    <string name="getuser_sig_error">解析异常</string>
+    <string name="photo_album">相册</string>
+    <string name="preference">偏好</string>
+    <string name="comment">评论</string>
+    <string name="heart_value">心动值</string>
+    <string name="heart_beat">心动</string>
+    <string name="topic">我创建的话题圈</string>
+    <string name="flash_chat">闪聊</string>
+    <string name="my_create_flash_chat">我创建的闪聊群</string>
+    <string name="setting">设置</string>
+    <string name="discover">发现</string>
+    <string name="goback">返回</string>
+    <string name="theGroup">的闪聊群</string>
+    <string name="produce_msg">已产生</string>
+    <string name="info">条信息</string>
+    <string name="apply_for_success">申请加群成功</string>
+    <string name="The_bottom">这已经是全部了</string>
+    <string name="click_setting">点击设置</string>
+    <string name="un_certification">未认证</string>
+    <string name="certification">已认证</string>
+    <string name="municipal_district">市辖区</string>
+    <string name="bachelordom">单身</string>
+    <string name="Frenesi">热恋</string>
+    <string name="secrecy">保密</string>
+    <string name="change_succeed">修改成功</string>
+    <string name="compress_error">压缩异常</string>
+    <string name="in_certification">认证审核中</string>
+    <string name="refuse_certification">被拒绝</string>
+    <string name="receive_comment">收到的评论</string>
+    <string name="send_comment">发出的评论</string>
+    <string name="receive_heart_value">收到的心动值</string>
+    <string name="send_heart_value">送出的心动值</string>
+    <string name="delete_photo">删除图片</string>
+    <string name="save_photo">保存图片</string>
+    <string name="like_game">喜欢的游戏</string>
+    <string name="photo">相册</string>
+    <string name="add_like_game">添加喜欢的游戏</string>
+    <string name="commit">提交</string>
+    <string name="add_game_is_null">请选择至少一款游戏</string>
+    <string name="topic_circle">话题圈</string>
+    <string name="internet_bar">网咖</string>
+    <string name="new_incident">新奇事</string>
+    <string name="people_nearby">附近的人</string>
+    <string name="nodata">没有数据</string>
+    <string name="nomore">已经没有更多了</string>
+    <string name="game_information">游戏资讯</string>
+    <string name="cpu">CPU</string>
+    <string name="graphics_card">显卡</string>
+    <string name="mouse">鼠标</string>
+    <string name="keyboard">键盘</string>
+    <string name="display">显示器</string>
+
 
 </resources>

@@ -22,6 +22,7 @@ import com.tencent.TIMConversation;
 import com.tencent.TIMConversationType;
 import com.tencent.TIMFriendFutureItem;
 import com.tencent.TIMGroupCacheInfo;
+import com.tencent.TIMGroupDetailInfo;
 import com.tencent.TIMGroupPendencyItem;
 import com.tencent.TIMMessage;
 import com.tencent.TIMUserProfile;
@@ -31,6 +32,7 @@ import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
 import com.tencent.qcloud.presentation.viewfeatures.ConversationView;
 import com.tencent.qcloud.presentation.viewfeatures.FriendInfoView;
 import com.tencent.qcloud.presentation.viewfeatures.FriendshipMessageView;
+import com.tencent.qcloud.presentation.viewfeatures.GroupInfoView;
 import com.tencent.qcloud.presentation.viewfeatures.GroupManageMessageView;
 
 import java.util.ArrayList;
@@ -57,12 +59,12 @@ import static laoyou.com.laoyou.utils.IntentUtils.goAddressBookPage;
 /**
  * 会话列表界面
  */
-public class ConversationFragment extends Fragment implements ConversationView, FriendshipMessageView, GroupManageMessageView, View.OnClickListener, FriendInfoView {
+public class ConversationFragment extends Fragment implements ConversationView, FriendshipMessageView, GroupManageMessageView, View.OnClickListener, FriendInfoView, GroupInfoView {
 
     private final String TAG = "ConversationFragment";
 
     private View view;
-    private List<Conversation> conversationList = new LinkedList<>();
+    private LinkedList<Conversation> conversationList = new LinkedList<>();
     private ConversationAdapter adapter;
     private ListView listView;
     public ConversationPresenter presenter;
@@ -103,12 +105,10 @@ public class ConversationFragment extends Fragment implements ConversationView, 
             fragment = this;
             adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList);
             listView.setAdapter(adapter);
-
-
             friendshipManagerPresenter = new FriendshipManagerPresenter(friendship);
             infoPresenter = new FriendshipManagerPresenter(FriendInfo);
-            groupManagerPresenter = new GroupManagerPresenter(this);
-            presenter = new ConversationPresenter(this);
+            groupManagerPresenter = new GroupManagerPresenter((GroupManageMessageView) this);
+            presenter = new ConversationPresenter(this, this);
             presenter.getConversation();
             registerForContextMenu(listView);
             click();
@@ -134,7 +134,7 @@ public class ConversationFragment extends Fragment implements ConversationView, 
                 }
                 conversationList.get(position).navToDetail(getActivity());
                 if (conversationList.get(position) instanceof GroupManageConversation) {
-                    groupManagerPresenter.getGroupManageLastMessage();
+//                    groupManagerPresenter.getGroupManageLastMessage();
                 }
 
             }
@@ -158,7 +158,6 @@ public class ConversationFragment extends Fragment implements ConversationView, 
     @Override
     public void initView(List<TIMConversation> conversationList) {
 
-
         infoPresenter.getMyProfile();
         this.conversationList.clear();
         groupList = new ArrayList<>();
@@ -172,8 +171,10 @@ public class ConversationFragment extends Fragment implements ConversationView, 
             }
         }
         friendshipManagerPresenter.getFriendshipLastMessage();
-        groupManagerPresenter.getGroupManageLastMessage();
+//        groupManagerPresenter.getGroupManageLastMessage();
+
     }
+
 
     /**
      * 更新最新消息显示
@@ -182,12 +183,14 @@ public class ConversationFragment extends Fragment implements ConversationView, 
      */
     @Override
     public void updateMessage(TIMMessage message) {
+
         if (message == null) {
             adapter.notifyDataSetChanged();
             return;
         }
+
         if (message.getConversation().getType() == TIMConversationType.System) {
-            groupManagerPresenter.getGroupManageLastMessage();
+//            groupManagerPresenter.getGroupManageLastMessage();
             return;
         }
         if (MessageFactory.getMessage(message) instanceof CustomMessage) return;
@@ -201,10 +204,18 @@ public class ConversationFragment extends Fragment implements ConversationView, 
                 break;
             }
         }
+
         conversation.setLastMessage(MessageFactory.getMessage(message));
         conversationList.add(conversation);
         Collections.sort(conversationList);
         refresh();
+        List<String> groupId = new ArrayList<>();
+        for (Conversation con : conversationList) {
+            if (con.getType() == TIMConversationType.Group)
+                groupId.add(con.getIdentify());
+            }
+        if (groupId.size() > 0)
+            presenter.getGroupDetails(groupId);
     }
 
     /**
@@ -291,7 +302,6 @@ public class ConversationFragment extends Fragment implements ConversationView, 
 
     @Override
     public void onSystemInfo(List<TIMUserProfile> result) {
-
     }
 
     /**
@@ -303,6 +313,7 @@ public class ConversationFragment extends Fragment implements ConversationView, 
     @Override
     public void onGetGroupManageLastMessage(TIMGroupPendencyItem message, long unreadCount) {
         if (groupManageConversation == null) {
+            //群组系统消息;
             groupManageConversation = new GroupManageConversation(message);
             conversationList.add(groupManageConversation);
         } else {
@@ -420,7 +431,30 @@ public class ConversationFragment extends Fragment implements ConversationView, 
 
         if (users.get(0).getFaceUrl() == null || users.get(0).getFaceUrl().equals(""))
             SPreferences.saveUserHeadImg("");
-        else
+        else {
             SPreferences.saveUserHeadImg(users.get(0).getFaceUrl());
+            SPreferences.saveUserName(users.get(0).getNickName());
+        }
+
+    }
+
+    /**
+     * 获得群头像;
+     *
+     * @param groupInfos 群资料信息列表
+     */
+    @Override
+    public void showGroupInfo(List<TIMGroupDetailInfo> groupInfos) {
+        if (groupInfos.size() > 0) {
+            for (int i = 0; i < conversationList.size(); i++) {
+                for (TIMGroupDetailInfo info : groupInfos) {
+                    if (conversationList.get(i).getType() == TIMConversationType.Group && info.getGroupId().equals(conversationList.get(i).getIdentify())) {
+                        conversationList.get(i).setFaceurl(info.getFaceUrl());
+                        break;
+                    }
+                }
+            }
+            adapter.notifyDataSetChanged();
+        }
     }
 }

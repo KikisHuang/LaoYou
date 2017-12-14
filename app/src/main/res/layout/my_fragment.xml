@@ -1,13 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/head_layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:ellipsize="end"
+                android:maxEms="6"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="35sp" />
+
+            <TextView
+                android:id="@+id/signature_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginTop="10dp"
+                android:maxEms="14"
+                android:singleLine="true"
+                android:text="大家好，我是陈晓燕，我是一个白痴"
+                android:textColor="@color/content3"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_head_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="right|center"
+            android:layout_marginRight="20dp"
+            app:civ_border_color="@color/frame"
+            app:civ_border_overlay="false"
+            app:civ_border_width="2dp" />
+
+        <FrameLayout
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|bottom"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/white_corners3">
+
+            <ImageView
+                android:id="@+id/qr_code_img"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/qr_code_test_icon" />
+
+        </FrameLayout>
+    </FrameLayout>
+
+    <include
+        android:id="@+id/photo_layout"
+        layout="@layout/right_arrow_include"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="my"
-        android:textSize="55dp" />
+        android:layout_marginTop="30dp"></include>
+
+    <include
+        android:id="@+id/preference_layout"
+        layout="@layout/right_arrow_include"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"></include>
+
+    <include
+        android:id="@+id/comment_layout"
+        layout="@layout/right_arrow_include"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"></include>
+
+    <include
+        android:id="@+id/heart_layout"
+        layout="@layout/right_arrow_include"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"></include>
+
+    <include
+        android:id="@+id/topic_layout"
+        layout="@layout/right_arrow_include"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"></include>
+
+    <include
+        android:id="@+id/flash_chat_layout"
+        layout="@layout/right_arrow_include"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"></include>
+
+    <include
+        android:id="@+id/setting_layout"
+        layout="@layout/right_arrow_include"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"></include>
+
 </LinearLayout>

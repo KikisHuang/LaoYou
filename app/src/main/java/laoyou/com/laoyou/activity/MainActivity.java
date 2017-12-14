@@ -34,19 +34,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.fragment.FindFragment;
 import laoyou.com.laoyou.fragment.HomeFragment;
+import laoyou.com.laoyou.fragment.MyFragment;
 import laoyou.com.laoyou.listener.MainListener;
 import laoyou.com.laoyou.presenter.MainPresenter;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.ui.ConversationFragment;
-import laoyou.com.laoyou.tencent.ui.SettingFragment;
 import laoyou.com.laoyou.tencent.ui.customview.DialogActivity;
 import laoyou.com.laoyou.tencent.utils.PushUtil;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
-import static laoyou.com.laoyou.save.SPreferences.saveIdentifier;
+import static laoyou.com.laoyou.fragment.MyFragment.SettingInstance;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginOperPage;
 import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
@@ -55,14 +56,15 @@ import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 public class MainActivity extends BaseActivity implements View.OnClickListener, MainListener, AMapLocationListener, TIMCallBack {
     private static final String TAG = "MainActivity";
 
-    private LinearLayout home_ll, my_ll, msg_ll;
+    private LinearLayout home_ll, my_ll, msg_ll, find_ll;
     private FragmentManager fm = getSupportFragmentManager();
     private HomeFragment homeFragment = null;
-    private SettingFragment myFragment = null;
+    private MyFragment myFragment = null;
+    private FindFragment findFragment = null;
     private ConversationFragment msgFragment = null;
     private FragmentTransaction ft;
-    private ImageView my_img, home_img, msg_img;
-    private TextView my_tv, home_tv, msg_tv;
+    private ImageView my_img, home_img, msg_img, find_img;
+    private TextView my_tv, home_tv, msg_tv, find_tv;
     private MainPresenter mp;
     private final int REQUEST_PHONE_PERMISSIONS = 0;
     //声明AMapLocationClient类对象
@@ -71,17 +73,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     //声明AMapLocationClientOption对象
     public AMapLocationClientOption mLocationOption = null;
     private static MainActivity activity;
+
     @Override
     protected void click() {
         home_ll.setOnClickListener(this);
         my_ll.setOnClickListener(this);
         msg_ll.setOnClickListener(this);
+        find_ll.setOnClickListener(this);
     }
-    public static MainActivity MainInstance(){
-        if(activity==null)
-            activity= new MainActivity();
+
+    public static MainActivity MainInstance() {
+        if (activity == null)
+            activity = new MainActivity();
         return activity;
     }
+
     @Override
     protected void init() {
         clearNotification();
@@ -92,6 +98,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         home_img = f(R.id.home_img);
         home_tv = f(R.id.home_tv);
 
+        find_ll = f(R.id.find_ll);
+        find_img = f(R.id.find_img);
+        find_tv = f(R.id.find_tv);
+
         msg_ll = f(R.id.msg_ll);
         msg_img = f(R.id.msg_img);
         msg_tv = f(R.id.msg_tv);
@@ -100,10 +110,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         my_tv = f(R.id.my_tv);
         my_img = f(R.id.my_img);
         mp.Presenter();
-        initLocation();
+        if (SPreferences.getUserSig() != null && !SPreferences.getUserSig().isEmpty())
+            IMInit();
     }
 
     public void IMInit() {
+        initLocation();
         mp.IMinit(this);
         rejectInit();
     }
@@ -130,17 +142,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }
         });
     }
-
-  /*  public void logout() {
-
-        TlsBusiness.logout(UserInfo.getInstance().getId());
-        UserInfo.getInstance().setId(null);
-        MessageEvent.getInstance().clear();
-        FriendshipInfo.getInstance().clear();
-        GroupInfo.getInstance().clear();
-        Intent intent = new Intent(MainActivity.this, LoginOperationActivity.class);
-        startActivity(intent);
-    }*/
 
     private void initLocation() {
         //初始化定位
@@ -174,7 +175,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mLocationClient.startLocation();
     }
 
-    private void Home() {
+    public void Home() {
 //        ObjectAnimator anima = ShakeAnima(home_img);
 //        anima.start();
         // 提交事务
@@ -186,24 +187,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             ft.show(homeFragment);
             Log.i(TAG, "show");
         }
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
-    private void My() {
+    public void My() {
 //        ObjectAnimator anima = ShakeAnima(my_img);
 //        anima.start();
         if (myFragment == null) {
-            myFragment = new SettingFragment();
+            myFragment = new MyFragment();
             ft.add(R.id.main_layout, myFragment).show(myFragment);
             Log.i(TAG, "add");
         } else {
             ft.show(myFragment);
             Log.i(TAG, "show");
         }
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
-    private void Msg() {
+    public void Msg() {
 //        ObjectAnimator anima = ShakeAnima(msg_img);
 //        anima.start();
         if (msgFragment == null) {
@@ -214,7 +215,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             ft.show(msgFragment);
             Log.i(TAG, "show");
         }
-        ft.commit();
+        ft.commitAllowingStateLoss();
+    }
+    public void Find() {
+//        ObjectAnimator anima = ShakeAnima(msg_img);
+//        anima.start();
+        if (findFragment == null) {
+            findFragment = new FindFragment();
+            ft.add(R.id.main_layout, findFragment).show(findFragment);
+            Log.i(TAG, "add");
+        } else {
+            ft.show(findFragment);
+            Log.i(TAG, "show");
+        }
+        ft.commitAllowingStateLoss();
     }
 
     private void setSelected(LinearLayout ll) {
@@ -223,10 +237,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             my_tv.setTextColor(getRouColors(R.color.blue8));
             home_tv.setTextColor(getRouColors(R.color.gray4));
             msg_tv.setTextColor(getRouColors(R.color.gray4));
+            find_tv.setTextColor(getRouColors(R.color.gray4));
 
             my_img.setImageResource(R.mipmap.my_page_icon);
             home_img.setImageResource(R.mipmap.home_page_unicon);
             msg_img.setImageResource(R.mipmap.msg_page_unicon);
+            find_img.setImageResource(R.mipmap.find_page_unicon);
 
         } else if (ll.equals(home_ll)) {
             my_tv.setTextColor(getRouColors(R.color.gray4));
@@ -235,14 +251,34 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             home_tv.setTextColor(getRouColors(R.color.blue8));
             home_img.setImageResource(R.mipmap.home_page_icon);
 
+            find_img.setImageResource(R.mipmap.find_page_unicon);
+            find_tv.setTextColor(getRouColors(R.color.gray4));
+
             msg_tv.setTextColor(getRouColors(R.color.gray4));
             msg_img.setImageResource(R.mipmap.msg_page_unicon);
+        } else if (ll.equals(find_ll)) {
+
+            my_tv.setTextColor(getRouColors(R.color.gray4));
+            my_img.setImageResource(R.mipmap.my_page_unicon);
+
+            home_tv.setTextColor(getRouColors(R.color.gray4));
+            home_img.setImageResource(R.mipmap.home_page_unicon);
+
+            find_img.setImageResource(R.mipmap.find_page_icon);
+            find_tv.setTextColor(getRouColors(R.color.blue8));
+
+            msg_tv.setTextColor(getRouColors(R.color.gray4));
+            msg_img.setImageResource(R.mipmap.msg_page_unicon);
+
         } else {
             my_tv.setTextColor(getRouColors(R.color.blue8));
             msg_img.setImageResource(R.mipmap.msg_page_icon);
 
             my_tv.setTextColor(getRouColors(R.color.gray4));
             my_img.setImageResource(R.mipmap.my_page_unicon);
+
+            find_img.setImageResource(R.mipmap.find_page_unicon);
+            find_tv.setTextColor(getRouColors(R.color.gray4));
 
             home_tv.setTextColor(getRouColors(R.color.gray4));
             home_img.setImageResource(R.mipmap.home_page_unicon);
@@ -257,6 +293,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
         if (msgFragment != null) {
             ft.hide(msgFragment);
+        }
+        if (findFragment != null) {
+            ft.hide(findFragment);
         }
     }
 
@@ -286,6 +325,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 if (LoginStatusQuery()) {
                     setSelected(msg_ll);
                     Msg();
+                } else {
+                    ToastUtil.toast2_bottom(MainActivity.this, "请先登录！");
+                    goLoginOperPage(MainActivity.this);
+                }
+                break;
+            case R.id.find_ll:
+                if (LoginStatusQuery()) {
+                    setSelected(find_ll);
+                    Find();
                 } else {
                     ToastUtil.toast2_bottom(MainActivity.this, "请先登录！");
                     goLoginOperPage(MainActivity.this);
@@ -322,9 +370,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Fields.ACRESULET1 || resultCode == Fields.ACRESULET3)
+        if (resultCode == Fields.ACRESULET1 || resultCode == Fields.ACRESULET3) {
             if (getHomeInstance() != null)
                 getHomeInstance().onRefresh();
+            if (SettingInstance() != null)
+                SettingInstance().SettingInstance().mp.getUseDetails();
+        }
     }
 
     @Override
@@ -346,6 +397,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     SPreferences.saveAddress(amapLocation.getAddress());
 
                     mp.UpLoadLocation(amapLocation.getLatitude(), amapLocation.getLongitude(), amapLocation.getAddress());
+
+                    if (getHomeInstance() != null)
+                        getHomeInstance().onRefresh();
                 }
 
             } else {
@@ -413,7 +467,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onSuccess() {
 
-        saveIdentifier("nnmcw");
         Log.i(TAG, "登录成功");
         //初始化程序后台后消息推送
         PushUtil.getInstance();

@@ -162,11 +162,13 @@ public class GroupMemberActivity extends Activity implements TIMValueCallBack<Li
 
                 if (list.get(i).getIdentify().equals(tf.getIdentifier())) {
                     String myid = SPreferences.getIdentifier().trim();
-                    if (list.get(i).getIdentify().trim().equals(myid))
+                    if (list.get(i).getIdentify().trim().equals(myid)) {
                         ((GroupMemberProfile) list.get(i)).setFaceUrl(SPreferences.getUserHeadImg());
-                    else
+                        ((GroupMemberProfile) list.get(i)).setUserName(SPreferences.getUserName());
+                    } else {
                         ((GroupMemberProfile) list.get(i)).setFaceUrl(tf.getFaceUrl());
-
+                        ((GroupMemberProfile) list.get(i)).setUserName(tf.getNickName());
+                    }
                     break;
                 }
             }

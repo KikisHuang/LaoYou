@@ -20,6 +20,7 @@ public abstract class Conversation implements Comparable {
     //会话对象头像;
     protected String faceurl;
 
+
     /**
      * 获取最后一条消息的时间
      */
@@ -64,7 +65,9 @@ public abstract class Conversation implements Comparable {
     public String getIdentify() {
         return identify;
     }
-
+    public void setFaceurl(String url) {
+        this.faceurl = url;
+    }
     public TIMConversationType getType() {
         return type;
     }

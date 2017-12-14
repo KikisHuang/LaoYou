@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.tencent.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -9,22 +10,22 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.tencent.TIMUserProfile;
 import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
-import com.tencent.qcloud.presentation.viewfeatures.FriendInfoView;
+import com.tencent.qcloud.presentation.viewfeatures.SearchListener;
+import com.tencent.qcloud.sdk.SearchBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.tencent.adapters.ProfileSummaryAdapter;
-import laoyou.com.laoyou.tencent.model.FriendProfile;
-import laoyou.com.laoyou.tencent.model.ProfileSummary;
+import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.tencent.adapters.SearchFindAdapter;
+import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 
 /**
  * 查找添加新朋友
  */
-public class SearchFriendActivity extends Activity implements FriendInfoView, AdapterView.OnItemClickListener, View.OnKeyListener {
+public class SearchFriendActivity extends Activity implements AdapterView.OnItemClickListener, View.OnKeyListener, SearchListener {
 
     private final static String TAG = "SearchFriendActivity";
 
@@ -32,17 +33,17 @@ public class SearchFriendActivity extends Activity implements FriendInfoView, Ad
     ListView mSearchList;
     EditText mSearchInput;
     TextView tvNoResult;
-    ProfileSummaryAdapter adapter;
-    List<ProfileSummary> list = new ArrayList<>();
+    SearchFindAdapter adapter;
+    List<SearchBean> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addnew);
         mSearchInput = (EditText) findViewById(R.id.inputSearch);
-        mSearchList =(ListView) findViewById(R.id.list);
+        mSearchList = (ListView) findViewById(R.id.list);
         tvNoResult = (TextView) findViewById(R.id.noResult);
-        adapter = new ProfileSummaryAdapter(this, R.layout.item_profile_summary, list);
+        adapter = new SearchFindAdapter(this, R.layout.item_profile_summary, list);
         mSearchList.setAdapter(adapter);
         mSearchList.setOnItemClickListener(this);
         presenter = new FriendshipManagerPresenter(this);
@@ -57,15 +58,29 @@ public class SearchFriendActivity extends Activity implements FriendInfoView, Ad
     }
 
 
-
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        list.get(i).onClick(this);
+//        list.get(i).onClick(this);
+        String identify = list.get(i).getCloudTencentAccount();
+    /*       Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra("identify",identify );
+        startActivity(intent);*/
+        if (!SPreferences.getIdentifier().equals(identify)) {
+            if (FriendshipInfo.getInstance().isFriend(identify)) {
+                ProfileActivity.navToProfile(this, identify);
+            } else {
+                Intent person = new Intent(this, AddFriendActivity.class);
+                person.putExtra("id", identify);
+                person.putExtra("name", list.get(i).getName());
+                person.putExtra("head_img", list.get(i).getHeadImgUrl());
+                startActivity(person);
+            }
+        }
     }
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (event.getAction() != KeyEvent.ACTION_UP){   // 忽略其它事件
+        if (event.getAction() != KeyEvent.ACTION_UP) {   // 忽略其它事件
             return false;
         }
 
@@ -75,51 +90,35 @@ public class SearchFriendActivity extends Activity implements FriendInfoView, Ad
                 adapter.notifyDataSetChanged();
                 String key = mSearchInput.getText().toString();
                 if (key.equals("")) return true;
-                presenter.searchFriendByName(key,true);
-                //给手机号加上86-
-                if (maybePhone(key)){
-                    key = "86-" + key;
-                }
-                presenter.searchFriendById(key);
+
+                presenter.searchFriend(key);
+
                 return true;
             default:
                 return super.onKeyUp(keyCode, event);
         }
     }
 
-    /**
-     * 显示好友信息
-     *
-     * @param users 好友资料列表
-     */
+
+    private boolean needAdd(String id) {
+        for (SearchBean item : list) {
+            if (item.getCloudTencentAccount().equals(id)) return false;
+        }
+        return true;
+    }
+
     @Override
-    public void showUserInfo(List<TIMUserProfile> users) {
+    public void onShowInfo(List<SearchBean> users) {
         if (users == null) return;
-        for (TIMUserProfile item : users){
-            if (needAdd(item.getIdentifier()))
-                list.add(new FriendProfile(item));
+        for (SearchBean item : users) {
+            if (needAdd(item.getCloudTencentAccount()))
+                list.add(item);
         }
         adapter.notifyDataSetChanged();
-        if (list.size() == 0){
+        if (list.size() == 0) {
             tvNoResult.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tvNoResult.setVisibility(View.GONE);
         }
     }
-
-    private boolean needAdd(String id){
-        for (ProfileSummary item : list){
-            if (item.getIdentify().equals(id)) return false;
-        }
-        return true;
-    }
-
-    private boolean maybePhone(String str){
-        if (str.length() != 11) return false;
-        for (int i = 0 ; i < str.length() ; ++i){
-            if(!Character.isDigit(str.charAt(i))) return false;
-        }
-        return true;
-    }
-
 }

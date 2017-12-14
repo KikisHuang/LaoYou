@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/titles_layout_include"></include>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/title_name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="@string/add_like_game"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:divider="@null"
+            android:scrollbars="none"></ListView>
+
+        <laoyou.com.laoyou.view.RippleView
+            android:id="@+id/commit_bt"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center|bottom"
+            android:background="@color/blue_ba"
+            android:gravity="center"
+            android:text="@string/commit"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            ripple:alphaFactor="0.5"
+            ripple:hover="false"
+            ripple:rippleColor="@color/white" />
+
+    </LinearLayout>
+
+</LinearLayout>

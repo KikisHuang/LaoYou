@@ -11,14 +11,16 @@ import com.bumptech.glide.Glide;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.LoginListener;
 import laoyou.com.laoyou.presenter.LoginPresenter;
+import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.IntentUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
+import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goSendPhoneCodePage;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
-import static laoyou.com.laoyou.utils.SynUtils.setTitles;
+import static laoyou.com.laoyou.utils.TitleUtils.setTitles;
 
 /**
  * Created by lian on 2017/10/26.
@@ -89,6 +91,12 @@ public class LoginActivity extends InitActivity implements View.OnClickListener,
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Cancle();
+    }
+
+    @Override
     public void onClear() {
         ClickFlag = false;
         Glide.with(LoginActivity.this).load(R.mipmap.close_icon).into(commit_img);
@@ -110,10 +118,19 @@ public class LoginActivity extends InitActivity implements View.OnClickListener,
     @Override
     public void onFailed(String msg) {
         ToastUtil.toast2_bottom(LoginActivity.this, msg);
+        SPreferences.saveUserToken("");
+        Cancle();
     }
 
     @Override
     public void onError(String msg) {
         ToastUtil.toast2_bottom(LoginActivity.this, msg);
+        Cancle();
+    }
+
+    @Override
+    public void onImFailed(String msg) {
+        SPreferences.saveUserToken("");
+        Cancle();
     }
 }

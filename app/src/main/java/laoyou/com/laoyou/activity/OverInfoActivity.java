@@ -1,34 +1,31 @@
 package laoyou.com.laoyou.activity;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.dialog.ActionSheetDialog;
 import laoyou.com.laoyou.listener.OverInfoListener;
 import laoyou.com.laoyou.presenter.OverInfoPresenter;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.thread.getImageCacheAsyncTask;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.RippleView;
 import me.iwf.photopicker.PhotoPicker;
-import top.zibin.luban.Luban;
-import top.zibin.luban.OnCompressListener;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
-import static laoyou.com.laoyou.utils.SynUtils.setTitles;
+import static laoyou.com.laoyou.utils.TitleUtils.setTitles;
 
 /**
  * Created by lian on 2017/10/28.
@@ -36,7 +33,7 @@ import static laoyou.com.laoyou.utils.SynUtils.setTitles;
 public class OverInfoActivity extends InitActivity implements View.OnClickListener, OverInfoListener {
 
     private static final String TAG = "OverInfoActivity";
-    private ImageView head_img;
+    private CircleImageView head_img;
     private EditText nickname_ed, sex_ed;
     private RippleView commit_bt;
     private File headFile = null;
@@ -90,41 +87,12 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
             switch (requestCode) {
                 case PhotoPicker.REQUEST_CODE:
                     ArrayList<String> p = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-                    Compress(p);
+                    op.CompressFile(this,p,200);
                     break;
             }
         }
     }
 
-    /**
-     * 压缩
-     */
-    private void Compress(List<String> list) {
-        Luban.with(this)
-                .load(list)                                   // 传人要压缩的图片列表
-                .ignoreBy(300)                               // 忽略不压缩图片的大小
-//                .setTargetDir(FileManager.getSaveFilePath() + "gxLuban")// 设置压缩后文件存储位置
-                .setCompressListener(new OnCompressListener() { //设置回调
-                    @Override
-                    public void onStart() {
-                        // TODO 压缩开始前调用，可以在方法内启动 loading UI
-                    }
-
-                    @Override
-                    public void onSuccess(File file) {
-                        // TODO 压缩成功后调用，返回压缩后的图片文件
-                        Log.i(TAG, "onSuccess" + file.getAbsolutePath());
-                        headFile = file;
-                        Glide.with(OverInfoActivity.this).load(file).bitmapTransform(new CropCircleTransformation(OverInfoActivity.this)).into(head_img);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // TODO 当压缩过程出现问题时调用
-                        ToastUtil.toast2_bottom(OverInfoActivity.this, "图片获取异常！！！");
-                    }
-                }).launch();    //启动压缩
-    }
 
     @Override
     public void onClick(View v) {
@@ -205,6 +173,8 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
     public void setHeadImgAndName(String imgPath, String name) {
         if (!imgPath.isEmpty() && !name.isEmpty()) {
             Glide.with(OverInfoActivity.this).load(imgPath).bitmapTransform(new CropCircleTransformation(OverInfoActivity.this)).into(head_img);
+            new getImageCacheAsyncTask(getApplicationContext(), this).execute(imgPath);
+
             nickname_ed.setText(name);
             nickname_ed.setSelection(name.length());
             onCommit();
@@ -224,5 +194,16 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
         SPreferences.saveUserToken("");
         setResult(Fields.ACRESULET3);
         finish();
+    }
+
+    @Override
+    public void onFile(File f) {
+        headFile = f;
+    }
+
+    @Override
+    public void onCompressSucceed(File f) {
+        headFile = f;
+        Glide.with(OverInfoActivity.this).load(f).bitmapTransform(new CropCircleTransformation(OverInfoActivity.this)).into(head_img);
     }
 }

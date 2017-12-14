@@ -86,7 +86,7 @@ public class CreateGroupAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onSelected(list.get(pos).getIdentifier(), list.get(pos).getFaceUrl(),pos);
+                listener.onSelected(list,pos);
             }
         });
     }

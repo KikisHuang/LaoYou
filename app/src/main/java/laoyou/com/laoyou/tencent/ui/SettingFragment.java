@@ -44,7 +44,6 @@ public class SettingFragment extends Fragment implements FriendInfoView {
     private final int REQ_CHANGE_NICK = 1000;
     private Map<String, TIMFriendAllowType> allowTypeContent;
 
-
     public SettingFragment() {
         // Required empty public constructor
     }

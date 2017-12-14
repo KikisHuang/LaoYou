@@ -160,6 +160,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                     public void onClick(View v) {
                         Intent intent = new Intent(ChatActivity.this, GroupProfileActivity.class);
                         intent.putExtra("identify", identify);
+                        intent.putExtra("key", SPreferences.getUserToken());
                         startActivity(intent);
                     }
                 });

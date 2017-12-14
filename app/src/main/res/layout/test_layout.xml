@@ -5,8 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <laoyou.com.laoyou.view.HorizontalListView
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></laoyou.com.laoyou.view.HorizontalListView>
+    <laoyou.com.laoyou.view.group.GroupCircularImageView
+        android:id="@+id/circularImageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        />
+
+
 </LinearLayout>

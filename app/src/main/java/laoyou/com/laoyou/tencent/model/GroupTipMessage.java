@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.tencent.model;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import com.tencent.TIMGroupMemberInfo;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.application.MyApplication;
+import laoyou.com.laoyou.bean.TemporaryBean;
 import laoyou.com.laoyou.tencent.adapters.ChatAdapter;
 
 /**
@@ -19,11 +21,9 @@ import laoyou.com.laoyou.tencent.adapters.ChatAdapter;
  */
 public class GroupTipMessage extends Message {
 
-
-    public GroupTipMessage(TIMMessage message){
+    public GroupTipMessage(TIMMessage message) {
         this.message = message;
     }
-
 
     /**
      * 显示消息
@@ -45,34 +45,57 @@ public class GroupTipMessage extends Message {
     @Override
     public String getSummary() {
         final TIMGroupTipsElem e = (TIMGroupTipsElem) message.getElement(0);
+
         StringBuilder stringBuilder = new StringBuilder();
-        Iterator<Map.Entry<String,TIMGroupMemberInfo>> iterator = e.getChangedGroupMemberInfo().entrySet().iterator();
-        switch (e.getTipsType()){
+        Iterator<Map.Entry<String, TIMGroupMemberInfo>> iterator = e.getChangedGroupMemberInfo().entrySet().iterator();
+        Log.i(TAG, "TipsType ====" + e.getTipsType());
+        switch (e.getTipsType()) {
             case CancelAdmin:
             case SetAdmin:
                 return MyApplication.getContext().getString(R.string.summary_group_admin_change);
+
             case Join:
-                while(iterator.hasNext()){
-                    Map.Entry<String,TIMGroupMemberInfo> item = iterator.next();
+                while (iterator.hasNext()) {
+                    Map.Entry<String, TIMGroupMemberInfo> item = iterator.next();
                     stringBuilder.append(getName(item.getValue()));
                     stringBuilder.append(" ");
                 }
-                return stringBuilder +
-                        MyApplication.getContext().getString(R.string.summary_group_mem_add);
+//                return stringBuilder +
+//                        MyApplication.getContext().getString(R.string.summary_group_mem_add);
+                for (TemporaryBean tb : MyApplication.temporary) {
+                    if (tb.getId().equals(stringBuilder))
+                        return tb.getName() + MyApplication.getContext().getString(R.string.summary_group_mem_add);
+                }
+                return "";
             case Kick:
-                return e.getUserList().get(0) +
-                        MyApplication.getContext().getString(R.string.summary_group_mem_kick);
+                for (TemporaryBean tb : MyApplication.temporary) {
+                    if (tb.getId().equals(e.getUserList().get(0)))
+                        return tb.getName() + MyApplication.getContext().getString(R.string.summary_group_mem_kick);
+                }
+                return "";
+//                return e.getUserList().get(0) +
+//                        MyApplication.getContext().getString(R.string.summary_group_mem_kick);
             case ModifyMemberInfo:
-                while(iterator.hasNext()){
-                    Map.Entry<String,TIMGroupMemberInfo> item = iterator.next();
+                while (iterator.hasNext()) {
+                    Map.Entry<String, TIMGroupMemberInfo> item = iterator.next();
                     stringBuilder.append(getName(item.getValue()));
                     stringBuilder.append(" ");
                 }
-                return stringBuilder +
-                        MyApplication.getContext().getString(R.string.summary_group_mem_modify);
+                for (TemporaryBean tb : MyApplication.temporary) {
+                    if (tb.getId().equals(stringBuilder))
+                        return tb.getName() + MyApplication.getContext().getString(R.string.summary_group_mem_modify);
+                }
+                return "";
+//                return stringBuilder +
+//                        MyApplication.getContext().getString(R.string.summary_group_mem_modify);
             case Quit:
-                return e.getOpUser() +
-                        MyApplication.getContext().getString(R.string.summary_group_mem_quit);
+                for (TemporaryBean tb : MyApplication.temporary) {
+                    if (tb.getId().equals(e.getOpUser()))
+                        return tb.getName() + MyApplication.getContext().getString(R.string.summary_group_mem_quit);
+                }
+                return "";
+//                return e.getOpUser() +
+//                        MyApplication.getContext().getString(R.string.summary_group_mem_quit);
             case ModifyGroupInfo:
                 return MyApplication.getContext().getString(R.string.summary_group_info_change);
         }
@@ -87,10 +110,12 @@ public class GroupTipMessage extends Message {
 
     }
 
-    private String getName(TIMGroupMemberInfo info){
-        if (info.getNameCard().equals("")){
+    private String getName(TIMGroupMemberInfo info) {
+        if (info.getNameCard().equals("")) {
             return info.getUser();
         }
         return info.getNameCard();
     }
+
+
 }

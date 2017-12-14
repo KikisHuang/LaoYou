@@ -13,9 +13,12 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
     <!-- 启动样式-->
-    <style name="SplashTheme" parent="@style/Theme.AppCompat.Light">
+    <style name="SplashTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <!--将Activity的Theme设置成透明-->
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowIsTranslucent">false</item>
         <!-- 欢迎页背景图 -->
         <item name="android:windowBackground">@drawable/splash</item>
 
@@ -31,8 +34,13 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
     <style name="TabLayoutTextStyle">
-        <item name="android:textSize">13dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TabLayoutTitlesTextStyle">
+        <item name="android:textSize">25sp</item>
     </style>
 
 
@@ -83,6 +91,7 @@
         <item name="android:layout_marginBottom">2dp</item>
         <item name="android:layout_marginLeft">8dp</item>
     </style>
+
     <style name="line_styles2">
         <item name="android:layout_height">0.5dp</item>
         <item name="android:layout_width">match_parent</item>
@@ -140,28 +149,40 @@
         <item name="android:background">@color/gray0</item>
         <item name="android:layout_marginTop">10dp</item>
     </style>
+
     <style name="width_line_style2">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/gray0</item>
     </style>
+
     <style name="width_line_style3">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
         <item name="android:background">@color/gray0</item>
     </style>
+
     <style name="width_line_style4">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:background">@color/gray0</item>
     </style>
+
     <style name="width_line_style10">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">10dp</item>
         <item name="android:background">@color/gray0</item>
         <item name="android:layout_marginTop">10dp</item>
     </style>
+
+    <style name="width_line_style10_3">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">10dp</item>
+        <item name="android:background">@color/gray9</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
     <style name="width_line_style10_2">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">10dp</item>
@@ -173,6 +194,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/gray0</item>
     </style>
+
     <style name="height_line_style2">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -182,6 +204,7 @@
         <item name="android:layout_marginBottom">3dp</item>
         <item name="android:background">@color/gray0</item>
     </style>
+
     <style name="height_line_style3">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -191,6 +214,7 @@
         <item name="android:layout_marginRight">15dp</item>
         <item name="android:background">@color/gray0</item>
     </style>
+
     <style name="height_line_style1">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -225,6 +249,7 @@
         <item name="colorControlNormal">@color/mediumseagreen</item>
         <item name="colorControlActivated">@color/mediumseagreen</item>
     </style>
+
     <style name="Gary_EditText" parent="@style/Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/content3</item>
         <item name="colorControlActivated">@color/content3</item>

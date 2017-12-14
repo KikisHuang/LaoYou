@@ -12,7 +12,7 @@ import laoyou.com.laoyou.utils.ToastUtil;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goForGetPassPage;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
-import static laoyou.com.laoyou.utils.SynUtils.setTitles;
+import static laoyou.com.laoyou.utils.TitleUtils.setTitles;
 
 /**
  * Created by lian on 2017/10/27.

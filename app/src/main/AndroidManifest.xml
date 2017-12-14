@@ -50,11 +50,6 @@
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <!-- 测试页面 -->
@@ -99,7 +94,9 @@
         <!-- 外链页面 -->
         <activity
             android:name=".activity.OutSideActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+
+        </activity>
         <!-- wifi页面 -->
         <activity
             android:name=".activity.WifiActivity"
@@ -108,17 +105,100 @@
         <activity
             android:name=".activity.QueryActivity"
             android:screenOrientation="portrait"></activity>
+        <!-- 我的个人主页页面 -->
+        <activity
+            android:name=".activity.MyHomePageActivity"
+            android:screenOrientation="portrait"></activity>
+        <!-- 评论页面 -->
+        <activity
+            android:name=".activity.MyCommentActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <!-- 我的相册页面 -->
+        <activity
+            android:name=".activity.MyPhotoActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <!-- 个人主页页面 -->
+        <activity
+            android:name=".activity.HomePageActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <!-- 喜欢的游戏页面 -->
+        <activity
+            android:name=".activity.LikeGameActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <!-- 添加喜欢的游戏页面 -->
+        <activity
+            android:name=".activity.AddLikeGameActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!-- 网吧列表页面 -->
+        <activity
+            android:name=".activity.InternetCafLocationActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- 网吧详情页面 -->
+        <activity
+            android:name=".activity.InternetCatActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <!-- 游戏资讯页面 -->
+        <activity
+            android:name=".activity.GameInformationActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <!-- 设置页面 -->
+        <activity
+            android:name=".activity.SettingActivity"
+            android:screenOrientation="portrait"></activity>
         <!-- 好友通讯录页面 -->
         <activity
             android:name=".activity.AddressbookActivity"
             android:screenOrientation="portrait">
-
+        </activity>
+        <!-- 照片查看器页面 -->
+        <activity
+            android:name=".activity.PhotoViewerActivity"
+            android:screenOrientation="portrait">
         </activity>
         <!-- 创建群组页面 -->
         <activity
             android:name=".activity.MyCreateGroupActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
+        <!-- 闪聊页面 -->
+        <activity
+            android:name=".activity.FlashChatActivity"
+            android:screenOrientation="portrait"></activity>
+        <!-- 附近闪聊页面 -->
+        <activity
+            android:name=".activity.NearbyFlashChatActivity"
+            android:screenOrientation="portrait"></activity>
+        <!-- 创建闪聊导语页面 -->
+        <activity
+            android:name=".activity.CreateFlashChatActivity"
+            android:screenOrientation="portrait"></activity>
+        <!-- 创建闪聊填写资料页面 -->
+        <activity
+            android:name=".activity.FlashChatBasicsActivity"
+            android:screenOrientation="portrait"></activity>
+        <!-- 创建闪聊选择话题类型页面 -->
+        <activity
+            android:name=".activity.FlashChatGambitActivity"
+            android:screenOrientation="portrait"></activity>
+        <!-- 创建闪聊选择成员页面 -->
+        <activity
+            android:name=".activity.FlashChatMemberActivity"
+            android:screenOrientation="portrait"></activity>
 
         <!-- 照片选择框架页面 -->
         <activity

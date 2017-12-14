@@ -11,4 +11,6 @@ public interface LoginOperationListener {
     void onFailed(String response);
 
     void onSucceed();
+
+    void onImFailed(String gets);
 }

@@ -1,5 +1,7 @@
 package laoyou.com.laoyou.listener;
 
+import java.io.File;
+
 /**
  * Created by lian on 2017/10/28.
  */
@@ -47,9 +49,15 @@ public interface OverInfoListener {
      * im 登录成功回调;
      */
     void onImSucceed();
+
     /**
      * im 登录异常或失败回调;
+     *
      * @param gets
      */
     void onImFailed(String gets);
+
+    void onFile(File f);
+
+    void onCompressSucceed(File f);
 }

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 /**
  * Created by lian on 2017/4/22.
  */
-public abstract  class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
     private static final String TAG = "BaseFragment";
     protected View view;
 

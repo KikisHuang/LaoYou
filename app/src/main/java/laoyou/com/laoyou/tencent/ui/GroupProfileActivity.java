@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMConversationType;
 import com.tencent.TIMGroupAddOpt;
@@ -23,19 +24,28 @@ import com.tencent.qcloud.presentation.presenter.GroupInfoPresenter;
 import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
 import com.tencent.qcloud.presentation.viewfeatures.FriendInfoView;
 import com.tencent.qcloud.presentation.viewfeatures.GroupInfoView;
+import com.tencent.qcloud.presentation.viewfeatures.GroupUpLoadListener;
 import com.tencent.qcloud.ui.LineControllerView;
 import com.tencent.qcloud.ui.ListPickerDialog;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.model.UserInfo;
+import laoyou.com.laoyou.utils.ToastUtil;
+import me.iwf.photopicker.PhotoPicker;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
-public class GroupProfileActivity extends FragmentActivity implements GroupInfoView, View.OnClickListener, FriendInfoView {
+public class GroupProfileActivity extends FragmentActivity implements GroupInfoView, View.OnClickListener, FriendInfoView, GroupUpLoadListener {
 
     private final String TAG = "GroupProfileActivity";
 
@@ -51,6 +61,10 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
     private LineControllerView name, intro;
     private String headImg;
     private FriendshipManagerPresenter friendshipManagerPresenter;
+    private CircleImageView group_head;
+    private LinearLayout group_head_layout;
+    private File GroupFile;
+    private String key = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +72,20 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
         setContentView(R.layout.activity_group_chat_setting);
         identify = getIntent().getStringExtra("identify");
         isInGroup = GroupInfo.getInstance().isInGroup(identify);
-        groupInfoPresenter = new GroupInfoPresenter(this, Collections.singletonList(identify), isInGroup);
+
+        groupInfoPresenter = new GroupInfoPresenter(this, Collections.singletonList(identify), isInGroup, this);
         friendshipManagerPresenter = new FriendshipManagerPresenter(this);
         groupInfoPresenter.getGroupDetailInfo();
         name = (LineControllerView) findViewById(R.id.nameText);
         intro = (LineControllerView) findViewById(R.id.groupIntro);
+        group_head = (CircleImageView) findViewById(R.id.group_head);
+
         LinearLayout controlInGroup = (LinearLayout) findViewById(R.id.controlInGroup);
+        group_head_layout = (LinearLayout) findViewById(R.id.group_head_layout);
         controlInGroup.setVisibility(isInGroup ? View.VISIBLE : View.GONE);
         TextView controlOutGroup = (TextView) findViewById(R.id.controlOutGroup);
         controlOutGroup.setVisibility(isInGroup ? View.GONE : View.VISIBLE);
+        group_head_layout.setOnClickListener(this);
     }
 
     /**
@@ -76,13 +95,23 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
      */
     @Override
     public void showGroupInfo(List<TIMGroupDetailInfo> groupInfos) {
+
+
         friendshipManagerPresenter.getMyProfile();
         info = groupInfos.get(0);
         isGroupOwner = info.getGroupOwner().equals(UserInfo.getInstance().getId());
+
         roleType = GroupInfo.getInstance().getRole(identify);
         type = info.getGroupType();
         LineControllerView member = (LineControllerView) findViewById(R.id.member);
         if (isInGroup) {
+            group_head_layout.setVisibility(View.VISIBLE);
+            key = getIntent().getStringExtra("key");
+            if (groupInfos.get(0) == null || groupInfos.get(0).getFaceUrl().isEmpty())
+                Glide.with(GroupProfileActivity.this).load(R.drawable.head_group).into(group_head);
+            else
+                Glide.with(GroupProfileActivity.this).load(groupInfos.get(0).getFaceUrl()).into(group_head);
+
             member.setContent(String.valueOf(info.getMemberNum()));
             member.setOnClickListener(this);
         } else {
@@ -265,11 +294,26 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
                     }
                 });
                 break;
+
+            case R.id.group_head_layout:
+                if (isGroupOwner)
+                    groupInfoPresenter.ChangeHeadImg(this, 1);
+                else
+                    ToastUtil.toast2_bottom(GroupProfileActivity.this, "只有群主才能更改群头像");
+                break;
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PhotoPicker.REQUEST_CODE:
+                    ArrayList<String> p = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                    Compress(p);
+                    break;
+            }
+        }
         if (requestCode == REQ_CHANGE_NAME) {
             if (resultCode == RESULT_OK) {
                 name.setContent(data.getStringExtra(EditActivity.RETURN_EXTRA));
@@ -282,6 +326,42 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
 
     }
 
+    /**
+     * 压缩
+     */
+    private void Compress(List<String> list) {
+        Luban.with(this)
+                .load(list)                                   // 传人要压缩的图片列表
+                .ignoreBy(300)                               // 忽略不压缩图片的大小
+//                .setTargetDir(FileManager.getSaveFilePath() + "gxLuban")// 设置压缩后文件存储位置
+                .setCompressListener(new OnCompressListener() { //设置回调
+                    @Override
+                    public void onStart() {
+                        // TODO 压缩开始前调用，可以在方法内启动 loading UI
+                    }
+
+                    @Override
+                    public void onSuccess(File file) {
+                        // TODO 压缩成功后调用，返回压缩后的图片文件
+                        Log.i(TAG, "onSuccess" + file.getAbsolutePath());
+                        GroupFile = file;
+                        Glide.with(GroupProfileActivity.this).load(file).bitmapTransform(new CropCircleTransformation(GroupProfileActivity.this)).into(group_head);
+                        UpGroupHead();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // TODO 当压缩过程出现问题时调用
+                        ToastUtil.toast2_bottom(GroupProfileActivity.this, "图片获取异常！！！");
+                    }
+                }).launch();    //启动压缩
+    }
+
+    private void UpGroupHead() {
+        groupInfoPresenter.UploadGroupImg(key, GroupFile, identify);
+
+    }
+
     private boolean isManager() {
         return roleType == TIMGroupMemberRoleType.Owner || roleType == TIMGroupMemberRoleType.Admin;
     }
@@ -289,5 +369,15 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
     @Override
     public void showUserInfo(List<TIMUserProfile> users) {
         headImg = users.get(0).getFaceUrl();
+    }
+
+    @Override
+    public void onSucceed() {
+        ToastUtil.toast2_bottom(GroupProfileActivity.this, "群头像上传成功！");
+    }
+
+    @Override
+    public void onErrorMSg(String msg) {
+        ToastUtil.toast2_bottom(this, msg);
     }
 }

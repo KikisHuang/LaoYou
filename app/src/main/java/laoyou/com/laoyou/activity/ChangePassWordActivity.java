@@ -7,12 +7,10 @@ import android.widget.ImageView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.ChangePassListener;
 import laoyou.com.laoyou.presenter.ChangePassPresenter;
-import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
-import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
-import static laoyou.com.laoyou.utils.SynUtils.setTitles;
+import static laoyou.com.laoyou.utils.TitleUtils.setTitles;
 
 /**
  * Created by lian on 2017/11/1.
@@ -60,9 +58,7 @@ public class ChangePassWordActivity extends InitActivity implements View.OnClick
     @Override
     public void onChangeSucceed() {
         ToastUtil.toast2_bottom(ChangePassWordActivity.this, "修改密码成功，请重新登录！");
-        SPreferences.saveUserToken("");
-        if (getHomeInstance() != null)
-            getHomeInstance().onLogout();
+        setResult(RESULT_OK);
         finish();
     }
 

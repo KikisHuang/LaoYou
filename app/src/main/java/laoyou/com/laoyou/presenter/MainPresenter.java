@@ -8,6 +8,7 @@ import com.tencent.qcloud.presentation.business.LoginBusiness;
 import com.tencent.qcloud.presentation.event.FriendshipEvent;
 import com.tencent.qcloud.presentation.event.GroupEvent;
 import com.tencent.qcloud.presentation.event.RefreshEvent;
+import com.tencent.qcloud.sdk.Interface;
 import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
 
 import java.util.Map;
@@ -17,7 +18,6 @@ import laoyou.com.laoyou.listener.MainListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.UserInfo;
 import laoyou.com.laoyou.utils.Fields;
-import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
@@ -75,8 +75,10 @@ public class MainPresenter implements HttpResultListener {
         //设置刷新监听
         RefreshEvent.getInstance();
 
-//        UserInfo.getInstance().setId("nnmcw");
-//        UserInfo.getInstance().setUserSig("eJx1kEFPgzAYhu-8iqZXjaOFiph4AOl0G4iObTFeGgIFvmyrDVTBGP*7C5rIxff6PMmTvJ8WQghv4uwiL4rXN2WE*dASo2uEPZ-i8z*sNZQiN8JpyxET1z6NMMeZWHLQ0EqRV0a2o0WZT0-aRIFSKgMV-ApKHYt*grtyL8bW-5EO6hEmfHu7eIoeqB3N1NweQu4uK2go3dRpu2ycbP8eqWAVgFw-Bnc6ZfWijg9JnOTPpN*lhxnT0c72mlUz79IzLnXG19XA-ZcwCfv77c0kaeD4cwphhBD3yqOX2PqyvgEKZlXE");
+//      UserInfo.getInstance().setId("nnmcw");
+//      UserInfo.getInstance().setUserSig("eJx1kEFPgzAYhu-8iqZXjaOFiph4AOl0G4iObTFeGgIFvmyrDVTBGP*7C5rIxff6PMmTvJ8WQghv4uwiL4rXN2WE*dASo2uEPZ-i8z*sNZQiN8JpyxET1z6NMMeZWHLQ0EqRV0a2o0WZT0-aRIFSKgMV-ApKHYt*grtyL8bW-5EO6hEmfHu7eIoeqB3N1NweQu4uK2go3dRpu2ycbP8eqWAVgFw-Bnc6ZfWijg9JnOTPpN*lhxnT0c72mlUz79IzLnXG19XA-ZcwCfv77c0kaeD4cwphhBD3yqOX2PqyvgEKZlXE");
+
+        Log.i(TAG, "Identifier == " + SPreferences.getIdentifier() + " UserSig ==" + SPreferences.getUserSig());
         UserInfo.getInstance().setId(SPreferences.getIdentifier());
         UserInfo.getInstance().setUserSig(SPreferences.getUserSig());
 

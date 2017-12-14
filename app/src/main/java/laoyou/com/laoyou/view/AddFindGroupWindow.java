@@ -24,7 +24,6 @@ import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
 import static laoyou.com.laoyou.utils.IntentUtils.goCertificationPage;
-import static laoyou.com.laoyou.utils.IntentUtils.goChangePassPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goOverInfoPage;
 
 
@@ -153,8 +152,6 @@ public class AddFindGroupWindow implements View.OnClickListener {
                 }).show();
                 break;
             case R.id.layout_3:
-                goChangePassPage(mContext);
-                popupWindow.dismiss();
                 break;
         }
     }

@@ -19,9 +19,12 @@ import com.zhy.http.okhttp.cookie.CookieJarImpl;
 import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.TemporaryBean;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.utils.Foreground;
 import laoyou.com.laoyou.utils.Fields;
@@ -33,6 +36,7 @@ import okhttp3.OkHttpClient;
 public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
     private static Context context;
+    public static List<TemporaryBean> temporary = new ArrayList<>();
 
     @Override
     public void onCreate() {

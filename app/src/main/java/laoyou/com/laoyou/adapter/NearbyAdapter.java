@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.name_tv.setText(list.get(position).getName());
-        Glide.with(context).load(list.get(position).getHeadImgUrl()).thumbnail(0.2f).bitmapTransform(new RoundedCornersTransformation(context, 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(holder.user_head_img);
+        Glide.with(context).load(list.get(position).getHeadImgUrl()).bitmapTransform(new CenterCrop(context),new RoundedCornersTransformation(context, 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(holder.user_head_img);
 
         if (list.get(position).getDistance() > 1000)
             holder.distance_tv.setText(getDistanceKM(list.get(position).getDistance() / 1000 ));

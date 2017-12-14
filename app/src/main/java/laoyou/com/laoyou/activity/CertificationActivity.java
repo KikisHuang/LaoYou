@@ -30,13 +30,12 @@ import static laoyou.com.laoyou.utils.DeviceUtils.getIMEI;
 import static laoyou.com.laoyou.utils.IPUtils.isWifi;
 import static laoyou.com.laoyou.utils.PhotoUtils.getMULTIPLEPhotoTag;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
-import static laoyou.com.laoyou.utils.SynUtils.setTitles;
+import static laoyou.com.laoyou.utils.TitleUtils.setTitles;
 
 /**
  * Created by lian on 2017/10/30.
  */
 public class CertificationActivity extends InitActivity implements View.OnClickListener, CertificationListener {
-
 
     private static final String TAG = "CertificationActivity";
     private RippleView commit_bt;

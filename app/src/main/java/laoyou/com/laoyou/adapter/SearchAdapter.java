@@ -75,7 +75,7 @@ public class SearchAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onSelected(list.get(position).getIdentifier(), list.get(position).getFaceUrl(), 10293);
+                listener.onSelected(list, 10293);
             }
         });
         return view;

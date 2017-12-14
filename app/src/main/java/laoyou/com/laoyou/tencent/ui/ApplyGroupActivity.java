@@ -8,9 +8,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tencent.TIMCallBack;
-import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
 
 import laoyou.com.laoyou.R;
+
+import static laoyou.com.laoyou.utils.ImUtils.JoinGroup;
 
 public class ApplyGroupActivity extends Activity implements TIMCallBack {
 
@@ -31,14 +32,15 @@ public class ApplyGroupActivity extends Activity implements TIMCallBack {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GroupManagerPresenter.applyJoinGroup(identify, editText.getText().toString(), ApplyGroupActivity.this);
+//                GroupManagerPresenter.applyJoinGroup(identify, editText.getText().toString(), ApplyGroupActivity.this);
+                JoinGroup(identify, editText.getText().toString(), ApplyGroupActivity.this);
             }
         });
     }
 
     @Override
     public void onError(int i, String s) {
-        if (i == 10013){
+        if (i == 10013) {
             //已经是群成员
             Toast.makeText(this, getString(R.string.group_member_already), Toast.LENGTH_SHORT).show();
         }
@@ -47,6 +49,7 @@ public class ApplyGroupActivity extends Activity implements TIMCallBack {
     @Override
     public void onSuccess() {
         Toast.makeText(this, getResources().getString(R.string.send_success), Toast.LENGTH_SHORT).show();
+//      Log.i(TAG, getString(R.string.apply_for_success));
         finish();
     }
 }

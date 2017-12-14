@@ -85,7 +85,6 @@ public class ChatAdapter extends ArrayAdapter<Message> {
                 }
 
             } else {
-
                 if (type == TIMConversationType.C2C) {
                     if (!C2CImg.isEmpty())
                         Glide.with(getContext()).load(C2CImg).into(viewHolder.leftAvatar);

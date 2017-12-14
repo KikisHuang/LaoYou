@@ -56,6 +56,30 @@
             android:layout_marginTop="5dp"
             android:textSize="11dp" />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/find_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/find_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/find_page_unicon" />
+
+        <TextView
+            android:id="@+id/find_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发现"
+            android:textColor="@color/gray4"
+            android:layout_marginTop="5dp"
+            android:textSize="11dp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/my_ll"

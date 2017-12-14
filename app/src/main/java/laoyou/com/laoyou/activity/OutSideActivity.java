@@ -15,7 +15,7 @@ import laoyou.com.laoyou.presenter.OutSidePresenter;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
-import static laoyou.com.laoyou.utils.SynUtils.setTitles;
+import static laoyou.com.laoyou.utils.TitleUtils.setTitles;
 
 
 /**
@@ -40,6 +40,7 @@ public class OutSideActivity extends InitActivity implements OutSideListener {
         pg = f(R.id.progressBar);
         op = new OutSidePresenter(this);
         url = getIntent().getStringExtra("outside_url");
+//        url = "https://www.baidu.com";
     }
 
     @Override

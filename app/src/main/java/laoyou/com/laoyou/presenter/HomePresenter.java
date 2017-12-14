@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
+import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,18 +26,15 @@ import java.util.Map;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.PageTopBannerAdapter;
-import laoyou.com.laoyou.bean.CheckStatusBean;
 import laoyou.com.laoyou.bean.NearbyBean;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.bean.PageTopBean;
-import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.AppBarStateChangeListener;
 import laoyou.com.laoyou.listener.HomeListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
-import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.homeViewPageUtils;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
@@ -93,10 +91,16 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         handInit();
         BannerHideOfShow();
         IsLogin();
-        getPeopleNearby(true);
+//        getPeopleNearby(true);
     }
 
+    /**
+     * 获取附近的人(有接口后更改成个人动态);
+     *
+     * @param flag
+     */
     private void getPeopleNearby(boolean flag) {
+
         /**
          * 如果没有经纬度，不能获取附近的人信息;
          */
@@ -113,6 +117,9 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
 
     }
 
+    /**
+     * 获取详情、查询实名(废弃);
+     */
     public void getUseDetails() {
         Map<String, String> map = getKeyMap();
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.MYINFODETAILS);
@@ -120,6 +127,9 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         CheckID();
     }
 
+    /**
+     * 获取申请结果
+     */
     public void CheckID() {
         Map<String, String> m = getKeyMap();
         httpUtils.OkHttpsGet(m, this, Fields.REQUEST3, Interface.URL + Interface.GETAPPLYQUERY);
@@ -128,7 +138,8 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     public void getBanner() {
         Map<String, String> map = new HashMap<>();
         map.put("showPosition", "0");
-        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETBANNER);
+//        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETBANNER);
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, "http://fns.mozu123.com:8080/mcFnsInterface/" + Interface.GETBANNER);
     }
 
     public void handInit() {
@@ -164,7 +175,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                         initPageData();
                         setViewPager();
                         startPlay(handler, mViewPager, 0);
-                    } else {
+                    } else if (ar.length() > 0) {
                         ONEIMGFLAG = true;
                         PageTopBean ptb = new Gson().fromJson(String.valueOf(ar.optJSONObject(0)), PageTopBean.class);
                         listener.onOneImg(ptb);
@@ -175,7 +186,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                 }
                 break;
             case Fields.REQUEST2:
-                try {
+            /*    try {
                     JSONObject ob = getJsonOb(response);
                     UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
                     listener.onDetails(ub);
@@ -183,11 +194,9 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                     Log.e(TAG, "Error === " + e);
                     e.printStackTrace();
                 }
+            */
+                break;
 
-                break;
-            case Fields.REQUEST4:
-                CheckID();
-                break;
             case Fields.REQUEST5:
                 try {
                     JSONObject ob = getJsonOb(response);
@@ -221,14 +230,14 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                 }
                 break;
             case Fields.REQUEST3:
-                try {
+               /* try {
                     JSONObject ob = getJsonOb(response);
                     CheckStatusBean cb = new Gson().fromJson(String.valueOf(ob), CheckStatusBean.class);
                     listener.onCheckStatus(cb.getStatus());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }
+                }*/
 
                 break;
         }
@@ -236,7 +245,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
 
 
     /**
-     * 圆点初始化;
+     * 数据、圆点初始化;
      */
     private void initPageData() {
         mImageViewList.clear();
@@ -319,10 +328,10 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     @Override
     public void onFailed(String response, int code, int tag) {
         //未实名认证;
-        if (tag == Fields.REQUEST3 && code == 0)
+        /*if (tag == Fields.REQUEST3 && code == 0)
             listener.onCheckStatus(0);
-        else
-            listener.onFailed(response);
+        else*/
+        listener.onFailed(response);
     }
 
     /**
@@ -355,10 +364,8 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     public void IsLogin() {
         if (LoginStatusQuery()) {
             getPeopleNearby(true);
-            getUseDetails();
-            listener.IsLogin(true);
-        } else
-            listener.IsLogin(false);
+//            getUseDetails();
+        }
     }
 
     /**

@@ -104,22 +104,22 @@ public class AddressbookActivity extends InitActivity implements AddressBookList
     }
 
     @Override
-    public void onSelected(String identifier, String faceUrl, int pos) {
+    public void onAdd(String faceUrl, String identifier, String name) {
 
     }
 
     @Override
-    public void onAdd(String identifier, String faceUrl) {
-
-    }
-
-    @Override
-    public void onCancle(String identifier, String faceUrl) {
+    public void onCancle(String faceUrl, String identifier, String name) {
 
     }
 
     @Override
     public void onCreateGroupSuccess(String gets) {
+
+    }
+
+    @Override
+    public void onSelected(List<AddressBean> list, int pos) {
 
     }
 

@@ -6,6 +6,8 @@ import laoyou.com.laoyou.R;
  * Created by lian on 2017/10/25.
  */
 public class Fields {
+    public static final String Catalina = "http://img5.duitang.com/uploads/item/201506/04/20150604122611_zMfPQ.jpeg";
+
 
     public static String KEY = "key";
 
@@ -24,14 +26,19 @@ public class Fields {
     public static final int ACRESULET1 = 3213;
     public static final int ACRESULET2 = 3121;
     public static final int ACRESULET3 = 3211;
+    public static final int ACRESULET4 = 3214;
+    public static final int ACRESULET5 = 3215;
+
+    public static final String OFFICIAL = "official-";
+    public static final String TGS = "@TGS#";
 
 
     //刷新动画
-    public static int[] refreshAnimSrcs = new int[]{R.drawable.loading1, R.drawable.loading2, R.drawable.loading3, R.drawable.loading4, R.drawable.loading5, R.drawable.loading6, R.drawable.loading7, R.drawable.loading8,R.drawable.loading9};
+    public static int[] refreshAnimSrcs = new int[]{R.drawable.loading1, R.drawable.loading2, R.drawable.loading3, R.drawable.loading4, R.drawable.loading5, R.drawable.loading6, R.drawable.loading7, R.drawable.loading8, R.drawable.loading9};
     //下拉动画
     public static int[] pullAnimSrcs = new int[]{R.drawable.loading1, R.drawable.loading2, R.drawable.loading3, R.drawable.loading4, R.drawable.loading5};
     //上滑动画
-    public static int[] loadingAnimSrcs = new int[]{R.drawable.more1, R.drawable.more2,R.drawable.more3,R.drawable.more4,R.drawable.more5};
+    public static int[] loadingAnimSrcs = new int[]{R.drawable.more1, R.drawable.more2, R.drawable.more3, R.drawable.more4, R.drawable.more5};
 
     /**
      * 递增长度
@@ -42,8 +49,16 @@ public class Fields {
      * 全局广告触摸时间变量;
      */
     public static long TouchTime = 0;
+    public static  final int ISFIND = 32;
+    public static  final int ISGAME = 33;
     public static boolean CHECKFLAG = true;
+    public static String[] ADMINISTRATIVEAREA = {"香港", "澳门", "台湾"};
 
+    public static String[] HEIGHT = {"150cm以下", "151~155cm", "156~160cm", "161~165cm", "166~170cm", "171~175cm", "176~180cm", "181~185cm", "186~190cm", "191cm及以上"};
+
+    public static String getAdministrative(int i) {
+        return ADMINISTRATIVEAREA[i];
+    }
 
     /**
      * Glide transformations 方法;

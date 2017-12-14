@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:layout_marginBottom="5dp"
         android:background="@color/white"
@@ -18,32 +18,22 @@
         android:padding="10dp"
         app:layout_collapseMode="pin">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/camera_img"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center|left"
-            android:src="@mipmap/test_icon"
-            app:civ_border_color="@color/graye6"
-            app:civ_border_width="0.5dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:layout_weight="1"
             android:gravity="center|left"
             android:text="@string/home_page"
             android:textColor="@color/black"
-            android:textSize="23dp" />
+            android:textSize="25sp" />
 
         <ImageView
             android:id="@+id/show_hide_img"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:src="@mipmap/menu_icon"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
     </LinearLayout>
 
 
@@ -60,7 +50,7 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true">
 
-
+            <!--app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"-->
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
@@ -68,7 +58,7 @@
                 android:layout_weight="1"
                 android:fitsSystemWindows="true"
                 app:contentScrim="@color/white8"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -76,243 +66,30 @@
                     android:background="@color/white"
                     android:fitsSystemWindows="true"
                     android:orientation="vertical"
-                    android:padding="10dp"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.2">
 
 
-                    <LinearLayout
-                        android:id="@+id/dynamic_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:background="@drawable/circle_angle_blue"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center|left"
-                            android:paddingLeft="10dp"
-                            android:text="附近人动态"
-                            android:textColor="@color/white"
-                            android:textSize="17dp" />
-
-
-                        <FrameLayout
-                            android:layout_width="170dp"
-                            android:layout_height="match_parent"
-
-                            >
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/circle_img1"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center|right"
-                                app:civ_border_color="@color/white"
-                                app:civ_border_width="1dp" />
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/circle_img2"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center|right"
-                                android:layout_marginRight="18dp"
-                                app:civ_border_color="@color/white"
-                                app:civ_border_width="1dp" />
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/circle_img3"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center|right"
-                                android:layout_marginRight="36dp"
-                                app:civ_border_color="@color/white"
-                                app:civ_border_width="1dp" />
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/circle_img4"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center|right"
-                                android:layout_marginRight="52dp"
-                                app:civ_border_color="@color/white"
-                                app:civ_border_width="1dp" />
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/circle_img5"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center|right"
-                                android:layout_marginRight="70dp"
-                                app:civ_border_color="@color/white"
-                                app:civ_border_width="1dp" />
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/circle_img6"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center|right"
-                                android:layout_marginRight="88dp"
-                                app:civ_border_color="@color/white"
-                                app:civ_border_width="1dp" />
-
-                        </FrameLayout>
-
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center"
-                            android:layout_marginRight="10dp"
-                            android:src="@mipmap/right_arrows" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="240dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:id="@+id/query_pass_layout"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginRight="3dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/circle_angle_yellow"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="55dp"
-                                    android:layout_height="55dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginBottom="10dp"
-                                    android:src="@mipmap/eye_icon" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="@string/query_internet_pass"
-                                    android:textColor="@color/white"
-                                    android:textSize="13dp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/wifi_layout"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="3dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/circle_angle_orange"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="55dp"
-                                    android:layout_height="55dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginBottom="10dp"
-                                    android:src="@mipmap/wifi_icon" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="一键连接WIFI"
-                                    android:textColor="@color/white"
-                                    android:textSize="13dp" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-
-                            <LinearLayout
-                                android:id="@+id/nearby_wb_layout"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginRight="3dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/circle_angle_violet"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="55dp"
-                                    android:layout_height="55dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginBottom="10dp"
-                                    android:src="@mipmap/windows_icon" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="@string/cybercafe"
-                                    android:textColor="@color/white"
-                                    android:textSize="13dp" />
-                            </LinearLayout>
-
-
-                            <LinearLayout
-                                android:id="@+id/player_community_layout"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="3dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/circle_angle_turquoise"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="55dp"
-                                    android:layout_height="55dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginBottom="10dp"
-                                    android:src="@mipmap/community_icon" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="@string/DoNews"
-                                    android:textColor="@color/white"
-                                    android:textSize="13dp" />
-
-                            </LinearLayout>
-                        </LinearLayout>
-                    </LinearLayout>
                     <!-- 广告布局 -->
                     <FrameLayout
                         android:id="@+id/banner_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="5dp">
 
                         <FrameLayout
                             android:id="@+id/page_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:clipChildren="false"
+                            >
 
-                            <android.support.v4.view.ViewPager
+                            <laoyou.com.laoyou.view.WrapContentHeightViewPager
                                 android:id="@+id/vp_main"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:clipChildren="false"
+                                />
 
                             <LinearLayout
                                 android:id="@+id/ll_main_dot"
@@ -331,19 +108,195 @@
                             android:visibility="gone" />
                     </FrameLayout>
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@color/content11" />
+                        android:layout_height="100dp"
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/nearby_wb_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="15dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@color/gray4" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@string/internet_bar"
+                                    android:textColor="@color/black"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/topic_circle_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="15dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@color/gray4" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@string/topic_circle"
+                                    android:textColor="@color/black"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/query_pass_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="15dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@color/gray4" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@string/query_internet_pass"
+                                    android:textColor="@color/black"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/wifi_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="15dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@color/gray4" />
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@string/flash_chat"
+                                    android:textColor="@color/black"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/player_community_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="15dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@color/gray4" />
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@string/DoNews"
+                                    android:textColor="@color/black"
+                                    android:textSize="12dp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/nearbyuser"
-                        android:textColor="@color/black"
-                        android:textSize="16dp" />
+                        android:padding="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="热门闪聊"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/flash_more_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="更多"
+                            android:textColor="@color/content3"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/dynamic_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="140dp"
+                            android:orientation="horizontal"
+                            >
+
+                        </LinearLayout>
+
+                    </HorizontalScrollView>
+
                 </LinearLayout>
 
 
@@ -362,8 +315,8 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
                 android:scrollbars="none"
+                android:padding="10dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
         </com.liaoinstan.springview.widget.SpringView>
 

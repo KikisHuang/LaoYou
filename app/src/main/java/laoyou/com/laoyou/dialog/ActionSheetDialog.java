@@ -137,7 +137,7 @@ public class ActionSheetDialog {
 
             TextView textView = new TextView(context);
             textView.setText(strItem);
-            textView.setTextSize(18);
+            textView.setTextSize(15);
             textView.setGravity(Gravity.CENTER);
 
             // 背景图片
