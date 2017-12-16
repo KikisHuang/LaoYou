@@ -39,11 +39,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColorHint="@color/content4"
             android:gravity="center|left"
             android:maxEms="15"
             android:paddingLeft="20dp"
             android:singleLine="true"
-            android:text="北京-天安门"
             android:textColor="@color/black"
             android:textSize="15sp" />
     </LinearLayout>
@@ -66,9 +66,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColorHint="@color/content4"
             android:gravity="center|left"
             android:paddingLeft="20dp"
-            android:text="165 - 170cm"
             android:textColor="@color/black"
             android:textSize="15sp" />
     </LinearLayout>
@@ -93,9 +93,9 @@
             android:layout_weight="1"
             android:gravity="center|left"
             android:maxEms="15"
+            android:textColorHint="@color/content4"
             android:paddingLeft="20dp"
             android:singleLine="true"
-            android:text="2017 - 12 - 02"
             android:textColor="@color/black"
             android:textSize="15sp" />
     </LinearLayout>
@@ -122,8 +122,9 @@
             android:maxEms="15"
             android:paddingLeft="20dp"
             android:singleLine="true"
-            android:text="选择恋爱状态"
-            android:textColor="@color/content3"
+            android:hint="选择恋爱状态"
+            android:textColorHint="@color/content4"
+            android:textColor="@color/black"
             android:textSize="15sp" />
     </LinearLayout>
 </LinearLayout>

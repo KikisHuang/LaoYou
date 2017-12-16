@@ -944,7 +944,17 @@ public class SynUtils {
 
     }
 
+    /**
+     * 非空判断;
+     *
+     * @param ar
+     * @return
+     */
     public static boolean ArrayIsNull(JSONArray ar) {
         return ar.length() > 0 ? false : true;
+    }
+
+    public static String StringIsNull(String str) {
+        return str != null && !str.isEmpty() ? str : "";
     }
 }

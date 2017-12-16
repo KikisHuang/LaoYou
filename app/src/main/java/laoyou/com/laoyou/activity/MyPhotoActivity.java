@@ -84,7 +84,7 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
         list.add(Fields.Catalina);
         list.add(Fields.Catalina);
         list.add(Fields.Catalina);
-        goPhotoViewerPage(this, list, pos - 1);
+        goPhotoViewerPage(this, list, pos - 1, 0);
     }
 
     @Override

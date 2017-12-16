@@ -33,19 +33,21 @@ public class PhotoViewerFragment extends BaseFragment {
     private PhotoView imageView;
     private PhotoViewAttacher photoViewAttacher;
     private GestureDetector.OnDoubleTapListener gest;
-
+    private int function;
 
     /**
      * 动态创建Fragment;
      *
-     * @param path 路径
+     * @param path     路径
+     * @param function
      * @return
      */
-    public static PhotoViewerFragment newInstance(String path) {
+    public static PhotoViewerFragment newInstance(String path, int function) {
 
         PhotoViewerFragment f = new PhotoViewerFragment();
         Bundle args = new Bundle();
         args.putString("url", path);
+        args.putString("function", String.valueOf(function));
         f.setArguments(args);
         return f;
     }
@@ -54,6 +56,7 @@ public class PhotoViewerFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         url = getArguments() != null ? getArguments().getString("url") : "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1494050810732&di=12648ae1cfe05df8bf586bd65c60961f&imgtype=0&src=http%3A%2F%2Fres2.esf.leju.com%2Fesf_www%2Fstatics%2Fimages%2Fdefault-img%2Fdetail.png";
+        function = Integer.parseInt(getArguments() != null ? getArguments().getString("function") : "1");
     }
 
     @Override
@@ -76,25 +79,55 @@ public class PhotoViewerFragment extends BaseFragment {
         photoViewAttacher.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                ActionSheetDialog dialog = new ActionSheetDialog(getActivity());
+                switch (function) {
+                    case 0:
+                        dialog.builder().addSheetItem(gets(R.string.delete_photo), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+                            @Override
+                            public void onClick(int which) {
 
-                new ActionSheetDialog(getActivity()).builder().addSheetItem(gets(R.string.delete_photo), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
-                    @Override
-                    public void onClick(int which) {
+                                Intent intent = new Intent();
+                                intent.putExtra("delete_url", url);
+                                getActivity().setResult(Activity.RESULT_OK, intent);
+                                getActivity().finish();
+                            }
+                        }).addSheetItem(gets(R.string.save_photo), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+                            @Override
+                            public void onClick(int which) {
+                                if (saveImageToGallery(getActivity().getApplicationContext(), bm))
+                                    ToastUtil.toast2_bottom(getActivity(), gets(R.string.save_succ));
+                                else
+                                    ToastUtil.toast2_bottom(getActivity(), gets(R.string.save_fail));
+                            }
+                        }).show();
+                        break;
+                    case 1:
+                        dialog.builder().addSheetItem(gets(R.string.save_photo), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+                            @Override
+                            public void onClick(int which) {
+                                if (saveImageToGallery(getActivity().getApplicationContext(), bm))
+                                    ToastUtil.toast2_bottom(getActivity(), gets(R.string.save_succ));
+                                else
+                                    ToastUtil.toast2_bottom(getActivity(), gets(R.string.save_fail));
+                            }
+                        }).show();
+                        break;
+                    case 2:
+                        dialog.builder().addSheetItem(gets(R.string.delete_photo), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+                            @Override
+                            public void onClick(int which) {
 
-                        Intent intent = new Intent();
-                        intent.putExtra("delete_url", url);
-                        getActivity().setResult(Activity.RESULT_OK,intent);
-                        getActivity().finish();
-                    }
-                }).addSheetItem(gets(R.string.save_photo), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
-                    @Override
-                    public void onClick(int which) {
-                        if (saveImageToGallery(getActivity().getApplicationContext(), bm))
-                            ToastUtil.toast2_bottom(getActivity(), gets(R.string.save_succ));
-                        else
-                            ToastUtil.toast2_bottom(getActivity(), gets(R.string.save_fail));
-                    }
-                }).show();
+                                Intent intent = new Intent();
+                                intent.putExtra("delete_url", url);
+                                getActivity().setResult(Activity.RESULT_OK, intent);
+                                getActivity().finish();
+                            }
+                        }).show();
+                        break;
+                    case 3:
+
+                        break;
+                }
 
                 return false;
             }

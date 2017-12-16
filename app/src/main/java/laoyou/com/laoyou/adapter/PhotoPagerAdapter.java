@@ -13,16 +13,18 @@ import laoyou.com.laoyou.fragment.PhotoViewerFragment;
  */
 public class PhotoPagerAdapter extends FragmentStatePagerAdapter {
     private List<String> list;
+    private int function;
 
-    public PhotoPagerAdapter(FragmentManager fm, List<String> urlList) {
+    public PhotoPagerAdapter(FragmentManager fm, List<String> urlList, int function) {
         super(fm);
         this.list = urlList;
+        this.function = function;
     }
 
     @Override
     public Fragment getItem(int position) {
 
-        return PhotoViewerFragment.newInstance(list.get(position));//返回展示不同网络图片的
+        return PhotoViewerFragment.newInstance(list.get(position),function);//返回展示不同网络图片的
     }
 
     @Override

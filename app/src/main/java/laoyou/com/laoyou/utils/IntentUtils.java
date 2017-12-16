@@ -17,6 +17,8 @@ import laoyou.com.laoyou.activity.FlashChatBasicsActivity;
 import laoyou.com.laoyou.activity.FlashChatGambitActivity;
 import laoyou.com.laoyou.activity.FlashChatMemberActivity;
 import laoyou.com.laoyou.activity.ForgetPasswordActivity;
+import laoyou.com.laoyou.activity.GameInformationActivity;
+import laoyou.com.laoyou.activity.InternetCafActivity;
 import laoyou.com.laoyou.activity.InternetCafLocationActivity;
 import laoyou.com.laoyou.activity.LikeGameActivity;
 import laoyou.com.laoyou.activity.LoginActivity;
@@ -58,8 +60,21 @@ public class IntentUtils {
      *
      * @param context 上下文;
      */
-    public static void goLocationPage(Context context) {
+    public static void goLocationPage(Context context, double longitude, double latitude) {
         Intent intent = new Intent(context, InternetCafLocationActivity.class);
+        intent.putExtra("caf_latitude", latitude + "");
+        intent.putExtra("caf_longitude", longitude + "");
+        startPage(context, intent);
+    }
+
+    /**
+     * 网吧详情页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goInternetCafPage(Context context, String id) {
+        Intent intent = new Intent(context, InternetCafActivity.class);
+        intent.putExtra("caf_id", id);
         startPage(context, intent);
     }
 
@@ -126,11 +141,12 @@ public class IntentUtils {
      *
      * @param context 上下文;
      */
-    public static void goPhotoViewerPage(Context context, List<String> list, int pos) {
+    public static void goPhotoViewerPage(Context context, List<String> list, int pos,int Function) {
 
         Intent intent = new Intent(context, PhotoViewerActivity.class);
         intent.putStringArrayListExtra("Photo_list", (ArrayList<String>) list);
         intent.putExtra("Photo_pos", String.valueOf(pos));
+        intent.putExtra("Photo_Function", String.valueOf(Function));
         ((Activity) context).startActivityForResult(intent, Fields.ACRESULET4);
 //        startPage(context, intent);
     }
@@ -196,6 +212,16 @@ public class IntentUtils {
     public static void goChangePassPage(Context context) {
         Intent intent = new Intent(context, ChangePassWordActivity.class);
         ((Activity) context).startActivityForResult(intent, Fields.ACRESULET3);
+    }
+
+    /**
+     * 游戏资讯页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goGameInformationPage(Context context) {
+        Intent intent = new Intent(context, GameInformationActivity.class);
+        startPage(context, intent);
     }
 
     /**

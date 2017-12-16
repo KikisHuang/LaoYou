@@ -54,11 +54,26 @@ public class MyHomePagePresenter implements HttpResultListener, OnCompressListen
      * 修改用户信息;
      *
      * @param file
+     * @param name       昵称 ;
+     * @param sex        性别;
+     * @param sig        个性签名;
+     * @param height     身高;
+     * @param hometown   家乡;
+     * @param birthday   生日;
+     * @param love_state 恋爱状态;
      */
-    public void ChangeInfo(File file, String name, int sex) {
+    public void ChangeInfo(File file, String name, int sex, String sig, String height, String hometown, String birthday, String love_state) {
         Map<String, String> map = getKeyMap();
         map.put("name", name);
         map.put("sex", String.valueOf(sex));
+        if (hometown != null)
+            map.put("hometown", String.valueOf(hometown));
+        if (birthday != null)
+            map.put("birthday", String.valueOf(birthday));
+
+        map.put("height", String.valueOf(height));
+        map.put("autograph", String.valueOf(sig));
+        map.put("seloveStatusx", String.valueOf(love_state));
 
         if (file != null) {
             Map<String, File> f = getFileMap();
@@ -76,13 +91,16 @@ public class MyHomePagePresenter implements HttpResultListener, OnCompressListen
         httpUtils.OkHttpsGet(m, this, Fields.REQUEST2, Interface.URL + Interface.GETPROVINCEBYPAGE);
     }
 
+    /**
+     * 查询实名;
+     */
     public void CheckID() {
         Map<String, String> m = getKeyMap();
         httpUtils.OkHttpsGet(m, this, Fields.REQUEST3, Interface.URL + Interface.GETAPPLYQUERY);
     }
 
     /**
-     * 获取详情、查询实名;
+     * 获取详情;
      */
     public void getUseDetails() {
         Map<String, String> map = getKeyMap();
@@ -107,7 +125,7 @@ public class MyHomePagePresenter implements HttpResultListener, OnCompressListen
 
                     JSONObject ob = getJsonOb(response);
                     CheckStatusBean cb = new Gson().fromJson(String.valueOf(ob), CheckStatusBean.class);
-                            listener.onCertificaTion(cb.getStatus());
+                    listener.onCertificaTion(cb.getStatus());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -187,7 +205,7 @@ public class MyHomePagePresenter implements HttpResultListener, OnCompressListen
     @Override
     public void onSuccess(File file) {
         Cancle();
-    listener.onComPressSucceed(file);
+        listener.onComPressSucceed(file);
     }
 
     @Override

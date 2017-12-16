@@ -40,7 +40,7 @@ public class MyPresenter implements HttpResultListener {
      */
     public void getUseDetails() {
         Map<String, String> map = getKeyMap();
-        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.MYINFODETAILS);
+        httpUtils.OkHttpsPost(map, this, Fields.REQUEST1, Interface.URL + Interface.MYINFODETAILS,null,null);
     }
 
     @Override

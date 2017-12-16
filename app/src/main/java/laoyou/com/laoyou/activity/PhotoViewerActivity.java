@@ -18,8 +18,9 @@ public class PhotoViewerActivity extends InitActivity {
     private BigPhotoViewPager viewPager;
     private List<String> list;
     private TextView page_tv;
-
     private int pos;
+    //功能标识符 0 ：全开,1：只开启保存, 2：只开启删除, 3：全部关闭;
+    private int Function;
 
     @Override
     protected void click() {
@@ -34,6 +35,7 @@ public class PhotoViewerActivity extends InitActivity {
         list = new ArrayList<>();
         list = getIntent().getStringArrayListExtra("Photo_list");
         pos = Integer.parseInt(getIntent().getStringExtra("Photo_pos"));
+        Function = Integer.parseInt(getIntent().getStringExtra("Photo_Function"));
         page_tv.setText(pos + 1 + "/" + list.size());
     }
 
@@ -41,7 +43,7 @@ public class PhotoViewerActivity extends InitActivity {
      * ViewPager初始化设置;
      */
     private void setPage() {
-        viewPager.setAdapter(new PhotoPagerAdapter(getSupportFragmentManager(), list));
+        viewPager.setAdapter(new PhotoPagerAdapter(getSupportFragmentManager(), list, Function));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

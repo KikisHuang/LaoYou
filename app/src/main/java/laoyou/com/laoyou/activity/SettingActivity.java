@@ -24,6 +24,8 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.utils.Fields;
 
 import static laoyou.com.laoyou.activity.MainActivity.MainInstance;
+import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
+import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
 import static laoyou.com.laoyou.utils.IntentUtils.goBlackListPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goChangePassPage;
@@ -77,15 +79,18 @@ public class SettingActivity extends InitActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.logout:
-
+                Show(SettingActivity.this, "提交中", true, null);
                 LoginBusiness.logout(new TIMCallBack() {
                     @Override
                     public void onError(int i, String s) {
                         Toast.makeText(SettingActivity.this, getResources().getString(R.string.setting_logout_fail), Toast.LENGTH_SHORT).show();
+                        Cancle();
                     }
 
                     @Override
                     public void onSuccess() {
+
+                        Cancle();
                         Toast.makeText(SettingActivity.this, getResources().getString(R.string.setting_logout_succeed), Toast.LENGTH_SHORT).show();
                         LogOut(SettingActivity.this);
                         if (MainInstance() != null)

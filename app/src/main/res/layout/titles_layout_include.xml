@@ -28,7 +28,6 @@
         android:textSize="18sp"
         android:layout_centerInParent="true"
         android:textColor="@color/black0"
-        android:visibility="gone"
         />
 
     <TextView

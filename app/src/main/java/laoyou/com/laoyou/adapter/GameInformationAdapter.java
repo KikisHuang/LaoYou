@@ -14,7 +14,6 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.GameInfoBean;
-import laoyou.com.laoyou.utils.Fields;
 
 /**
  * Created by lian on 2017/11/18.
@@ -49,7 +48,10 @@ public class GameInformationAdapter extends BaseAdapter {
 
         ImageView information_img = (ImageView) view.findViewById(R.id.information_img);
 
-        Glide.with(mContext).load(Fields.Catalina).into(information_img);
+        information_titles_tv.setText(list.get(position).getTitle());
+        information_content_tv.setText(list.get(position).getSummary());
+
+        Glide.with(mContext).load(list.get(position).getLogo()).into(information_img);
 
         return view;
     }

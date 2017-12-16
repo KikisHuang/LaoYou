@@ -1,8 +1,11 @@
 package laoyou.com.laoyou.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -11,7 +14,6 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
-import com.tencent.TIMCallBack;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,7 +28,6 @@ import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.dialog.ActionSheetDialog;
 import laoyou.com.laoyou.listener.MyHomePageListener;
 import laoyou.com.laoyou.presenter.MyHomePagePresenter;
-import laoyou.com.laoyou.tencent.ui.EditActivity;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -51,14 +52,16 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
     private ImageView background_img, back_img;
     private RelativeLayout title_layout;
     private CircleImageView head_img;
-    private TextView nickname_tv, sex_tv, region_tv, signature_tv, attestation_state_tv, like_game_tv, hometown_tv, height_tv, birthday_tv, love_state_tv, save_tv;
-    private LinearLayout go_add_layout, attestation_layout, nickname_layout, signature_layout,like_game_layout;
+    private TextView sex_tv, region_tv, attestation_state_tv, like_game_tv, hometown_tv, height_tv, birthday_tv, love_state_tv, save_tv;
+    private LinearLayout go_add_layout, attestation_layout, nickname_layout, signature_layout, like_game_layout;
     private ObservableScrollView scrollView;
     private int imageHeight;
     private MyHomePagePresenter mp;
     private OptionsPickerView pvOptions;
     private OptionsPickerView hgOptions;
     private TimePickerView pvTime;
+    private EditText nickname_ed, signature_ed;
+    private ImageView nickname_change, signature_change;
 
     private int sex = 0;
 
@@ -70,6 +73,8 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
     private File headFile = null;
     private File backFile = null;
     private boolean isHead = false;
+    private boolean isAttes = false;
+
 
     @Override
     protected void click() {
@@ -82,12 +87,14 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
         height_tv.setOnClickListener(this);
         birthday_tv.setOnClickListener(this);
         love_state_tv.setOnClickListener(this);
-        signature_tv.setOnClickListener(this);
         save_tv.setOnClickListener(this);
         head_img.setOnClickListener(this);
         background_img.setOnClickListener(this);
         attestation_layout.setOnClickListener(this);
         like_game_layout.setOnClickListener(this);
+
+        nickname_change.setOnClickListener(this);
+        signature_change.setOnClickListener(this);
     }
 
     @Override
@@ -97,13 +104,15 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
         title_layout = f(R.id.title_layout);
         background_img = f(R.id.background_img);
         head_img = f(R.id.head_img);
-        nickname_tv = f(R.id.nickname_tv);
+        nickname_ed = f(R.id.nickname_ed);
         nickname_layout = f(R.id.nickname_layout);
         signature_layout = f(R.id.signature_layout);
         sex_tv = f(R.id.sex_tv);
+        nickname_change = f(R.id.nickname_change);
+        signature_change = f(R.id.signature_change);
         region_tv = f(R.id.region_tv);
         save_tv = f(R.id.save_tv);
-        signature_tv = f(R.id.signature_tv);
+        signature_ed = f(R.id.signature_ed);
         attestation_state_tv = f(R.id.attestation_state_tv);
         like_game_tv = f(R.id.like_game_tv);
         go_add_layout = f(R.id.go_add_layout);
@@ -162,9 +171,15 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
     @Override
     public void onShowUserInfo(UserInfoBean ub) {
         Glide.with(MyHomePageActivity.this).load(ub.getHeadImgUrl()).into(head_img);
-        nickname_tv.setText(ub.getName());
+        nickname_ed.setText(ub.getName());
         sex = ub.getSex();
-        switch (ub.getSex()) {
+        signature_ed.setText(ub.getAutograph());
+        ViewSet(ub.getHeight(),height_tv);
+        ViewSet(ub.getHometown(),hometown_tv);
+        ViewSet(ub.getBirthday(),birthday_tv);
+        ViewSet(ub.getSeloveStatusx(),love_state_tv);
+
+        switch (sex) {
             case 0:
                 sex_tv.setText(gets(R.string.woman));
                 sex_tv.setTextColor(getRouColors(R.color.black));
@@ -179,22 +194,34 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
         }
     }
 
+    private void ViewSet(String str, TextView tv) {
+
+        if (str == null || str.isEmpty())
+            tv.setHint(gets(R.string.click_setting));
+        else
+            tv.setText(str);
+    }
+
     @Override
     public void onCertificaTion(int state) {
         //	status  审核状态 0未审核，1已通过，-1已拒绝，2密码错误要求复检,3重新上传
         if (state == 1 || state == 2) {
+            isAttes = true;
             attestation_state_tv.setText(gets(R.string.certification));
             attestation_state_tv.setTextColor(getRouColors(R.color.dodgerblue));
             attestation_layout.setVisibility(View.INVISIBLE);
         } else if (state == 0 || state == 3) {
+            isAttes = false;
             attestation_state_tv.setText(gets(R.string.in_certification));
             sex_tv.setTextColor(getRouColors(R.color.dodgerblue));
             attestation_layout.setVisibility(View.INVISIBLE);
         } else if (state == -1) {
+            isAttes = false;
             attestation_state_tv.setText(gets(R.string.refuse_certification));
             sex_tv.setTextColor(getRouColors(R.color.red3));
             attestation_layout.setVisibility(View.VISIBLE);
         } else {
+            isAttes = false;
             attestation_state_tv.setText(gets(R.string.un_certification));
             sex_tv.setTextColor(getRouColors(R.color.content4));
             attestation_layout.setVisibility(View.VISIBLE);
@@ -237,38 +264,28 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sex_tv:
-                new ActionSheetDialog(this).builder().addSheetItem(gets(R.string.man), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
-                    @Override
-                    public void onClick(int which) {
-                        sex_tv.setText(gets(R.string.man));
-                        sex = 1;
-                    }
-                }).addSheetItem(gets(R.string.woman), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
-                    @Override
-                    public void onClick(int which) {
-                        sex_tv.setText(gets(R.string.woman));
-                        sex = 0;
-                    }
-                }).show();
+                if (!isAttes) {
+                    new ActionSheetDialog(this).builder().addSheetItem(gets(R.string.man), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+                        @Override
+                        public void onClick(int which) {
+                            sex_tv.setText(gets(R.string.man));
+                            sex = 1;
+                        }
+                    }).addSheetItem(gets(R.string.woman), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+                        @Override
+                        public void onClick(int which) {
+                            sex_tv.setText(gets(R.string.woman));
+                            sex = 0;
+                        }
+                    }).show();
+                } else
+                    ToastUtil.toast2_bottom(this, gets(R.string.attes_unable_change_this));
                 break;
             case R.id.nickname_layout:
-                EditActivity.navToEdit(MyHomePageActivity.this, getResources().getString(R.string.setting_nick_name_change), nickname_tv.getText().toString(), Fields.ACRESULET2, new EditActivity.EditInterface() {
-                    @Override
-                    public void onEdit(String text, TIMCallBack callBack) {
-                        callBack.onSuccess();
-//                        FriendshipManagerPresenter.setMyNick(text, callBack);
-                    }
-                }, 15);
 
                 break;
             case R.id.signature_layout:
-                EditActivity.navToEdit(MyHomePageActivity.this, getResources().getString(R.string.setting_signature_change), signature_tv.getText().toString(), Fields.ACRESULET3, new EditActivity.EditInterface() {
-                    @Override
-                    public void onEdit(String text, TIMCallBack callBack) {
-                        callBack.onSuccess();
-//                        FriendshipManagerPresenter.setMyNick(text, callBack);
-                    }
-                }, 15);
+
                 break;
             case R.id.region_tv:
                 if (pvOptions != null) {
@@ -277,10 +294,13 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
                 }
                 break;
             case R.id.hometown_tv:
-                if (pvOptions != null) {
-                    HomeTown = true;
-                    pvOptions.show();
-                }
+                if (!isAttes) {
+                    if (pvOptions != null) {
+                        HomeTown = true;
+                        pvOptions.show();
+                    }
+                } else
+                    ToastUtil.toast2_bottom(this, gets(R.string.attes_unable_change_this));
 
                 break;
             case R.id.height_tv:
@@ -288,8 +308,12 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
                     hgOptions.show();
                 break;
             case R.id.birthday_tv:
-                if (pvTime != null)
-                    pvTime.show();
+                if (!isAttes) {
+                    if (pvTime != null)
+                        pvTime.show();
+                } else
+                    ToastUtil.toast2_bottom(this, gets(R.string.attes_unable_change_this));
+
                 break;
             case R.id.love_state_tv:
                 new ActionSheetDialog(this).builder().addSheetItem(gets(R.string.bachelordom), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
@@ -313,7 +337,12 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
                 break;
             case R.id.save_tv:
                 Show(MyHomePageActivity.this, "提交中", true, null);
-                mp.ChangeInfo(headFile, nickname_tv.getText().toString(), sex);
+
+                if (isAttes)
+                    mp.ChangeInfo(headFile, nickname_ed.getText().toString(), sex, signature_ed.getText().toString(), height_tv.getText().toString(), hometown_tv.getText().toString(), birthday_tv.getText().toString(), love_state_tv.getText().toString());
+                else
+                    mp.ChangeInfo(headFile, nickname_ed.getText().toString(), sex, signature_ed.getText().toString(), height_tv.getText().toString(), null, null, love_state_tv.getText().toString());
+
                 break;
             case R.id.head_img:
                 isHead = true;
@@ -324,12 +353,34 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
                 getMULTIPLEPhoto(MyHomePageActivity.this, 1);
                 break;
             case R.id.attestation_layout:
-                goCertificationPage(MyHomePageActivity.this);
+                if (!isAttes)
+                    goCertificationPage(MyHomePageActivity.this);
+                else
+                    ToastUtil.toast2_bottom(this, gets(R.string.over_attes));
                 break;
             case R.id.like_game_layout:
                 goLikeGamePage(this);
                 break;
+            case R.id.nickname_change:
+                showSoftInputFromWindow(nickname_ed);
+                break;
+            case R.id.signature_change:
+                showSoftInputFromWindow(signature_ed);
+                break;
         }
+    }
+
+    /**
+     * EditText获取焦点并显示软键盘
+     *
+     * @param ed
+     */
+    private void showSoftInputFromWindow(EditText ed) {
+        ed.setFocusable(true);
+        ed.setFocusableInTouchMode(true);
+        ed.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     /**
@@ -450,14 +501,6 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                //个性签名;
-                case Fields.ACRESULET3:
-                    setSignature(data.getStringExtra(EditActivity.RETURN_EXTRA));
-                    break;
-                //昵称;
-                case Fields.ACRESULET2:
-                    setNickName(data.getStringExtra(EditActivity.RETURN_EXTRA));
-                    break;
                 //头像、背景图;
                 case PhotoPicker.REQUEST_CODE:
                     ArrayList<String> p = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
@@ -471,15 +514,5 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
         }
         if (resultCode == Fields.ACRESULET3)
             mp.CheckID();
-    }
-
-    private void setNickName(String name) {
-        if (name == null) return;
-        this.nickname_tv.setText(name);
-    }
-
-    private void setSignature(String sig) {
-        if (sig == null) return;
-        this.signature_tv.setText(sig);
     }
 }

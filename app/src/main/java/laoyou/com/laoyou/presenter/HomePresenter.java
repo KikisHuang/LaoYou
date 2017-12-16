@@ -20,12 +20,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.PageTopBannerAdapter;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.NearbyBean;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.bean.PageTopBean;
@@ -33,17 +33,21 @@ import laoyou.com.laoyou.listener.AppBarStateChangeListener;
 import laoyou.com.laoyou.listener.HomeListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.SpringListener;
+import laoyou.com.laoyou.listener.VersionListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.VersionUpUtils;
 import laoyou.com.laoyou.utils.homeViewPageUtils;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
+import static laoyou.com.laoyou.utils.SynUtils.getVersionCode;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.SynUtils.startPlay;
 import static laoyou.com.laoyou.utils.SynUtils.stopPlay;
@@ -51,7 +55,7 @@ import static laoyou.com.laoyou.utils.SynUtils.stopPlay;
 /**
  * Created by lian on 2017/10/25.
  */
-public class HomePresenter extends AppBarStateChangeListener implements HttpResultListener, SpringListener {
+public class HomePresenter extends AppBarStateChangeListener implements HttpResultListener, SpringListener, VersionListener {
     private static final String TAG = "HomePresenter";
     private HomeListener listener;
     private Handler handler;
@@ -113,7 +117,8 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
             map.put("longitude", String.valueOf(SPreferences.getLongitude()));
 
             httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETNEARBYUSER);
-        }
+        } else
+            listener.onForbidSlide();
 
     }
 
@@ -136,7 +141,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     }
 
     public void getBanner() {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = getParamsMap();
         map.put("showPosition", "0");
 //        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETBANNER);
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, "http://fns.mozu123.com:8080/mcFnsInterface/" + Interface.GETBANNER);
@@ -160,7 +165,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     }
 
     @Override
-    public void onSucceed(String response, int tag) {
+    public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
                 try {
@@ -201,6 +206,9 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                 try {
                     JSONObject ob = getJsonOb(response);
                     int flag = ob.optInt("hideBannerFlag");
+
+                    VersionUpUtils.VersionCheck(ob.optInt("androidVersion"), this);
+
                     if (flag == 0)
                         listener.BannerShow();
                     else if (flag == 1)
@@ -247,6 +255,11 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                     e.printStackTrace();
                 }*/
 
+                break;
+
+            case Fields.REQUEST4:
+
+                listener.onDownload(getJsonSring(response));
                 break;
         }
     }
@@ -373,7 +386,8 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         if (LoginStatusQuery()) {
             getPeopleNearby(true);
 //            getUseDetails();
-        }
+        } else
+            listener.onForbidSlide();
     }
 
     /**
@@ -429,5 +443,18 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                 listener.onEnable(false);
                 break;
         }
+    }
+
+    @Override
+    public void onVersionUp() {
+        Map<String, String> m = getKeyMap();
+        m.put("version", String.valueOf(getVersionCode(context)));
+        m.put("channelCode", MyApplication.CHANNEL);
+        httpUtils.OkHttpsGet(m, this, Fields.REQUEST4, Interface.URL + Interface.GETDOWNLOADPATH);
+    }
+
+    @Override
+    public void onVersionMatching() {
+        Log.i(TAG, gets(R.string.version_matching));
     }
 }

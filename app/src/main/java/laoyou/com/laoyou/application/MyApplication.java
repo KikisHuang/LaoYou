@@ -11,6 +11,7 @@ import com.tencent.TIMOfflinePushListener;
 import com.tencent.TIMOfflinePushNotification;
 import com.tencent.qalsdk.sdk.MsfSdkUtils;
 import com.tencent.smtt.sdk.QbSdk;
+import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -27,6 +28,7 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.TemporaryBean;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.utils.Foreground;
+import laoyou.com.laoyou.utils.CrashHandler;
 import laoyou.com.laoyou.utils.Fields;
 import okhttp3.OkHttpClient;
 
@@ -37,18 +39,32 @@ public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
     private static Context context;
     public static List<TemporaryBean> temporary = new ArrayList<>();
+    public static String CHANNEL;
+    //CrashHandler实例
+    public static CrashHandler crashHandler;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
+        context = getApplicationContext();
         MultiDex.install(this);
         Foreground.init(this);
-        context = getApplicationContext();
+        ErrorCrashInit();
         SPreferences.setContext(getApplicationContext());
         OkHttpInit();
         QBX5Init();
         UmengInt();
         initTecentIM();
+    }
+
+    /**
+     * 全局异常捕获方法;
+     */
+    private void ErrorCrashInit() {
+
+        crashHandler = CrashHandler.getInstance();
+        crashHandler.init(getApplicationContext());
     }
 
     private void initTecentIM() {
@@ -82,9 +98,12 @@ public class MyApplication extends Application {
 
         UMShareAPI.get(this);//初始化sdk
         //开启debug模式，方便定位错误，具体错误检查方式可以查看http://dev.umeng.com/social/android/quick-integration的报错必看，正式发布，请关闭该模式
-        Config.DEBUG = true;
+        Config.DEBUG = false;
         //微信
         PlatformConfig.setWeixin(Fields.WECHATAPPID, Fields.WECHATAPPSECRET);
+
+        CHANNEL = AnalyticsConfig.getChannel(getApplicationContext());
+        Log.i(TAG, "CHANNEL ==========" + CHANNEL);
     }
 
     /**

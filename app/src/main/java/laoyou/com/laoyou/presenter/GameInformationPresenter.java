@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.GameInfoBean;
 import laoyou.com.laoyou.bean.GameTypeBean;
 import laoyou.com.laoyou.listener.GameInformationListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
@@ -30,6 +31,9 @@ public class GameInformationPresenter implements HttpResultListener {
 
     private static final String TAG = "GameInformationPresenter";
     private GameInformationListener listener;
+    public int page = 0;
+    private boolean InfoRefresh;
+    private List<GameInfoBean> li;
 
     public GameInformationPresenter(GameInformationListener listener) {
         this.listener = listener;
@@ -50,35 +54,46 @@ public class GameInformationPresenter implements HttpResultListener {
      *
      * @param id
      */
-    public void getGameInfo(String id) {
+    public void getGameInfo(String id, boolean f) {
+        InfoRefresh = f;
 
         Map<String, String> map = getParamsMap();
-        map.put("typeId ", id);
+        map.put("typeId", id);
+        map.put("page", String.valueOf(page));
+        map.put("pageSize", String.valueOf(page + 10));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.GETBYPAGE);
     }
 
     @Override
-    public void onSucceed(String response, int tag) {
+    public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-                try {
-                    List<GameTypeBean> list = new ArrayList<>();
-                    JSONArray ar = getJsonAr(response);
-                    if (!ArrayIsNull(ar)) {
-                        for (int i = 0; i < ar.length(); i++) {
-                            GameTypeBean pb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), GameTypeBean.class);
-                            list.add(pb);
-                        }
-                        listener.onGameTypeInforMation(list);
-                    } else
-                        listener.onFailedMsg(gets(R.string.nodata));
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                List<GameTypeBean> list = new ArrayList<>();
+                JSONArray ar = getJsonAr(response);
+                if (!ArrayIsNull(ar)) {
+                    for (int i = 0; i < ar.length(); i++) {
+                        GameTypeBean pb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), GameTypeBean.class);
+                        list.add(pb);
+                    }
+                    listener.onGameTypeInforMation(list);
+                } else
+                    listener.onFailedMsg(gets(R.string.nodata));
                 break;
             case Fields.REQUEST2:
+                JSONArray a = getJsonAr(response);
+                if (InfoRefresh)
+                    li = new ArrayList<>();
 
+                if (!ArrayIsNull(a)) {
+                    for (int i = 0; i < a.length(); i++) {
+                        GameInfoBean gb = new Gson().fromJson(String.valueOf(a.optJSONObject(i)), GameInfoBean.class);
+                        li.add(gb);
+                    }
+                    listener.onGameInfor(li);
+                } else if (InfoRefresh)
+                    listener.onFailedMsg(gets(R.string.nodata));
+                else
+                    listener.onFailedMsg(gets(R.string.The_bottom));
 
                 break;
         }

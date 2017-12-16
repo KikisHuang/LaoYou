@@ -25,7 +25,7 @@
             android:id="@+id/head_img"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/test_head_icon" />
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,7 +48,6 @@
                     android:layout_marginRight="10dp"
                     android:maxEms="6"
                     android:singleLine="true"
-                    android:text="克里斯蒂亚诺"
                     android:textColor="@color/black0"
                     android:textSize="14sp" />
 
@@ -61,7 +60,6 @@
                 android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="主机配置一般，马马虎虎过的去"
                 android:textColor="@color/content3"
                 android:textSize="12sp" />
 
@@ -70,7 +68,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="40分钟前"
                 android:textColor="@color/content4"
                 android:textSize="11sp" />
         </LinearLayout>

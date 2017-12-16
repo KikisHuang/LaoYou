@@ -5,29 +5,31 @@ package laoyou.com.laoyou.bean;
  */
 public class MarkerBean {
 
-    public String getId() {
-        return id;
-    }
+    /**
+     * address : 桃源路
+     * avgEvaluate : 3.0
+     * distance : 4481
+     * hourlyPrice : 1.5
+     * id : 481ebc68566c4828a61b0a0a5d0bd9f7
+     * info : asa
+     * latitude : 22.800149
+     * logoUrl : http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1510982785912c8b160.gif
+     * longitude : 108.344469
+     * name : test
+     * phone : 5553335
+     */
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String address;
+    private double avgEvaluate;
+    private int distance;
+    private double hourlyPrice;
+    private String id;
+    private String info;
+    private double latitude;
+    private String logoUrl;
+    private double longitude;
+    private String name;
+    private String phone;
 
     public String getAddress() {
         return address;
@@ -37,34 +39,44 @@ public class MarkerBean {
         this.address = address;
     }
 
-    public String getPhone() {
-        return phone;
+    public double getAvgEvaluate() {
+        return avgEvaluate;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-    private String id;
-    private String icon;
-    private String name;
-    private String address;
-    private String phone;
-    private String grade;
-
-    public String getGrade() {
-        return grade;
+    public void setAvgEvaluate(double avgEvaluate) {
+        this.avgEvaluate = avgEvaluate;
     }
 
-    public void setGrade(String grade) {
-        this.grade = grade;
+    public int getDistance() {
+        return distance;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public double getHourlyPrice() {
+        return hourlyPrice;
+    }
+
+    public void setHourlyPrice(double hourlyPrice) {
+        this.hourlyPrice = hourlyPrice;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     public double getLatitude() {
@@ -75,6 +87,35 @@ public class MarkerBean {
         this.latitude = latitude;
     }
 
-    private double longitude;//经度
-    private double latitude;//纬度
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }

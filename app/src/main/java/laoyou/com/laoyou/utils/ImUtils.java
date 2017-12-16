@@ -31,7 +31,7 @@ public class ImUtils {
      */
     public static void getImIdentifier(HttpResultListener listener) {
         Map<String, String> map = getKeyMap();
-        httpUtils.OkHttpsGet(map, listener, Fields.REQUEST2, Interface.URL + Interface.MYINFODETAILS);
+        httpUtils.OkHttpsPost(map, listener, Fields.REQUEST2, Interface.URL + Interface.MYINFODETAILS, null, null);
     }
 
     /**

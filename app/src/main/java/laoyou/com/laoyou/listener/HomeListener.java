@@ -29,4 +29,6 @@ public interface HomeListener {
     void RefreshRecyclerView(List<NearbyBean> nblist);
 
     void onEnable(boolean b);
+
+    void onDownload(String jsonSring);
 }

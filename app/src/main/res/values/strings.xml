@@ -402,6 +402,19 @@
     <string name="drive">驾车</string>
     <string name="ride">骑行</string>
     <string name="parse_error">解析异常</string>
+    <string name="no_bar_data">没有附近网吧数据</string>
+    <string name="address">地址</string>
+    <string name="hint">提示</string>
+    <string name="is_call_phone">是否拨打电话</string>
+    <string name="version_matching">Log.i(TAG, \"后台更新检测完毕,已经是最新版本,无需更新\");</string>
+    <string name="VersonUp">版本升级中请稍后...</string>
+    <string name="update_lead">请耐心等待一会，新版本更精彩哦！</string>
+    <string name="attes_unable_change_this">已实名认证后不能修改此项！</string>
+    <string name="over_attes">已经实名认证过了</string>
+    <string name="send">发送</string>
+    <string name="caf_id_null">没有获取到网吧id请重新进入该页面</string>
+    <string name="comment_content_null">不能发送空内容！</string>
+    <string name="comment_send_succeed">发送成功！</string>
 
 
 </resources>

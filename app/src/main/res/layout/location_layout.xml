@@ -16,44 +16,48 @@
             android:layout_height="match_parent" />
 
         <android.support.v7.widget.CardView
+            android:id="@+id/bottom_banner_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:visibility="gone"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="10dp"
             app:cardElevation="1dp"
             app:cardUseCompatPadding="true">
 
             <LinearLayout
+                android:id="@+id/caf_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="5dp">
 
                 <ImageView
+                    android:id="@+id/caf_logo_img"
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/test_background" />
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="5dp"
-                    >
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <TextView
-                        android:id="@+id/cat_name_tv"
+                        android:id="@+id/caf_name_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|left"
                         android:layout_marginTop="5dp"
-                        android:text="xxx网咖"
+                        android:ellipsize="end"
                         android:paddingLeft="11dp"
+                        android:singleLine="true"
                         android:textColor="@color/black0"
                         android:textSize="15sp" />
 
@@ -63,42 +67,42 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:paddingLeft="10dp">
+
                         <laoyou.com.laoyou.view.StarBar
                             android:id="@+id/starBar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_alignParentLeft="true"
                             android:layout_centerHorizontal="true"
+                            android:layout_weight="1"
+                            app:starCount="5"
+                            app:starDistance="3dp"
                             app:starEmpty="@mipmap/gray_star"
                             app:starFill="@mipmap/blue_star"
-                            app:starDistance="3dp"
-                            app:starCount="5"
-                            app:starSize="15dp"/>
-                      <!--  <com.cb.ratingbar.CBRatingBar
-                            android:id="@+id/cbrating_bar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            app:starSize="15dp" />
+                        <!--  <com.cb.ratingbar.CBRatingBar
+                              android:id="@+id/cbrating_bar"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
 
-                            app:starCanTouch="false"
-                            app:starCount="5"
-                            app:starCoverColor="#006cff"
-                            app:starFillColor="#666666"
-                            app:starMaxProgress="50"
-                            app:starPointCount="5"
-                            app:starShowStroke="false"
-                            app:starSize="15dp"
-                            app:starSpace="3dp"
-                            app:starStrokeWidth="1dp"
-                            app:starUseGradient="false" />-->
+                              app:starCanTouch="false"
+                              app:starCount="5"
+                              app:starCoverColor="#006cff"
+                              app:starFillColor="#666666"
+                              app:starMaxProgress="50"
+                              app:starPointCount="5"
+                              app:starShowStroke="false"
+                              app:starSize="15dp"
+                              app:starSpace="3dp"
+                              app:starStrokeWidth="1dp"
+                              app:starUseGradient="false" />-->
 
                         <TextView
                             android:id="@+id/grade_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="4.5分"
-                            android:layout_centerHorizontal="true"
                             android:layout_alignParentRight="true"
+                            android:layout_centerHorizontal="true"
                             android:textColor="@color/content3"
                             android:textSize="11sp" />
                     </RelativeLayout>
@@ -106,26 +110,25 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingLeft="10dp"
                         android:layout_marginTop="10dp"
-                        >
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp">
 
                         <TextView
                             android:id="@+id/address_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="地址：东葛园湖路口(维多利亚港旁)"
-                            android:textColor="@color/gray4"
                             android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="3"
+                            android:textColor="@color/gray4"
                             android:textSize="12sp" />
 
                         <ImageView
                             android:id="@+id/path_planning_img"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:src="@mipmap/black_location_icon"
-                            />
+                            android:src="@mipmap/black_location_icon" />
 
                     </LinearLayout>
                 </LinearLayout>

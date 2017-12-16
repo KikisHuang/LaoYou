@@ -8,19 +8,22 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.CafCommentBean;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
 /**
  * Created by lian on 2017/11/18.
  */
-public class InternetCatAdapter extends BaseAdapter {
-    private List<String> list = null;
+public class InternetCafAdapter extends BaseAdapter {
+    private List<CafCommentBean> list = null;
     private Context mContext;
 
-    public InternetCatAdapter(Context mContext, List<String> list) {
+    public InternetCafAdapter(Context mContext, List<CafCommentBean> list) {
         this.mContext = mContext.getApplicationContext();
         this.list = list;
     }
@@ -48,6 +51,12 @@ public class InternetCatAdapter extends BaseAdapter {
         TextView comment_content = OverallViewHolder.ViewHolder.get(view, R.id.comment_content);
         TextView label_tv = OverallViewHolder.ViewHolder.get(view, R.id.label_tv);
         label_tv.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
+
+
+        nickname_tv.setText(list.get(position).getMcUserByUserId().getName());
+        comment_content.setText(list.get(position).getInfo());
+        time_tv.setText(list.get(position).getCreateTime());
+        Glide.with(mContext).load(list.get(position).getMcUserByUserId().getHeadImgUrl()).into(head_img);
 
         return view;
     }

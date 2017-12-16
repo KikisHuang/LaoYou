@@ -42,17 +42,16 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
             default:
                 return CommentFragment.setTag(position, flag);
         }
-//        return flag == Fields.ISFIND ? FindSonFragment.setTag(position) : CommentFragment.setTag(position, flag);
     }
 
     @Override
     public int getCount() {
-        return list.size();//指定ViewPager的总页数
+        return flag == Fields.ISGAME ? games.size() : list.size();//指定ViewPager的总页数
     }
 
     //去除页面切换时的滑动翻页效果
     @Override
     public CharSequence getPageTitle(int position) {
-        return list.get(position);
+        return flag == Fields.ISGAME ? games.get(position).getName() : list.get(position);
     }
 }

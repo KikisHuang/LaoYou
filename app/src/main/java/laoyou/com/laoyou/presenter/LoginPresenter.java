@@ -92,7 +92,7 @@ public class LoginPresenter implements HttpResultListener {
             Map<String, String> map = getParamsMap();
             map.put("account", phone);
             map.put("password", pass);
-            httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.LOGIN);
+            httpUtils.OkHttpsPost(map, this, Fields.REQUEST1, Interface.URL + Interface.LOGIN, null, null);
         } else if (phone.isEmpty())
             listener.onError(gets(R.string.phonenullmsg));
         else if (!validPhoneNumber(phone))
@@ -109,6 +109,7 @@ public class LoginPresenter implements HttpResultListener {
             case Fields.REQUEST1:
                 try {
                     SPreferences.saveUserToken(getJsonSring(response));
+                    //REQUEST2
                     getImIdentifier(this);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -117,11 +118,13 @@ public class LoginPresenter implements HttpResultListener {
                 break;
             case Fields.REQUEST6:
                 try {
-                    String id = getJsonSring(response);
-                    if (!id.isEmpty()) {
-                        SPreferences.saveIdentifier(id);
-                        Log.i(TAG, "创建获得的id ===" + id);
-                        getImUserSig(id, this);
+                    JSONObject ob = getJsonOb(response);
+                    UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
+                    if (!ub.getCloudTencentAccount().isEmpty()) {
+                        SPreferences.saveIdentifier(ub.getCloudTencentAccount());
+                        Log.i(TAG, "创建获得的id ===" + ub.getCloudTencentAccount());
+                        //REQUEST4
+                        getImUserSig(ub.getCloudTencentAccount(), this);
 //                      ImportImInfo(id, name, faceUrl, this);
                     }
 
@@ -150,6 +153,7 @@ public class LoginPresenter implements HttpResultListener {
                     if (ub.getCloudTencentAccount() != null && !ub.getCloudTencentAccount().isEmpty()) {
                         Log.i(TAG, "详情获得的id ===" + ub.getCloudTencentAccount());
                         SPreferences.saveIdentifier(ub.getCloudTencentAccount());
+                        //REQUEST4
                         getImUserSig(ub.getCloudTencentAccount(), this);
                     } else
                         CreateUserIm(this);

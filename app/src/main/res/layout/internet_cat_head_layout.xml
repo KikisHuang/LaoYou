@@ -17,10 +17,11 @@
             >
 
             <ImageView
+                android:id="@+id/background_img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/test_background" />
+                 />
 
             <TextView
                 android:layout_width="match_parent"
@@ -57,31 +58,28 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/blue_grade"
-                        android:text="4.5"
                         android:textSize="23sp" />
 
                     <TextView
-                        android:id="@+id/cat_name_tv"
+                        android:id="@+id/caf_name_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:ellipsize="end"
                         android:maxEms="20"
                         android:singleLine="true"
-                        android:text="xxx网咖"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/cat_address_tv"
+                        android:id="@+id/caf_address_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/cat_name_tv"
+                        android:layout_below="@+id/caf_name_tv"
                         android:layout_centerInParent="true"
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:maxLines="3"
-                        android:text="南宁市xxx区xx临街二楼"
                         android:textColor="@color/content5"
                         android:textSize="12sp"
 
@@ -90,15 +88,16 @@
                 </RelativeLayout>
                 </android.support.v7.widget.CardView>
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/cat_logo_img"
+                    android:id="@+id/caf_logo_img"
                     android:layout_width="85dp"
                     android:layout_height="85dp"
+                    android:scaleType="centerCrop"
                     android:layout_gravity="center|top"
                     app:civ_border_color="@color/whitetr"
                     app:civ_border_overlay="false"
                     app:civ_border_width="3dp"
                     android:elevation="2dp"
-                    android:src="@drawable/test_head_icon" />
+                     />
             </FrameLayout>
 
         </FrameLayout>
@@ -126,7 +125,7 @@
             android:scrollbars="none">
 
             <LinearLayout
-                android:id="@+id/cat_photo_layout"
+                android:id="@+id/caf_photo_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -150,11 +149,10 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/cat_price_tv"
+                android:id="@+id/caf_price_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="10"
                 android:textColor="@color/blue_grade"
                 android:textSize="35sp" />
 
@@ -170,15 +168,15 @@
 
         <include
             android:id="@+id/config_top_layout"
-            layout="@layout/cat_configuration_include"></include>
+            layout="@layout/caf_configuration_include"></include>
 
         <include
             android:id="@+id/config_mid_layout"
-            layout="@layout/cat_configuration_include"></include>
+            layout="@layout/caf_configuration_include"></include>
 
         <include
             android:id="@+id/config_bottom_layout"
-            layout="@layout/cat_configuration_include"></include>
+            layout="@layout/caf_configuration_include"></include>
 
         <TextView
             android:layout_width="match_parent"

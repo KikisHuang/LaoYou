@@ -35,7 +35,7 @@ public class httpUtils {
      * @param reqTag   回调标识符;
      */
 
-    public static synchronized  void OkHttpsGet(Map<String, String> params, final HttpResultListener listener, final int reqTag, String url) {
+    public static synchronized void OkHttpsGet(Map<String, String> params, final HttpResultListener listener, final int reqTag, String url) {
         GetBuilder get = OkHttpUtils.get();
         get.url(url);
         get.params(params);
@@ -104,7 +104,6 @@ public class httpUtils {
             public void onResponse(String response, int id) {
                 try {
                     int code = getCode(response);
-
                     if (code == 1) {
                         Log.i(TAG, "成功返回数据 ====" + response);
                         listener.onSucceed(response, reqTag);
@@ -114,7 +113,7 @@ public class httpUtils {
                     }
                     Cancle();
                 } catch (Exception e) {
-                    Log.i(TAG, "解析异常信息 ====" + e);
+                    Log.e(TAG, "解析异常信息 ====" + e);
                     listener.onParseError(e);
                     Cancle();
                 }
@@ -144,7 +143,12 @@ public class httpUtils {
 
             @Override
             public void onResponse(String response, int id) {
-                listener.onSucceed(response, reqTag);
+                try {
+                    listener.onSucceed(response, reqTag);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.i(TAG, "Parse Error ==" + e);
+                }
             }
         });
     }

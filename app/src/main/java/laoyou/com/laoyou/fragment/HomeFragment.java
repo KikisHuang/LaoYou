@@ -27,19 +27,25 @@ import laoyou.com.laoyou.adapter.HomeStatusAdapter;
 import laoyou.com.laoyou.bean.NearbyBean;
 import laoyou.com.laoyou.bean.PageTopBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
+import laoyou.com.laoyou.dialog.MyAlertDialog;
 import laoyou.com.laoyou.listener.HomeListener;
 import laoyou.com.laoyou.listener.PositionAddListener;
 import laoyou.com.laoyou.presenter.HomePresenter;
 import laoyou.com.laoyou.utils.AnimationUtil;
 import laoyou.com.laoyou.utils.DeviceUtils;
+import laoyou.com.laoyou.utils.DownLoadUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.utils.ViewPagerScroller;
 import laoyou.com.laoyou.view.WrapContentHeightViewPager;
 
+import static laoyou.com.laoyou.dialog.PhotoProgress.LoadingCancle;
+import static laoyou.com.laoyou.dialog.PhotoProgress.LoadingShow;
 import static laoyou.com.laoyou.utils.AnimationUtil.showAndHiddenAnimation;
+import static laoyou.com.laoyou.utils.IPUtils.isWifi;
 import static laoyou.com.laoyou.utils.IntentUtils.goFlashChatPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goGameInformationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLocationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginOperPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goOutSidePage;
@@ -81,6 +87,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private List<NearbyBean> list;
     private TextView flash_more_tv;
+
 
     @Override
     protected int initContentView() {
@@ -246,10 +253,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     goFlashChatPage(getActivity());
                     break;
                 case R.id.nearby_wb_layout:
-                    goLocationPage(getActivity());
+                    goLocationPage(getActivity(), 0, 0);
                     break;
                 case R.id.player_community_layout:
-                    Indevelopment(getActivity());
+                    goGameInformationPage(getActivity());
                     break;
                 case R.id.show_hide_img:
                     mLayoutManager.scrollToPositionWithOffset(0, 0);
@@ -356,6 +363,37 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         show_hide_img.setEnabled(b);
         springview.setEnable(b);
+    }
+
+    @Override
+    public void onDownload(final String url) {
+
+        LoadingShow(getActivity(), false, "版本升级中请稍后...");
+        if (!url.isEmpty()) {
+            /**
+             * 判断是否Wifi环境;
+             */
+            if (isWifi(getActivity())) {
+                DownLoadUtils du = new DownLoadUtils(getActivity());
+                du.download(url);
+            } else {
+                new MyAlertDialog(getActivity()).builder().setTitle("提示").setCancelable(true).setMsg("检测到您不是Wifi环境,是否还继续下载?").setNegativeButton("下次再说", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        LoadingCancle();
+                    }
+                }).setPositiveButton("下载", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DownLoadUtils du = new DownLoadUtils(getActivity());
+                        du.download(url);
+                    }
+                }).show();
+            }
+        } else {
+            Log.i(TAG, "没有获取到新版本下载路径");
+            LoadingCancle();
+        }
     }
 
     public void onRefresh() {

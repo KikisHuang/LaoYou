@@ -152,4 +152,28 @@ public class Interface {
      * 获取游戏资讯列表接口;
      */
     public static final String GETBYPAGE = "news/select/getByPage.app";
+    /**
+     * 获取我关注的游戏接口;
+     */
+    public static final String GETMYGAME = "game/select/getMyGame.app";
+    /**
+     * 网吧列表接口;
+     */
+    public static final String INTERNETBAR = "internetBar/select/getByPage.app";
+    /**
+     * 网吧详情接口;
+     */
+    public static final String GETCAFDETAILS = "internetBar/select/getDetails.app";
+    /**
+     * 网吧评论接口;
+     */
+    public static final String GETCAFCOMMENT = "internetBar/select/getComment.app";
+    /**
+     * 网吧评论发送接口;
+     */
+    public static final String CAFCOMMENTSEND = "internetBar/add/comment.app";
+    /**
+     * 新版本下载接口;
+     */
+    public static final String GETDOWNLOADPATH = "common/getDownloadPath.app";
 }

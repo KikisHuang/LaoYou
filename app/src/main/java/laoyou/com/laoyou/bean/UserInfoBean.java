@@ -26,6 +26,54 @@ public class UserInfoBean implements Serializable{
     private boolean status;
     private int uid;
     private String cloudTencentAccount;
+    private String seloveStatusx;
+
+    public String getSeloveStatusx() {
+        return seloveStatusx;
+    }
+
+    public void setSeloveStatusx(String seloveStatusx) {
+        this.seloveStatusx = seloveStatusx;
+    }
+
+    public String getAutograph() {
+        return autograph;
+    }
+
+    public void setAutograph(String autograph) {
+        this.autograph = autograph;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getHometown() {
+        return hometown;
+    }
+
+    public void setHometown(String hometown) {
+        this.hometown = hometown;
+    }
+
+    private String autograph;
+    private String birthday;
+    private String height;
+    private String hometown;
+
+
 
     public String getCloudTencentAccount() {
         return cloudTencentAccount;

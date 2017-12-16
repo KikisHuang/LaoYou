@@ -32,6 +32,7 @@ public class Fields {
     public static final String OFFICIAL = "official-";
     public static final String TGS = "@TGS#";
 
+    public static final String br = "<br />";
 
     //刷新动画
     public static int[] refreshAnimSrcs = new int[]{R.drawable.loading1, R.drawable.loading2, R.drawable.loading3, R.drawable.loading4, R.drawable.loading5, R.drawable.loading6, R.drawable.loading7, R.drawable.loading8, R.drawable.loading9};

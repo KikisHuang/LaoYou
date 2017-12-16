@@ -1,5 +1,7 @@
 package laoyou.com.laoyou.listener;
 
+import org.json.JSONException;
+
 import okhttp3.Request;
 
 /**
@@ -11,7 +13,7 @@ public interface HttpResultListener {
      *
      * @param response
      */
-    void onSucceed(String response, int tag);
+    void onSucceed(String response, int tag) throws JSONException;
 
     /**
      * 网络异常回调;

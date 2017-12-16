@@ -2,12 +2,14 @@ package laoyou.com.laoyou.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -34,7 +36,13 @@ import com.amap.api.services.route.DriveRouteResult;
 import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.MarkerBean;
 import laoyou.com.laoyou.dialog.ActionSheetDialog;
@@ -46,6 +54,7 @@ import laoyou.com.laoyou.presenter.InternetCafLocationPresenter;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.StarBar;
 
+import static laoyou.com.laoyou.utils.IntentUtils.goInternetCafPage;
 import static laoyou.com.laoyou.utils.SynUtils.convertViewToBitmap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
@@ -71,47 +80,65 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
     /**
      * 网吧定位的经纬度(默认推荐第一的网吧);
      */
-    private double Catlatitude;
-    private double Catlongitude;
+    private double Caflatitude;
+    private double Caflongitude;
 
     private StarBar starBar;
-    private TextView cat_name_tv, grade_tv, address_tv;
+    private TextView caf_name_tv, grade_tv, address_tv;
     private boolean isFirst = true;
     private MyLocationStyle myLocationStyle;
     private LatLng mLocalLatlng;
-    private ImageView path_planning_img;
+    private ImageView path_planning_img, caf_logo_img;
     private RouteSearch routeSearch;
 
     private InternetCafLocationPresenter ip;
+    private List<MarkerBean> list;
+    private LinearLayout caf_layout;
+    private String id;
+    private boolean IsList;
+    private CardView bottom_banner_card;
 
     @Override
     protected void click() {
         path_planning_img.setOnClickListener(this);
+        caf_layout.setOnClickListener(this);
     }
 
     @Override
     protected void init() {
         setContentView(R.layout.location_layout);
+        ListOfGps();
         setImgTitles(this);
         ViewInit();
         mapView.onCreate(savedInstanceState);
         Mapinit();
     }
 
+    private void ListOfGps() {
+        IsList = Double.parseDouble(getIntent().getStringExtra("caf_latitude")) == 0 && Double.parseDouble(getIntent().getStringExtra("caf_longitude")) == 0 ? true : false;
+        if (!IsList) {
+            Caflatitude = Double.parseDouble(getIntent().getStringExtra("caf_latitude"));
+            Caflongitude = Double.parseDouble(getIntent().getStringExtra("caf_longitude"));
+            bottom_banner_card.setVisibility(View.GONE);
+        }
+    }
     private void ViewInit() {
         ip = new InternetCafLocationPresenter(this);
-        cat_name_tv = f(R.id.cat_name_tv);
+        caf_name_tv = f(R.id.caf_name_tv);
         //获取地图控件引用
         mapView = f(R.id.map_view);
+        bottom_banner_card = f(R.id.bottom_banner_card);
+        caf_layout = f(R.id.caf_layout);
+        caf_logo_img = f(R.id.caf_logo_img);
         starBar = f(R.id.starBar);
         path_planning_img = f(R.id.path_planning_img);
         grade_tv = f(R.id.grade_tv);
         address_tv = f(R.id.address_tv);
-
+        list = new ArrayList<>();
         starBar.setIntegerMark(false);
         starBar.ClickOpen(false);
 
-        starBar.setStarMark(3.5f);
+        starBar.setStarMark(0f);
         //路线规划初始化;
         routeSearch = new RouteSearch(this);
         routeSearch.setRouteSearchListener(this);
@@ -127,7 +154,6 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
             aMap = mapView.getMap();
 
         setUpMap();
-        AddCatMarker();
         aMap.setOnMapClickListener(this);
 
     }
@@ -138,32 +164,33 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
     }
 
     private void AddCatMarker() {
-        //测试数据,正式数据需要后台返回;
-        double[] latLnglongitude = {108.345491, 108.362829, 108.379652, 108.39493, 108.370211, 108.36652, 108.393127};
-        double[] latLnglatitude = {22.835689, 22.82493, 22.829677, 22.834028, 22.836717, 22.817098, 22.822162};
+        if (list.size() > 0) {
+            setBottomBanner(list.get(0));
+            for (MarkerBean mb : list) {
 
-        for (int i = 0; i < latLnglatitude.length; i++) {
-            MarkerBean mb = new MarkerBean();
-            mb.setLatitude(latLnglatitude[i]);
-            mb.setLongitude(latLnglongitude[i]);
-            mb.setName("网咖地址Marker " + i);
+                LatLng lt = new LatLng(mb.getLatitude(), mb.getLongitude());
+                MarkerOptions otMarkerOptions = new MarkerOptions();
+                //otMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_mark));
+                otMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(convertViewToBitmap(getInfoWindow(mb.getName()))));
 
-            LatLng lt = new LatLng(latLnglatitude[i], latLnglongitude[i]);
-            MarkerOptions otMarkerOptions = new MarkerOptions();
-//            otMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_mark));
-            otMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(convertViewToBitmap(getMyBitmap("网咖地址Marker " + i))));
+                otMarkerOptions.position(lt);
+                Marker marker = aMap.addMarker(otMarkerOptions);
 
-            otMarkerOptions.position(lt);
-            Marker marker = aMap.addMarker(otMarkerOptions);
-
-            marker.setObject(mb);
-            //otMarkerOptions.title(i + "");
-//          localMarker.showInfoWindow();
-//          aMap.moveCamera(CameraUpdateFactory.changeLatLng(lt));
+                marker.setObject(mb);
+                //otMarkerOptions.title(i + "");
+                //localMarker.showInfoWindow();
+                //aMap.moveCamera(CameraUpdateFactory.changeLatLng(lt));
+            }
         }
     }
 
-    protected View getMyBitmap(String pm_val) {
+    /**
+     * infowindow布局;
+     *
+     * @param pm_val
+     * @return
+     */
+    protected View getInfoWindow(String pm_val) {
         View view = getLayoutInflater().inflate(R.layout.map_marker_item, null);
         TextView tv_val = (TextView) view.findViewById(R.id.marker_tv_val);
         tv_val.setText(pm_val);
@@ -171,7 +198,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
     }
 
     /**
-     * 设置一些amap的属性
+     * 初始化定位;
      */
     private void setUpMap() {
 
@@ -295,6 +322,11 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
                     Log.i(TAG, "第一次 定位回调 ");
                     mLocalLatlng = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
                     aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLocalLatlng, 14));
+                    if (IsList)
+                        ip.getInternetCafData(amapLocation.getLatitude(), amapLocation.getLongitude());
+                    else {
+                        WalkQuery();
+                    }
                     isFirst = false;
                 } else
                     Log.i(TAG, "定位回调  Mylatitude == " + Mylatitude + " Mylongitude ==" + Mylongitude);
@@ -313,14 +345,14 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
     @Override
     public void onMapClick(LatLng latLng) {
         //点击地图后清理图层插上图标，在将其移动到中心位置
-//        aMap.clear();
-//        latitude = latLng.latitude;
-//        longitude = latLng.longitude;
-//        MarkerOptions otMarkerOptions = new MarkerOptions();
-//        otMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_mark));
-//        otMarkerOptions.position(latLng);
-//        aMap.addMarker(otMarkerOptions);
-//        aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+   /*     aMap.clear();
+        latitude = latLng.latitude;
+        longitude = latLng.longitude;
+        MarkerOptions otMarkerOptions = new MarkerOptions();
+        otMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.location_mark));
+        otMarkerOptions.position(latLng);
+        aMap.addMarker(otMarkerOptions);
+        aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));*/
 
     }
 
@@ -350,7 +382,11 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
                     routeSearch.setRouteSearchListener(this);
                     PathPlanning();
                 }
-
+                break;
+            case R.id.caf_layout:
+                if (list.size() > 0) {
+                    goInternetCafPage(this, id);
+                }
                 break;
         }
     }
@@ -384,7 +420,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
      * 步行;
      */
     private void WalkQuery() {
-        RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(new LatLonPoint(Mylatitude, Mylongitude), new LatLonPoint(Catlatitude, Catlongitude));
+        RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(new LatLonPoint(Mylatitude, Mylongitude), new LatLonPoint(Caflatitude, Caflongitude));
         RouteSearch.WalkRouteQuery query = new RouteSearch.WalkRouteQuery(fromAndTo);
         routeSearch.calculateWalkRouteAsyn(query);
     }
@@ -393,7 +429,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
      * 骑行;
      */
     private void RideQuery() {
-        final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(new LatLonPoint(Mylatitude, Mylongitude), new LatLonPoint(Catlatitude, Catlongitude));
+        final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(new LatLonPoint(Mylatitude, Mylongitude), new LatLonPoint(Caflatitude, Caflongitude));
         RouteSearch.RideRouteQuery query = new RouteSearch.RideRouteQuery(fromAndTo);
         routeSearch.calculateRideRouteAsyn(query);
     }
@@ -402,7 +438,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
      * 驾车;
      */
     private void DriveQuery() {
-        final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(new LatLonPoint(Mylatitude, Mylongitude), new LatLonPoint(Catlatitude, Catlongitude));
+        final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(new LatLonPoint(Mylatitude, Mylongitude), new LatLonPoint(Caflatitude, Caflongitude));
         RouteSearch.DriveRouteQuery query = new RouteSearch.DriveRouteQuery(fromAndTo, RouteSearch.DrivingDefault, null, null, "");
         routeSearch.calculateDriveRouteAsyn(query);
     }
@@ -445,10 +481,25 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
     @Override
     public boolean onMarkerClick(Marker marker) {
         MarkerBean mb = (MarkerBean) marker.getObject();
-        cat_name_tv.setText(mb.getName());
-        Catlatitude = mb.getLatitude();
-        Catlongitude = mb.getLongitude();
+        setBottomBanner(mb);
         return false;
+    }
+
+    /**
+     * 设置底部Banner数据;
+     *
+     * @param mb
+     */
+    private void setBottomBanner(MarkerBean mb) {
+        id = mb.getId();
+        caf_name_tv.setText(mb.getName());
+        Caflatitude = mb.getLatitude();
+        Caflongitude = mb.getLongitude();
+        starBar.setStarMark((float) mb.getAvgEvaluate());
+        grade_tv.setText(mb.getAvgEvaluate() + "分");
+        address_tv.setText(gets(R.string.address) + "：" + mb.getAddress());
+
+        Glide.with(this).load(mb.getLogoUrl()).bitmapTransform(new CenterCrop(this), new RoundedCornersTransformation(this, 8, 0, RoundedCornersTransformation.CornerType.ALL)).into(caf_logo_img);
     }
 
     /**
@@ -551,11 +602,13 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
 
     @Override
     public void onFailesMsg(String msg) {
-
+        ToastUtil.toast2_bottom(this, msg);
     }
 
     @Override
-    public void onInternetCafDataList() {
-
+    public void onInternetCafDataList(List<MarkerBean> list) {
+        bottom_banner_card.setVisibility(View.VISIBLE);
+        this.list = list;
+        AddCatMarker();
     }
 }

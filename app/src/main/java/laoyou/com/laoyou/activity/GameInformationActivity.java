@@ -9,6 +9,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.TabPagerAdapter;
+import laoyou.com.laoyou.bean.GameInfoBean;
 import laoyou.com.laoyou.bean.GameTypeBean;
 import laoyou.com.laoyou.listener.GameInformationListener;
 import laoyou.com.laoyou.presenter.GameInformationPresenter;
@@ -41,8 +42,8 @@ public class GameInformationActivity extends InitActivity implements GameInforma
         setContentView(R.layout.game_information_layout);
         setTitlesAndBack(this, "", "");
         TextView title = (TextView) findViewById(R.id.title_tv);
-
         title.setText(gets(R.string.game_information));
+
         viewPager = f(R.id.viewPager);
         mTab = f(R.id.tab_layout);
 
@@ -73,6 +74,11 @@ public class GameInformationActivity extends InitActivity implements GameInforma
             mTab.addTab(mTab.newTab().setText(gb.getName()));
         }
         setPager();
+    }
+
+    @Override
+    public void onGameInfor(List<GameInfoBean> li) {
+
     }
 
 

@@ -2,6 +2,8 @@ package laoyou.com.laoyou.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.liaoinstan.springview.widget.SpringView;
@@ -24,7 +26,7 @@ import static laoyou.com.laoyou.utils.SynUtils.getTAG;
 /**
  * Created by lian on 2017/5/5.
  */
-public class GameInformationFragment extends BaseFragment implements SpringListener, GameInformationListener {
+public class GameInformationFragment extends BaseFragment implements SpringListener, AdapterView.OnItemClickListener, GameInformationListener {
 
     private static final String TAG = getTAG(GameInformationFragment.class);
 
@@ -55,7 +57,7 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
 
     @Override
     protected void click() {
-
+        listView.setOnItemClickListener(this);
     }
 
 
@@ -72,39 +74,26 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
         SpringUtils.SpringViewInit(springView, getActivity(), this);
 
         list = new ArrayList<>();
-
-        list.add(null);
-        list.add(null);
-        list.add(null);
-
         adapter = new GameInformationAdapter(getActivity(), list);
         listView.setAdapter(adapter);
-
     }
 
     @Override
     protected void initData() {
-        gp.getGameInfo(id);
+        gp.page = 0;
+        gp.getGameInfo(id, true);
     }
 
     @Override
     public void IsonRefresh(int init) {
-        switch (tag) {
-            case 0:
-                break;
-            case 1:
-                break;
-        }
+        gp.page = init;
+        gp.getGameInfo(id, true);
     }
 
     @Override
     public void IsonLoadmore(int move) {
-        switch (tag) {
-            case 0:
-                break;
-            case 1:
-                break;
-        }
+        gp.page += move;
+        gp.getGameInfo(id, false);
     }
 
     @Override
@@ -120,5 +109,19 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
     @Override
     public void onGameTypeInforMation(List<GameTypeBean> list) {
 
+    }
+
+    @Override
+    public void onGameInfor(List<GameInfoBean> li) {
+        list = li;
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (list != null && list.size() > 0) {
+
+
+        }
     }
 }
