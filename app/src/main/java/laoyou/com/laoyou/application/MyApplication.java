@@ -63,8 +63,8 @@ public class MyApplication extends Application {
      */
     private void ErrorCrashInit() {
 
-        crashHandler = CrashHandler.getInstance();
-        crashHandler.init(getApplicationContext());
+//        crashHandler = CrashHandler.getInstance();
+//        crashHandler.init(getApplicationContext());
     }
 
     private void initTecentIM() {

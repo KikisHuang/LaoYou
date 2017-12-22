@@ -61,8 +61,10 @@ public class MyHomePagePresenter implements HttpResultListener, OnCompressListen
      * @param hometown   家乡;
      * @param birthday   生日;
      * @param love_state 恋爱状态;
+     * @param backFile
+     * @param address
      */
-    public void ChangeInfo(File file, String name, int sex, String sig, String height, String hometown, String birthday, String love_state) {
+    public void ChangeInfo(File file, String name, int sex, String sig, String height, String hometown, String birthday, String love_state, File backFile, String address) {
         Map<String, String> map = getKeyMap();
         map.put("name", name);
         map.put("sex", String.valueOf(sex));
@@ -72,12 +74,21 @@ public class MyHomePagePresenter implements HttpResultListener, OnCompressListen
             map.put("birthday", String.valueOf(birthday));
 
         map.put("height", String.valueOf(height));
-        map.put("autograph", String.valueOf(sig));
-        map.put("seloveStatusx", String.valueOf(love_state));
 
-        if (file != null) {
+        map.put("autograph", String.valueOf(sig));
+
+        map.put("loveStatus", String.valueOf(love_state));
+
+        map.put("address", String.valueOf(address));
+
+        if (file != null || backFile != null) {
             Map<String, File> f = getFileMap();
-            f.put("file", file);
+            if (file != null)
+                f.put("file", file);
+
+            if (backFile != null)
+                f.put("background", backFile);
+
             httpUtils.OkHttpsPost(map, this, Fields.REQUEST5, Interface.URL + Interface.MODIFYUSER, null, f);
         } else
             httpUtils.OkHttpsPost(map, this, Fields.REQUEST5, Interface.URL + Interface.MODIFYUSER, null, null);

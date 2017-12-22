@@ -18,6 +18,7 @@ import laoyou.com.laoyou.activity.FlashChatGambitActivity;
 import laoyou.com.laoyou.activity.FlashChatMemberActivity;
 import laoyou.com.laoyou.activity.ForgetPasswordActivity;
 import laoyou.com.laoyou.activity.GameInformationActivity;
+import laoyou.com.laoyou.activity.HomePageActivity;
 import laoyou.com.laoyou.activity.InternetCafActivity;
 import laoyou.com.laoyou.activity.InternetCafLocationActivity;
 import laoyou.com.laoyou.activity.LikeGameActivity;
@@ -29,11 +30,15 @@ import laoyou.com.laoyou.activity.MyPhotoActivity;
 import laoyou.com.laoyou.activity.NearbyFlashChatActivity;
 import laoyou.com.laoyou.activity.OutSideActivity;
 import laoyou.com.laoyou.activity.OverInfoActivity;
+import laoyou.com.laoyou.activity.ParticipationActivity;
 import laoyou.com.laoyou.activity.PhotoViewerActivity;
 import laoyou.com.laoyou.activity.QueryActivity;
 import laoyou.com.laoyou.activity.RegisterActivity;
 import laoyou.com.laoyou.activity.SendPhoneCodeActivity;
 import laoyou.com.laoyou.activity.SettingActivity;
+import laoyou.com.laoyou.activity.TopicCircleActivity;
+import laoyou.com.laoyou.activity.TopicCommentDetailsActivity;
+import laoyou.com.laoyou.activity.TopicTypeDetailsActivity;
 import laoyou.com.laoyou.activity.WifiActivity;
 import laoyou.com.laoyou.tencent.ui.BlackListActivity;
 import laoyou.com.laoyou.tencent.ui.MessageNotifySettingActivity;
@@ -126,6 +131,37 @@ public class IntentUtils {
     }
 
     /**
+     * 话题圈页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goTopicCirclePage(Context context) {
+
+        Intent intent = new Intent(context, TopicCircleActivity.class);
+        startPage(context, intent);
+    }
+
+    /**
+     * 话题圈类型详情页面;
+     *
+     * @param context        上下文;
+     * @param id
+     * @param name           名称
+     * @param followCount    参与人数
+     * @param chatThemeCount 主题数
+     */
+    public static void goTopicTypeDetailsPage(Context context, String id, String name, String followCount, String chatThemeCount, String imgurl) {
+
+        Intent intent = new Intent(context, TopicTypeDetailsActivity.class);
+        intent.putExtra("Topic_Type_id", id);
+        intent.putExtra("Topic_Type_name", name);
+        intent.putExtra("Topic_Type_follow", followCount != null && !followCount.isEmpty() ? followCount : "0");
+        intent.putExtra("Topic_Type_chat", chatThemeCount != null && !chatThemeCount.isEmpty() ? chatThemeCount : "0");
+        intent.putExtra("Topic_Type_imgurl", imgurl != null && !imgurl.isEmpty() ? imgurl : "");
+        startPage(context, intent);
+    }
+
+    /**
      * 我的相册页面;
      *
      * @param context 上下文;
@@ -141,7 +177,7 @@ public class IntentUtils {
      *
      * @param context 上下文;
      */
-    public static void goPhotoViewerPage(Context context, List<String> list, int pos,int Function) {
+    public static void goPhotoViewerPage(Context context, List<String> list, int pos, int Function) {
 
         Intent intent = new Intent(context, PhotoViewerActivity.class);
         intent.putStringArrayListExtra("Photo_list", (ArrayList<String>) list);
@@ -385,6 +421,46 @@ public class IntentUtils {
         Intent intent = new Intent(context, MyHomePageActivity.class);
 //       startPage(context, intent);
         ((Activity) context).startActivityForResult(intent, Fields.ACRESULET1);
+    }
+
+    /**
+     * 个人主页页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goHomePage(Context context, String id) {
+
+        Intent intent = new Intent(context, HomePageActivity.class);
+        intent.putExtra("Page_Home_id", id);
+        startPage(context, intent);
+    }
+
+    /**
+     * 参与的人页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goParticipationPage(Context context, String name) {
+
+        Intent intent = new Intent(context, ParticipationActivity.class);
+        intent.putExtra("List_Name", name);
+        startPage(context, intent);
+    }
+
+    /**
+     * 话题圈详情评论页面;
+     *
+     * @param context 上下文;
+     * @param s
+     */
+    public static void goTopicCommentDetailsPage(Context context,String id, String userId, String name,String content) {
+
+        Intent intent = new Intent(context, TopicCommentDetailsActivity.class);
+        intent.putExtra("Page_CommentDetails_id", id);
+        intent.putExtra("Page_CommentDetails_userId", userId);
+        intent.putExtra("Page_CommentDetails_name", name);
+        intent.putExtra("Page_CommentDetails_content", content);
+        startPage(context, intent);
     }
 
     /**

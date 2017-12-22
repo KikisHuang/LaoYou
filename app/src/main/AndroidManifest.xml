@@ -112,7 +112,9 @@
         <!-- 密码查询页面 -->
         <activity
             android:name=".activity.QueryActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+
+        </activity>
         <!-- 我的个人主页页面 -->
         <activity
             android:name=".activity.MyHomePageActivity"
@@ -141,16 +143,13 @@
         <!-- 网吧列表页面 -->
         <activity
             android:name=".activity.InternetCafLocationActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"
-            >
-        </activity>
+            android:launchMode="standard"
+            android:screenOrientation="portrait"></activity>
         <!-- 网吧详情页面 -->
         <activity
             android:name=".activity.InternetCafActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            ></activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <!-- 游戏资讯页面 -->
         <activity
             android:name=".activity.GameInformationActivity"
@@ -162,6 +161,18 @@
         <activity
             android:name=".activity.SettingActivity"
             android:screenOrientation="portrait"></activity>
+        <!-- 话题圈页面 -->
+        <activity
+            android:name=".activity.TopicCircleActivity"
+            android:screenOrientation="portrait"></activity>
+        <!-- 话题圈类型明细页面 -->
+        <activity
+            android:name=".activity.TopicTypeDetailsActivity"
+            android:screenOrientation="portrait"></activity>
+        <!-- 话题圈评论详情页面 -->
+        <activity
+            android:name=".activity.TopicCommentDetailsActivity"
+            android:screenOrientation="portrait"></activity>
         <!-- 好友通讯录页面 -->
         <activity
             android:name=".activity.AddressbookActivity"
@@ -169,6 +180,10 @@
         <!-- 照片查看器页面 -->
         <activity
             android:name=".activity.PhotoViewerActivity"
+            android:screenOrientation="portrait"></activity>
+        <!-- 参与的人页面 -->
+        <activity
+            android:name=".activity.ParticipationActivity"
             android:screenOrientation="portrait"></activity>
         <!-- 创建群组页面 -->
         <activity
@@ -306,7 +321,11 @@
         <activity android:name=".tencent.ui.MessageNotifySettingActivity"></activity>
         <!-- 腾讯IM -->
         <!-- umeng -->
-        <meta-data android:value="5a0be1698f4a9d7e1300001f" android:name="UMENG_APPKEY"/>
-        <meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5a0be1698f4a9d7e1300001f" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
     </application>
 </manifest>

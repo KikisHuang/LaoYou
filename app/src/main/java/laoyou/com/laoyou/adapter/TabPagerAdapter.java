@@ -10,6 +10,7 @@ import laoyou.com.laoyou.bean.GameTypeBean;
 import laoyou.com.laoyou.fragment.CommentFragment;
 import laoyou.com.laoyou.fragment.FindSonFragment;
 import laoyou.com.laoyou.fragment.GameInformationFragment;
+import laoyou.com.laoyou.fragment.TopicTypeDetailsFragment;
 import laoyou.com.laoyou.utils.Fields;
 
 /**
@@ -19,11 +20,19 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
     private List<String> list;
     private List<GameTypeBean> games;
     private int flag = Fields.ISGAME;
+    private String id = "";
 
     public TabPagerAdapter(FragmentManager fm, List<String> strings, int flag) {
         super(fm);
         this.list = strings;
         this.flag = flag;
+    }
+
+    public TabPagerAdapter(FragmentManager fm, List<String> strings, int flag, String id) {
+        super(fm);
+        this.list = strings;
+        this.flag = flag;
+        this.id = id;
     }
 
     public TabPagerAdapter(FragmentManager fm, List<GameTypeBean> strings) {
@@ -38,7 +47,8 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
                 return FindSonFragment.setTag(position);
             case Fields.ISGAME:
                 return GameInformationFragment.setTag(position, games.get(position).getId());
-
+            case Fields.ISTOPIC:
+                return TopicTypeDetailsFragment.setTag(position,id);
             default:
                 return CommentFragment.setTag(position, flag);
         }

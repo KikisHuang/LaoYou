@@ -36,6 +36,7 @@ public class InternetCafPresenter implements HttpResultListener {
     private InternetCapListener listener;
     private String id = "";
     public int page = 0;
+    private List<CafCommentBean> list;
 
     public InternetCafPresenter(InternetCapListener listener, String caf_id) {
         this.listener = listener;
@@ -50,7 +51,7 @@ public class InternetCafPresenter implements HttpResultListener {
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETCAFDETAILS);
     }
 
-    private void getCatComment() {
+    public void getCatComment() {
 
         Map<String, String> map = getParamsMap();
         map.put("id", id);
@@ -72,7 +73,8 @@ public class InternetCafPresenter implements HttpResultListener {
                 }
                 break;
             case Fields.REQUEST2:
-                List<CafCommentBean> list = new ArrayList<>();
+
+                 list = new ArrayList<>();
                 JSONArray ar = getJsonAr(response);
                 if (ar.length() > 0) {
                     for (int i = 0; i < ar.length(); i++) {

@@ -42,6 +42,9 @@
     <style name="TabLayoutTitlesTextStyle">
         <item name="android:textSize">25sp</item>
     </style>
+    <style name="TabLayoutTitlesTextStyle1">
+        <item name="android:textSize">18sp</item>
+    </style>
 
 
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">

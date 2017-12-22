@@ -66,7 +66,7 @@ public class JsonUtils {
     /**
      * Json空判断通用方法;
      *
-     * @param ob JSONObject
+     * @param ob  JSONObject
      * @param key 值
      */
     public static String NullDispose(JSONObject ob, String key) {
@@ -91,6 +91,7 @@ public class JsonUtils {
         Map<String, String> map = new HashMap<>();
         return map;
     }
+
     public static Map<String, File> getFileMap() {
         Map<String, File> map = new HashMap<>();
         return map;

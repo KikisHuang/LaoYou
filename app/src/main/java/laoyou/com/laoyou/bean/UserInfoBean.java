@@ -26,14 +26,32 @@ public class UserInfoBean implements Serializable{
     private boolean status;
     private int uid;
     private String cloudTencentAccount;
-    private String seloveStatusx;
+    private String loveStatus;
+    private String address;
+    private String backgroundUrl;
+
+    public String getBackgroundUrl() {
+        return backgroundUrl;
+    }
+
+    public void setBackgroundUrl(String backgroundUrl) {
+        this.backgroundUrl = backgroundUrl;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getSeloveStatusx() {
-        return seloveStatusx;
+        return loveStatus;
     }
 
     public void setSeloveStatusx(String seloveStatusx) {
-        this.seloveStatusx = seloveStatusx;
+        this.loveStatus = seloveStatusx;
     }
 
     public String getAutograph() {

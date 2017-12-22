@@ -398,8 +398,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                     mp.UpLoadLocation(amapLocation.getLatitude(), amapLocation.getLongitude(), amapLocation.getAddress());
 
-                    if (getHomeInstance() != null)
-                        getHomeInstance().onRefresh();
+//                    if (getHomeInstance() != null)
+//                        getHomeInstance().onRefresh();
                 }
 
             } else {

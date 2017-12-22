@@ -122,9 +122,9 @@ public class AnimationUtil {
      *
      * @return
      */
-    public static ScaleAnimation TitleZoomAnima(boolean tag) {
+    public static ScaleAnimation TitleZoomAnima() {
 
-        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1, 1, 0.5f,
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 0.7f, 1, 0.7f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         //3秒完成动画
         scaleAnimation.setDuration(200);

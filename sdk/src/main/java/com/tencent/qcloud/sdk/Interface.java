@@ -176,4 +176,50 @@ public class Interface {
      * 新版本下载接口;
      */
     public static final String GETDOWNLOADPATH = "common/getDownloadPath.app";
+    /**
+     * 获取话题圈类型接口;
+     */
+    public static final String TOPICGETBYPAGE = "chatType/select/getByPage.app";
+    /**
+     * 获取我的关注的话题圈类型接口;
+     */
+    public static final String GETMYFOLLOWCHATTYPE = "chat/select/getMyfollowChatType.app";
+    /**
+     * 获取话题圈列表接口;
+     */
+    public static final String GETTOPICTYPEDETAILS = "chat/select/getByPage.app";
+    /**
+     * 获取话题圈内活跃用户接口;
+     */
+    public static final String GETACTIVEUSER = "chat/select/getActiveUser.app";
+    /**
+     * 点赞话题圈主题接口;
+     */
+    public static final String LIKECHATTHEME = "chat/add/likeChatTheme.app";
+    /**
+     * 检测关注话题圈状态接口;
+     */
+    public static final String FOLLOWCHATTYPE = "chat/select/followChatType.app";
+    /**
+     * 关注话题圈类型接口;
+     */
+    public static final String ATTENTIONTOPIC = "chat/add/followChatType.app";
+    /**
+     * 检测话题圈主题的点赞状态接口;
+     */
+    public static final String COMMENTLIKECHATTHEME = "chat/select/likeChatTheme.app";
+    /**
+     * 点赞话题圈主题接口;
+     */
+    public static final String ADDCOMMENTLIKECHATTHEME = "chat/add/likeChatTheme.app";
+    /**
+     * 获取话题圈帖子详情接口;
+     */
+    public static final String TOPICGETDETAILS = "chat/select/getDetails.app";
+    /**
+     * 发表话题圈回复接口;
+     */
+    public static final String CHATMESSAGE = "chat/add/chatMessage.app";
+
+
 }

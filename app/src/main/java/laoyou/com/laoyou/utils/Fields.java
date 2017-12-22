@@ -52,6 +52,7 @@ public class Fields {
     public static long TouchTime = 0;
     public static  final int ISFIND = 32;
     public static  final int ISGAME = 33;
+    public static  final int ISTOPIC = 34;
     public static boolean CHECKFLAG = true;
     public static String[] ADMINISTRATIVEAREA = {"香港", "澳门", "台湾"};
 
@@ -60,6 +61,7 @@ public class Fields {
     public static String getAdministrative(int i) {
         return ADMINISTRATIVEAREA[i];
     }
+
 
     /**
      * Glide transformations 方法;

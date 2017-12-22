@@ -86,9 +86,9 @@ public class FriendManageMessageAdapter extends ArrayAdapter<FriendFuture> {
             Glide.with(getContext()).load(data.getFaceUrl()).into(viewHolder.avatar);
 
         if (IsToday(timedate(data.getAddTime())))
-            viewHolder.add_time.setText(timedateHHMM(data.getAddTime()));
+            viewHolder.add_time.setText(timedateHHMM(String.valueOf(data.getAddTime())));
         else
-            viewHolder.add_time.setText(timedateMMdd(data.getAddTime()));
+            viewHolder.add_time.setText(timedateMMdd(String.valueOf(data.getAddTime())));
 
         viewHolder.name.setText(data.getName());
         viewHolder.des.setText(data.getMessage());

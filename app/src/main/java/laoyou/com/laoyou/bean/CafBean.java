@@ -25,7 +25,7 @@ public class CafBean {
      */
 
     private String address;
-    private double avgEvaluate;
+    private double level;
     private String createTime;
     private double hourlyPrice;
     private String id;
@@ -105,11 +105,11 @@ public class CafBean {
     }
 
     public double getAvgEvaluate() {
-        return avgEvaluate;
+        return level;
     }
 
     public void setAvgEvaluate(double avgEvaluate) {
-        this.avgEvaluate = avgEvaluate;
+        this.level = avgEvaluate;
     }
 
     public String getCreateTime() {

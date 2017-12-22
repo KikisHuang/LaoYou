@@ -50,6 +50,7 @@ import static laoyou.com.laoyou.utils.IntentUtils.goLocationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginOperPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goOutSidePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goQueryPassPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goTopicCirclePage;
 import static laoyou.com.laoyou.utils.SynUtils.Indevelopment;
 import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
@@ -264,7 +265,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     appbar_layout.setExpanded(true);
                     break;
                 case R.id.topic_circle_layout:
-
+                    goTopicCirclePage(getActivity());
                     break;
                 case R.id.flash_more_tv:
 
@@ -354,7 +355,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void onEnable(boolean b) {
-
 
         if (b)
             showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_SHOW, 500);

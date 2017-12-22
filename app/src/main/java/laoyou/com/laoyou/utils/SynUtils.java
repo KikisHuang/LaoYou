@@ -944,6 +944,15 @@ public class SynUtils {
 
     }
 
+    //方法二
+    public static String replaceBlank(String str) {
+        Pattern p = Pattern.compile("//s*|/t|/r|/n");
+        Matcher m = p.matcher(str);
+        String after = m.replaceAll("");
+
+        return after;
+    }
+
     /**
      * 非空判断;
      *

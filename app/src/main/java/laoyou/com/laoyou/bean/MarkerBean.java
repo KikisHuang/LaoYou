@@ -20,7 +20,7 @@ public class MarkerBean {
      */
 
     private String address;
-    private double avgEvaluate;
+    private double level;
     private int distance;
     private double hourlyPrice;
     private String id;
@@ -40,11 +40,11 @@ public class MarkerBean {
     }
 
     public double getAvgEvaluate() {
-        return avgEvaluate;
+        return level;
     }
 
     public void setAvgEvaluate(double avgEvaluate) {
-        this.avgEvaluate = avgEvaluate;
+        this.level = avgEvaluate;
     }
 
     public int getDistance() {

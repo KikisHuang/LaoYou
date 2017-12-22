@@ -52,6 +52,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
         flash_chat_layout.setOnClickListener(this);
         setting_layout.setOnClickListener(this);
         head_layout.setOnClickListener(this);
+
     }
 
     @Override

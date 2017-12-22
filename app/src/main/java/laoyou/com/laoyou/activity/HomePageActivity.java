@@ -45,6 +45,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     private HomePagePresenter hp;
     private int imageHeight;
     private int height;
+    private String id;
 
     @Override
     protected void click() {
@@ -55,6 +56,8 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     protected void init() {
         setContentView(R.layout.home_page_layout);
         setImgTitles(this);
+        id = getIntent().getStringExtra("Page_Home_id");
+
         listView = f(R.id.listView);
         title_layout = f(R.id.title_layout);
         add_layout = f(R.id.add_layout);
@@ -149,7 +152,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         height = location[1];
 
         imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 50);
-        handleTitleBarColorEvaluate(height,imageHeight,title_layout,back_img);
+        handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img);
     }
 
 }

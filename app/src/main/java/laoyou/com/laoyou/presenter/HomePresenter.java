@@ -428,7 +428,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     }
 
     @Override
-    public void onStateChanged(AppBarLayout appBarLayout, State state) {
+    public void onStateChanged(AppBarLayout appBarLayout, State state, int i) {
         switch (state) {
             //展开状态;
             case EXPANDED:

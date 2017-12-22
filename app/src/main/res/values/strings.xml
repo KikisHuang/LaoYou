@@ -415,6 +415,16 @@
     <string name="caf_id_null">没有获取到网吧id请重新进入该页面</string>
     <string name="comment_content_null">不能发送空内容！</string>
     <string name="comment_send_succeed">发送成功！</string>
-
+    <string name="participant">人参与</string>
+    <string name="status_num">条动态</string>
+    <string name="news">最新</string>
+    <string name="hosts">最热</string>
+    <string name="followed">已关注</string>
+    <string name="unfollowed">关注</string>
+    <string name="reply">回复</string>
+    <string name="click_add_comment">点击添加评论</string>
+    <string name="player_user_list">参与用户列表</string>
+    <string name="send_failed">发送失败</string>
+    <string name="comment_failed">评论失败</string>
 
 </resources>

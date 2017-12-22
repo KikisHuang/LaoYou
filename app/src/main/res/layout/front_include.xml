@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mFlCardFront"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/circle_angle_blue_up"
+    android:layout_height="290dp"
     android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="290dp"
         android:orientation="vertical">
 
         <FrameLayout
@@ -24,38 +23,38 @@
                 android:layout_width="40dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center|left"
-                android:src="@mipmap/return_icon_white" />
+                android:src="@mipmap/return_icon" />
 
             <TextView
                 android:id="@+id/query_pass_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="查询密码"
-                android:textColor="@color/white"
+                android:text="查询上网密码"
+                android:textColor="@color/black0"
                 android:textSize="21dp" />
         </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="25dp">
+            android:layout_marginTop="25dp"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/query_of_login_tv"
-                android:layout_width="150dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/white_corners"
+                android:background="@drawable/blue_corners1"
                 android:gravity="center"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:text="查询"
                 android:textColor="@color/white"
                 android:textSize="21dp"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/pass_tv"
@@ -64,11 +63,9 @@
                 android:layout_gravity="center|top"
                 android:gravity="center"
                 android:text=""
-                android:textColor="@color/white"
+                android:textColor="@color/btn_blue_query"
                 android:textSize="55dp"
-                android:visibility="gone"
-
-                />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/regain_tv"
@@ -82,7 +79,7 @@
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:text="密码有误，重新获取"
-                android:textColor="@color/white"
+                android:textColor="@color/btn_blue_query"
                 android:textSize="11dp"
                 android:visibility="gone" />
 
@@ -93,7 +90,7 @@
                 android:layout_gravity="center|bottom"
                 android:layout_marginBottom="60dp"
                 android:text="恭喜你，审核通过您的上网密码"
-                android:textColor="@color/white"
+                android:textColor="@color/content3"
                 android:textSize="15dp"
                 android:visibility="gone"
 
@@ -107,42 +104,42 @@
                 android:layout_marginTop="25dp"
                 android:gravity="center"
                 android:text="正在审核中...\n大约需要1-5分钟时间"
-                android:textColor="@color/white"
+                android:textColor="@color/content6"
                 android:textSize="16dp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                 />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_gravity="center"
                 android:layout_marginBottom="30dp"
-                >
-            <TextView
-                android:id="@+id/refuse_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="很遗憾，审核不通过"
-                android:textColor="@color/white"
-                android:textSize="16dp"
-                android:visibility="gone"
-                 />
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/refuse_ed"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:focusable="false"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="14dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                 />
+                <TextView
+                    android:id="@+id/refuse_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="很遗憾，审核不通过"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/refuse_ed"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:textColor="@color/black0"
+                    android:textSize="14dp"
+                    android:visibility="gone" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/again_query_tv"
                 android:layout_width="150dp"
@@ -164,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
                 android:layout_marginBottom="40dp"
-                android:background="@drawable/white_corners"
+                android:background="@drawable/blue_corners1"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingBottom="5dp"
@@ -189,5 +186,8 @@
                     android:textSize="13dp" />
             </LinearLayout>
         </FrameLayout>
+
+        <TextView style="@style/width_line_style10_2" />
+
     </LinearLayout>
 </FrameLayout>

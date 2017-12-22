@@ -25,6 +25,7 @@ import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
+import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.thread.CheckThread.ThreadInstance;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
@@ -110,6 +111,7 @@ public class QueryPresenter implements HttpResultListener {
 
                 break;
             case Fields.REQUEST3:
+                Cancle();
                 try {
                     JSONObject ob = getJsonOb(response);
                     CheckStatusBean cb = new Gson().fromJson(String.valueOf(ob), CheckStatusBean.class);
@@ -167,16 +169,19 @@ public class QueryPresenter implements HttpResultListener {
 
     @Override
     public void onError(Request request, Exception e) {
+        Cancle();
         listener.onError(gets(R.string.networkerror));
     }
 
     @Override
     public void onParseError(Exception e) {
+        Cancle();
         Log.i(TAG, "解析异常 Error ===" + e);
     }
 
     @Override
     public void onFailed(String response, int code, int tag) {
+        Cancle();
         //未实名认证;
         if (tag == Fields.REQUEST3 && code == 0)
             listener.onCertificaTion();

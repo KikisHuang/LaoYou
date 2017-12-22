@@ -35,6 +35,7 @@ import laoyou.com.laoyou.view.ObservableScrollView;
 import me.iwf.photopicker.PhotoPicker;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
+import static laoyou.com.laoyou.fragment.MyFragment.SettingInstance;
 import static laoyou.com.laoyou.utils.DateUtils.getTime;
 import static laoyou.com.laoyou.utils.Fields.getAdministrative;
 import static laoyou.com.laoyou.utils.IntentUtils.goCertificationPage;
@@ -131,7 +132,6 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
 
     @Override
     protected void initData() {
-        Glide.with(this).load(Fields.Catalina).centerCrop().into(background_img);
         for (String str : Fields.HEIGHT) {
             heightItems.add(str);
         }
@@ -153,14 +153,15 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
         } else
             title_layout.setBackgroundColor(Color.argb((int) 255, 255, 255, 255));
 
-
     }
 
     @Override
     public void onSucceed() {
         ToastUtil.toast2_bottom(MyHomePageActivity.this, gets(R.string.change_succeed));
-        setResult(Fields.ACRESULET1);
-        finish();
+//        setResult(Fields.ACRESULET1);
+//        finish();
+        if (SettingInstance() != null)
+            SettingInstance().SettingInstance().mp.getUseDetails();
     }
 
     @Override
@@ -171,13 +172,17 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
     @Override
     public void onShowUserInfo(UserInfoBean ub) {
         Glide.with(MyHomePageActivity.this).load(ub.getHeadImgUrl()).into(head_img);
+
+        Glide.with(MyHomePageActivity.this).load(ub.getBackgroundUrl() != null && !ub.getBackgroundUrl().isEmpty() ? ub.getBackgroundUrl() : Fields.Catalina).centerCrop().into(background_img);
+
         nickname_ed.setText(ub.getName());
         sex = ub.getSex();
         signature_ed.setText(ub.getAutograph());
-        ViewSet(ub.getHeight(),height_tv);
-        ViewSet(ub.getHometown(),hometown_tv);
-        ViewSet(ub.getBirthday(),birthday_tv);
-        ViewSet(ub.getSeloveStatusx(),love_state_tv);
+        ViewSet(ub.getHeight(), height_tv);
+        ViewSet(ub.getHometown(), hometown_tv);
+        ViewSet(ub.getBirthday(), birthday_tv);
+        ViewSet(ub.getSeloveStatusx(), love_state_tv);
+        ViewSet(ub.getAddress(), region_tv);
 
         switch (sex) {
             case 0:
@@ -213,17 +218,17 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
         } else if (state == 0 || state == 3) {
             isAttes = false;
             attestation_state_tv.setText(gets(R.string.in_certification));
-            sex_tv.setTextColor(getRouColors(R.color.dodgerblue));
+            attestation_state_tv.setTextColor(getRouColors(R.color.dodgerblue));
             attestation_layout.setVisibility(View.INVISIBLE);
         } else if (state == -1) {
             isAttes = false;
             attestation_state_tv.setText(gets(R.string.refuse_certification));
-            sex_tv.setTextColor(getRouColors(R.color.red3));
+            attestation_state_tv.setTextColor(getRouColors(R.color.red3));
             attestation_layout.setVisibility(View.VISIBLE);
         } else {
             isAttes = false;
             attestation_state_tv.setText(gets(R.string.un_certification));
-            sex_tv.setTextColor(getRouColors(R.color.content4));
+            attestation_state_tv.setTextColor(getRouColors(R.color.content4));
             attestation_layout.setVisibility(View.VISIBLE);
         }
     }
@@ -338,10 +343,10 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
             case R.id.save_tv:
                 Show(MyHomePageActivity.this, "提交中", true, null);
 
-                if (isAttes)
-                    mp.ChangeInfo(headFile, nickname_ed.getText().toString(), sex, signature_ed.getText().toString(), height_tv.getText().toString(), hometown_tv.getText().toString(), birthday_tv.getText().toString(), love_state_tv.getText().toString());
+                if (!isAttes)
+                    mp.ChangeInfo(headFile, nickname_ed.getText().toString(), sex, signature_ed.getText().toString(), height_tv.getText().toString(), hometown_tv.getText().toString(), birthday_tv.getText().toString().trim(), love_state_tv.getText().toString(), backFile, region_tv.getText().toString());
                 else
-                    mp.ChangeInfo(headFile, nickname_ed.getText().toString(), sex, signature_ed.getText().toString(), height_tv.getText().toString(), null, null, love_state_tv.getText().toString());
+                    mp.ChangeInfo(headFile, nickname_ed.getText().toString(), sex, signature_ed.getText().toString(), height_tv.getText().toString(), null, null, love_state_tv.getText().toString(), backFile, region_tv.getText().toString());
 
                 break;
             case R.id.head_img:
@@ -404,7 +409,7 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
                 else if (options2Items.get(options1).get(options2).getName().equals(tx1) || options2Items.get(options1).get(options2).getName().equals(gets(R.string.municipal_district)))
                     tx2 = "";
                 else
-                    tx2 = " - " + options2Items.get(options1).get(options2).getName();
+                    tx2 = "-" + options2Items.get(options1).get(options2).getName();
                 if (!HomeTown)
                     region_tv.setText(tx1 + tx2);
                 else

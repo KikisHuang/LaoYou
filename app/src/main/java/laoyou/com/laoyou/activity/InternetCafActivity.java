@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.EditText;
@@ -73,7 +72,6 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     private int imageHeight;
     private InternetCafAdapter adapter;
 
-    private List<CafCommentBean> list;
 
     private TextView cpu, card, mouse, key, play;
 
@@ -88,6 +86,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     private CircleImageView photo_img;
     private EditText comment_ed;
     private TextView send_comment_tv;
+
 
     @Override
     protected void click() {
@@ -105,7 +104,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         setContentView(R.layout.internet_cat_layout);
         setImgTitles(this);
         //第一次进入不弹出软键盘;
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN |WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN| WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         caf_id = getIntent().getStringExtra("caf_id");
         loacation_fragment_layout = f(R.id.loacation_fragment_layout);
         call_fragment_layout = f(R.id.call_fragment_layout);
@@ -134,7 +133,6 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         back_img = f(R.id.back_img);
         title_layout = f(R.id.title_layout);
         listView.addHeaderView(head_layout);
-        list = new ArrayList<>();
         grade_tv.setTypeface(getTypeface(this));
         caf_price_tv.setTypeface(getTypeface(this));
     }
@@ -216,6 +214,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
 
     @Override
     public void onSucceed() {
+        ip.getCatComment();
         ToastUtil.toast2_bottom(this, gets(R.string.comment_send_succeed));
     }
 
@@ -254,9 +253,8 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
 
     @Override
     public void onInternetCafComment(List<CafCommentBean> l) {
-        this.list = l;
         if (adapter == null) {
-            adapter = new InternetCafAdapter(this, list);
+            adapter = new InternetCafAdapter(this, l);
             listView.setAdapter(adapter);
         } else
             adapter.notifyDataSetChanged();
@@ -299,6 +297,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
                     return;
                 ip.SenCafComment(caf_id, comment_ed.getText().toString());
                 break;
+
         }
     }
 

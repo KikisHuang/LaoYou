@@ -1,19 +1,27 @@
 package laoyou.com.laoyou.activity;
 
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.adapter.GamsAdAdapter;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.QueryListener;
 import laoyou.com.laoyou.presenter.QueryPresenter;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 
+import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goCertificationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginOperPage;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
@@ -26,7 +34,7 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
     private static final String TAG = "QueryActivity";
 
     private TextView query_of_login_tv, pass_tv, check_pass_tv, loading_tv, refresh_tv;
-    private LinearLayout refresh_layout,expand_layout;
+    private LinearLayout refresh_layout;
     private ImageView refresh_img, return_img;
     //flag 0登录,1查询;
     private int flag = 0;
@@ -34,7 +42,10 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
 
     private TextView refuse_tv, again_query_tv, regain_tv;
     private EditText refuse_ed;
-    private LinearLayout game_layout;
+    private FrameLayout head;
+    private ListView listview;
+    private GamsAdAdapter adapter;
+    private List<String> list;
 
     @Override
     protected void click() {
@@ -42,28 +53,34 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
         again_query_tv.setOnClickListener(this);
         regain_tv.setOnClickListener(this);
         return_img.setOnClickListener(this);
-        game_layout.setOnClickListener(this);
     }
 
     @Override
     protected void init() {
         setContentView(R.layout.query_layout);
 
-        query_of_login_tv = f(R.id.query_of_login_tv);
-        pass_tv = f(R.id.pass_tv);
-        check_pass_tv = f(R.id.check_pass_tv);
-        expand_layout = f(R.id.expand_layout);
-        loading_tv = f(R.id.loading_tv);
-        refresh_layout = f(R.id.refresh_layout);
-        refresh_img = f(R.id.refresh_img);
-        refresh_tv = f(R.id.refresh_tv);
-        refuse_tv = f(R.id.refuse_tv);
-        again_query_tv = f(R.id.again_query_tv);
-        refuse_ed = f(R.id.refuse_ed);
-        regain_tv = f(R.id.regain_tv);
-        return_img = f(R.id.return_img);
-        game_layout = f(R.id.game_layout);
+        listview = f(R.id.listView);
+        head = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.front_include, null);
+        query_of_login_tv = (TextView) head.findViewById(R.id.query_of_login_tv);
+        pass_tv = (TextView) head.findViewById(R.id.pass_tv);
+        check_pass_tv = (TextView) head.findViewById(R.id.check_pass_tv);
+        loading_tv = (TextView) head.findViewById(R.id.loading_tv);
+        refresh_layout = (LinearLayout) head.findViewById(R.id.refresh_layout);
+        refresh_img = (ImageView) head.findViewById(R.id.refresh_img);
+        refresh_tv = (TextView) head.findViewById(R.id.refresh_tv);
+        refuse_tv = (TextView) head.findViewById(R.id.refuse_tv);
+        again_query_tv = (TextView) head.findViewById(R.id.again_query_tv);
+        refuse_ed = (EditText) head.findViewById(R.id.refuse_ed);
+        regain_tv = (TextView) head.findViewById(R.id.regain_tv);
+        return_img = (ImageView) head.findViewById(R.id.return_img);
 
+        listview.addHeaderView(head);
+        list = new ArrayList<>();
+        list.add("");
+        list.add("");
+        list.add("");
+        adapter = new GamsAdAdapter(this, list);
+        listview.setAdapter(adapter);
         hp = new QueryPresenter(this);
         HideOver();
     }
@@ -81,22 +98,22 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
                     if (!LoginStatusQuery())
                         goLoginOperPage(QueryActivity.this);
 
-                if (flag == 1)
+                if (flag == 1){
+                    Show(QueryActivity.this, "", true, null);
                     hp.getUseDetails();
+                }
 
                 break;
             case R.id.again_query_tv:
                 goCertificationPage(QueryActivity.this);
                 break;
             case R.id.regain_tv:
+                Show(QueryActivity.this, "提交中", true, null);
                 hp.RegainPassWord();
                 break;
 
             case R.id.return_img:
                 finish();
-                break;
-            case R.id.game_layout:
-
                 break;
         }
     }
@@ -120,7 +137,7 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Fields.ACRESULET3)
-                onRefresh();
+            onRefresh();
     }
 
     private void onRefresh() {

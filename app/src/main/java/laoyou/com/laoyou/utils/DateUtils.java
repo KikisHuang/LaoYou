@@ -1,5 +1,6 @@
 package laoyou.com.laoyou.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,7 +44,7 @@ public class DateUtils {
         return times;
     }
     public static String getTime(Date date) {//可根据需要自行截取数据显示
-        SimpleDateFormat format = new SimpleDateFormat("yyyy - MM - dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }
     /**
@@ -77,6 +78,26 @@ public class DateUtils {
         }
         return false;
     }
+
+
+    //字符串转指定格式时间
+    public static String getMyDate(String str) {
+        return StringToDate(str, "yyyy-MM-dd HH:mm:ss", "MM-dd HH:mm");
+    }
+
+    public static String StringToDate(String dateStr, String dateFormatStr, String formatStr) {
+        DateFormat sdf = new SimpleDateFormat(dateFormatStr);
+        Date date = null;
+        try{
+            date = sdf.parse(dateStr);
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+        SimpleDateFormat s = new SimpleDateFormat(formatStr);
+
+        return s.format(date);
+    }
+
 
     private static ThreadLocal<SimpleDateFormat> DateLocal = new ThreadLocal<SimpleDateFormat>();
 
