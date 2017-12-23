@@ -12,7 +12,9 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.MyCommentAdapter;
 import laoyou.com.laoyou.adapter.MyHeartValueAdapter;
+import laoyou.com.laoyou.listener.HeartValueAndCommentListener;
 import laoyou.com.laoyou.listener.SpringListener;
+import laoyou.com.laoyou.presenter.HeartValueAndCommentPresenter;
 import laoyou.com.laoyou.utils.SpringUtils;
 
 import static laoyou.com.laoyou.utils.SynUtils.getTAG;
@@ -20,14 +22,16 @@ import static laoyou.com.laoyou.utils.SynUtils.getTAG;
 /**
  * Created by lian on 2017/5/5.
  */
-public class CommentFragment extends BaseFragment implements SpringListener {
+public class CommentFragment extends BaseFragment implements SpringListener, HeartValueAndCommentListener {
     private static final String TAG = getTAG(CommentFragment.class);
     private SpringView springView;
     private int tag;
+    //1心动值，0评论；
     private int flag;
     private ListView listView;
     private MyCommentAdapter cadapter;
     private MyHeartValueAdapter hadapter;
+    private HeartValueAndCommentPresenter hcp;
     private List<String> list;
 
     public static CommentFragment setTag(int tag, int flag) {
@@ -52,6 +56,17 @@ public class CommentFragment extends BaseFragment implements SpringListener {
     }
 
     private void getData() {
+        switch (flag) {
+            case 0:
+                break;
+            case 1:
+                if (tag == 0)
+                    hcp.GetMyHeartNumber();
+
+                break;
+
+        }
+
     }
 
     @Override
@@ -63,7 +78,7 @@ public class CommentFragment extends BaseFragment implements SpringListener {
         listView = f(R.id.listView);
         springView = f(R.id.springView);
         SpringUtils.SpringViewInit(springView, getActivity(), this);
-
+        hcp = new HeartValueAndCommentPresenter(this);
         list = new ArrayList<>();
         list.add("");
         list.add("");
@@ -103,5 +118,15 @@ public class CommentFragment extends BaseFragment implements SpringListener {
             case 1:
                 break;
         }
+    }
+
+    @Override
+    public void onFailedsMsg(String msg) {
+
+    }
+
+    @Override
+    public void onSucceed() {
+
     }
 }

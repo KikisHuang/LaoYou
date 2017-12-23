@@ -212,7 +212,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
                 im.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        goParticipationPage(TopicTypeDetailsActivity.this, gets(R.string.player_user_list));
+                        goParticipationPage(TopicTypeDetailsActivity.this, 1,id);
                     }
                 });
             } else {

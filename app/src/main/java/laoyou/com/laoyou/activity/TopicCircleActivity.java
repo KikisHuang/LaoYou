@@ -19,6 +19,7 @@ import laoyou.com.laoyou.presenter.TopicCirclePresenter;
 import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
+import static laoyou.com.laoyou.utils.IntentUtils.goMyNoticesPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goTopicTypeDetailsPage;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.setTitlesAndBack;
@@ -108,7 +109,7 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
         if (listView.getHeaderViewsCount() == 0)
             goTopicTypeDetailsPage(TopicCircleActivity.this, list.get(position).getId(), list.get(position).getName(), list.get(position).getFollowCount(), list.get(position).getChatThemeCount(), list.get(position).getImgUrl());
         else if (position == 0) {
-
+            goMyNoticesPage(this);
         } else
             goTopicTypeDetailsPage(TopicCircleActivity.this, list.get(position - 1).getId(), list.get(position - 1).getName(), list.get(position - 1).getFollowCount(), list.get(position - 1).getChatThemeCount(), list.get(position - 1).getImgUrl());
 

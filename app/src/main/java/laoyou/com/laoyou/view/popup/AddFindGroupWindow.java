@@ -1,4 +1,4 @@
-package laoyou.com.laoyou.view;
+package laoyou.com.laoyou.view.popup;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,12 +18,12 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.dialog.MyAlertDialog;
+import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
 import static laoyou.com.laoyou.utils.IntentUtils.goCertificationPage;
-import static laoyou.com.laoyou.utils.IntentUtils.goChangePassPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goOverInfoPage;
 
 
@@ -31,7 +31,7 @@ import static laoyou.com.laoyou.utils.IntentUtils.goOverInfoPage;
  * Created by lian on 2017/3/29.
  * Page页面侧边菜单Popupwindos实现;
  */
-public class SlidePopupWindow implements View.OnClickListener {
+public class AddFindGroupWindow implements View.OnClickListener {
     private static final String TAG = "SlidePopupWindow";
     private static TextView user_name;
     private static ImageView user_icon;
@@ -42,7 +42,7 @@ public class SlidePopupWindow implements View.OnClickListener {
     private int status;
 
 
-    public SlidePopupWindow(Context context, UserInfoBean info, int status) {
+    public AddFindGroupWindow(Context context, UserInfoBean info, int status) {
         this.mContext = context;
         this.info = info;
         this.status = status;
@@ -139,16 +139,19 @@ public class SlidePopupWindow implements View.OnClickListener {
                 new MyAlertDialog(mContext).builder().setCancelable(true).setTitle("提示").setMsg("是否退出登录？").setNegativeButton("取消", null).setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        SPreferences.saveUserToken("");
                         if (getHomeInstance() != null)
                             getHomeInstance().onLogout();
+
+//                        if (ThreadInstance() != null){
+//                            ThreadInstance().ClearThread();
+//                            Fields.CHECKFLAG = false;
+//                        }
                         popupWindow.dismiss();
                     }
                 }).show();
                 break;
             case R.id.layout_3:
-                goChangePassPage(mContext);
-                popupWindow.dismiss();
                 break;
         }
     }

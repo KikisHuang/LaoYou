@@ -426,5 +426,7 @@
     <string name="player_user_list">参与用户列表</string>
     <string name="send_failed">发送失败</string>
     <string name="comment_failed">评论失败</string>
+    <string name="like_list">点赞列表</string>
+    <string name="delete">删除</string>
 
 </resources>

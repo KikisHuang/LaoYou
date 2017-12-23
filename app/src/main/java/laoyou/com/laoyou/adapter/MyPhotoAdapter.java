@@ -11,11 +11,11 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
-import java.io.File;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.PhotoBean;
 import laoyou.com.laoyou.listener.MyPhotoListener;
 import laoyou.com.laoyou.utils.DeviceUtils;
 
@@ -24,10 +24,10 @@ import laoyou.com.laoyou.utils.DeviceUtils;
  */
 public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.MyViewHolder> {
     private Context context;
-    private List<File> list;
+    private List<PhotoBean> list;
     private MyPhotoListener listener;
 
-    public MyPhotoAdapter(Context context, List<File> list, MyPhotoListener listener) {
+    public MyPhotoAdapter(Context context, List<PhotoBean> list, MyPhotoListener listener) {
         this.context = context;
         this.list = list;
         this.listener = listener;
@@ -57,7 +57,7 @@ public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.MyViewHo
         if (position == 0 && list.get(0) == null)
             Glide.with(context).load(R.mipmap.photo_add_icon).centerCrop().into(holder.photo_img);
         else
-            Glide.with(context).load(list.get(position)).bitmapTransform(new CenterCrop(context), new RoundedCornersTransformation(context, 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(holder.photo_img);
+            Glide.with(context).load(list.get(position).getUrl()).bitmapTransform(new CenterCrop(context), new RoundedCornersTransformation(context, 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(holder.photo_img);
         holder.photo_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

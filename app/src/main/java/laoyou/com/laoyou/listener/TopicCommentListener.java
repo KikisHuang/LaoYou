@@ -1,5 +1,8 @@
 package laoyou.com.laoyou.listener;
 
+import java.util.List;
+
+import laoyou.com.laoyou.bean.LikeListBean;
 import laoyou.com.laoyou.bean.TopicCommentBean;
 
 /**
@@ -16,4 +19,10 @@ public interface TopicCommentListener {
     void onThemeDetails(TopicCommentBean tcb);
 
     void GoHomePage(String id);
+
+    void LikeListData(List<LikeListBean> li);
+
+    void onLikeNum(String string);
+
+    void onDeleteSucceed();
 }

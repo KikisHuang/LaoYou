@@ -13,8 +13,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_head_img"
             android:layout_width="35dp"
-            android:layout_height="35dp"
-            />
+            android:layout_height="35dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -95,40 +94,50 @@
         android:textColor="@color/black"
         android:textSize="12sp" />
 
-    <LinearLayout
-        android:id="@+id/like_icon_layout"
+    <laoyou.com.laoyou.view.MinheightGridView
+        android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp"
-        android:orientation="horizontal">
+        android:gravity="center|left"
+        android:numColumns="8"
+        android:horizontalSpacing="5dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/test_head_icon" />
+    </laoyou.com.laoyou.view.MinheightGridView>
+    <!--  <LinearLayout
+          android:id="@+id/like_icon_layout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="10dp"
+          android:layout_marginTop="5dp"
+          android:orientation="horizontal">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/test_head_icon" />
+          <de.hdodenhof.circleimageview.CircleImageView
+              android:layout_width="30dp"
+              android:layout_height="30dp"
+              android:layout_marginRight="5dp"
+              android:src="@drawable/test_head_icon" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/test_head_icon" />
+          <de.hdodenhof.circleimageview.CircleImageView
+              android:layout_width="30dp"
+              android:layout_height="30dp"
+              android:layout_marginRight="5dp"
+              android:src="@drawable/test_head_icon" />
 
-    </LinearLayout>
+          <de.hdodenhof.circleimageview.CircleImageView
+              android:layout_width="30dp"
+              android:layout_height="30dp"
+              android:src="@drawable/test_head_icon" />
+
+      </LinearLayout>-->
 
     <TextView
         android:id="@+id/comment_num_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:textColor="@color/black"
-        android:textSize="12sp"
-        android:layout_marginBottom="10dp"
-        />
+        android:textSize="12sp" />
 </LinearLayout>

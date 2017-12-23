@@ -110,7 +110,7 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
                     holder.comment_layout2.setVisibility(View.VISIBLE);
                     holder.comment_layout3.setVisibility(View.VISIBLE);
 
-                    holder.check_comment_tv.setVisibility(View.GONE);
+                    holder.check_comment_tv.setVisibility(View.VISIBLE);
                     break;
                 default:
                     setCommentData(holder.name_tv1, list.get(position).getChatMessages().get(0).getUserName(), true);

@@ -57,7 +57,6 @@
                     android:id="@+id/reply_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="回复 告白气球："
                     android:textColor="@color/black0"
                     android:textSize="13sp"
                     android:visibility="gone" />
@@ -84,5 +83,16 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/no_data_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:text="暂无更多内容"
+        android:textColor="@color/content4"
+        android:textSize="13sp"
+        android:visibility="gone" />
 
 </LinearLayout>

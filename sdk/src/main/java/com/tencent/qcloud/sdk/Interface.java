@@ -220,6 +220,25 @@ public class Interface {
      * 发表话题圈回复接口;
      */
     public static final String CHATMESSAGE = "chat/add/chatMessage.app";
-
+    /**
+     * 获取话题圈主题的点赞人接口;
+     */
+    public static final String GETLIKEUSERBYPAGE = "chat/select/getLikeUserByPage.app";
+    /**
+     * 获取我被赠予的心动值接口;
+     */
+    public static final String GETMYHEARTNUMBERLIST = "heartNumber/select/getMyHeartNumberList.app";
+    /**
+     * 删除评论接口;
+     */
+    public static final String DELETETOPICCOMMENT = "comment/delete/comment.app";
+    /**
+     * 获取个人照片接口;
+     */
+    public static final String GETPHOTOBYPAGE = "chat/select/getPhotoByPage.app";
+    /**
+     * 发表个人照片接口;
+     */
+    public static final String PHOTO = "chat/add/photo.app";
 
 }

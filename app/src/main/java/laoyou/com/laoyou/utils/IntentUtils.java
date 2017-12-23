@@ -26,6 +26,7 @@ import laoyou.com.laoyou.activity.LoginActivity;
 import laoyou.com.laoyou.activity.LoginOperationActivity;
 import laoyou.com.laoyou.activity.MyCommentActivity;
 import laoyou.com.laoyou.activity.MyHomePageActivity;
+import laoyou.com.laoyou.activity.MyNoticeActivity;
 import laoyou.com.laoyou.activity.MyPhotoActivity;
 import laoyou.com.laoyou.activity.NearbyFlashChatActivity;
 import laoyou.com.laoyou.activity.OutSideActivity;
@@ -158,6 +159,14 @@ public class IntentUtils {
         intent.putExtra("Topic_Type_follow", followCount != null && !followCount.isEmpty() ? followCount : "0");
         intent.putExtra("Topic_Type_chat", chatThemeCount != null && !chatThemeCount.isEmpty() ? chatThemeCount : "0");
         intent.putExtra("Topic_Type_imgurl", imgurl != null && !imgurl.isEmpty() ? imgurl : "");
+        startPage(context, intent);
+    }
+    /**
+     * 我关注的话题圈页面;
+     *
+     */
+    public static void goMyNoticesPage(Context context) {
+        Intent intent = new Intent(context, MyNoticeActivity.class);
         startPage(context, intent);
     }
 
@@ -439,11 +448,14 @@ public class IntentUtils {
      * 参与的人页面;
      *
      * @param context 上下文;
+     * @param tag     标识, 1、参与的人  2、点赞列表 ;
+     *
      */
-    public static void goParticipationPage(Context context, String name) {
+    public static void goParticipationPage(Context context, int tag,String id) {
 
         Intent intent = new Intent(context, ParticipationActivity.class);
-        intent.putExtra("List_Name", name);
+        intent.putExtra("List_Tag", tag + "");
+        intent.putExtra("List_id", id );
         startPage(context, intent);
     }
 
@@ -451,9 +463,8 @@ public class IntentUtils {
      * 话题圈详情评论页面;
      *
      * @param context 上下文;
-     * @param s
      */
-    public static void goTopicCommentDetailsPage(Context context,String id, String userId, String name,String content) {
+    public static void goTopicCommentDetailsPage(Context context, String id, String userId, String name, String content) {
 
         Intent intent = new Intent(context, TopicCommentDetailsActivity.class);
         intent.putExtra("Page_CommentDetails_id", id);

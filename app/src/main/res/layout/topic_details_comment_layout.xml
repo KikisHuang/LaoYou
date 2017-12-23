@@ -12,13 +12,13 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <ListView
+        <laoyou.com.laoyou.view.HandleDataListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@null"
             android:overScrollMode="never"
-            android:scrollbars="none"></ListView>
+            android:scrollbars="none"></laoyou.com.laoyou.view.HandleDataListView>
     </com.liaoinstan.springview.widget.SpringView>
 
     <FrameLayout
@@ -30,7 +30,8 @@
             android:id="@+id/menu_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <LinearLayout
                 android:id="@+id/like_layout"

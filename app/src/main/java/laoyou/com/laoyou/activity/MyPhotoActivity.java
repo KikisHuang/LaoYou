@@ -11,12 +11,14 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.MyPhotoAdapter;
+import laoyou.com.laoyou.bean.PhotoBean;
 import laoyou.com.laoyou.listener.MyPhotoListener;
 import laoyou.com.laoyou.presenter.MyPhotoPresenter;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import me.iwf.photopicker.PhotoPicker;
 
+import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
 import static laoyou.com.laoyou.utils.PhotoUtils.getMULTIPLEPhoto;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -30,9 +32,12 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
     private static final String TAG = "MyPhotoActivity";
     private RecyclerView recyclerView;
     private StaggeredGridLayoutManager mLayoutManager;
-    private List<File> list;
+    private List<PhotoBean> list;
     private MyPhotoAdapter adapter;
     private MyPhotoPresenter mp;
+    private int upNum = 0;
+    private List<File> files;
+    private boolean Refresh = true;
 
     protected void click() {
 
@@ -47,6 +52,7 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
         recyclerView.setLayoutManager(mLayoutManager);
         mp = new MyPhotoPresenter(this);
         list = new ArrayList<>();
+        files = new ArrayList<>();
         list.add(null);
         adapter = new MyPhotoAdapter(this, list, this);
         recyclerView.setAdapter(adapter);
@@ -68,13 +74,21 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
     }
 
     @Override
-    public void onTest(File f) {
-        list.add(f);
-        adapter.notifyDataSetChanged();
+    public void onUpLoadFile(File f) {
+        files.add(f);
+//        list.add(f);
+//        adapter.notifyDataSetChanged();
+
+        if (files.size() == upNum) {
+            Show(MyPhotoActivity.this, "提交中", true, null);
+            mp.AddPhoto(files);
+        }
+
     }
 
     @Override
     public void onAddPhoto() {
+        files.clear();
         getMULTIPLEPhoto(MyPhotoActivity.this, 9);
     }
 
@@ -93,15 +107,26 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
     }
 
     @Override
+    public void onPhotoList(List<PhotoBean> ar) {
+        if (Refresh) {
+            list.clear();
+            list.add(null);
+        }
+        for (PhotoBean pb : ar) {
+            list.add(pb);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                //头像、背景图;
                 case PhotoPicker.REQUEST_CODE:
                     ArrayList<String> p = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                    upNum = p.size();
                     mp.ComPressFile(this, p, 300);
-
                     break;
                 case Fields.ACRESULET4:
                     Bundle bundle = data.getExtras();

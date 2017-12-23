@@ -9,7 +9,7 @@ public class TopicTypeBean {
 
 
     /**
-     * chatMessages : [{"id":"m-69af3a0787074ef5a3f732463922b361","messageContent":"8325effa72","userId":"ua664fd002910441aa098bcaf295622f8","userImg":"http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1513582522786fa1c70.jpg","userName":"默默"},{"id":"m-6e92baa1ba904e28bd7e8a88d8a05cfe","messageContent":"hhhhh","userId":"ua664fd002910441aa098bcaf295622f8","userImg":"http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1513582522786fa1c70.jpg","userName":"默默"}]
+     * ChatMessages : [{"id":"m-69af3a0787074ef5a3f732463922b361","messageContent":"8325effa72","userId":"ua664fd002910441aa098bcaf295622f8","userImg":"http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1513582522786fa1c70.jpg","userName":"默默"},{"id":"m-6e92baa1ba904e28bd7e8a88d8a05cfe","messageContent":"hhhhh","userId":"ua664fd002910441aa098bcaf295622f8","userImg":"http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1513582522786fa1c70.jpg","userName":"默默"}]
      * chatTypeId : test0
      * chatTypeName : 公告模块
      * createTime : 2017-12-09 16:43:54
