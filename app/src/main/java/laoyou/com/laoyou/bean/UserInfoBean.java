@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by lian on 2017/10/30.
  */
-public class UserInfoBean implements Serializable{
+public class UserInfoBean implements Serializable {
     /**
      * account : 13878141913
      * createTime : 2017-10-30 10:31:37
@@ -29,6 +29,40 @@ public class UserInfoBean implements Serializable{
     private String loveStatus;
     private String address;
     private String backgroundUrl;
+    private String autograph;
+    private String birthday;
+    private String height;
+    private String hometown;
+    private double latitude;
+    private double longitude;
+    private int sex;
+    private String wxOpenId;
+    private String browseNumber;
+    private String idcard;
+
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard;
+    }
+
+    public String getBrowseNumber() {
+        return browseNumber;
+    }
+
+    public void setBrowseNumber(String browseNumber) {
+        this.browseNumber = browseNumber;
+    }
+
+    public String getLoveStatus() {
+        return loveStatus;
+    }
+
+    public void setLoveStatus(String loveStatus) {
+        this.loveStatus = loveStatus;
+    }
 
     public String getBackgroundUrl() {
         return backgroundUrl;
@@ -86,12 +120,6 @@ public class UserInfoBean implements Serializable{
         this.hometown = hometown;
     }
 
-    private String autograph;
-    private String birthday;
-    private String height;
-    private String hometown;
-
-
 
     public String getCloudTencentAccount() {
         return cloudTencentAccount;
@@ -117,9 +145,6 @@ public class UserInfoBean implements Serializable{
         this.longitude = longitude;
     }
 
-    private double latitude;
-    private double 	longitude ;
-
 
     public int getSex() {
         return sex;
@@ -136,9 +161,6 @@ public class UserInfoBean implements Serializable{
     public void setWxOpenId(String wxOpenId) {
         this.wxOpenId = wxOpenId;
     }
-
-    private int sex;
-    private String wxOpenId;
 
 
     public String getAccount() {

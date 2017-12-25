@@ -36,7 +36,7 @@ public class MyPresenter implements HttpResultListener {
 
 
     /**
-     * 获取详情、查询实名(废弃);
+     * 获取详情、查询实名;
      */
     public void getUseDetails() {
         Map<String, String> map = getKeyMap();

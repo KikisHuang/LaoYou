@@ -428,5 +428,8 @@
     <string name="comment_failed">评论失败</string>
     <string name="like_list">点赞列表</string>
     <string name="delete">删除</string>
+    <string name="default_signature">这家伙很懒，什么也没留下</string>
+    <string name="view_details">查看详情</string>
+    <string name="compile_info">编辑资料</string>
 
 </resources>

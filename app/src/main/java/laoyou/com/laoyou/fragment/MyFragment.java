@@ -16,8 +16,8 @@ import laoyou.com.laoyou.presenter.MyPresenter;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.ToastUtil;
 
+import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyCommentPage;
-import static laoyou.com.laoyou.utils.IntentUtils.goMyHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyPhotoPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goSettingPage;
 
@@ -139,10 +139,10 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
             case R.id.preference_layout:
                 break;
             case R.id.comment_layout:
-                goMyCommentPage(getActivity(),0);
+                goMyCommentPage(getActivity(), 0);
                 break;
             case R.id.heart_layout:
-                goMyCommentPage(getActivity(),1);
+                goMyCommentPage(getActivity(), 1);
                 break;
             case R.id.topic_layout:
                 break;
@@ -154,7 +154,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
             case R.id.head_layout:
                 if (sex != 99 && user_name_tv.getText().toString().length() > 0)
 //                    goOverInfoPage(getActivity(), headImgUrl, user_name_tv.getText().toString(), "", sex);
-                    goMyHomePage(getActivity());
+//                    goMyHomePage(getActivity());
+                    goHomePage(getActivity(), SPreferences.getUserId());
                 break;
         }
     }
@@ -163,6 +164,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
     public void ongetDetails(UserInfoBean ub) {
         user_name_tv.setText(ub.getName());
         sex = ub.getSex();
+        SPreferences.saveUserId(ub.getId());
 
         if (ub.getHeadImgUrl() != null && !ub.getHeadImgUrl().isEmpty()) {
             Glide.with(getActivity().getApplicationContext()).load(ub.getHeadImgUrl()).into(user_head_img);

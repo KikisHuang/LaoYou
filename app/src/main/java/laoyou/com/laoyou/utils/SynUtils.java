@@ -918,6 +918,7 @@ public class SynUtils {
         SPreferences.saveUserToken("");
         SPreferences.saveIdentifier("");
         SPreferences.saveUserSig("");
+        SPreferences.saveUserId("");
 
         TlsBusiness.logout(UserInfo.getInstance().getId());
         UserInfo.getInstance().setId(null);
@@ -928,6 +929,25 @@ public class SynUtils {
         context.startActivity(intent);
     }
 
+    /**
+     * 根据id判断是否用户自己;
+     *
+     * @param id
+     * @return
+     */
+    public static boolean IsMe(String id) {
+        return id.equals(SPreferences.getUserId()) ? true : false;
+    }
+
+    /**
+     * 字段非空判断;
+     *
+     * @param str
+     * @return
+     */
+    public static boolean IsNull(String str) {
+        return str == null || str.isEmpty() ? true : false;
+    }
     //view 转bitmap
 
     public static Bitmap convertViewToBitmap(View view) {

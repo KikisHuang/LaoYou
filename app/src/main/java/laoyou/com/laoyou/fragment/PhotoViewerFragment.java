@@ -65,14 +65,17 @@ public class PhotoViewerFragment extends BaseFragment {
     }
 
     private void getData() {
-
-        Glide.with(getActivity().getApplicationContext()).load(url).into(imageView);
-        Glide.with(getActivity().getApplicationContext()).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                onLong(resource);
-            }
-        });
+        try {
+            Glide.with(getActivity().getApplicationContext()).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    onLong(resource);
+                }
+            });
+            Glide.with(getActivity().getApplicationContext()).load(url).into(imageView);
+        } catch (Exception e) {
+            Log.e(TAG, "Error === " + e);
+        }
     }
 
     private void onLong(final Bitmap bm) {

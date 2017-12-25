@@ -48,6 +48,10 @@ public class SPreferences {
      */
     private static final String USER_NAME = "User_Name";
     /**
+     * 保存用户ID;
+     */
+    private static final String USER_ID = "User_Id";
+    /**
      * 临时存储聊天对象头像(仅用于单聊);
      */
     private static final String TEMPORARY_USER_HEAD = "Temporary_User_Head";
@@ -65,6 +69,20 @@ public class SPreferences {
      */
     public static String getUserToken() {
         return getString(KEY_USER_TOKEN);
+    }
+
+    /**
+     * 保存用户ID;
+     */
+    public static void saveUserId(String token) {
+        saveString(USER_ID, token);
+    }
+
+    /**
+     * 获取用户ID;
+     */
+    public static String getUserId() {
+        return getString(USER_ID);
     }
 
     /**
@@ -94,6 +112,7 @@ public class SPreferences {
     public static String getIdentifier() {
         return getString(IM_IDENTIFIER);
     }
+
     /**
      * 保存腾讯ImUserSig;
      */
@@ -122,6 +141,7 @@ public class SPreferences {
     public static String getUserHeadImg() {
         return getString(USER_HEAD_IMG);
     }
+
     /**
      * 保存用户名称;
      */

@@ -36,14 +36,14 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
 public class MyPhotoPresenter implements HttpResultListener, OnCompressListener {
 
     private MyPhotoListener listener;
-    private int page = 0;
+    public int page = 0;
 
     public MyPhotoPresenter(MyPhotoListener listener) {
         this.listener = listener;
         getPhotoListData();
     }
 
-    private void getPhotoListData() {
+    public void getPhotoListData() {
         Map<String, String> map = getKeyMap();
         map.put("page", String.valueOf(page));
         map.put("pageSize", String.valueOf(page + 10));
@@ -72,6 +72,7 @@ public class MyPhotoPresenter implements HttpResultListener, OnCompressListener 
 
                 break;
             case Fields.REQUEST2:
+                page = 0;
                 getPhotoListData();
                 break;
         }
@@ -98,10 +99,6 @@ public class MyPhotoPresenter implements HttpResultListener, OnCompressListener 
 
     @Override
     public void onStart() {
-
-    }
-
-    public void getMyPhotoData() {
 
     }
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,7 +41,19 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
     private boolean Refresh = true;
 
     protected void click() {
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    if (!recyclerView.canScrollVertically(1)) {
+                        Refresh = false;
+                        mp.page += 10;
+                        mp.getPhotoListData();
+                    }
 
+            }
+        });
     }
 
     @Override
@@ -76,11 +89,10 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
     @Override
     public void onUpLoadFile(File f) {
         files.add(f);
-//        list.add(f);
-//        adapter.notifyDataSetChanged();
 
         if (files.size() == upNum) {
             Show(MyPhotoActivity.this, "提交中", true, null);
+            Refresh = true;
             mp.AddPhoto(files);
         }
 
@@ -94,16 +106,20 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
 
     @Override
     public void onItemClick(int pos) {
-        List<String> list = new ArrayList<>();
-        list.add(Fields.Catalina);
-        list.add(Fields.Catalina);
-        list.add(Fields.Catalina);
-        goPhotoViewerPage(this, list, pos - 1, 0);
+        if (list.size() > 0) {
+            List<String> photo = new ArrayList<>();
+            for (PhotoBean pb : list) {
+                if (pb != null)
+                    photo.add(pb.getUrl());
+            }
+            goPhotoViewerPage(this, photo, pos - 1, 0);
+        }
     }
 
     @Override
     public void onDeletePhoto(String url) {
-        ToastUtil.toast2_bottom(this, "删除图片 " + url);
+        ToastUtil.toast2_bottom(this, "并没有删除功能。");
+        Log.i(TAG, "delete url ==" + url);
     }
 
     @Override

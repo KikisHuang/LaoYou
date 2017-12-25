@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/test_head_icon" />
+                 />
 
 
             <LinearLayout
@@ -65,7 +65,6 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:paddingRight="10dp"
-                    android:text="生活不就应该在路上"
                     android:textColor="@color/white"
                     android:textSize="11sp" />
 
@@ -87,7 +86,6 @@
                         android:id="@+id/page_view_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="4396"
                         android:textColor="@color/white"
                         android:textSize="11sp" />
 
@@ -104,7 +102,6 @@
                         android:id="@+id/cardiac_value_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3726"
                         android:textColor="@color/white"
                         android:textSize="11sp" />
                 </LinearLayout>

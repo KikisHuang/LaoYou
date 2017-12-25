@@ -1,5 +1,9 @@
 package laoyou.com.laoyou.listener;
 
+import java.util.List;
+
+import laoyou.com.laoyou.bean.AttentionGameBean;
+import laoyou.com.laoyou.bean.PhotoBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 
 /**
@@ -12,4 +16,10 @@ public interface HomePageListener {
     void onShowUserInfo(UserInfoBean ub);
 
     void onCertificaTion(int status);
+
+    void onMyHeartValue(String num);
+
+    void onAttentGames(List<AttentionGameBean> ll);
+
+    void onPhotoList(List<PhotoBean> photos);
 }

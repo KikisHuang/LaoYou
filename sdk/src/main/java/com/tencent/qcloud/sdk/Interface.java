@@ -153,7 +153,7 @@ public class Interface {
      */
     public static final String GETBYPAGE = "news/select/getByPage.app";
     /**
-     * 获取我关注的游戏接口;
+     * 获取我、他人关注的游戏接口;
      */
     public static final String GETMYGAME = "game/select/getMyGame.app";
     /**
@@ -240,5 +240,9 @@ public class Interface {
      * 发表个人照片接口;
      */
     public static final String PHOTO = "chat/add/photo.app";
+    /**
+     * 获取被赠予的心动值接口;
+     */
+    public static final String GETMYHEARTNUMBER = "heartNumber/select/getMyHeartNumber.app";
 
 }

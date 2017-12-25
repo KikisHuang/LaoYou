@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.activity;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -18,12 +19,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.HomePageAdapter;
+import laoyou.com.laoyou.bean.AttentionGameBean;
+import laoyou.com.laoyou.bean.PhotoBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HomePageListener;
 import laoyou.com.laoyou.presenter.HomePagePresenter;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.ToastUtil;
 
+import static laoyou.com.laoyou.utils.IntentUtils.goMyHomePage;
+import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
+import static laoyou.com.laoyou.utils.SynUtils.IsMe;
+import static laoyou.com.laoyou.utils.SynUtils.IsNull;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.handleTitleBarColorEvaluate;
 import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
@@ -31,7 +39,7 @@ import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
 /**
  * Created by lian on 2017/12/7.
  */
-public class HomePageActivity extends InitActivity implements HomePageListener, AbsListView.OnScrollListener {
+public class HomePageActivity extends InitActivity implements HomePageListener, AbsListView.OnScrollListener, View.OnClickListener {
     private ListView listView;
     private LinearLayout head_layout, foot_layout;
     private HomePageAdapter adapter;
@@ -46,10 +54,13 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     private int imageHeight;
     private int height;
     private String id;
+    private boolean isMe;
+
 
     @Override
     protected void click() {
         listView.setOnScrollListener(this);
+        detailsOfcompile_tv.setOnClickListener(this);
     }
 
     @Override
@@ -57,6 +68,12 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         setContentView(R.layout.home_page_layout);
         setImgTitles(this);
         id = getIntent().getStringExtra("Page_Home_id");
+        isMe = IsMe(id);
+        hp = new HomePagePresenter(this);
+        if (isMe)
+            hp.getMyDetails();
+        else
+            hp.getOthersDetails(id);
 
         listView = f(R.id.listView);
         title_layout = f(R.id.title_layout);
@@ -65,7 +82,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         heart_layout = f(R.id.heart_layout);
         back_img = f(R.id.back_img);
 
-        hp = new HomePagePresenter(this);
+
         list = new ArrayList<>();
         list.add("");
         list.add("");
@@ -77,41 +94,64 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         head_img = (CircleImageView) head_layout.findViewById(R.id.head_img);
         nickname_tv = (TextView) head_layout.findViewById(R.id.nickname_tv);
         signature_tv = (TextView) head_layout.findViewById(R.id.signature_tv);
+        page_view_tv = (TextView) head_layout.findViewById(R.id.page_view_tv);
         cardiac_value_tv = (TextView) head_layout.findViewById(R.id.cardiac_value_tv);
+        authentication_tv = (TextView) head_layout.findViewById(R.id.authentication_tv);
         detailsOfcompile_tv = (TextView) head_layout.findViewById(R.id.detailsOfcompile_tv);
+
+        detailsOfcompile_tv.setText(isMe ? gets(R.string.compile_info) : gets(R.string.view_details))
+        ;
+
         address_tv = (TextView) head_layout.findViewById(R.id.address_tv);
         photo_layout = (LinearLayout) head_layout.findViewById(R.id.photo_layout);
         game_list_layout = (LinearLayout) head_layout.findViewById(R.id.game_list_layout);
+
 
         adapter = new HomePageAdapter(this, list);
         listView.addHeaderView(head_layout);
         listView.addFooterView(foot_layout);
         listView.setAdapter(adapter);
+
     }
 
     @Override
     protected void initData() {
-        Glide.with(this).load(Fields.Catalina).centerCrop().into(background_img);
-        addPhotoList();
+
     }
 
-    private void addPhotoList() {
-//        photo_layout
-        for (int i = 0; i < 4; i++) {
+    /**
+     * 添加照片墙;
+     *
+     * @param ll
+     */
+    private void addPhotoList(List<PhotoBean> ll) {
+        final List<String> photo = new ArrayList<>();
+        for (PhotoBean pb : ll) {
+            photo.add(pb.getUrl());
+        }
+        for (int i = 0; i < ll.size(); i++) {
             int w = DeviceUtils.getWindowWidth(this) * 1 / 4;
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(w, w);
             lp.rightMargin = DeviceUtils.dip2px(this, 3);
             ImageView im = new ImageView(this);
             im.setScaleType(ImageView.ScaleType.CENTER_CROP);
             im.setLayoutParams(lp);
-            Glide.with(this).load(Fields.Catalina).bitmapTransform(new RoundedCornersTransformation(this, 10, 0, RoundedCornersTransformation.CornerType.ALL)).into(im);
+            Glide.with(this).load(ll.get(i).getUrl()).bitmapTransform(new RoundedCornersTransformation(this, 10, 0, RoundedCornersTransformation.CornerType.ALL)).into(im);
             photo_layout.addView(im);
+
+            final int finalI = i;
+            im.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goPhotoViewerPage(HomePageActivity.this, photo, finalI, 1);
+                }
+            });
         }
     }
 
     @Override
     public void onFailedMSg(String msg) {
-
+        ToastUtil.toast2_bottom(this,msg);
     }
 
     @Override
@@ -121,10 +161,22 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
     @Override
     public void onShowUserInfo(UserInfoBean ub) {
+
         Glide.with(HomePageActivity.this).load(ub.getHeadImgUrl()).into(head_img);
         nickname_tv.setText(ub.getName());
+        Glide.with(this).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).into(background_img);
+        signature_tv.setText(IsNull(ub.getAutograph()) ? gets(R.string.default_signature) : ub.getAutograph());
+        page_view_tv.setText(IsNull(ub.getBrowseNumber()) ? String.valueOf(0) : ub.getBrowseNumber());
+        address_tv.setText(IsNull(ub.getAddress()) ? "" : ub.getAutograph());
+        authentication_tv.setText(IsNull(ub.getIdcard()) ? gets(R.string.un_certification) : gets(R.string.certification));
+
     }
 
+    /**
+     * 废弃
+     *
+     * @param state
+     */
     @Override
     public void onCertificaTion(int state) {
         //	status  审核状态 0未审核，1已通过，-1已拒绝，2密码错误要求复检,3重新上传
@@ -137,6 +189,31 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         else
             authentication_tv.setText(gets(R.string.un_certification));
 
+    }
+
+    @Override
+    public void onMyHeartValue(String num) {
+        cardiac_value_tv.setText(IsNull(num) ? String.valueOf(0) : num);
+    }
+
+    @Override
+    public void onAttentGames(List<AttentionGameBean> ll) {
+
+        for (AttentionGameBean ab : ll) {
+            int w = DeviceUtils.getWindowWidth(this) * 1 / 10;
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(w, w);
+            CircleImageView civ = new CircleImageView(this);
+            civ.setLayoutParams(lp);
+            lp.rightMargin = DeviceUtils.dip2px(this, 2);
+
+            Glide.with(this).load(ab.getImgUrl()).into(civ);
+            game_list_layout.addView(civ);
+        }
+    }
+
+    @Override
+    public void onPhotoList(List<PhotoBean> photos) {
+        addPhotoList(photos);
     }
 
     @Override
@@ -155,4 +232,13 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.detailsOfcompile_tv:
+                if (isMe)
+                    goMyHomePage(this);
+                break;
+        }
+    }
 }

@@ -147,6 +147,7 @@ public class LoginPresenter implements HttpResultListener {
                 try {
                     JSONObject ob = getJsonOb(response);
                     UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
+                    SPreferences.saveUserId(ub.getId());
                     faceUrl = ub.getHeadImgUrl();
                     name = ub.getName();
 
