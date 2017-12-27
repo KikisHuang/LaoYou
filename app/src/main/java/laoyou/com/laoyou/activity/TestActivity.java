@@ -1,13 +1,14 @@
 package laoyou.com.laoyou.activity;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.view.group.GroupCircularImageView;
+import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.view.CustomImageView;
+import laoyou.com.laoyou.view.NineGridlayout;
 
 /**
  * Created by lian on 2017/11/4.
@@ -15,9 +16,8 @@ import laoyou.com.laoyou.view.group.GroupCircularImageView;
 public class TestActivity extends InitActivity implements View.OnClickListener {
 
     private static final String TAG = "TestActivity";
-
-    private GroupCircularImageView circularImageView;
-    ArrayList<Bitmap> mBmps3 = new ArrayList<Bitmap>();
+    private NineGridlayout nine_gd_layout;
+    private CustomImageView customImageView;
 
     @Override
     protected void click() {
@@ -28,18 +28,21 @@ public class TestActivity extends InitActivity implements View.OnClickListener {
     @Override
     protected void init() {
         setContentView(R.layout.test_layout);
-        circularImageView = f(R.id.circularImageView);
-        Bitmap avatar3 = BitmapFactory.decodeResource(getResources(), R.drawable.test_head_icon);
-        mBmps3.add(avatar3);
-        mBmps3.add(avatar3);
-        mBmps3.add(avatar3);
-        mBmps3.add(avatar3);
+        nine_gd_layout = f(R.id.nine_gd_layout);
+        customImageView = f(R.id.customImageView);
     }
 
 
     @Override
     protected void initData() {
-        circularImageView.setImageBitmaps(mBmps3);
+        List<String> images = new ArrayList<>();
+        images.add(Fields.Catalina);
+        images.add(Fields.Catalina);
+        images.add(Fields.Catalina);
+        images.add(Fields.Catalina);
+        images.add(Fields.Catalina);
+
+        nine_gd_layout.setImagesData(images);
     }
 
     @Override

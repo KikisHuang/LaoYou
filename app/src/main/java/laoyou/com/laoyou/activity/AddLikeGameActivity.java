@@ -1,8 +1,11 @@
 package laoyou.com.laoyou.activity;
 
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -22,7 +25,7 @@ import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 /**
  * Created by lian on 2017/12/9.
  */
-public class AddLikeGameActivity extends InitActivity implements AddLikeGameListener, View.OnClickListener {
+public class AddLikeGameActivity extends InitActivity implements AddLikeGameListener, View.OnClickListener, AbsListView.OnScrollListener {
 
     private static final String TAG = "AddLikeGameActivity";
     private ListView listView;
@@ -31,21 +34,23 @@ public class AddLikeGameActivity extends InitActivity implements AddLikeGameList
     private List<GameBean> list;
     private int tag;
     private RippleView commit_bt;
+    private LinearLayout foot_layout;
+    private boolean isRefresh = true;
+    private GameBean games;
 
     @Override
     protected void click() {
         commit_bt.setOnClickListener(this);
+        listView.setOnScrollListener(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (tag == 1) {
-                    Intent inten = new Intent();
-                    inten.putExtra("like_game_bean", list.get(position));
-                    setResult(RESULT_OK, inten);
-                    finish();
-                } else {
+                    games = list.get(position);
+                    Show(AddLikeGameActivity.this, "", true, null);
+                    ap.CheckGames(games);
+                } else
                     onScreenGame(list.get(position).getId());
-                }
 
             }
         });
@@ -56,30 +61,36 @@ public class AddLikeGameActivity extends InitActivity implements AddLikeGameList
         setContentView(R.layout.add_like_game_layout);
         listView = f(R.id.listView);
         commit_bt = f(R.id.commit_bt);
+        foot_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.foot_include, null);
+
         ap = new AddLikeGamePresenter(this);
         list = new ArrayList<>();
         tag = Integer.parseInt(getIntent().getStringExtra("add_like_game_tag"));
         if (tag == 0)
             commit_bt.setVisibility(View.VISIBLE);
-        GameBean gb = new GameBean();
-        gb.setName("test");
-        gb.setHeadUrl("123");
-        gb.setId("test1");
-        gb.setSlector(false);
-        list.add(gb);
-        GameBean gb1 = new GameBean();
-        gb1.setName("test");
-        gb1.setHeadUrl("123");
-        gb1.setId("test2");
-        gb1.setSlector(false);
-        list.add(gb1);
-
-        GameBean gb2 = new GameBean();
-        gb2.setName("test");
-        gb2.setHeadUrl("123");
-        gb2.setId("test3");
-        gb2.setSlector(false);
-        list.add(gb2);
+        if (tag == 1)
+            ap.getGameListData();
+//        GameBean gb = new GameBean();
+//        gb.setName("test");
+//        gb.setHeadUrl("123");
+//        gb.setId("test1");
+//        gb.setSlector(false);
+//        list.add(gb);
+//        GameBean gb1 = new GameBean();
+//        gb1.setName("test");
+//        gb1.setHeadUrl("123");
+//        gb1.setId("test2");
+//        gb1.setSlector(false);
+//        list.add(gb1);
+//
+//        GameBean gb2 = new GameBean();
+//        gb2.setName("test");
+//        gb2.setHeadUrl("123");
+//        gb2.setId("test3");
+//        gb2.setSlector(false);
+//        list.add(gb2);
+        foot_layout.setVisibility(View.GONE);
+        listView.addFooterView(foot_layout);
 
         adapter = new AddLikeGameAdapter(this, list, tag);
         listView.setAdapter(adapter);
@@ -97,12 +108,13 @@ public class AddLikeGameActivity extends InitActivity implements AddLikeGameList
 
     @Override
     public void onFailedMsg(String msg) {
-        ToastUtil.toast2_bottom(this,msg);
+        ToastUtil.toast2_bottom(this, msg);
         Cancle();
     }
 
     @Override
     public void onScreenGame(String id) {
+
         for (GameBean gb : list) {
             if (gb.getId().equals(id)) {
                 gb.setSlector(!gb.isSlector());
@@ -112,14 +124,54 @@ public class AddLikeGameActivity extends InitActivity implements AddLikeGameList
     }
 
     @Override
+    public void onGamesInfo(List<GameBean> games) {
+        if (isRefresh)
+            list.clear();
+        if (!isRefresh && games.size() <= 0)
+            foot_layout.setVisibility(View.VISIBLE);
+
+        for (GameBean gb : games) {
+            list.add(gb);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAddLikeGames() {
+        if (games != null) {
+            Intent inten = new Intent();
+            inten.putExtra("like_game_bean", games);
+            setResult(RESULT_OK, inten);
+            finish();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.commit_bt:
-                if(list.size()>0){
+                if (list.size() > 0) {
                     Show(AddLikeGameActivity.this, "提交中", true, null);
                     ap.ChangeLikeGameList(list);
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if (visibleItemCount + firstVisibleItem == totalItemCount) {
+            if (foot_layout.getVisibility() == View.GONE) {
+                isRefresh = false;
+                ap.page += 10;
+                ap.getGameListData();
+            }
+        }
+
     }
 }

@@ -187,7 +187,7 @@ public class Interface {
     /**
      * 获取话题圈列表接口;
      */
-    public static final String GETTOPICTYPEDETAILS = "chat/select/getByPage.app";
+    public static final String GETTOPICTYPEDETAILS = "chat/select/getNewByPage.app";
     /**
      * 获取话题圈内活跃用户接口;
      */
@@ -231,7 +231,7 @@ public class Interface {
     /**
      * 删除评论接口;
      */
-    public static final String DELETETOPICCOMMENT = "comment/delete/comment.app";
+    public static final String DELETETCHATMESSAGE = "chat/delete/chatMessage.app";
     /**
      * 获取个人照片接口;
      */
@@ -244,5 +244,41 @@ public class Interface {
      * 获取被赠予的心动值接口;
      */
     public static final String GETMYHEARTNUMBER = "heartNumber/select/getMyHeartNumber.app";
+    /**
+     * 获取指定用户详情信息接口;
+     */
+    public static final String GETOTHERSDETAILS = "user/select/getDetails.app";
+    /**
+     * 关注游戏接口(二次关注等于取消);
+     */
+    public static final String FOLLOWGAME = "game/modify/followGame.app";
+    /**
+     * 获取可关注的游戏接口;
+     */
+    public static final String GETGAMESBYPAGE = "game/select/getByPage.app";
+    /**
+     * 检测关注游戏的状态接口;
+     */
+    public static final String CHECKFOLLOWGAME = "game/select/followGame.app";
+    /**
+     * 赠与心动值接口;
+     */
+    public static final String GIVEHEARTNUMBER = "heartNumber/modify/giveHeartNumber.app";
+    /**
+     * 获取我今天可用的心动值接口;
+     */
+    public static final String GETHEARTNUMBER = "heartNumber/select/getHeartNumber.app";
+    /**
+     * 获取我发出的话题圈评论接口;
+     */
+    public static final String GETMYCHATMESSAGE = "chat/select/getMyChatMessage.app";
+    /**
+     * 获取我收到的话题圈评论接口;
+     */
+    public static final String GETMYRECEIVEDCHATMESSAGE = "chat/select/getMyReceivedChatMessage.app";
+    /**
+     * 删除个人照片接口;
+     */
+    public static final String DELETEPHOTO = "chat/delete/photo.app";
 
 }

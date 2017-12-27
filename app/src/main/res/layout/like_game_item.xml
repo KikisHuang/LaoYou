@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <laoyou.com.laoyou.view.SwipeListLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipeListLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -29,7 +30,9 @@
         android:orientation="horizontal"
         android:paddingTop="10dp">
 
-        <ImageView
+        <laoyou.com.laoyou.view.RoundImageView
+            app:x_radius="5dp"
+            app:y_radius="5dp"
             android:id="@+id/game_icon"
             android:layout_width="100dp"
             android:layout_height="100dp"

@@ -16,7 +16,6 @@ import laoyou.com.laoyou.bean.PhotoBean;
 import laoyou.com.laoyou.listener.MyPhotoListener;
 import laoyou.com.laoyou.presenter.MyPhotoPresenter;
 import laoyou.com.laoyou.utils.Fields;
-import laoyou.com.laoyou.utils.ToastUtil;
 import me.iwf.photopicker.PhotoPicker;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
@@ -39,6 +38,8 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
     private int upNum = 0;
     private List<File> files;
     private boolean Refresh = true;
+    private boolean Photo_IsMe;
+    private String id = "";
 
     protected void click() {
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -49,7 +50,7 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
                     if (!recyclerView.canScrollVertically(1)) {
                         Refresh = false;
                         mp.page += 10;
-                        mp.getPhotoListData();
+                        mp.getPhotoListData(id);
                     }
 
             }
@@ -60,14 +61,22 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
     protected void init() {
         setContentView(R.layout.my_photo_layout);
         setTitlesAndBack(this, gets(R.string.goback), "");
+        Photo_IsMe = getIntent().getBooleanExtra("Photo_IsMe", false);
+        id = getIntent().getStringExtra("Photo_id");
+
         recyclerView = f(R.id.recyclerView);
         mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);//3列，纵向排列
         recyclerView.setLayoutManager(mLayoutManager);
         mp = new MyPhotoPresenter(this);
+
         list = new ArrayList<>();
         files = new ArrayList<>();
-        list.add(null);
-        adapter = new MyPhotoAdapter(this, list, this);
+        if (Photo_IsMe)
+            list.add(null);
+
+        mp.getPhotoListData(id);
+
+        adapter = new MyPhotoAdapter(this, list, this, Photo_IsMe);
         recyclerView.setAdapter(adapter);
     }
 
@@ -89,7 +98,6 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
     @Override
     public void onUpLoadFile(File f) {
         files.add(f);
-
         if (files.size() == upNum) {
             Show(MyPhotoActivity.this, "提交中", true, null);
             Refresh = true;
@@ -112,26 +120,43 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
                 if (pb != null)
                     photo.add(pb.getUrl());
             }
-            goPhotoViewerPage(this, photo, pos - 1, 0);
+            if (Photo_IsMe)
+                goPhotoViewerPage(this, photo, pos - 1, 0);
+            else
+                goPhotoViewerPage(this, photo, pos, 1);
         }
     }
 
     @Override
     public void onDeletePhoto(String url) {
-        ToastUtil.toast2_bottom(this, "并没有删除功能。");
         Log.i(TAG, "delete url ==" + url);
+        if (Photo_IsMe) {
+            for (PhotoBean pb : list) {
+                if (pb != null && pb.getUrl().equals(url)) {
+                    mp.DeletePhoto(String.valueOf(pb.getId()));
+                    break;
+                }
+            }
+        }
     }
 
     @Override
     public void onPhotoList(List<PhotoBean> ar) {
         if (Refresh) {
             list.clear();
-            list.add(null);
+            if (Photo_IsMe)
+                list.add(null);
         }
         for (PhotoBean pb : ar) {
             list.add(pb);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void DeleteSucceed() {
+        Refresh = true;
+        mp.RefreshPhotoListData(id);
     }
 
     @Override

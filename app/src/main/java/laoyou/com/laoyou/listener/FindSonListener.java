@@ -3,6 +3,7 @@ package laoyou.com.laoyou.listener;
 import java.util.List;
 
 import laoyou.com.laoyou.bean.NearbyBean;
+import laoyou.com.laoyou.bean.TopicTypeBean;
 
 /**
  * Created by lian on 2017/12/11.
@@ -12,5 +13,9 @@ public interface FindSonListener {
 
     void onFailedMsg(String str);
 
-    void RefreshRecyclerView(List<NearbyBean> nblist);
+    void RefreshNearby(List<NearbyBean> nblist);
+
+    void RefreshNewWonders(List<TopicTypeBean> toppic);
+
+    void onRefresh();
 }

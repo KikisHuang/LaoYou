@@ -10,11 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import java.util.List;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.NearbyBean;
 
@@ -43,10 +41,10 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.name_tv.setText(list.get(position).getName());
-        Glide.with(context).load(list.get(position).getHeadImgUrl()).bitmapTransform(new CenterCrop(context),new RoundedCornersTransformation(context, 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(holder.user_head_img);
+        Glide.with(context).load(list.get(position).getHeadImgUrl()).into(holder.user_head_img);
 
         if (list.get(position).getDistance() > 1000)
-            holder.distance_tv.setText(getDistanceKM(list.get(position).getDistance() / 1000 ));
+            holder.distance_tv.setText(getDistanceKM(list.get(position).getDistance() / 1000));
         else
             holder.distance_tv.setText(list.get(position).getDistance() + "m");
 
@@ -59,8 +57,8 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView content_tv, name_tv, age_tv, distance_tv;
-        private ImageView user_head_img, sex_img;
+        private TextView content_tv, name_tv, age_tv, distance_tv, sex_img;
+        private ImageView user_head_img;
         private LinearLayout tag_layout;
 
         public MyViewHolder(View view) {
@@ -70,7 +68,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
             age_tv = (TextView) view.findViewById(R.id.age_tv);
             distance_tv = (TextView) view.findViewById(R.id.distance_tv);
             user_head_img = (ImageView) view.findViewById(R.id.user_head_img);
-            sex_img = (ImageView) view.findViewById(R.id.sex_img);
+            sex_img = (TextView) view.findViewById(R.id.sex_img);
             tag_layout = (LinearLayout) view.findViewById(R.id.tag_layout);
 
         }

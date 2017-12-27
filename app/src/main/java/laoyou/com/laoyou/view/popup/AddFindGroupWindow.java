@@ -7,14 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.dialog.MyAlertDialog;
@@ -34,7 +33,7 @@ import static laoyou.com.laoyou.utils.IntentUtils.goOverInfoPage;
 public class AddFindGroupWindow implements View.OnClickListener {
     private static final String TAG = "SlidePopupWindow";
     private static TextView user_name;
-    private static ImageView user_icon;
+    private static CircleImageView user_icon;
     private static LinearLayout login_ll, layout_1, layout_2, layout_3;
     private static PopupWindow popupWindow;
     private Context mContext;
@@ -96,14 +95,14 @@ public class AddFindGroupWindow implements View.OnClickListener {
 
     private void init(View contentView) {
         login_ll = (LinearLayout) contentView.findViewById(R.id.login_ll);
-        user_icon = (ImageView) contentView.findViewById(R.id.user_icon);
+        user_icon = (CircleImageView) contentView.findViewById(R.id.user_icon);
         user_name = (TextView) contentView.findViewById(R.id.user_name);
 
         layout_1 = (LinearLayout) contentView.findViewById(R.id.layout_1);
         layout_2 = (LinearLayout) contentView.findViewById(R.id.layout_2);
         layout_3 = (LinearLayout) contentView.findViewById(R.id.layout_3);
 
-        Glide.with(mContext).load(info.getHeadImgUrl()).bitmapTransform(new CropCircleTransformation(mContext)).into(user_icon);
+        Glide.with(mContext).load(info.getHeadImgUrl()).into(user_icon);
 
         user_name.setText(info.getName());
     }

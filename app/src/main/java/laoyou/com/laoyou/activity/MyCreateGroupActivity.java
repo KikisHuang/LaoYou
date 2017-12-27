@@ -276,4 +276,9 @@ public class MyCreateGroupActivity extends InitActivity implements AddressBookLi
         searchlist.clear();
         searchadapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onContentChange(String s) {
+
+    }
 }

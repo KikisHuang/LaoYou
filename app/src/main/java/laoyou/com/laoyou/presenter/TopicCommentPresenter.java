@@ -189,6 +189,6 @@ public class TopicCommentPresenter implements HttpResultListener {
     public void DeleteMyComment(String id) {
         Map<String, String> map = getKeyMap();
         map.put("id", id);
-        httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.DELETETOPICCOMMENT);
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.DELETETCHATMESSAGE);
     }
 }

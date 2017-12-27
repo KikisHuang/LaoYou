@@ -431,5 +431,9 @@
     <string name="default_signature">这家伙很懒，什么也没留下</string>
     <string name="view_details">查看详情</string>
     <string name="compile_info">编辑资料</string>
+    <string name="delete_succ">删除成功</string>
+    <string name="add_succ">添加成功</string>
+    <string name="already_game">已经添加过了该游戏</string>
+    <string name="give_heart_succ">赠送心动值成功</string>
 
 </resources>

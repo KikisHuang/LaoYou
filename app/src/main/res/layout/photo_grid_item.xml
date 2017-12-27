@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <laoyou.com.laoyou.view.RoundImageView
+        app:x_radius="5dp"
+        app:y_radius="5dp"
+        android:id="@+id/photo_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/imaginary_line_add"
+         />
+
+    <ImageView
+        android:id="@+id/remove_img"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="top|right"
+        android:layout_margin="5dp"
+        android:src="@mipmap/close_black" />
+</FrameLayout>

@@ -53,18 +53,18 @@
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <!-- 测试页面 -->
         <activity
             android:name=".activity.TestActivity"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- 登录、注册选择页面 -->
@@ -83,6 +83,13 @@
         <activity
             android:name=".activity.ForgetPasswordActivity"
             android:screenOrientation="portrait"></activity>
+        <!-- 发布话题页面 -->
+        <activity
+            android:name=".activity.ReleaseTopicActivity"
+            android:screenOrientation="portrait">
+
+
+        </activity>
         <!-- 发送验证码页面 -->
         <activity
             android:name=".activity.SendPhoneCodeActivity"
@@ -112,12 +119,14 @@
         <!-- 密码查询页面 -->
         <activity
             android:name=".activity.QueryActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <!-- 我的个人主页页面 -->
         <activity
             android:name=".activity.MyHomePageActivity"
+            android:screenOrientation="portrait"></activity>
+        <!-- 他人主页详情资料页面 -->
+        <activity
+            android:name=".activity.OthersDetailsPageActivity"
             android:screenOrientation="portrait"></activity>
         <!-- 评论页面 -->
         <activity
@@ -331,5 +340,17 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}" />
+
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
 </manifest>

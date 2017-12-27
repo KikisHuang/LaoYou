@@ -141,6 +141,7 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
         Map<String, String> map = getKeyMap();
         map.put("model", String.valueOf(model));
         map.put("chatTypeId", id);
+        map.put("followFlag", String.valueOf(0));
         map.put("page", String.valueOf(page));
         map.put("pageSize", String.valueOf(page += 10));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETTOPICTYPEDETAILS);
@@ -152,6 +153,7 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
         Map<String, String> map = getKeyMap();
         map.put("model", String.valueOf(model));
         map.put("chatTypeId", id);
+        map.put("followFlag", String.valueOf(0));
         map.put("page", String.valueOf(0));
         map.put("pageSize", String.valueOf(page += 10));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETTOPICTYPEDETAILS);

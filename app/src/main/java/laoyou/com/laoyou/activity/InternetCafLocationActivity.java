@@ -37,12 +37,10 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.MarkerBean;
 import laoyou.com.laoyou.dialog.ActionSheetDialog;
@@ -498,7 +496,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
         grade_tv.setText(mb.getAvgEvaluate() + "分");
         address_tv.setText(gets(R.string.address) + "：" + mb.getAddress());
 
-        Glide.with(this).load(mb.getLogoUrl()).bitmapTransform(new CenterCrop(this), new RoundedCornersTransformation(this, 8, 0, RoundedCornersTransformation.CornerType.ALL)).into(caf_logo_img);
+        Glide.with(this).load(mb.getLogoUrl()).into(caf_logo_img);
     }
 
     /**

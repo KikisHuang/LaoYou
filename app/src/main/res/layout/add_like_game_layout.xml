@@ -56,7 +56,9 @@
             android:textSize="16dp"
             ripple:alphaFactor="0.5"
             ripple:hover="false"
-            ripple:rippleColor="@color/white" />
+            ripple:rippleColor="@color/white"
+            android:visibility="gone"
+            />
 
     </LinearLayout>
 

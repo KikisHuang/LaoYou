@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.HomePageAdapter;
 import laoyou.com.laoyou.bean.AttentionGameBean;
@@ -27,9 +26,12 @@ import laoyou.com.laoyou.presenter.HomePagePresenter;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
+import laoyou.com.laoyou.view.RoundAngleImageView;
 
+import static laoyou.com.laoyou.utils.IntentUtils.goLikeGamePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyHomePage;
-import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goMyPhotoPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goOthersDetailsPage;
 import static laoyou.com.laoyou.utils.SynUtils.IsMe;
 import static laoyou.com.laoyou.utils.SynUtils.IsNull;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -55,12 +57,15 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     private int height;
     private String id;
     private boolean isMe;
-
+    private LinearLayout like_game_layout;
 
     @Override
     protected void click() {
         listView.setOnScrollListener(this);
         detailsOfcompile_tv.setOnClickListener(this);
+        game_list_layout.setOnClickListener(this);
+        like_game_layout.setOnClickListener(this);
+        heart_layout.setOnClickListener(this);
     }
 
     @Override
@@ -73,7 +78,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         if (isMe)
             hp.getMyDetails();
         else
-            hp.getOthersDetails(id);
+            hp.getOthersDetails(id, false);
 
         listView = f(R.id.listView);
         title_layout = f(R.id.title_layout);
@@ -98,9 +103,9 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         cardiac_value_tv = (TextView) head_layout.findViewById(R.id.cardiac_value_tv);
         authentication_tv = (TextView) head_layout.findViewById(R.id.authentication_tv);
         detailsOfcompile_tv = (TextView) head_layout.findViewById(R.id.detailsOfcompile_tv);
+        like_game_layout = (LinearLayout) head_layout.findViewById(R.id.like_game_layout);
 
-        detailsOfcompile_tv.setText(isMe ? gets(R.string.compile_info) : gets(R.string.view_details))
-        ;
+        detailsOfcompile_tv.setText(isMe ? gets(R.string.compile_info) : gets(R.string.view_details));
 
         address_tv = (TextView) head_layout.findViewById(R.id.address_tv);
         photo_layout = (LinearLayout) head_layout.findViewById(R.id.photo_layout);
@@ -112,6 +117,15 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         listView.addFooterView(foot_layout);
         listView.setAdapter(adapter);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isMe)
+            hp.getMyDetails();
+        else
+            hp.getOthersDetails(id, false);
     }
 
     @Override
@@ -129,21 +143,23 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         for (PhotoBean pb : ll) {
             photo.add(pb.getUrl());
         }
+        photo_layout.removeAllViews();
         for (int i = 0; i < ll.size(); i++) {
             int w = DeviceUtils.getWindowWidth(this) * 1 / 4;
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(w, w);
             lp.rightMargin = DeviceUtils.dip2px(this, 3);
-            ImageView im = new ImageView(this);
+            RoundAngleImageView im = new RoundAngleImageView(this);
             im.setScaleType(ImageView.ScaleType.CENTER_CROP);
             im.setLayoutParams(lp);
-            Glide.with(this).load(ll.get(i).getUrl()).bitmapTransform(new RoundedCornersTransformation(this, 10, 0, RoundedCornersTransformation.CornerType.ALL)).into(im);
+            Glide.with(this).load(ll.get(i).getUrl()).into(im);
             photo_layout.addView(im);
 
             final int finalI = i;
             im.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goPhotoViewerPage(HomePageActivity.this, photo, finalI, 1);
+                    goMyPhotoPage(HomePageActivity.this, isMe, id);
+//                    goPhotoViewerPage(HomePageActivity.this, photo, finalI, 1);
                 }
             });
         }
@@ -151,7 +167,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
     @Override
     public void onFailedMSg(String msg) {
-        ToastUtil.toast2_bottom(this,msg);
+        ToastUtil.toast2_bottom(this, msg);
     }
 
     @Override
@@ -196,17 +212,31 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         cardiac_value_tv.setText(IsNull(num) ? String.valueOf(0) : num);
     }
 
+    /**
+     * 关注的游戏;
+     *
+     * @param ll
+     */
     @Override
     public void onAttentGames(List<AttentionGameBean> ll) {
-
+        game_list_layout.removeAllViews();
         for (AttentionGameBean ab : ll) {
             int w = DeviceUtils.getWindowWidth(this) * 1 / 10;
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(w, w);
             CircleImageView civ = new CircleImageView(this);
             civ.setLayoutParams(lp);
             lp.rightMargin = DeviceUtils.dip2px(this, 2);
-
             Glide.with(this).load(ab.getImgUrl()).into(civ);
+            civ.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (isMe)
+                        goLikeGamePage(HomePageActivity.this, "");
+                    else
+                        goLikeGamePage(HomePageActivity.this, id);
+                }
+            });
             game_list_layout.addView(civ);
         }
     }
@@ -238,6 +268,20 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
             case R.id.detailsOfcompile_tv:
                 if (isMe)
                     goMyHomePage(this);
+                else
+                    goOthersDetailsPage(this,id);
+                break;
+            case R.id.like_game_layout:
+                if (isMe)
+                    goLikeGamePage(this, "");
+                else
+                    goLikeGamePage(this, id);
+                break;
+            case R.id.heart_layout:
+                if (isMe)
+                    hp.getMyHeart();
+                else
+                    hp.GiveHeart(id);
                 break;
         }
     }

@@ -10,8 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import laoyou.com.laoyou.R;
@@ -66,11 +66,13 @@ public class PhotoViewerFragment extends BaseFragment {
 
     private void getData() {
         try {
-            Glide.with(getActivity().getApplicationContext()).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
+
+            Glide.with(getActivity().getApplicationContext()).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
                 @Override
-                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                     onLong(resource);
                 }
+
             });
             Glide.with(getActivity().getApplicationContext()).load(url).into(imageView);
         } catch (Exception e) {

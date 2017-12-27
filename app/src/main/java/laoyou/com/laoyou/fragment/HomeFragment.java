@@ -15,13 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.HomeStatusAdapter;
 import laoyou.com.laoyou.bean.NearbyBean;
@@ -38,11 +36,13 @@ import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.utils.ViewPagerScroller;
+import laoyou.com.laoyou.view.RoundAngleImageView;
 import laoyou.com.laoyou.view.WrapContentHeightViewPager;
 
 import static laoyou.com.laoyou.dialog.PhotoProgress.LoadingCancle;
 import static laoyou.com.laoyou.dialog.PhotoProgress.LoadingShow;
 import static laoyou.com.laoyou.utils.AnimationUtil.showAndHiddenAnimation;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IPUtils.isWifi;
 import static laoyou.com.laoyou.utils.IntentUtils.goFlashChatPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goGameInformationPage;
@@ -182,10 +182,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DeviceUtils.getWindowWidth(getActivity()) * 1 / 3, ViewGroup.LayoutParams.MATCH_PARENT);
 
             lp.rightMargin = DeviceUtils.dip2px(getActivity(), 10);
-            ImageView im = new ImageView(getActivity());
+            RoundAngleImageView im = new RoundAngleImageView(getActivity());
 
             im.setLayoutParams(lp);
-            Glide.with(getActivity()).load(Fields.Catalina).bitmapTransform(new CenterCrop(getActivity()), new RoundedCornersTransformation(getActivity(), 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(im);
+            Glide.with(getActivity()).load(Fields.Catalina).into(im);
             dynamic_layout.addView(im);
         }
     }
@@ -296,7 +296,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onOneImg(PageTopBean ptb) {
         banner_img.setVisibility(View.VISIBLE);
-        Glide.with(getActivity()).load(ptb.getImgUrl()).centerCrop().into(banner_img);
+        Glide.with(getActivity()).load(ptb.getImgUrl()).apply(getGlideOptions()).into(banner_img);
         this.pb = ptb;
     }
 

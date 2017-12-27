@@ -23,4 +23,5 @@ public interface MyHomePageListener {
     void onCityInfo(List<ProvinceBean> list);
 
     void onComPressSucceed(File f);
+
 }

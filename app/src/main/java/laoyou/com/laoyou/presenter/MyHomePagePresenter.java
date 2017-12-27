@@ -119,7 +119,7 @@ public class MyHomePagePresenter implements HttpResultListener, OnCompressListen
     }
 
     @Override
-    public void onSucceed(String response, int tag) {
+    public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
                 try {

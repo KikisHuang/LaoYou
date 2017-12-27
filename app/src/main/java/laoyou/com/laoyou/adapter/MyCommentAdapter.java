@@ -11,16 +11,17 @@ import android.widget.TextView;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.CommentBean;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
 /**
  * Created by lian on 2017/11/18.
  */
 public class MyCommentAdapter extends BaseAdapter {
-    private List<String> list = null;
+    private List<CommentBean> list = null;
     private Context mContext;
 
-    public MyCommentAdapter(Context mContext, List<String> list) {
+    public MyCommentAdapter(Context mContext, List<CommentBean> list) {
         this.mContext = mContext.getApplicationContext();
         this.list = list;
     }
@@ -49,6 +50,8 @@ public class MyCommentAdapter extends BaseAdapter {
         TextView reply_name_tv = OverallViewHolder.ViewHolder.get(view, R.id.reply_name_tv);
         TextView reply_content_tv = OverallViewHolder.ViewHolder.get(view, R.id.reply_content_tv);
         TextView time_tv = OverallViewHolder.ViewHolder.get(view, R.id.time_tv);
+
+
 
 
         return view;

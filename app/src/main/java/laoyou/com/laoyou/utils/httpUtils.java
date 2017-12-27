@@ -98,6 +98,7 @@ public class httpUtils {
                 Log.i(TAG, "服务端异常信息 ====" + e);
                 listener.onError(call.request(), e);
                 Cancle();
+
             }
 
             @Override

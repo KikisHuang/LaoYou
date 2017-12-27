@@ -10,11 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import java.util.List;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.OverallViewHolder;
@@ -56,7 +54,7 @@ public class GamsAdAdapter extends BaseAdapter {
 
         tag_tv.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
 
-        Glide.with(mContext).load(Fields.Catalina).bitmapTransform(new CenterCrop(mContext), new RoundedCornersTransformation(mContext, 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(gams_img);
+        Glide.with(mContext).load(Fields.Catalina).into(gams_img);
 
         return view;
     }

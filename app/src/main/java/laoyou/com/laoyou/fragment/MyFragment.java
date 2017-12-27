@@ -134,7 +134,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
         switch (v.getId()) {
 
             case R.id.photo_layout:
-                goMyPhotoPage(getActivity());
+                goMyPhotoPage(getActivity(), true, "");
                 break;
             case R.id.preference_layout:
                 break;

@@ -13,15 +13,16 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.NearbyBean;
+import laoyou.com.laoyou.bean.TopicTypeBean;
 
 /**
  * Created by lian on 2017/11/18.
  */
 public class FindIncidentAdapter extends BaseAdapter {
-    private List<NearbyBean>list = null;
+    private List<TopicTypeBean>list = null;
     private Context mContext;
 
-    public FindIncidentAdapter(Context mContext, List<NearbyBean> list) {
+    public FindIncidentAdapter(Context mContext, List<TopicTypeBean> list) {
         this.mContext = mContext.getApplicationContext();
         this.list = list;
     }

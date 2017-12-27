@@ -43,7 +43,7 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
-        holder.bottom_line.setVisibility(position == list.size() ? View.VISIBLE : View.GONE);
+        holder.bottom_line.setVisibility(position+1 == list.size() ? View.VISIBLE : View.GONE);
 
         Glide.with(context).load(list.get(position).isLikeFlag() ? R.mipmap.heart_icon : R.mipmap.heart_black_icon).into(holder.like_img);
 

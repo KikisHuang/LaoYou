@@ -12,6 +12,7 @@ import java.util.Map;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.NearbyBean;
+import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.listener.FindSonListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.save.SPreferences;
@@ -20,6 +21,8 @@ import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
+import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
@@ -31,20 +34,18 @@ public class FindSonPresenter implements HttpResultListener {
     private FindSonListener listener;
     private boolean RefreshFlag;
     public int page = 0;
-    private List<NearbyBean> Nblist;
 
     public FindSonPresenter(FindSonListener listener) {
         this.listener = listener;
     }
 
     @Override
-    public void onSucceed(String response, int tag) {
+    public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
                 try {
                     JSONArray ar = getJsonAr(response);
-                    if (RefreshFlag)
-                        Nblist = new ArrayList<>();
+                    List<NearbyBean> Nblist = new ArrayList<>();
 
                     if (ar.length() > 0) {
                         for (int i = 0; i < ar.length(); i++) {
@@ -52,17 +53,42 @@ public class FindSonPresenter implements HttpResultListener {
                             Nblist.add(pb);
                         }
 
-                        listener.RefreshRecyclerView(Nblist);
-                    }else if(RefreshFlag)
+                        listener.RefreshNearby(Nblist);
+                    } else if (RefreshFlag)
                         listener.onFailedMsg(gets(R.string.nodata));
-                        else if(!RefreshFlag)
+                    else if (!RefreshFlag)
                         listener.onFailedMsg(gets(R.string.nomore));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 break;
+            case Fields.REQUEST2:
+                try {
+                    JSONArray ar = getJsonAr(response);
+                    List<TopicTypeBean> toppic = new ArrayList<>();
 
+                    if (ar.length() > 0) {
+                        for (int i = 0; i < ar.length(); i++) {
+                            TopicTypeBean ttb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), TopicTypeBean.class);
+                            toppic.add(ttb);
+                        }
+
+                        listener.RefreshNewWonders(toppic);
+
+                    } else if (RefreshFlag)
+                        listener.onFailedMsg(gets(R.string.nodata));
+                    else if (!RefreshFlag)
+                        listener.onFailedMsg(gets(R.string.nomore));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case Fields.REQUEST3:
+                int data = Integer.parseInt(getJsonSring(response));
+                listener.onRefresh();
+                break;
         }
     }
 
@@ -103,7 +129,35 @@ public class FindSonPresenter implements HttpResultListener {
     /**
      * 新事件数据获取;
      */
-    public void getNewIncident() {
+    public void getNewIncident(boolean b) {
+        RefreshFlag = b;
 
+        Map<String, String> map = getKeyMap();
+        map.put("model", String.valueOf(0));
+        map.put("page", String.valueOf(page));
+        map.put("pageSize", String.valueOf(page + Fields.SIZE));
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.GETTOPICTYPEDETAILS);
+
+
+    }
+
+    //界面操作刷新;
+    public void getHottestAndNewestRefresh() {
+        Map<String, String> map = getKeyMap();
+        map.put("model", String.valueOf(0));
+        map.put("page", String.valueOf(0));
+        map.put("pageSize", String.valueOf(page));
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.GETTOPICTYPEDETAILS);
+    }
+
+    /**
+     * 点赞
+     *
+     * @param id
+     */
+    public void LikeChatTheme(String id) {
+        Map<String, String> map = getKeyMap();
+        map.put("chatThemeId", id);
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST3, Interface.URL + Interface.LIKECHATTHEME);
     }
 }

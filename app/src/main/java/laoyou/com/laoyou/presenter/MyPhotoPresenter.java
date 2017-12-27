@@ -40,13 +40,24 @@ public class MyPhotoPresenter implements HttpResultListener, OnCompressListener 
 
     public MyPhotoPresenter(MyPhotoListener listener) {
         this.listener = listener;
-        getPhotoListData();
     }
 
-    public void getPhotoListData() {
+    public void getPhotoListData(String id) {
         Map<String, String> map = getKeyMap();
         map.put("page", String.valueOf(page));
+        if (!id.isEmpty())
+            map.put("toUserId", String.valueOf(id));
+
         map.put("pageSize", String.valueOf(page + 10));
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETPHOTOBYPAGE);
+    }
+    public void RefreshPhotoListData(String id) {
+        Map<String, String> map = getKeyMap();
+        map.put("page", String.valueOf(0));
+        if (!id.isEmpty())
+            map.put("toUserId", String.valueOf(id));
+
+        map.put("pageSize", String.valueOf(page));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETPHOTOBYPAGE);
     }
 
@@ -73,7 +84,11 @@ public class MyPhotoPresenter implements HttpResultListener, OnCompressListener 
                 break;
             case Fields.REQUEST2:
                 page = 0;
-                getPhotoListData();
+                getPhotoListData("");
+                break;
+
+            case Fields.REQUEST3:
+                listener.DeleteSucceed();
                 break;
         }
         Cancle();
@@ -132,5 +147,12 @@ public class MyPhotoPresenter implements HttpResultListener, OnCompressListener 
 
     public void ComPressFile(Context context, ArrayList<String> p, int i) {
         Compress(context, p, this, i);
+    }
+
+    public void DeletePhoto(String s) {
+
+        Map<String, String> map = getKeyMap();
+        map.put("id", s);
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST3, Interface.URL + Interface.DELETEPHOTO);
     }
 }

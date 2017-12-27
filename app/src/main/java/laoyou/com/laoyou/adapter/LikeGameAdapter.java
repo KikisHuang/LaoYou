@@ -9,11 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import java.util.List;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.GameBean;
 import laoyou.com.laoyou.listener.LikeListener;
@@ -58,14 +56,17 @@ public class LikeGameAdapter extends BaseAdapter {
         TextView num_tv = OverallViewHolder.ViewHolder.get(view, R.id.num_tv);
         TextView tv_delete = OverallViewHolder.ViewHolder.get(view, R.id.tv_delete);
 
-        Glide.with(mContext).load(R.drawable.test_head_icon).bitmapTransform(new CenterCrop(mContext), new RoundedCornersTransformation(mContext, 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(game_icon);
+        Glide.with(mContext).load(list.get(position).getImgUrl()).into(game_icon);
+        game_name.setText(list.get(position).getName().isEmpty() ? "" : list.get(position).getInfo());
+        agency_name_tv.setText(list.get(position).getInfo().isEmpty() ? "" : list.get(position).getInfo());
+        num_tv.setText(list.get(position).getInfo().isEmpty() ? "0" : list.get(position).getFollowCount());
 
 
         tv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layout.setStatus(SwipeListLayout.Status.Close, true);
-                listener.onDeleteGame(position);
+                listener.onDeleteGame(position, list.get(position).getId());
             }
         });
 

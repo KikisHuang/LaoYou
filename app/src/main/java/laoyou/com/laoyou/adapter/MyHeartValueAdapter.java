@@ -8,19 +8,22 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.HeartBean;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
 /**
  * Created by lian on 2017/11/18.
  */
 public class MyHeartValueAdapter extends BaseAdapter {
-    private List<String> list = null;
+    private List<HeartBean> list = null;
     private Context mContext;
 
-    public MyHeartValueAdapter(Context mContext, List<String> list) {
+    public MyHeartValueAdapter(Context mContext, List<HeartBean> list) {
         this.mContext = mContext.getApplicationContext();
         this.list = list;
     }
@@ -45,6 +48,9 @@ public class MyHeartValueAdapter extends BaseAdapter {
         TextView nickname_tv = OverallViewHolder.ViewHolder.get(view, R.id.nickname_tv);
         TextView num_tv = OverallViewHolder.ViewHolder.get(view, R.id.num_tv);
 
+        Glide.with(mContext).load(list.get(position).getHeadImg()).into(head_img);
+        nickname_tv.setText(list.get(position).getName());
+        num_tv.setText(list.get(position).getNumber());
 
         return view;
     }

@@ -12,6 +12,8 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.MyCommentAdapter;
 import laoyou.com.laoyou.adapter.MyHeartValueAdapter;
+import laoyou.com.laoyou.bean.CommentBean;
+import laoyou.com.laoyou.bean.HeartBean;
 import laoyou.com.laoyou.listener.HeartValueAndCommentListener;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.presenter.HeartValueAndCommentPresenter;
@@ -32,7 +34,9 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
     private MyCommentAdapter cadapter;
     private MyHeartValueAdapter hadapter;
     private HeartValueAndCommentPresenter hcp;
-    private List<String> list;
+    private List<HeartBean> heartsList;
+    private List<CommentBean> commentList;
+    private boolean isRefresh;
 
     public static CommentFragment setTag(int tag, int flag) {
         CommentFragment f = new CommentFragment();
@@ -58,11 +62,17 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
     private void getData() {
         switch (flag) {
             case 0:
+                if (tag == 0)
+                    hcp.GetMyReceiverdChatMsg();
+                else
+                    hcp.GetMyChatMsg();
                 break;
             case 1:
+                springView.setEnable(false);
                 if (tag == 0)
-                    hcp.GetMyHeartNumber();
-
+                    hcp.GetMyHeartNumber(false);
+                else
+                    hcp.GetMyHeartNumber(true);
                 break;
 
         }
@@ -79,17 +89,15 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
         springView = f(R.id.springView);
         SpringUtils.SpringViewInit(springView, getActivity(), this);
         hcp = new HeartValueAndCommentPresenter(this);
-        list = new ArrayList<>();
-        list.add("");
-        list.add("");
-        list.add("");
+        heartsList = new ArrayList<>();
+        commentList = new ArrayList<>();
         switch (flag) {
             case 0:
-                cadapter = new MyCommentAdapter(getActivity(), list);
+                cadapter = new MyCommentAdapter(getActivity(), commentList);
                 listView.setAdapter(cadapter);
                 break;
             case 1:
-                hadapter = new MyHeartValueAdapter(getActivity(), list);
+                hadapter = new MyHeartValueAdapter(getActivity(), heartsList);
                 listView.setAdapter(hadapter);
                 break;
         }
@@ -104,6 +112,11 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
     public void IsonRefresh(int init) {
         switch (flag) {
             case 0:
+                hcp.page = 0;
+                if (tag == 0)
+                    hcp.GetMyReceiverdChatMsg();
+                else
+                    hcp.GetMyChatMsg();
                 break;
             case 1:
                 break;
@@ -114,6 +127,11 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
     public void IsonLoadmore(int move) {
         switch (flag) {
             case 0:
+                hcp.page += 10;
+                if (tag == 0)
+                    hcp.GetMyReceiverdChatMsg();
+                else
+                    hcp.GetMyChatMsg();
                 break;
             case 1:
                 break;
@@ -128,5 +146,25 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
     @Override
     public void onSucceed() {
 
+    }
+
+    @Override
+    public void onHeartData(List<HeartBean> hb) {
+        heartsList.clear();
+        for (HeartBean h : hb) {
+            heartsList.add(h);
+        }
+        hadapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCommentData(List<CommentBean> comments) {
+        if (isRefresh)
+            commentList.clear();
+
+        for (CommentBean h : comments) {
+            commentList.add(h);
+        }
+        cadapter.notifyDataSetChanged();
     }
 }

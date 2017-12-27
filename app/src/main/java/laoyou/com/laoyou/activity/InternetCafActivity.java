@@ -23,13 +23,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.InternetCafAdapter;
 import laoyou.com.laoyou.bean.CafBean;
@@ -41,6 +39,7 @@ import laoyou.com.laoyou.listener.RequestPermissionType;
 import laoyou.com.laoyou.presenter.InternetCafPresenter;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
+import laoyou.com.laoyou.view.RoundAngleImageView;
 
 import static laoyou.com.laoyou.utils.ClickUtils.isFastDoubleClick;
 import static laoyou.com.laoyou.utils.IntentUtils.goLocationPage;
@@ -154,10 +153,10 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(w, w * 3 / 4);
 
             lp.rightMargin = DeviceUtils.dip2px(this, 10);
-            ImageView im = new ImageView(this);
+            RoundAngleImageView im = new RoundAngleImageView(this);
 
             im.setLayoutParams(lp);
-            Glide.with(this).load(internetBarImgs.get(i).getImgUrl()).bitmapTransform(new CenterCrop(this), new RoundedCornersTransformation(this, 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(im);
+            Glide.with(this).load(internetBarImgs.get(i).getImgUrl()).into(im);
 
             final int finalI = i;
             im.setOnClickListener(new View.OnClickListener() {

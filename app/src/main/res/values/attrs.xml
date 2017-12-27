@@ -80,4 +80,10 @@
         <attr format="reference" name="starFill"/>
     </declare-styleable>
 
+
+    <declare-styleable name="RoundImageView">
+        <attr name="x_radius" format="dimension"/>
+        <attr name="y_radius" format="dimension"/>
+    </declare-styleable>
+
 </resources>

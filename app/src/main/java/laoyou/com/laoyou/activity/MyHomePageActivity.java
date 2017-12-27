@@ -38,6 +38,7 @@ import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.fragment.MyFragment.SettingInstance;
 import static laoyou.com.laoyou.utils.DateUtils.getTime;
 import static laoyou.com.laoyou.utils.Fields.getAdministrative;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goCertificationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLikeGamePage;
 import static laoyou.com.laoyou.utils.PhotoUtils.getMULTIPLEPhoto;
@@ -53,8 +54,8 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
     private ImageView background_img, back_img;
     private RelativeLayout title_layout;
     private CircleImageView head_img;
-    private TextView sex_tv, region_tv, attestation_state_tv, like_game_tv, hometown_tv, height_tv, birthday_tv, love_state_tv, save_tv;
-    private LinearLayout go_add_layout, attestation_layout, nickname_layout, signature_layout, like_game_layout;
+    private TextView sex_tv, region_tv, attestation_state_tv, hometown_tv, height_tv, birthday_tv, love_state_tv, save_tv,like_game_tv;
+    private LinearLayout go_add_layout, attestation_layout, nickname_layout, signature_layout, game_list_layout;
     private ObservableScrollView scrollView;
     private int imageHeight;
     private MyHomePagePresenter mp;
@@ -92,10 +93,10 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
         head_img.setOnClickListener(this);
         background_img.setOnClickListener(this);
         attestation_layout.setOnClickListener(this);
-        like_game_layout.setOnClickListener(this);
 
         nickname_change.setOnClickListener(this);
         signature_change.setOnClickListener(this);
+        like_game_tv.setOnClickListener(this);
     }
 
     @Override
@@ -111,16 +112,16 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
         sex_tv = f(R.id.sex_tv);
         nickname_change = f(R.id.nickname_change);
         signature_change = f(R.id.signature_change);
+        game_list_layout = f(R.id.game_list_layout);
+        like_game_tv = f(R.id.like_game_tv);
         region_tv = f(R.id.region_tv);
         save_tv = f(R.id.save_tv);
         signature_ed = f(R.id.signature_ed);
         attestation_state_tv = f(R.id.attestation_state_tv);
-        like_game_tv = f(R.id.like_game_tv);
         go_add_layout = f(R.id.go_add_layout);
         attestation_layout = f(R.id.attestation_layout);
         scrollView = f(R.id.scrollView);
         back_img = f(R.id.back_img);
-        like_game_layout = f(R.id.like_game_layout);
         mp = new MyHomePagePresenter(this);
         hometown_tv = f(R.id.hometown_tv);
         height_tv = f(R.id.height_tv);
@@ -173,7 +174,7 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
     public void onShowUserInfo(UserInfoBean ub) {
         Glide.with(MyHomePageActivity.this).load(ub.getHeadImgUrl()).into(head_img);
 
-        Glide.with(MyHomePageActivity.this).load(ub.getBackgroundUrl() != null && !ub.getBackgroundUrl().isEmpty() ? ub.getBackgroundUrl() : Fields.Catalina).centerCrop().into(background_img);
+        Glide.with(MyHomePageActivity.this).load(ub.getBackgroundUrl() != null && !ub.getBackgroundUrl().isEmpty() ? ub.getBackgroundUrl() : Fields.Catalina).apply(getGlideOptions()).into(background_img);
 
         nickname_ed.setText(ub.getName());
         sex = ub.getSex();
@@ -258,12 +259,19 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
     public void onComPressSucceed(File f) {
         if (isHead) {
             headFile = f;
-            Glide.with(MyHomePageActivity.this).load(f).centerCrop().into(head_img);
+            Glide.with(MyHomePageActivity.this).load(f).apply(getGlideOptions()).into(head_img);
         } else {
             backFile = f;
-            Glide.with(MyHomePageActivity.this).load(f).centerCrop().into(background_img);
+            Glide.with(MyHomePageActivity.this).load(f).apply(getGlideOptions()).into(background_img);
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -364,13 +372,16 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
                     ToastUtil.toast2_bottom(this, gets(R.string.over_attes));
                 break;
             case R.id.like_game_layout:
-                goLikeGamePage(this);
+                goLikeGamePage(this, "");
                 break;
             case R.id.nickname_change:
                 showSoftInputFromWindow(nickname_ed);
                 break;
             case R.id.signature_change:
                 showSoftInputFromWindow(signature_ed);
+                break;
+            case R.id.like_game_tv:
+                goLikeGamePage(this, "");
                 break;
         }
     }

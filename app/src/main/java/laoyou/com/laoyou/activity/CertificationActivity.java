@@ -27,6 +27,7 @@ import top.zibin.luban.OnCompressListener;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.DeviceUtils.getIMEI;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IPUtils.isWifi;
 import static laoyou.com.laoyou.utils.PhotoUtils.getMULTIPLEPhotoTag;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -170,15 +171,15 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
                         switch (result) {
                             case Fields.ACRESULET1:
                                 FrontFile = file;
-                                Glide.with(CertificationActivity.this).load(file).centerCrop().into(front_img);
+                                Glide.with(CertificationActivity.this).load(file).apply(getGlideOptions()).into(front_img);
                                 break;
                             case Fields.ACRESULET2:
                                 TailFile = file;
-                                Glide.with(CertificationActivity.this).load(file).centerCrop().into(tail_img);
+                                Glide.with(CertificationActivity.this).load(file).apply(getGlideOptions()).into(tail_img);
                                 break;
                             case Fields.ACRESULET3:
                                 HandFile = file;
-                                Glide.with(CertificationActivity.this).load(file).centerCrop().into(hand_img);
+                                Glide.with(CertificationActivity.this).load(file).apply(getGlideOptions()).into(hand_img);
                                 break;
                         }
 

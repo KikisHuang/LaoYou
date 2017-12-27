@@ -108,6 +108,8 @@ public class LoginPresenter implements HttpResultListener {
         switch (tag) {
             case Fields.REQUEST1:
                 try {
+                    Log.i(TAG, "server key === " + getJsonSring(response));
+
                     SPreferences.saveUserToken(getJsonSring(response));
                     //REQUEST2
                     getImIdentifier(this);

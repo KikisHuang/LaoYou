@@ -7,4 +7,6 @@ public interface EdittextListener {
     void onQuery(String s);
 
     void onClear();
+
+    void onContentChange(String s);
 }

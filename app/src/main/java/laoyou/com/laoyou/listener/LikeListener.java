@@ -5,9 +5,7 @@ package laoyou.com.laoyou.listener;
  */
 public interface LikeListener {
 
-    void onSucceed();
-
     void onFailedMsg(String msg);
 
-    void onDeleteGame(int pos);
+    void onDeleteGame(int pos, String id);
 }

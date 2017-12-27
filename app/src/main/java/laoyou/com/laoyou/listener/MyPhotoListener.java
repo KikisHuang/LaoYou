@@ -22,4 +22,6 @@ public interface MyPhotoListener {
     void onDeletePhoto(String url);
 
     void onPhotoList(List<PhotoBean> list);
+
+    void DeleteSucceed();
 }

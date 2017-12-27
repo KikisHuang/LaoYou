@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:padding="10dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_head_img"
         android:layout_width="65dp"
         android:layout_height="65dp"
@@ -31,6 +31,7 @@
                 android:text="小覃"
                 android:ellipsize="end"
                 android:maxEms="15"
+                android:layout_marginTop="3dp"
                 android:layout_gravity="center"
                 android:singleLine="true"
                 android:textColor="@color/black0"
@@ -51,7 +52,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -65,14 +67,17 @@
                 android:textColor="@color/white"
                 android:textSize="7dp" />
 
-            <ImageView
+            <TextView
                 android:id="@+id/sex_img"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/pink_corners"
-                android:padding="2dp"
-                android:src="@mipmap/woman_icon" />
+                android:textColor="@color/white"
+                android:text="女"
+                android:gravity="center"
+                android:textSize="7dp"
+                 />
 
             <LinearLayout
                 android:id="@+id/tag_layout"
@@ -110,11 +115,11 @@
             android:id="@+id/content_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxEms="20"
             android:singleLine="true"
-            android:text=""
+            android:text="艾欧尼亚队友快来"
             android:textColor="@color/content12"
             android:textSize="11dp" />
 

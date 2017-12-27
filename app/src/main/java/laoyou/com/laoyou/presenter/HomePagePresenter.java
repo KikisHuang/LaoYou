@@ -39,16 +39,32 @@ public class HomePagePresenter implements HttpResultListener {
 
     public HomePagePresenter(HomePageListener listener) {
         this.listener = listener;
-
     }
+
 
     /**
      * 获取他人的信息;
      */
-    public void getOthersDetails(String id) {
+    public void getOthersDetails(String id, boolean isTencent) {
+        getOthersUseDetails(id, isTencent);
         getMyHeartNum(id);
         getAttentGames(id);
+        getMyPhotoList(id);
     }
+
+    /**
+     * 获取他人的详情;
+     */
+    public void getOthersUseDetails(String id, boolean isTencent) {
+        Map<String, String> map = getKeyMap();
+        if (isTencent)
+            map.put("cloudTencentAccount", id);
+        else
+            map.put("userId", id);
+
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETOTHERSDETAILS);
+    }
+
 
     /**
      * 获取我的个人信息;
@@ -70,11 +86,12 @@ public class HomePagePresenter implements HttpResultListener {
 
         Map<String, String> map = getKeyMap();
         if (str != null)
-            map.put("userId", str);
+            map.put("toUserId", str);
 
         map.put("page", String.valueOf(0));
         map.put("pageSize", String.valueOf(10));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST5, Interface.URL + Interface.GETPHOTOBYPAGE);
+
     }
 
     /**
@@ -107,7 +124,7 @@ public class HomePagePresenter implements HttpResultListener {
 
 
     /**
-     * 获取详情、查询实名;
+     * 获取我的详情、查询实名;
      */
     public void getUseDetails() {
         Map<String, String> map = getKeyMap();
@@ -177,6 +194,10 @@ public class HomePagePresenter implements HttpResultListener {
                 }
                 listener.onPhotoList(photos);
                 break;
+            case Fields.REQUEST6:
+                listener.onFailedMSg(gets(R.string.give_heart_succ));
+                break;
+
         }
     }
 
@@ -193,5 +214,17 @@ public class HomePagePresenter implements HttpResultListener {
     @Override
     public void onFailed(String response, int code, int tag) {
         listener.onFailedMSg(response);
+    }
+
+    public void GiveHeart(String id) {
+        if (!id.isEmpty()) {
+            Map<String, String> map = getKeyMap();
+            map.put("toUserId", id);
+            httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GIVEHEARTNUMBER);
+        }
+    }
+
+    public void getMyHeart() {
+
     }
 }

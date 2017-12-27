@@ -3,6 +3,9 @@ package laoyou.com.laoyou.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
+
+import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +32,14 @@ import laoyou.com.laoyou.activity.MyHomePageActivity;
 import laoyou.com.laoyou.activity.MyNoticeActivity;
 import laoyou.com.laoyou.activity.MyPhotoActivity;
 import laoyou.com.laoyou.activity.NearbyFlashChatActivity;
+import laoyou.com.laoyou.activity.OthersDetailsPageActivity;
 import laoyou.com.laoyou.activity.OutSideActivity;
 import laoyou.com.laoyou.activity.OverInfoActivity;
 import laoyou.com.laoyou.activity.ParticipationActivity;
 import laoyou.com.laoyou.activity.PhotoViewerActivity;
 import laoyou.com.laoyou.activity.QueryActivity;
 import laoyou.com.laoyou.activity.RegisterActivity;
+import laoyou.com.laoyou.activity.ReleaseTopicActivity;
 import laoyou.com.laoyou.activity.SendPhoneCodeActivity;
 import laoyou.com.laoyou.activity.SettingActivity;
 import laoyou.com.laoyou.activity.TopicCircleActivity;
@@ -143,6 +148,19 @@ public class IntentUtils {
     }
 
     /**
+     * 发布话题圈动态页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goReleaseTopicPage(Context context, List<LocalMedia> photo, List<LocalMedia> video) {
+
+        Intent intent = new Intent(context, ReleaseTopicActivity.class);
+        intent.putParcelableArrayListExtra("Release_photo", (ArrayList<? extends Parcelable>) photo);
+        intent.putParcelableArrayListExtra("Release_video", (ArrayList<? extends Parcelable>) video);
+        startPage(context, intent);
+    }
+
+    /**
      * 话题圈类型详情页面;
      *
      * @param context        上下文;
@@ -161,9 +179,9 @@ public class IntentUtils {
         intent.putExtra("Topic_Type_imgurl", imgurl != null && !imgurl.isEmpty() ? imgurl : "");
         startPage(context, intent);
     }
+
     /**
      * 我关注的话题圈页面;
-     *
      */
     public static void goMyNoticesPage(Context context) {
         Intent intent = new Intent(context, MyNoticeActivity.class);
@@ -175,9 +193,11 @@ public class IntentUtils {
      *
      * @param context 上下文;
      */
-    public static void goMyPhotoPage(Context context) {
+    public static void goMyPhotoPage(Context context, boolean isMe, String id) {
 
         Intent intent = new Intent(context, MyPhotoActivity.class);
+        intent.putExtra("Photo_IsMe", isMe);
+        intent.putExtra("Photo_id", id);
         startPage(context, intent);
     }
 
@@ -274,8 +294,9 @@ public class IntentUtils {
      *
      * @param context 上下文;
      */
-    public static void goLikeGamePage(Context context) {
+    public static void goLikeGamePage(Context context, String id) {
         Intent intent = new Intent(context, LikeGameActivity.class);
+        intent.putExtra("Like_games_id", id);
         startPage(context, intent);
     }
 
@@ -433,6 +454,18 @@ public class IntentUtils {
     }
 
     /**
+     * 他人主页页面;
+     *
+     * @param context 上下文;
+     * @param id
+     */
+    public static void goOthersDetailsPage(Context context, String id) {
+        Intent intent = new Intent(context, OthersDetailsPageActivity.class);
+        intent.putExtra("Others_id", id);
+        startPage(context, intent);
+    }
+
+    /**
      * 个人主页页面;
      *
      * @param context 上下文;
@@ -449,13 +482,12 @@ public class IntentUtils {
      *
      * @param context 上下文;
      * @param tag     标识, 1、参与的人  2、点赞列表 ;
-     *
      */
-    public static void goParticipationPage(Context context, int tag,String id) {
+    public static void goParticipationPage(Context context, int tag, String id) {
 
         Intent intent = new Intent(context, ParticipationActivity.class);
         intent.putExtra("List_Tag", tag + "");
-        intent.putExtra("List_id", id );
+        intent.putExtra("List_id", id);
         startPage(context, intent);
     }
 

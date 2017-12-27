@@ -38,12 +38,14 @@
                 android:layout_gravity="center|right"
                 android:src="@mipmap/add_blue_icon" />
         </LinearLayout>
+
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@null"
-            android:scrollbars="none"
-            ></ListView>
+            android:layout_weight="1"
+            android:scrollbars="none"></ListView>
+
     </LinearLayout>
 </LinearLayout>

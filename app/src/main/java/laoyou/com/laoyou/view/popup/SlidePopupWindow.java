@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.dialog.MyAlertDialog;
@@ -103,7 +102,7 @@ public class SlidePopupWindow implements View.OnClickListener {
         layout_2 = (LinearLayout) contentView.findViewById(R.id.layout_2);
         layout_3 = (LinearLayout) contentView.findViewById(R.id.layout_3);
 
-        Glide.with(mContext).load(info.getHeadImgUrl()).bitmapTransform(new CropCircleTransformation(mContext)).into(user_icon);
+        Glide.with(mContext).load(info.getHeadImgUrl()).into(user_icon);
 
         user_name.setText(info.getName());
     }

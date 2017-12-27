@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.model.UserInfo;
@@ -345,7 +344,7 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
                         // TODO 压缩成功后调用，返回压缩后的图片文件
                         Log.i(TAG, "onSuccess" + file.getAbsolutePath());
                         GroupFile = file;
-                        Glide.with(GroupProfileActivity.this).load(file).bitmapTransform(new CropCircleTransformation(GroupProfileActivity.this)).into(group_head);
+                        Glide.with(GroupProfileActivity.this).load(file).into(group_head);
                         UpGroupHead();
                     }
 

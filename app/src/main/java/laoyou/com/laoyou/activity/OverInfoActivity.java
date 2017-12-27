@@ -10,7 +10,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.dialog.ActionSheetDialog;
 import laoyou.com.laoyou.listener.OverInfoListener;
@@ -172,7 +171,7 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
     @Override
     public void setHeadImgAndName(String imgPath, String name) {
         if (!imgPath.isEmpty() && !name.isEmpty()) {
-            Glide.with(OverInfoActivity.this).load(imgPath).bitmapTransform(new CropCircleTransformation(OverInfoActivity.this)).into(head_img);
+            Glide.with(OverInfoActivity.this).load(imgPath).into(head_img);
             new getImageCacheAsyncTask(getApplicationContext(), this).execute(imgPath);
 
             nickname_ed.setText(name);
@@ -204,6 +203,6 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
     @Override
     public void onCompressSucceed(File f) {
         headFile = f;
-        Glide.with(OverInfoActivity.this).load(f).bitmapTransform(new CropCircleTransformation(OverInfoActivity.this)).into(head_img);
+        Glide.with(OverInfoActivity.this).load(f).into(head_img);
     }
 }

@@ -9,15 +9,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 
 import java.util.List;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.PhotoBean;
 import laoyou.com.laoyou.listener.MyPhotoListener;
 import laoyou.com.laoyou.utils.DeviceUtils;
+
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 
 /**
  * Created by lian on 2017/11/15.
@@ -26,10 +26,12 @@ public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.MyViewHo
     private Context context;
     private List<PhotoBean> list;
     private MyPhotoListener listener;
+    private boolean IsMe;
 
-    public MyPhotoAdapter(Context context, List<PhotoBean> list, MyPhotoListener listener) {
+    public MyPhotoAdapter(Context context, List<PhotoBean> list, MyPhotoListener listener, boolean photo_IsMe) {
         this.context = context;
         this.list = list;
+        this.IsMe = photo_IsMe;
         this.listener = listener;
     }
 
@@ -53,17 +55,24 @@ public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.MyViewHo
 //        }
 
         holder.photo_img.setLayoutParams(lp);
+        if (IsMe) {
+            if (position == 0 && list.get(0) == null)
+                Glide.with(context).load(R.mipmap.photo_add_icon).apply(getGlideOptions()).into(holder.photo_img);
+            else
+                Glide.with(context).load(list.get(position).getUrl()).into(holder.photo_img);
+        } else
+            Glide.with(context).load(list.get(position).getUrl()).into(holder.photo_img);
 
-        if (position == 0 && list.get(0) == null)
-            Glide.with(context).load(R.mipmap.photo_add_icon).centerCrop().into(holder.photo_img);
-        else
-            Glide.with(context).load(list.get(position).getUrl()).bitmapTransform(new CenterCrop(context), new RoundedCornersTransformation(context, 15, 0, RoundedCornersTransformation.CornerType.ALL)).into(holder.photo_img);
+
         holder.photo_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (position == 0)
-                    listener.onAddPhoto();
-                else
+                if (IsMe) {
+                    if (position == 0)
+                        listener.onAddPhoto();
+                    else
+                        listener.onItemClick(position);
+                } else
                     listener.onItemClick(position);
             }
         });
