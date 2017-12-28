@@ -2,6 +2,7 @@ package laoyou.com.laoyou.listener;
 
 import java.util.List;
 
+import laoyou.com.laoyou.bean.ChatMessages;
 import laoyou.com.laoyou.bean.LikeListBean;
 import laoyou.com.laoyou.bean.TopicCommentBean;
 
@@ -25,4 +26,6 @@ public interface TopicCommentListener {
     void onLikeNum(String string);
 
     void onDeleteSucceed();
+
+    void onCommentInfo(List<ChatMessages> cm);
 }

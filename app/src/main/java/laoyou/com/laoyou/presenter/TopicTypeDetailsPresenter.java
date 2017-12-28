@@ -3,6 +3,7 @@ package laoyou.com.laoyou.presenter;
 import android.support.design.widget.AppBarLayout;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONArray;
@@ -33,9 +34,13 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
  * Created by lian on 2017/12/19.
  */
 public class TopicTypeDetailsPresenter extends AppBarStateChangeListener implements HttpResultListener {
+
     private TopicTypeDetailsListener listener;
+
     public int page = 0;
+
     private boolean isRefresh;
+
     private List<TopicTypeBean> list;
 
     public TopicTypeDetailsPresenter(TopicTypeDetailsListener listener) {
@@ -65,6 +70,37 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
                 if (ar.length() > 0) {
                     for (int i = 0; i < ar.length(); i++) {
                         TopicTypeBean tb = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), TopicTypeBean.class);
+
+                        if (tb.getReChatMessages() != null) {
+//                                JSONArray tta = new JSONArray("[" + ttb.getReChatMessages() + "]");
+                            JSONArray tta = new JSONArray(tb.getReChatMessages());
+
+                            Gson gson = new Gson();
+                            String[][] ss = gson.fromJson(String.valueOf(tta), new TypeToken<String[][]>() {
+                            }.getType());
+                            List<List<String>> outlist = new ArrayList<>();
+                            for (String[] strings : ss) {
+                                List<String> inlist = null;
+                                for (String string : strings) {
+                                    if (inlist == null)
+                                        inlist = new ArrayList<>();
+
+                                    inlist.add(string);
+                                }
+                                outlist.add(inlist);
+                            }
+                            tb.setComments(outlist);
+                        }
+                        if (tb.getImgs() != null) {
+                            String b[] = tb.getImgs().split("[,]");
+                            if (b != null && b.length > 0) {
+                                List<String> list = new ArrayList<>();
+                                for (String str : b) {
+                                    list.add(str);
+                                }
+                                tb.setPhotos(list);
+                            }
+                        }
                         list.add(tb);
                     }
                     listener.onShowDetailsInfo(list);

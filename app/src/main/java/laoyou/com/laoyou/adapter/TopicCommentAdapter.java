@@ -57,31 +57,25 @@ public class TopicCommentAdapter extends BaseAdapter {
         TextView time_tv = OverallViewHolder.ViewHolder.get(view, R.id.time_tv);
         TextView no_data_tv = OverallViewHolder.ViewHolder.get(view, R.id.no_data_tv);
 
-        Glide.with(mContext).load(list.get(position).getMcUserByUserId().getHeadImgUrl()).into(head_img);
-        nickname_tv.setText(list.get(position).getMcUserByUserId().getName());
+        Glide.with(mContext).load(list.get(position).getHasImg()).into(head_img);
+        nickname_tv.setText(list.get(position).getUserName());
         content_tv.setText(list.get(position).getMessageContent());
-        time_tv.setText(getMyDate(list.get(position).getModifyTime()));
+        time_tv.setText(getMyDate(list.get(position).getCreateTime()));
         head_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                listener.GoHomePage(list.get(position).getMcUserByUserId().getId());
+                listener.GoHomePage(list.get(position).getId());
             }
         });
-        reply_tv.setVisibility(View.GONE);
-        no_data_tv.setVisibility(position + 1 == list.size() ? View.VISIBLE : View.GONE);
+        if (list.get(position).getReUser() != null) {
+            reply_tv.setVisibility(View.VISIBLE);
+            reply_tv.setText(gets(R.string.reply) + " " + list.get(position).getReUser() + "：");
+        } else
+            reply_tv.setVisibility(View.GONE);
 
-        switch (list.get(position).getMessageTypeFlag()) {
-            case 0:
-                break;
-            case 100:
-                if (list.get(position).getMcChatMessage() != null) {
-                    reply_tv.setVisibility(View.VISIBLE);
-                    reply_tv.setText(gets(R.string.reply) + " " + list.get(position).getMcChatMessage().getMcUserByUserId().getName() + "：");
-                }
-                break;
-            default:
-        }
+
+//        no_data_tv.setVisibility(position + 1 == list.size() ? View.VISIBLE : View.GONE);
 
 
         return view;

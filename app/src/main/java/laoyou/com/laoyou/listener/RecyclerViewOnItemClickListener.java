@@ -1,11 +1,13 @@
 package laoyou.com.laoyou.listener;
 
+import java.util.List;
+
 /**
  * Created by lian on 2017/12/20.
  */
 public interface RecyclerViewOnItemClickListener {
 
-    void RcOnItemClick(int pos);
+    void RcOnItemClick(int pos, List<String> imgs);
 
     void LikeClick(String id);
 
@@ -17,5 +19,5 @@ public interface RecyclerViewOnItemClickListener {
      * @param name   @人名字;
      * @param name   评论内容;
      */
-    void GoCommentPage(String id, String userId, String name,String content);
+    void GoCommentPage(String id, String userId, String name, String content);
 }

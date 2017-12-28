@@ -26,6 +26,7 @@ import laoyou.com.laoyou.view.FullyLinearLayoutManager;
 import static laoyou.com.laoyou.activity.TopicTypeDetailsActivity.getTopicTypeInstance;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
+import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goTopicCommentDetailsPage;
 import static laoyou.com.laoyou.utils.SynUtils.getTAG;
 
@@ -237,8 +238,8 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
 
 
     @Override
-    public void RcOnItemClick(int pos) {
-
+    public void RcOnItemClick(int pos, List<String> list) {
+        goPhotoViewerPage(getActivity(),list,pos,1);
     }
 
     @Override
@@ -253,7 +254,7 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
     }
 
     @Override
-    public void GoCommentPage(String id, String userId, String name,String content) {
-        goTopicCommentDetailsPage(getActivity(), id, userId, name,content);
+    public void GoCommentPage(String id, String userId, String name, String content) {
+        goTopicCommentDetailsPage(getActivity(), id, userId, name, content);
     }
 }

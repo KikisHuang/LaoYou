@@ -435,5 +435,7 @@
     <string name="add_succ">添加成功</string>
     <string name="already_game">已经添加过了该游戏</string>
     <string name="give_heart_succ">赠送心动值成功</string>
+    <string name="cannot_send_null_content">不能发布空内容！！</string>
+    <string name="issue_succ">发布成功！</string>
 
 </resources>

@@ -280,5 +280,13 @@ public class Interface {
      * 删除个人照片接口;
      */
     public static final String DELETEPHOTO = "chat/delete/photo.app";
+    /**
+     * 发表话题圈话题 不传图片与视频类型是0,传了图片类型是1(强制清空视频),如果没传图片传了视频类型是2接口;
+     */
+    public static final String CHATTHEME = "chat/add/chatTheme.app";
+    /**
+     * 获取话题圈评论 接口;
+     */
+    public static final String GECHATMESSAGEBYPAGE = "chat/select/geChatMessageByPage.app";
 
 }

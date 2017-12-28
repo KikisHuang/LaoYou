@@ -53,16 +53,18 @@ public class CustomImageView extends ImageView {
 
     @Override
     public void onAttachedToWindow() {
-        isAttachedToWindow = true;
-        setImageUrl(url);
+        if (!isAttachedToWindow) {
+            isAttachedToWindow = true;
+            setImageUrl(url);
+        }
         super.onAttachedToWindow();
     }
 
     @Override
     public void onDetachedFromWindow() {
-        Glide.with(getContext()).load(url).into(this);
-        isAttachedToWindow = false;
-        setImageBitmap(null);
+//        Glide.with(getContext()).load(url).into(this);
+//        isAttachedToWindow = false;
+//        setImageBitmap(null);
         super.onDetachedFromWindow();
     }
 
@@ -72,7 +74,6 @@ public class CustomImageView extends ImageView {
             if (isAttachedToWindow) {
 //                Picasso.with(getContext()).load(url).placeholder(new ColorDrawable(Color.parseColor("#f5f5f5"))).into(this);
                 Glide.with(getContext()).load(url).into(this);
-
             }
         }
     }

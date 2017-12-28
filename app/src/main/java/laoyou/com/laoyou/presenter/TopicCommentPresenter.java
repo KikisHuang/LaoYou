@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.ChatMessages;
 import laoyou.com.laoyou.bean.LikeListBean;
 import laoyou.com.laoyou.bean.TopicCommentBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
@@ -39,6 +40,8 @@ public class TopicCommentPresenter implements HttpResultListener {
     public TopicCommentPresenter(TopicCommentListener listener) {
         this.listener = listener;
     }
+
+    public int page = 0;
 
     /**
      * 获取点赞状态;
@@ -87,6 +90,17 @@ public class TopicCommentPresenter implements HttpResultListener {
             case Fields.REQUEST2:
                 JSONObject ob = getJsonOb(response);
                 TopicCommentBean tcb = new Gson().fromJson(String.valueOf(ob), TopicCommentBean.class);
+
+                if (tcb.getImgs() != null) {
+                    String b[] = tcb.getImgs().split("[,]");
+                    if (b != null && b.length > 0) {
+                        List<String> list = new ArrayList<>();
+                        for (String str : b) {
+                            list.add(str);
+                        }
+                        tcb.setPhotos(list);
+                    }
+                }
                 listener.onThemeDetails(tcb);
 
                 break;
@@ -114,6 +128,16 @@ public class TopicCommentPresenter implements HttpResultListener {
                 break;
             case Fields.REQUEST6:
                 listener.onDeleteSucceed();
+                break;
+
+            case Fields.ACRESULET5:
+                JSONArray info = getJsonAr(response);
+                List<ChatMessages> list = new ArrayList<>();
+                for (int i = 0; i < info.length(); i++) {
+                    ChatMessages cm = new Gson().fromJson(String.valueOf(info.optJSONObject(i)), ChatMessages.class);
+                    list.add(cm);
+                }
+                listener.onCommentInfo(list);
                 break;
         }
     }
@@ -190,5 +214,18 @@ public class TopicCommentPresenter implements HttpResultListener {
         Map<String, String> map = getKeyMap();
         map.put("id", id);
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.DELETETCHATMESSAGE);
+    }
+
+    /**
+     * 获取我的评论;
+     *
+     * @param id
+     */
+    public void getComment(String id) {
+        Map<String, String> map = getKeyMap();
+        map.put("chatThemeId", id);
+        map.put("page", String.valueOf(page));
+        map.put("pageSize", String.valueOf(page + 10));
+        httpUtils.OkHttpsGet(map, this, Fields.ACRESULET5, Interface.URL + Interface.GECHATMESSAGEBYPAGE);
     }
 }

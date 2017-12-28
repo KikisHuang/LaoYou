@@ -1,7 +1,6 @@
 package laoyou.com.laoyou.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,8 @@ import android.widget.ImageView;
 
 import java.util.List;
 
+import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
+import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.ScreenTools;
 
 /**
@@ -24,6 +25,7 @@ public class NineGridlayout extends ViewGroup {
     private int rows;//
     private List listData;
     private int totalWidth;
+    private RecyclerViewOnItemClickListener listener;
 
     public NineGridlayout(Context context) {
         super(context);
@@ -51,6 +53,27 @@ public class NineGridlayout extends ViewGroup {
         int singleWidth = (totalWidth - gap * (3 - 1)) / 3;
 
         int singleHeight = singleWidth;
+
+        switch (childrenCount) {
+            case 1:
+                singleWidth = (int) (DeviceUtils.getWindowWidth(getContext()) * 1 / 1.2);
+                singleHeight = (int) (singleWidth * 0.8 / 1);
+                break;
+            case 2:
+                singleWidth = (int) (DeviceUtils.getWindowWidth(getContext()) * 1 / 2.3);
+                singleHeight = singleWidth;
+                break;
+            case 4:
+                singleWidth = (int) (DeviceUtils.getWindowWidth(getContext()) * 1 / 2.3);
+                singleHeight = singleWidth;
+                break;
+            default:
+                singleWidth = (int) (DeviceUtils.getWindowWidth(getContext()) * 1 / 3.5);
+                singleHeight = singleWidth;
+                break;
+
+        }
+
 
         //根据子view数量确定高度
         ViewGroup.LayoutParams params = getLayoutParams();
@@ -94,6 +117,10 @@ public class NineGridlayout extends ViewGroup {
         this.gap = gap;
     }
 
+    public void setItemClickListener(RecyclerViewOnItemClickListener listener) {
+        this.listener = listener;
+    }
+
 
     public void setImagesData(List<String> lists) {
         if (lists == null || lists.isEmpty()) {
@@ -105,7 +132,7 @@ public class NineGridlayout extends ViewGroup {
         if (listData == null) {
             int i = 0;
             while (i < lists.size()) {
-                CustomImageView iv = generateImageView();
+                CustomImageView iv = generateImageView(i);
                 addView(iv, generateDefaultLayoutParams());
                 i++;
             }
@@ -116,7 +143,7 @@ public class NineGridlayout extends ViewGroup {
                 removeViews(newViewCount - 1, oldViewCount - newViewCount);
             } else if (oldViewCount < newViewCount) {
                 for (int i = 0; i < newViewCount - oldViewCount; i++) {
-                    CustomImageView iv = generateImageView();
+                    CustomImageView iv = generateImageView(i);
                     addView(iv, generateDefaultLayoutParams());
                 }
             }
@@ -143,12 +170,15 @@ public class NineGridlayout extends ViewGroup {
      * @param length
      */
     private void generateChildrenLayout(int length) {
-        if (length <= 1) {
+        if (length == 1) {
             rows = 1;
             columns = length;
-        } else if (length <= 2) {
+        } else if (length == 2) {
             rows = 1;
             columns = length;
+        } else if (length == 3) {
+            rows = 1;
+            columns = 3;
         } else if (length <= 6) {
             rows = 2;
             columns = 3;
@@ -174,16 +204,17 @@ public class NineGridlayout extends ViewGroup {
 //        }
     }
 
-    private CustomImageView generateImageView() {
+    private CustomImageView generateImageView(final int i) {
         CustomImageView iv = new CustomImageView(getContext());
         iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
         iv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (listData.size() > 0 && listener != null)
+                    listener.RcOnItemClick(i, listData);
             }
         });
-        iv.setBackgroundColor(Color.parseColor("#f5f5f5"));
+//        iv.setBackgroundColor(Color.parseColor("#f5f5f5"));
         return iv;
     }
 }

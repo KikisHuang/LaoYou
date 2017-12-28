@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -18,7 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.liaoinstan.springview.widget.SpringView;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.listener.TopicCommentListener;
 import laoyou.com.laoyou.presenter.TopicCommentPresenter;
 import laoyou.com.laoyou.save.SPreferences;
-import laoyou.com.laoyou.utils.SpringUtils;
+import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.HandleDataListView;
 import laoyou.com.laoyou.view.MinheightGridView;
@@ -47,6 +48,7 @@ import static laoyou.com.laoyou.utils.AnimationUtil.TitleZoomAnima;
 import static laoyou.com.laoyou.utils.DateUtils.getMyDate;
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goParticipationPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
@@ -73,7 +75,6 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     private CircleImageView user_head_img;
     private TopicCommentAdapter adapter;
     private List<ChatMessages> list;
-    private SpringView springView;
     private boolean isRefresh = true;
     private String content;
     private int pos = -1;
@@ -98,9 +99,6 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         listView = f(R.id.listView);
-        springView = f(R.id.springView);
-        SpringUtils.SpringViewInit(springView, this, this);
-        springView.setEnable(false);
         like_icon = f(R.id.like_icon);
         comment_ed = f(R.id.comment_ed);
         send_comment_tv = f(R.id.send_comment_tv);
@@ -145,6 +143,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     protected void initData() {
         tp.getTopicDetails(id);
         tp.getLikeStatus(id);
+        tp.getComment(id);
     }
 
     @Override
@@ -206,37 +205,40 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
      * @param tcb
      */
     @Override
-    public void onThemeDetails(TopicCommentBean tcb) {
+    public void onThemeDetails(final TopicCommentBean tcb) {
 
-        Glide.with(this).load(tcb.getMcUser().getHeadImgUrl()).into(user_head_img);
-        user_name.setText(tcb.getMcUser().getName());
-        type_name.setText(tcb.getMcChatType().getName());
-
+//        Glide.with(this).load(tcb.getHeadImgUrl()).into(user_head_img);
+//        user_name.setText(tcb.getUserName());
+//        type_name.setText(tcb.getChatTypeName());
         time_tv.setText(getMyDate(tcb.getCreateTime()));
+
         content_tv.setText(tcb.getMessageContent() == null || tcb.getMessageContent().isEmpty() ? "" : tcb.getMessageContent());
         content_tv.setVisibility(tcb.getMessageContent() == null || tcb.getMessageContent().isEmpty() ? View.GONE : View.VISIBLE);
 
         like_num_tv.setText(String.valueOf(tcb.getLikeCount()) + "赞");
-        comment_num_tv.setText(tcb.getCommentsCount() + "条评论");
+        comment_num_tv.setText(tcb.getReplyCount() + "条评论");
 
         if (isRefresh)
             list.clear();
-        for (int i = 0; i < tcb.getChatMessages().size(); i++) {
-            if (!userId.isEmpty() && !name.isEmpty())
-                if (tcb.getChatMessages().get(i).getMessageContent().equals(content) && userId.equals(tcb.getChatMessages().get(i).getId()))
-                    pos = i;
 
-            list.add(tcb.getChatMessages().get(i));
-        }
-        if (adapter != null) {
-            if (!userId.isEmpty() && !name.isEmpty() && pos >= 0) {
-                listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                listView.setSelection(pos + 1);
-                showSoftInputFromWindow();
-            } else
-                adapter.notifyDataSetChanged();
+        for (int i = 0; i < tcb.getPhotos().size(); i++) {
 
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.topMargin = DeviceUtils.dip2px(this, 2);
+            ImageView im = new ImageView(this);
+            im.setScaleType(ImageView.ScaleType.FIT_XY);
+            im.setLayoutParams(lp);
+            RequestOptions options = new RequestOptions();
+            options.centerCrop();
+            Glide.with(this).load(tcb.getPhotos().get(i)).apply(options).into(im);
+            final int finalI = i;
+            im.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goPhotoViewerPage(TopicCommentDetailsActivity.this, tcb.getPhotos(), finalI, 1);
+                }
+            });
+            content_img_layout.addView(im);
         }
     }
 
@@ -262,6 +264,24 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     @Override
     public void onDeleteSucceed() {
         this.onSucceed();
+    }
+
+    @Override
+    public void onCommentInfo(List<ChatMessages> cm) {
+
+        for (int i = 0; i < cm.size(); i++) {
+            list.add(cm.get(i));
+        }
+
+        if (adapter != null) {
+            if (!userId.isEmpty() && !name.isEmpty() && pos >= 0) {
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                listView.setSelection(pos + 1);
+                showSoftInputFromWindow();
+            } else
+                adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -326,7 +346,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
             if (list.size() > 0) {
                 Log.i(TAG, " position ===" + position);
                 if (position != 0) {
-                    if (list.get(position - 1).getMcUserByUserId().getCloudTencentAccount().equals(SPreferences.getIdentifier())) {
+                    if (list.get(position - 1).getUserId().equals(SPreferences.getUserId())) {
 
                         new ActionSheetDialog(this).builder().addSheetItem(gets(R.string.delete), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                             @Override
@@ -338,7 +358,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
                     } else {
                         userId = list.get(position - 1).getId();
-                        name = list.get(position - 1).getMcUserByUserId().getName();
+                        name = list.get(position - 1).getUserName();
                         showSoftInputFromWindow();
                     }
                 }
@@ -363,7 +383,6 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        springView.setEnable(false);
 //        if (firstVisibleItem == 0)
 //            springView.setEnable(false);
 //        else if ((firstVisibleItem + visibleItemCount) == totalItemCount)

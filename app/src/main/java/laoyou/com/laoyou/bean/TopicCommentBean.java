@@ -8,21 +8,74 @@ import java.util.List;
 public class TopicCommentBean {
 
 
+    private List<String> photos;
+    /**
+     * chatMessages : null
+     * likeUsers : null
+     * id : t-fd7a665cb41c41328b98b4d3302b57fd
+     * mcUser : null
+     * userId : null
+     * typeId : null
+     * mcChatType : {"id":"0142880b35354ab0b13e9ab1330103e6","uid":7,"createTime":"2017-12-26 00:38:54","name":"Dddddsf","num":2,"followCount":null,"chatThemeCount":null,"imgUrl":"http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1514277736051d452cc.gif"}
+     * uid : null
+     * createTime : 2017-12-27 22:11:37
+     * commentsCount : null
+     * num : null
+     * lastTime : null
+     * title : null
+     * messageContent : 哈哈
+     * likeCount : 0
+     * replyCount : 0
+     * type : 1
+     * imgs : http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1514441496772c83ac4.jpg,http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1514441497384e74bdb.jpg,http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1514441497595eb2c75.jpg,http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1514441497891eea441.jpg,http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/15144414981626fabca.jpg,http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1514441498449ec5242.jpg,http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/151444149870352c3db.jpg
+     * videos : null
+     * reChatMessages : null
+     */
+
+    private Object chatMessages;
+    private String likeUsers;
     private String id;
-    private McUser mcUser;
+    private String mcUser;
     private String userId;
     private String typeId;
     private McChatTypeBean mcChatType;
+    private String uid;
     private String createTime;
     private int commentsCount;
+    private int num;
     private String lastTime;
     private String title;
-    private Object mainImg;
     private String messageContent;
     private int likeCount;
     private int replyCount;
-    private Object type;
-    private List<ChatMessages> chatMessages;
+    private int type;
+    private String imgs;
+    private String videos;
+    private Object reChatMessages;
+
+    public List<String> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<String> photos) {
+        this.photos = photos;
+    }
+
+    public Object getChatMessages() {
+        return chatMessages;
+    }
+
+    public void setChatMessages(Object chatMessages) {
+        this.chatMessages = chatMessages;
+    }
+
+    public Object getLikeUsers() {
+        return likeUsers;
+    }
+
+    public void setLikeUsers(String likeUsers) {
+        this.likeUsers = likeUsers;
+    }
 
     public String getId() {
         return id;
@@ -32,11 +85,11 @@ public class TopicCommentBean {
         this.id = id;
     }
 
-    public McUser getMcUser() {
+    public Object getMcUser() {
         return mcUser;
     }
 
-    public void setMcUser(McUser mcUser) {
+    public void setMcUser(String mcUser) {
         this.mcUser = mcUser;
     }
 
@@ -64,6 +117,14 @@ public class TopicCommentBean {
         this.mcChatType = mcChatType;
     }
 
+    public Object getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public String getCreateTime() {
         return createTime;
     }
@@ -80,6 +141,14 @@ public class TopicCommentBean {
         this.commentsCount = commentsCount;
     }
 
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
     public String getLastTime() {
         return lastTime;
     }
@@ -94,14 +163,6 @@ public class TopicCommentBean {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Object getMainImg() {
-        return mainImg;
-    }
-
-    public void setMainImg(Object mainImg) {
-        this.mainImg = mainImg;
     }
 
     public String getMessageContent() {
@@ -128,20 +189,121 @@ public class TopicCommentBean {
         this.replyCount = replyCount;
     }
 
-    public Object getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(Object type) {
+    public void setType(int type) {
         this.type = type;
     }
 
-    public List<ChatMessages> getChatMessages() {
-        return chatMessages;
+    public String getImgs() {
+        return imgs;
     }
 
-    public void setChatMessages(List<ChatMessages> chatMessages) {
-        this.chatMessages = chatMessages;
+    public void setImgs(String imgs) {
+        this.imgs = imgs;
     }
 
+    public Object getVideos() {
+        return videos;
+    }
+
+    public void setVideos(String videos) {
+        this.videos = videos;
+    }
+
+    public Object getReChatMessages() {
+        return reChatMessages;
+    }
+
+    public void setReChatMessages(Object reChatMessages) {
+        this.reChatMessages = reChatMessages;
+    }
+
+    public static class McChatTypeBean {
+        /**
+         * id : 0142880b35354ab0b13e9ab1330103e6
+         * uid : 7
+         * createTime : 2017-12-26 00:38:54
+         * name : Dddddsf
+         * num : 2
+         * followCount : null
+         * chatThemeCount : null
+         * imgUrl : http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1514277736051d452cc.gif
+         */
+
+        private String id;
+        private int uid;
+        private String createTime;
+        private String name;
+        private int num;
+        private int followCount;
+        private int chatThemeCount;
+        private String imgUrl;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public int getUid() {
+            return uid;
+        }
+
+        public void setUid(int uid) {
+            this.uid = uid;
+        }
+
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getNum() {
+            return num;
+        }
+
+        public void setNum(int num) {
+            this.num = num;
+        }
+
+        public int getFollowCount() {
+            return followCount;
+        }
+
+        public void setFollowCount(int followCount) {
+            this.followCount = followCount;
+        }
+
+        public int getChatThemeCount() {
+            return chatThemeCount;
+        }
+
+        public void setChatThemeCount(int chatThemeCount) {
+            this.chatThemeCount = chatThemeCount;
+        }
+
+        public String getImgUrl() {
+            return imgUrl;
+        }
+
+        public void setImgUrl(String imgUrl) {
+            this.imgUrl = imgUrl;
+        }
+    }
 }

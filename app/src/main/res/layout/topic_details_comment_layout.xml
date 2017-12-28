@@ -6,20 +6,15 @@
 
     <include layout="@layout/titles_layout_include"></include>
 
-    <com.liaoinstan.springview.widget.SpringView
-        android:id="@+id/springView"
+
+    <laoyou.com.laoyou.view.HandleDataListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <laoyou.com.laoyou.view.HandleDataListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"
-            android:overScrollMode="never"
-            android:scrollbars="none"></laoyou.com.laoyou.view.HandleDataListView>
-    </com.liaoinstan.springview.widget.SpringView>
+        android:layout_weight="1"
+        android:divider="@null"
+        android:overScrollMode="never"
+        android:scrollbars="none"></laoyou.com.laoyou.view.HandleDataListView>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -30,8 +25,7 @@
             android:id="@+id/menu_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/like_layout"

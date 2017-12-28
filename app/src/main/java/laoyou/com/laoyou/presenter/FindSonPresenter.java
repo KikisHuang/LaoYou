@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.presenter;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONArray;
@@ -31,6 +32,7 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
  */
 public class FindSonPresenter implements HttpResultListener {
 
+    private static final String TAG = "FindSonPresenter";
     private FindSonListener listener;
     private boolean RefreshFlag;
     public int page = 0;
@@ -71,6 +73,39 @@ public class FindSonPresenter implements HttpResultListener {
                     if (ar.length() > 0) {
                         for (int i = 0; i < ar.length(); i++) {
                             TopicTypeBean ttb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), TopicTypeBean.class);
+
+                            if (ttb.getReChatMessages() != null) {
+//                                JSONArray tta = new JSONArray("[" + ttb.getReChatMessages() + "]");
+                                JSONArray tta = new JSONArray(ttb.getReChatMessages());
+
+                                Gson gson = new Gson();
+                                String[][] ss = gson.fromJson(String.valueOf(tta), new TypeToken<String[][]>() {
+                                }.getType());
+                                List<List<String>> outlist = new ArrayList<>();
+                                for (String[] strings : ss) {
+                                    List<String> inlist = null;
+                                    for (String string : strings) {
+                                        if (inlist == null)
+                                            inlist = new ArrayList<>();
+
+                                        inlist.add(string);
+                                    }
+                                    outlist.add(inlist);
+                                }
+
+                                ttb.setComments(outlist);
+                            }
+
+                            if (ttb.getImgs() != null) {
+                                String b[] = ttb.getImgs().split("[,]");
+                                if (b != null && b.length > 0) {
+                                    List<String> list = new ArrayList<>();
+                                    for (String str : b) {
+                                        list.add(str);
+                                    }
+                                    ttb.setPhotos(list);
+                                }
+                            }
                             toppic.add(ttb);
                         }
 

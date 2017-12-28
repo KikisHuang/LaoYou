@@ -24,6 +24,7 @@ import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
+import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goTopicCommentDetailsPage;
 import static laoyou.com.laoyou.utils.SynUtils.getTAG;
 
@@ -106,6 +107,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
         switch (tag) {
             case 0:
                 fp.page = init;
+                isRefresh = true;
                 fp.getNewIncident(true);
                 break;
             case 1:
@@ -171,9 +173,8 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
     }
 
     @Override
-    public void RcOnItemClick(int pos) {
-
-
+    public void RcOnItemClick(int pos, List<String> list) {
+        goPhotoViewerPage(getActivity(), list, pos, 1);
     }
 
     @Override

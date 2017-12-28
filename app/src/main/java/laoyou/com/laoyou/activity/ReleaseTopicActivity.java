@@ -16,6 +16,7 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +25,14 @@ import laoyou.com.laoyou.adapter.PhotoGridAdapter;
 import laoyou.com.laoyou.dialog.MyAlertDialog;
 import laoyou.com.laoyou.listener.EdittextListener;
 import laoyou.com.laoyou.listener.ReleaseTopicListener;
+import laoyou.com.laoyou.presenter.ReleaseTopicPresenter;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.ContainsEmojiEditText;
 import laoyou.com.laoyou.view.MinheightGridView;
 
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * Created by lian on 2017/12/27.
@@ -47,6 +50,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
     private ImageView video_img, remove_img;
     private FrameLayout video_cover_layout;
     private int contentNum = 0;
+    private ReleaseTopicPresenter rp;
 
     @Override
     protected void click() {
@@ -75,6 +79,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
         video_img = f(R.id.video_img);
         remove_img = f(R.id.remove_img);
         video_layout = f(R.id.video_layout);
+        rp = new ReleaseTopicPresenter(this);
 
         if (getIntent().getParcelableArrayListExtra("Release_photo") != null) {
             selectList = getIntent().getParcelableArrayListExtra("Release_photo");
@@ -143,16 +148,20 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
                 int content = topic_content_ed.getText().toString().length();
                 int photo = selectList.size();
                 int video = videoselectList.size();
+                if (photo > 0 || video > 0 || content > 0) {
+                    List<File> photos = null;
+                    if (selectList.size() > 0)
+                        photos = new ArrayList<>();
+                    for (LocalMedia lm : selectList) {
+                        photos.add(new File(lm.getCompressPath() == null || lm.getCompressPath().isEmpty() ? lm.getPath() : lm.getCompressPath()));
+                    }
+                    File videos = null;
+                    if (videoselectList.size() > 0)
+                        videos = new File(videoselectList.get(0).getPath());
+                    rp.IssueTopic("", topic_content_ed.getText().toString(), photos, videos);
 
-                if (photo > 0) {
-                }
-                //发布照片动态;
-                if (video > 0) {
-                }
-                //发布视频动态;
-                if (content > 0) {
-                }
-                //发布内容动态;
+                } else
+                    ToastUtil.toast2_bottom(this, gets(R.string.cannot_send_null_content));
                 break;
 
             case R.id.cancel_tv:
@@ -272,7 +281,8 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
 
     @Override
     public void onSucceed() {
-
+        ToastUtil.toast2_bottom(this, gets(R.string.issue_succ));
+        finish();
     }
 
     @Override

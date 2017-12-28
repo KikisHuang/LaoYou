@@ -53,18 +53,17 @@
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
-
-
-        </activity>
-        <!-- 测试页面 -->
-        <activity
-            android:name=".activity.TestActivity"
-            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <!-- 测试页面 -->
+        <activity
+            android:name=".activity.TestActivity"
+            android:screenOrientation="portrait">
+
         </activity>
 
         <!-- 登录、注册选择页面 -->
@@ -147,6 +146,10 @@
         <!-- 添加喜欢的游戏页面 -->
         <activity
             android:name=".activity.AddLikeGameActivity"
+            android:screenOrientation="portrait"></activity>
+        <!-- 添加话题圈类型页面 -->
+        <activity
+            android:name=".activity.AddTopicTypeActivity"
             android:screenOrientation="portrait"></activity>
 
         <!-- 网吧列表页面 -->

@@ -205,6 +205,9 @@ public class IntentUtils {
      * 照片查看器页面;
      *
      * @param context 上下文;
+     * @param list    照片集合;
+     * @param pos 从第几页显示;
+     * @param Function  功能标识符 0 ：全开,1：只开启保存, 2：只开启删除, 3：全部关闭;;
      */
     public static void goPhotoViewerPage(Context context, List<String> list, int pos, int Function) {
 
