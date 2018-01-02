@@ -375,6 +375,13 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     }
 
     @Override
+    public void GoPhotoPage(String url) {
+        List<String> list = new ArrayList<>();
+        list.add(url);
+        goPhotoViewerPage(this,list,0,1);
+    }
+
+    @Override
     public void onAnimationStart(Animation animation) {
 
     }

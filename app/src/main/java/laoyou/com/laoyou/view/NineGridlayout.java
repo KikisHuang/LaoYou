@@ -56,19 +56,19 @@ public class NineGridlayout extends ViewGroup {
 
         switch (childrenCount) {
             case 1:
-                singleWidth = (int) (DeviceUtils.getWindowWidth(getContext()) * 1 / 1.2);
+                singleWidth = (int) (DeviceUtils.getWindowWidth(getContext()) * 1 / 1.8);
                 singleHeight = (int) (singleWidth * 0.8 / 1);
                 break;
             case 2:
-                singleWidth = (int) (DeviceUtils.getWindowWidth(getContext()) * 1 / 2.3);
+                singleWidth = (int) (DeviceUtils.getWindowWidth(getContext()) * 1 / 2.5);
                 singleHeight = singleWidth;
                 break;
             case 4:
-                singleWidth = (int) (DeviceUtils.getWindowWidth(getContext()) * 1 / 2.3);
+                singleWidth = (int) (DeviceUtils.getWindowWidth(getContext()) * 1 / 2.5);
                 singleHeight = singleWidth;
                 break;
             default:
-                singleWidth = (int) (DeviceUtils.getWindowWidth(getContext()) * 1 / 3.5);
+                singleWidth = (int) (DeviceUtils.getWindowWidth(getContext()) * 1 / 3.7);
                 singleHeight = singleWidth;
                 break;
 

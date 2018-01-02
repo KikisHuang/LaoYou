@@ -34,7 +34,6 @@ import laoyou.com.laoyou.listener.HomeListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.listener.VersionListener;
-import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.VersionUpUtils;
 import laoyou.com.laoyou.utils.homeViewPageUtils;
@@ -99,27 +98,19 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     }
 
     /**
-     * 获取附近的人(有接口后更改成个人动态);
+     * 获取附近的人(改成获取在意的人);
      *
      * @param flag
      */
     private void getPeopleNearby(boolean flag) {
 
-        /**
-         * 如果没有经纬度，不能获取附近的人信息;
-         */
-        if (SPreferences.getLatitud() != null && Double.parseDouble(SPreferences.getLatitud()) > 0) {
-            RefreshFlag = flag;
-            Map<String, String> map = getParamsMap();
-            map.put("page", String.valueOf(page));
-            map.put("pageSize", String.valueOf(page + Fields.SIZE));
-            map.put("latitude", String.valueOf(SPreferences.getLatitud()));
-            map.put("longitude", String.valueOf(SPreferences.getLongitude()));
+        RefreshFlag = flag;
+        Map<String, String> map = getKeyMap();
+        map.put("page", String.valueOf(page));
+        map.put("pageSize", String.valueOf(page + Fields.SIZE));
+        map.put("followFlag", String.valueOf(1));
 
-            httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETNEARBYUSER);
-        } else
-            listener.onForbidSlide();
-
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETCAREBYPAGE);
     }
 
     /**

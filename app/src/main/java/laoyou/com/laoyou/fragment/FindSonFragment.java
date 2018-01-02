@@ -26,6 +26,7 @@ import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goTopicCommentDetailsPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goVideoPlayerPage;
 import static laoyou.com.laoyou.utils.SynUtils.getTAG;
 
 /**
@@ -64,7 +65,13 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
 
     }
 
-    private void getData() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (tag == 0) {
+            isRefresh = true;
+            fp.getHottestAndNewestRefresh();
+        }
     }
 
     @Override
@@ -86,7 +93,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
             case 0:
                 hadapter = new TopicTypeDetailsAdapter(getActivity(), topics, this);
                 recyclerView.setAdapter(hadapter);
-                fp.getNewIncident(true);
+//              fp.getNewIncident(true);
                 break;
             case 1:
                 nearbyAdapter = new NearbyAdapter(getActivity(), list);
@@ -99,7 +106,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
 
     @Override
     protected void initData() {
-        getData();
+
     }
 
     @Override
@@ -191,5 +198,10 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
     @Override
     public void GoCommentPage(String id, String userId, String name, String content) {
         goTopicCommentDetailsPage(getActivity(), id, userId, name, content);
+    }
+
+    @Override
+    public void GoVideoPage(String url, String videoCover) {
+        goVideoPlayerPage(getActivity(), url, videoCover);
     }
 }

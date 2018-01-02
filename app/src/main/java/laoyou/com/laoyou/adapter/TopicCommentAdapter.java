@@ -78,14 +78,21 @@ public class TopicCommentAdapter extends BaseAdapter {
             reply_tv.setText(gets(R.string.reply) + " " + list.get(position).getReUser() + "：");
         } else
             reply_tv.setVisibility(View.GONE);
-        if (list.get(position).getChatImgs() != null && list.get(position).getChatImgs().size()>0) {
+        if (list.get(position).getChatImgs() != null && list.get(position).getChatImgs().size() > 0) {
             int w = (int) (DeviceUtils.getWindowWidth(mContext) * 1 / 3.5);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(w, w);
             comment_img.setLayoutParams(lp);
             Glide.with(mContext).load(list.get(position).getChatImgs().get(0).getUrl()).into(comment_img);
             comment_img.setVisibility(View.VISIBLE);
+            comment_img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.GoPhotoPage(list.get(position).getChatImgs().get(0).getUrl());
+                }
+            });
         } else
             comment_img.setVisibility(View.GONE);
+
 
 //        no_data_tv.setVisibility(position + 1 == list.size() ? View.VISIBLE : View.GONE);
 

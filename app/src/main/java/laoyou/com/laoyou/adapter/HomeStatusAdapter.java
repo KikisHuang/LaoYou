@@ -44,7 +44,7 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
 //        else
 //            holder.distance_tv.setText(list.get(position).getDistance() + "m");
 
-        if (position == 0)
+        if (position == 0 && list.size() > 0)
             holder.title_tv.setVisibility(View.VISIBLE);
         else
             holder.title_tv.setVisibility(View.GONE);

@@ -45,6 +45,7 @@ import laoyou.com.laoyou.activity.SettingActivity;
 import laoyou.com.laoyou.activity.TopicCircleActivity;
 import laoyou.com.laoyou.activity.TopicCommentDetailsActivity;
 import laoyou.com.laoyou.activity.TopicTypeDetailsActivity;
+import laoyou.com.laoyou.activity.VideoPlayPageActivity;
 import laoyou.com.laoyou.activity.WifiActivity;
 import laoyou.com.laoyou.tencent.ui.BlackListActivity;
 import laoyou.com.laoyou.tencent.ui.MessageNotifySettingActivity;
@@ -217,7 +218,22 @@ public class IntentUtils {
         intent.putExtra("Photo_Function", String.valueOf(Function));
         ((Activity) context).startActivityForResult(intent, Fields.ACRESULET4);
         ((Activity) context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-//        startPage(context, intent);
+    }
+
+    /**
+     * 视频查看器页面;
+     *
+     * @param context   上下文;
+     * @param url       视频路径;
+     * @param coverPath 封面图片;
+     */
+    public static void goVideoPlayerPage(Context context, String url, String coverPath) {
+
+        Intent intent = new Intent(context, VideoPlayPageActivity.class);
+        intent.putExtra("Video_url", String.valueOf(url));
+        intent.putExtra("Video_coverPath", String.valueOf(coverPath));
+        ((Activity) context).startActivityForResult(intent, Fields.ACRESULET4);
+        ((Activity) context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     /**

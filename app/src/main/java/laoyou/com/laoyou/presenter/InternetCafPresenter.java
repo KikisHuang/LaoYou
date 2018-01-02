@@ -42,7 +42,7 @@ public class InternetCafPresenter implements HttpResultListener {
         this.listener = listener;
         this.id = caf_id;
         getCafDetails();
-        getCatComment();
+        getCatComment(false);
     }
 
     private void getCafDetails() {
@@ -51,11 +51,14 @@ public class InternetCafPresenter implements HttpResultListener {
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETCAFDETAILS);
     }
 
-    public void getCatComment() {
-
+    public void getCatComment(boolean t) {
         Map<String, String> map = getParamsMap();
         map.put("id", id);
-        map.put("page", String.valueOf(page));
+        if (t)
+            map.put("page", String.valueOf(0));
+        else
+            map.put("page", String.valueOf(page));
+
         map.put("pageSize", String.valueOf(page + 10));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.GETCAFCOMMENT);
     }
@@ -74,7 +77,7 @@ public class InternetCafPresenter implements HttpResultListener {
                 break;
             case Fields.REQUEST2:
 
-                 list = new ArrayList<>();
+                list = new ArrayList<>();
                 JSONArray ar = getJsonAr(response);
                 if (ar.length() > 0) {
                     for (int i = 0; i < ar.length(); i++) {
@@ -86,7 +89,7 @@ public class InternetCafPresenter implements HttpResultListener {
 
                 break;
             case Fields.REQUEST3:
-                Log.i(TAG,"Comment result == "+response);
+                Log.i(TAG, "Comment result == " + response);
                 listener.onSucceed();
                 break;
         }
@@ -113,7 +116,7 @@ public class InternetCafPresenter implements HttpResultListener {
             Map<String, String> map = getKeyMap();
             map.put("internetBarId", id);
             map.put("content", content);
-            httpUtils.OkHttpsPost(map, this, Fields.REQUEST3, Interface.URL + Interface.CAFCOMMENTSEND,null,null);
+            httpUtils.OkHttpsPost(map, this, Fields.REQUEST3, Interface.URL + Interface.CAFCOMMENTSEND, null, null);
 
         } else if (caf_id.isEmpty())
             listener.onFailedMsg(gets(R.string.caf_id_null));

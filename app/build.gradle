@@ -120,6 +120,11 @@ dependencies {
     compile files('libs/umeng_social_net.jar')
     compile files('libs/umeng_social_tool.jar')
 
+    compile 'cn.jzvd:jiaozivideoplayer:6.2.3'
+
+    compile 'tv.danmaku.ijk.media:ijkplayer-java:0.8.4'
+    compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'
+
     //分包;
     compile 'com.android.support:multidex:1.0.1'
     compile project(':presentation')

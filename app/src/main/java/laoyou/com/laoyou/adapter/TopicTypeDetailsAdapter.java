@@ -79,13 +79,20 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
         holder.like_tv.setText(list.get(position).getLikeCount() + "");
         holder.comment_tv.setText(list.get(position).getReplyCount() + "");
 
-        if (list.get(position).getVideos() != null && list.get(position).getVideoBitmap() != null) {
-            int w = (int) (DeviceUtils.getWindowWidth(context) * 1 / 1.2);
+        if (list.get(position).getVideos() != null && list.get(position).getVideoCover() != null) {
+            int w = (int) (DeviceUtils.getWindowWidth(context) * 1 / 1.8);
             int h = (int) (w * 0.8 / 1);
+
             FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(w, h);
             holder.video_img.setLayoutParams(lp);
             holder.video_layouts.setVisibility(View.VISIBLE);
-            holder.video_img.setImageBitmap(list.get(position).getVideoBitmap());
+            Glide.with(context).load(list.get(position).getVideoCover()).into(holder.video_img);
+            holder.video_layouts.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.GoVideoPage(list.get(position).getVideos(), list.get(position).getVideoCover());
+                }
+            });
         } else
             holder.video_layouts.setVisibility(View.GONE);
 

@@ -34,4 +34,6 @@ public interface TopicCommentListener {
     void onPhotoCancle();
 
     void onPhotoImgClick();
+
+    void GoPhotoPage(String url);
 }

@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +37,10 @@ import laoyou.com.laoyou.dialog.MyAlertDialog;
 import laoyou.com.laoyou.listener.InternetCapListener;
 import laoyou.com.laoyou.listener.KeyboardChangeListener;
 import laoyou.com.laoyou.listener.RequestPermissionType;
+import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.presenter.InternetCafPresenter;
 import laoyou.com.laoyou.utils.DeviceUtils;
+import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.RoundAngleImageView;
 
@@ -53,7 +56,7 @@ import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
 /**
  * Created by lian on 2017/12/12.
  */
-public class InternetCafActivity extends InitActivity implements AbsListView.OnScrollListener, KeyboardChangeListener.KeyBoardListener, InternetCapListener, View.OnClickListener {
+public class InternetCafActivity extends InitActivity implements AbsListView.OnScrollListener, SpringListener, KeyboardChangeListener.KeyBoardListener, InternetCapListener, View.OnClickListener {
 
     private static final String TAG = "InternetCafActivity";
 
@@ -85,7 +88,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     private CircleImageView photo_img;
     private EditText comment_ed;
     private TextView send_comment_tv;
-
+    private SpringView springView;
 
     @Override
     protected void click() {
@@ -109,7 +112,8 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         call_fragment_layout = f(R.id.call_fragment_layout);
         comment_fragment_layout = f(R.id.comment_fragment_layout);
         menu_layout = f(R.id.menu_layout);
-
+        springView = f(R.id.springView);
+        SpringUtils.SpringViewInit(springView, this, this);
         send_comment_layout = f(R.id.send_comment_layout);
         photo_img = f(R.id.photo_img);
         comment_ed = f(R.id.comment_ed);
@@ -198,6 +202,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
 
+
     }
 
     @Override
@@ -209,11 +214,12 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
 
         imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 0);
         handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img);
+
     }
 
     @Override
     public void onSucceed() {
-        ip.getCatComment();
+        ip.getCatComment(true);
         ToastUtil.toast2_bottom(this, gets(R.string.comment_send_succeed));
     }
 
@@ -375,5 +381,16 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
             menu_layout.setVisibility(View.VISIBLE);
             send_comment_layout.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void IsonRefresh(int init) {
+        ip.page = init;
+        ip.getCatComment(false);
+    }
+
+    @Override
+    public void IsonLoadmore(int move) {
+        ip.getCatComment(false);
     }
 }

@@ -642,13 +642,19 @@ public class SynUtils {
      * @param bmp
      * @return File
      */
-    public static String saveImage(Bitmap bmp) {
-        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
+    public static String saveImage(Bitmap bmp, String fileName) {
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Hoop_Photo");
         if (!appDir.exists()) {
             appDir.mkdir();
         }
-        String fileName = System.currentTimeMillis() + ".jpg";
+        fileName = fileName.substring(fileName.lastIndexOf("/") + 1, fileName.lastIndexOf("."));
+        fileName += ".jpg";
         File file = new File(appDir, fileName);
+
+        if (file.exists()) {
+            Log.i(TAG, "图片已存在本地无需保存");
+            return appDir + "/" + fileName;
+        }
         try {
             FileOutputStream fos = new FileOutputStream(file);
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -665,6 +671,26 @@ public class SynUtils {
         }
 
         return appDir + "/" + fileName;
+    }
+
+
+    //判断网圈照片存储文件夹中的图片是否存在;
+    public static boolean fileIsExists(String strFile) {
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Hoop_Photo");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        try {
+            strFile = strFile.substring(strFile.lastIndexOf("/") + 1, strFile.lastIndexOf("."));
+            strFile += ".jpg";
+            File f = new File(appDir, strFile);
+            if (!f.exists())
+                return false;
+
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     /**

@@ -20,4 +20,6 @@ public interface RecyclerViewOnItemClickListener {
      * @param name   评论内容;
      */
     void GoCommentPage(String id, String userId, String name, String content);
+
+    void GoVideoPage(String url, String videoCover);
 }

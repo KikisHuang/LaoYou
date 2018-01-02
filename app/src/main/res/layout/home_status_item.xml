@@ -15,7 +15,6 @@
         android:textColor="@color/black0"
         android:textSize="18sp"
         android:visibility="gone"
-
         />
 
     <include layout="@layout/dynamic_state_include"></include>

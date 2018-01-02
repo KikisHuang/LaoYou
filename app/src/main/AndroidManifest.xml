@@ -58,6 +58,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <!-- 测试页面 -->
         <activity
@@ -135,7 +136,7 @@
         <activity
             android:name=".activity.MyPhotoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/PhotoTheme"></activity>
+            ></activity>
         <!-- 个人主页页面 -->
         <activity
             android:name=".activity.HomePageActivity"
@@ -169,6 +170,15 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <!-- 短视频播放页面 -->
+        <activity
+            android:name=".activity.VideoPlayPageActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/PhotoTheme"
+            >
+
+        </activity>
 
         <!-- 设置页面 -->
         <activity
@@ -193,7 +203,9 @@
         <!-- 照片查看器页面 -->
         <activity
             android:name=".activity.PhotoViewerActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/PhotoTheme"
+            ></activity>
         <!-- 参与的人页面 -->
         <activity
             android:name=".activity.ParticipationActivity"

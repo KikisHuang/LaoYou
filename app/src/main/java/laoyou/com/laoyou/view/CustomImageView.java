@@ -11,11 +11,11 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
-public class CustomImageView extends ImageView {
+public class CustomImageView extends RoundAngleImageView {
+
     private String url;
     private boolean isAttachedToWindow;
 

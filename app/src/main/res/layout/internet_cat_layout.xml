@@ -10,14 +10,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ListView
-            android:id="@+id/listView"
+        <com.liaoinstan.springview.widget.SpringView
+            android:id="@+id/springView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/whitefc"
-            android:divider="@null"
-            android:scrollbars="none"></ListView>
+            >
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/whitefc"
+                android:divider="@null"
+                android:scrollbars="none"></ListView>
+        </com.liaoinstan.springview.widget.SpringView>
 
         <FrameLayout
             android:layout_width="match_parent"

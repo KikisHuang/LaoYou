@@ -1,5 +1,7 @@
 package laoyou.com.laoyou.presenter;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.qcloud.sdk.Interface;
@@ -26,7 +28,9 @@ import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
+import static laoyou.com.laoyou.utils.SynUtils.fileIsExists;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
+import static laoyou.com.laoyou.utils.SynUtils.saveImage;
 import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
 
 /**
@@ -97,8 +101,14 @@ public class FindSonPresenter implements HttpResultListener {
 
                                 ttb.setComments(outlist);
                             }
-                            if (ttb.getVideos() != null)
-                                ttb.setVideoBitmap(createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1)));
+                            if (ttb.getVideos() != null) {
+                                if (fileIsExists(ttb.getVideos()))
+                                    ttb.setVideoCover(saveImage(null, ttb.getVideos()));
+                                else {
+                                    Bitmap bitmap = createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
+                                    ttb.setVideoCover(saveImage(bitmap, ttb.getVideos()));
+                                }
+                            }
 
                             if (ttb.getImgs() != null) {
                                 String b[] = ttb.getImgs().split("[,]");
@@ -185,6 +195,8 @@ public class FindSonPresenter implements HttpResultListener {
         Map<String, String> map = getKeyMap();
         map.put("model", String.valueOf(0));
         map.put("page", String.valueOf(0));
+        if (page <= 0)
+            page += 10;
         map.put("pageSize", String.valueOf(page));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.GETTOPICTYPEDETAILS);
     }

@@ -288,5 +288,11 @@ public class Interface {
      * 获取话题圈评论 接口;
      */
     public static final String GECHATMESSAGEBYPAGE = "chat/select/geChatMessageByPage.app";
+    /**
+     * 获取话题圈列表接口;
+     */
+    public static final String GETCAREBYPAGE= "chat/select/getByPage.app";
+
+
 
 }

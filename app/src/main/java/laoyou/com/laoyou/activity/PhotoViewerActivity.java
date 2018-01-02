@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.activity;
 
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -36,7 +37,10 @@ public class PhotoViewerActivity extends InitActivity {
         list = getIntent().getStringArrayListExtra("Photo_list");
         pos = Integer.parseInt(getIntent().getStringExtra("Photo_pos"));
         Function = Integer.parseInt(getIntent().getStringExtra("Photo_Function"));
-        page_tv.setText(pos + 1 + "/" + list.size());
+        if (pos == 0)
+            page_tv.setVisibility(View.INVISIBLE);
+        else
+            page_tv.setText(pos + 1 + "/" + list.size());
     }
 
     /**

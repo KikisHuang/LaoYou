@@ -1,5 +1,6 @@
 package laoyou.com.laoyou.presenter;
 
+import android.graphics.Bitmap;
 import android.support.design.widget.AppBarLayout;
 
 import com.google.gson.Gson;
@@ -30,7 +31,9 @@ import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
+import static laoyou.com.laoyou.utils.SynUtils.fileIsExists;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
+import static laoyou.com.laoyou.utils.SynUtils.saveImage;
 import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
 
 /**
@@ -94,9 +97,14 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
                             }
                             tb.setComments(outlist);
                         }
-
                         if (tb.getVideos() != null) {
-                            tb.setVideoBitmap(createVideoThumbnail(tb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1)));
+
+                            if (fileIsExists(tb.getVideos()))
+                                tb.setVideoCover(saveImage(null, tb.getVideos()));
+                            else {
+                                Bitmap bitmap = createVideoThumbnail(tb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
+                                tb.setVideoCover(saveImage(bitmap, tb.getVideos()));
+                            }
                         }
                         if (tb.getImgs() != null) {
                             String b[] = tb.getImgs().split("[,]");
@@ -198,7 +206,9 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
         map.put("chatTypeId", id);
         map.put("followFlag", String.valueOf(0));
         map.put("page", String.valueOf(0));
-        map.put("pageSize", String.valueOf(page += 10));
+        if (page <= 0)
+            page += 10;
+        map.put("pageSize", String.valueOf(page));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETTOPICTYPEDETAILS);
     }
 
@@ -243,12 +253,5 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
      */
     public void removeAppBarLayoutStateChangeListener(AppBarLayout appbar_layout) {
         appbar_layout.removeOnOffsetChangedListener(this);
-    }
-
-    /**
-     * 刷新;
-     */
-    public void OnRefresh() {
-        listener.onRefresh();
     }
 }

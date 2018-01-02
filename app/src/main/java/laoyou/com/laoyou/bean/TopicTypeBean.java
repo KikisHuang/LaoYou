@@ -1,7 +1,5 @@
 package laoyou.com.laoyou.bean;
 
-import android.graphics.Bitmap;
-
 import java.util.List;
 
 /**
@@ -41,14 +39,14 @@ public class TopicTypeBean {
     private String messageContent;
     private List<String> photos;
     private List<List<String>> comments;
-    private Bitmap videoBitmap;
+    private String videoFile;
 
-    public Bitmap getVideoBitmap() {
-        return videoBitmap;
+    public String getVideoCover() {
+        return videoFile;
     }
 
-    public void setVideoBitmap(Bitmap videoBitmap) {
-        this.videoBitmap = videoBitmap;
+    public void setVideoCover(String videoFile) {
+        this.videoFile = videoFile;
     }
 
     public List<List<String>> getComments() {

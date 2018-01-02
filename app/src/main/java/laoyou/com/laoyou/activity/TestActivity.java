@@ -68,6 +68,7 @@ public class TestActivity extends InitActivity implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
+
     }
 
     @Override
@@ -92,6 +93,11 @@ public class TestActivity extends InitActivity implements View.OnClickListener, 
 
     @Override
     public void GoCommentPage(String id, String userId, String name, String content) {
+
+    }
+
+    @Override
+    public void GoVideoPage(String url, String videoCover) {
 
     }
 }

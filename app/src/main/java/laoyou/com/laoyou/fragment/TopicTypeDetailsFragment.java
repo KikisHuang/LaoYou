@@ -6,6 +6,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.liaoinstan.springview.widget.SpringView;
 
@@ -28,6 +29,7 @@ import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goTopicCommentDetailsPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goVideoPlayerPage;
 import static laoyou.com.laoyou.utils.SynUtils.getTAG;
 
 /**
@@ -100,7 +102,7 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
 
     protected void init() {
         recyclerView = f(R.id.recyclerView);
-//        recyclerView.setNestedScrollingEnabled(false);
+//      recyclerView.setNestedScrollingEnabled(false);
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         springView = f(R.id.springView);
@@ -111,8 +113,10 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "onResume");
         if (getTopicTypeInstance() != null)
             tp.setAppBarLayoutStateChangeListener(getTopicTypeInstance().getAppBar());
+        this.onRefresh();
     }
 
     @Override
@@ -124,14 +128,6 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
 
     @Override
     protected void initData() {
-        switch (tag) {
-            case 0:
-                tp.getHottestAndNewestData(id, true, 0, 0);
-                break;
-            case 1:
-                tp.getHottestAndNewestData(id, true, 1, 0);
-                break;
-        }
     }
 
     @Override
@@ -180,25 +176,10 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
 
     @Override
     public void onStateChange(AppBarLayout appBarLayout, AppBarStateChangeListener.State state, int i) {
-
         if (i >= 0)
             Refresh = true;
         else
             Refresh = false;
-
-
-        /*
-        switch (state) {
-            //展开状态;
-            case EXPANDED:
-                break;
-            //折叠状态;
-            case COLLAPSED:
-                break;
-            //中间状态;
-            default:
-                break;
-        }*/
     }
 
     /**
@@ -239,7 +220,7 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
 
     @Override
     public void RcOnItemClick(int pos, List<String> list) {
-        goPhotoViewerPage(getActivity(),list,pos,1);
+        goPhotoViewerPage(getActivity(), list, pos, 1);
     }
 
     @Override
@@ -256,5 +237,10 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
     @Override
     public void GoCommentPage(String id, String userId, String name, String content) {
         goTopicCommentDetailsPage(getActivity(), id, userId, name, content);
+    }
+
+    @Override
+    public void GoVideoPage(String url, String videoCover) {
+        goVideoPlayerPage(getActivity(), url, videoCover);
     }
 }

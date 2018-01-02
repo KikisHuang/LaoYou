@@ -355,7 +355,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void onEnable(boolean b) {
-
         if (b)
             showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_SHOW, 500);
         else if (show_hide_img.getVisibility() == View.VISIBLE)
