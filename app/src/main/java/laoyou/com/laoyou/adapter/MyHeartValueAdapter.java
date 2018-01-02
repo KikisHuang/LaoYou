@@ -49,8 +49,8 @@ public class MyHeartValueAdapter extends BaseAdapter {
         TextView num_tv = OverallViewHolder.ViewHolder.get(view, R.id.num_tv);
 
         Glide.with(mContext).load(list.get(position).getHeadImg()).into(head_img);
-        nickname_tv.setText(list.get(position).getName());
-        num_tv.setText(list.get(position).getNumber());
+        nickname_tv.setText(list.get(position).getName().isEmpty() ? "" : list.get(position).getName());
+        num_tv.setText(String.valueOf(list.get(position).getNumber()));
 
         return view;
     }

@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +39,6 @@ import laoyou.com.laoyou.bean.LikeListBean;
 import laoyou.com.laoyou.bean.TopicCommentBean;
 import laoyou.com.laoyou.dialog.ActionSheetDialog;
 import laoyou.com.laoyou.listener.KeyboardChangeListener;
-import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.listener.TopicCommentListener;
 import laoyou.com.laoyou.presenter.TopicCommentPresenter;
 import laoyou.com.laoyou.save.SPreferences;
@@ -54,7 +59,7 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
 /**
  * Created by lian on 2017/12/20.
  */
-public class TopicCommentDetailsActivity extends InitActivity implements View.OnClickListener, AbsListView.OnScrollListener, TopicCommentListener, Animation.AnimationListener, KeyboardChangeListener.KeyBoardListener, SpringListener, AdapterView.OnItemClickListener, HandleDataListView.DataChangedListener {
+public class TopicCommentDetailsActivity extends InitActivity implements View.OnClickListener, AbsListView.OnScrollListener, TopicCommentListener, Animation.AnimationListener, KeyboardChangeListener.KeyBoardListener, AdapterView.OnItemClickListener, HandleDataListView.DataChangedListener {
 
     private static final String TAG = "TopicCommentDetailsActivity";
     private String id;
@@ -79,7 +84,11 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     private String content;
     private int pos = -1;
     private List<LikeListBean> likelist;
+    private boolean loadmore = true;
+    private CircleImageView photo_img;
 
+    private List<LocalMedia> selectList = new ArrayList<>();
+    private boolean IsPhoto;
 
     @Override
     protected void click() {
@@ -91,6 +100,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         listView.setOnScrollListener(this);
         listView.setDataChangedListener(this);
         gridView.setOnItemClickListener(this);
+        photo_img.setOnClickListener(this);
     }
 
     @Override
@@ -107,6 +117,9 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         send_comment_layout = f(R.id.send_comment_layout);
         comment_layout = f(R.id.comment_layout);
 
+        photo_img = f(R.id.photo_img);
+
+
         head_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.topic_comment_head, null);
         tp = new TopicCommentPresenter(this);
         user_name = (TextView) head_layout.findViewById(R.id.user_name);
@@ -119,6 +132,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         gridView = (MinheightGridView) head_layout.findViewById(R.id.gridView);
 
         content_img_layout = (LinearLayout) head_layout.findViewById(R.id.content_img_layout);
+
 
         user_head_img = (CircleImageView) head_layout.findViewById(R.id.user_head_img);
 
@@ -136,7 +150,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         name = getIntent().getStringExtra("Page_CommentDetails_name");
         content = getIntent().getStringExtra("Page_CommentDetails_content");
 
-
+        Log.i(TAG, "userId ===" + userId);
     }
 
     @Override
@@ -168,11 +182,56 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
                 }
                 break;
             case R.id.send_comment_tv:
+                String content = comment_ed.getText().toString();
                 Show(TopicCommentDetailsActivity.this, "", true, null);
-                tp.SendComment(id, userId, comment_ed.getText().toString(), null);
+                if (selectList.size() > 0)
+                    tp.SendComment(id, userId, content, new File(selectList.get(0).getCompressPath()));
+                else
+                    tp.SendComment(id, userId, content, null);
+                break;
+            case R.id.photo_img:
+                IsPhoto = true;
+                SelectPhoto();
                 break;
 
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    // 图片选择结果回调
+                    selectList = PictureSelector.obtainMultipleResult(data);
+//                    Glide.with(this).load(selectList.get(0).getCompressPath()).into(comment_img);
+                    tp.ShowPhotoPopup(selectList.get(0).getCompressPath(), comment_layout);
+                    break;
+            }
+        }
+
+    }
+
+    private void SelectPhoto() {
+        menu_layout.setVisibility(View.GONE);
+        send_comment_layout.setVisibility(View.VISIBLE);
+        PictureSelector.create(this)
+                .openGallery(PictureMimeType.ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                .theme(R.style.picture_white_style)// 样式
+                .imageSpanCount(3) //每行显示个数 int
+                .selectionMode(PictureConfig.SINGLE)
+                .previewImage(true)// 是否可预览图片 true or false
+                .enablePreviewAudio(false)// 是否可播放音频 true or false
+                .isCamera(true)// 是否显示拍照按钮 true or false
+                .sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
+                .setOutputCameraPath("/Hoop_Photo")// 自定义拍照保存路径,可不填
+                .compress(true)// 是否压缩 true or false
+                .hideBottomControls(true)// 是否显示uCrop工具栏，默认不显示 true or false
+                .isGif(false)// 是否显示gif图片 true or false
+                .previewEggs(true)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中) true or false
+                .minimumCompressSize(100)// 小于100kb的图片不压缩
+                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
     }
 
     @Override
@@ -184,8 +243,16 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
     @Override
     public void onSucceed() {
+        tp.ClosePopupWindow();
+        selectList.clear();
+        IsPhoto = false;
+        menu_layout.setVisibility(View.VISIBLE);
+        send_comment_layout.setVisibility(View.GONE);
+
         isRefresh = true;
-        tp.getTopicDetails(id);
+        tp.page = 0;
+//      tp.getTopicDetails(id);
+        tp.getComment(id);
         Cancle();
     }
 
@@ -207,39 +274,39 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     @Override
     public void onThemeDetails(final TopicCommentBean tcb) {
 
-//        Glide.with(this).load(tcb.getHeadImgUrl()).into(user_head_img);
-//        user_name.setText(tcb.getUserName());
-//        type_name.setText(tcb.getChatTypeName());
+        Glide.with(this).load(tcb.getMcUser().getHeadImgUrl()).into(user_head_img);
+        user_name.setText(tcb.getMcUser().getName());
+        type_name.setText(tcb.getMcChatType().getName());
         time_tv.setText(getMyDate(tcb.getCreateTime()));
 
         content_tv.setText(tcb.getMessageContent() == null || tcb.getMessageContent().isEmpty() ? "" : tcb.getMessageContent());
         content_tv.setVisibility(tcb.getMessageContent() == null || tcb.getMessageContent().isEmpty() ? View.GONE : View.VISIBLE);
 
         like_num_tv.setText(String.valueOf(tcb.getLikeCount()) + "赞");
-        comment_num_tv.setText(tcb.getReplyCount() + "条评论");
+        comment_num_tv.setText(tcb.getCommentsCount() == null ? "0" + "条评论" : tcb.getCommentsCount() + "条评论");
 
-        if (isRefresh)
-            list.clear();
+        if (tcb.getPhotos() != null) {
+            for (int i = 0; i < tcb.getPhotos().size(); i++) {
 
-        for (int i = 0; i < tcb.getPhotos().size(); i++) {
-
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.topMargin = DeviceUtils.dip2px(this, 2);
-            ImageView im = new ImageView(this);
-            im.setScaleType(ImageView.ScaleType.FIT_XY);
-            im.setLayoutParams(lp);
-            RequestOptions options = new RequestOptions();
-            options.centerCrop();
-            Glide.with(this).load(tcb.getPhotos().get(i)).apply(options).into(im);
-            final int finalI = i;
-            im.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    goPhotoViewerPage(TopicCommentDetailsActivity.this, tcb.getPhotos(), finalI, 1);
-                }
-            });
-            content_img_layout.addView(im);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.topMargin = DeviceUtils.dip2px(this, 2);
+                ImageView im = new ImageView(this);
+                im.setScaleType(ImageView.ScaleType.FIT_XY);
+                im.setLayoutParams(lp);
+                RequestOptions options = new RequestOptions();
+                options.centerCrop();
+                Glide.with(this).load(tcb.getPhotos().get(i)).apply(options).into(im);
+                final int finalI = i;
+                im.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        goPhotoViewerPage(TopicCommentDetailsActivity.this, tcb.getPhotos(), finalI, 1);
+                    }
+                });
+                content_img_layout.addView(im);
+            }
         }
+
     }
 
     @Override
@@ -268,6 +335,8 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
     @Override
     public void onCommentInfo(List<ChatMessages> cm) {
+        if (isRefresh)
+            list.clear();
 
         for (int i = 0; i < cm.size(); i++) {
             list.add(cm.get(i));
@@ -285,6 +354,27 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     }
 
     @Override
+    public void onNoMore(String msg) {
+//        ToastUtil.toast2_bottom(this, msg);
+        loadmore = false;
+    }
+
+    @Override
+    public void onPhotoCancle() {
+        selectList.clear();
+        IsPhoto = false;
+        menu_layout.setVisibility(View.VISIBLE);
+        send_comment_layout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onPhotoImgClick() {
+        //预览
+        if (selectList.size() > 0)
+            PictureSelector.create(this).externalPicturePreview(0, selectList);
+    }
+
+    @Override
     public void onAnimationStart(Animation animation) {
 
     }
@@ -294,6 +384,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
      */
     private void showSoftInputFromWindow() {
         send_comment_layout.setVisibility(View.VISIBLE);
+        comment_ed.setText("");
         menu_layout.setVisibility(View.GONE);
 
         if (!name.isEmpty() && !userId.isEmpty())
@@ -320,23 +411,27 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
     }
 
+    /**
+     * 软键盘收缩回调方法;
+     *
+     * @param isShow         true is show else hidden
+     * @param keyboardHeight keyboard height
+     */
     @Override
     public void onKeyboardChange(boolean isShow, int keyboardHeight) {
-        if (!isShow) {
-            comment_ed.setText("");
+        if (!isShow && !IsPhoto) {
             menu_layout.setVisibility(View.VISIBLE);
             send_comment_layout.setVisibility(View.GONE);
-        }
+        } else if (isShow && IsPhoto) {
+            tp.MovePopupWindow(comment_layout);
+        } else if (!isShow && IsPhoto)
+            tp.MovePopupWindow(comment_layout);
     }
 
     @Override
-    public void IsonRefresh(int init) {
-        isRefresh = true;
-    }
-
-    @Override
-    public void IsonLoadmore(int move) {
-        isRefresh = false;
+    protected void onDestroy() {
+        super.onDestroy();
+        tp.ClosePopupWindow();
     }
 
     @Override
@@ -378,16 +473,15 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+        if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && loadmore) {
+            isRefresh = false;
+            tp.page += 10;
+            tp.getComment(id);
+        }
     }
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//        if (firstVisibleItem == 0)
-//            springView.setEnable(false);
-//        else if ((firstVisibleItem + visibleItemCount) == totalItemCount)
-//            springView.setEnable(true);
-
     }
 
     @Override

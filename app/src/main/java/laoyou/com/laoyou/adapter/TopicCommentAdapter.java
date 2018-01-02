@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -15,6 +17,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.ChatMessages;
 import laoyou.com.laoyou.listener.TopicCommentListener;
+import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
 import static laoyou.com.laoyou.utils.DateUtils.getMyDate;
@@ -56,8 +59,10 @@ public class TopicCommentAdapter extends BaseAdapter {
         TextView content_tv = OverallViewHolder.ViewHolder.get(view, R.id.content_tv);
         TextView time_tv = OverallViewHolder.ViewHolder.get(view, R.id.time_tv);
         TextView no_data_tv = OverallViewHolder.ViewHolder.get(view, R.id.no_data_tv);
+        ImageView comment_img = OverallViewHolder.ViewHolder.get(view, R.id.comment_img);
 
-        Glide.with(mContext).load(list.get(position).getHasImg()).into(head_img);
+        Glide.with(mContext).load(list.get(position).getUserImg()).into(head_img);
+
         nickname_tv.setText(list.get(position).getUserName());
         content_tv.setText(list.get(position).getMessageContent());
         time_tv.setText(getMyDate(list.get(position).getCreateTime()));
@@ -73,10 +78,16 @@ public class TopicCommentAdapter extends BaseAdapter {
             reply_tv.setText(gets(R.string.reply) + " " + list.get(position).getReUser() + "：");
         } else
             reply_tv.setVisibility(View.GONE);
-
+        if (list.get(position).getChatImgs() != null && list.get(position).getChatImgs().size()>0) {
+            int w = (int) (DeviceUtils.getWindowWidth(mContext) * 1 / 3.5);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(w, w);
+            comment_img.setLayoutParams(lp);
+            Glide.with(mContext).load(list.get(position).getChatImgs().get(0).getUrl()).into(comment_img);
+            comment_img.setVisibility(View.VISIBLE);
+        } else
+            comment_img.setVisibility(View.GONE);
 
 //        no_data_tv.setVisibility(position + 1 == list.size() ? View.VISIBLE : View.GONE);
-
 
         return view;
     }

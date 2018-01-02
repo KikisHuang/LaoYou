@@ -1,5 +1,8 @@
 package laoyou.com.laoyou.presenter;
 
+import android.util.Log;
+import android.view.View;
+
 import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
@@ -21,6 +24,7 @@ import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.TopicCommentListener;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.httpUtils;
+import laoyou.com.laoyou.view.popup.CommentPhotoPopupWindow;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
@@ -35,6 +39,7 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
  */
 public class TopicCommentPresenter implements HttpResultListener {
 
+    private static final String TAG = "TopicCommentPresenter";
     private TopicCommentListener listener;
 
     public TopicCommentPresenter(TopicCommentListener listener) {
@@ -42,6 +47,7 @@ public class TopicCommentPresenter implements HttpResultListener {
     }
 
     public int page = 0;
+    private CommentPhotoPopupWindow commentPhotoPopupWindow;
 
     /**
      * 获取点赞状态;
@@ -133,11 +139,15 @@ public class TopicCommentPresenter implements HttpResultListener {
             case Fields.ACRESULET5:
                 JSONArray info = getJsonAr(response);
                 List<ChatMessages> list = new ArrayList<>();
-                for (int i = 0; i < info.length(); i++) {
-                    ChatMessages cm = new Gson().fromJson(String.valueOf(info.optJSONObject(i)), ChatMessages.class);
-                    list.add(cm);
-                }
-                listener.onCommentInfo(list);
+                if (info.length() > 0) {
+                    for (int i = 0; i < info.length(); i++) {
+                        ChatMessages cm = new Gson().fromJson(String.valueOf(info.optJSONObject(i)), ChatMessages.class);
+                        list.add(cm);
+                    }
+                    listener.onCommentInfo(list);
+                } else
+                    listener.onNoMore(gets(R.string.nomore));
+
                 break;
         }
     }
@@ -149,7 +159,9 @@ public class TopicCommentPresenter implements HttpResultListener {
 
     @Override
     public void onParseError(Exception e) {
-        listener.onFailedMsg(gets(R.string.parse_error));
+//        listener.onFailedMsg(gets(R.string.parse_error));
+        Log.e(TAG, gets(R.string.parse_error) + " ===" + e);
+
     }
 
     @Override
@@ -177,12 +189,14 @@ public class TopicCommentPresenter implements HttpResultListener {
      * @param file    图片文件
      */
     public void SendComment(String id, String userId, String content, File file) {
-        if (content != null) {
+        if (!content.isEmpty() || file != null) {
             Map<String, String> map = getKeyMap();
             map.put("messageContent", content);
             map.put("chatThemeId", id);
+
             if (!userId.isEmpty())
                 map.put("reMessageId", userId);
+
             Map<String, File> files = null;
             if (file != null) {
                 files = new HashMap<>();
@@ -190,8 +204,9 @@ public class TopicCommentPresenter implements HttpResultListener {
             }
 
             httpUtils.OkHttpsPost(map, this, Fields.REQUEST3, Interface.URL + Interface.CHATMESSAGE, null, files);
-        } else
+        } else if (content.isEmpty())
             listener.onFailedMsg(gets(R.string.comment_content_null));
+
     }
 
     /**
@@ -227,5 +242,21 @@ public class TopicCommentPresenter implements HttpResultListener {
         map.put("page", String.valueOf(page));
         map.put("pageSize", String.valueOf(page + 10));
         httpUtils.OkHttpsGet(map, this, Fields.ACRESULET5, Interface.URL + Interface.GECHATMESSAGEBYPAGE);
+    }
+
+    public void ShowPhotoPopup(String imgPath, View view) {
+        if (commentPhotoPopupWindow == null)
+            commentPhotoPopupWindow = new CommentPhotoPopupWindow(listener);
+        commentPhotoPopupWindow.ScreenPopupWindow(imgPath, view);
+    }
+
+    public void MovePopupWindow(View view) {
+        if (commentPhotoPopupWindow != null)
+            commentPhotoPopupWindow.MoveWindow(view);
+    }
+
+    public void ClosePopupWindow() {
+        if (commentPhotoPopupWindow != null)
+            commentPhotoPopupWindow.ClosePopup();
     }
 }

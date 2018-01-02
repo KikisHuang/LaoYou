@@ -99,13 +99,34 @@
             android:textColor="@color/black0"
             android:textSize="13sp" />
 
+
         <laoyou.com.laoyou.view.NineGridlayout
             android:id="@+id/content_img_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/video_layouts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/video_img"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/play_logo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/play_icon" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -175,6 +196,32 @@
                     android:textColor="@color/black0"
                     android:textSize="12sp" />
 
+                <LinearLayout
+                    android:id="@+id/reply_layout1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="回复"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/reply_persen_tv1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="陈老燕："
+                        android:textColor="@color/black0"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/comment_tv1"
                     android:layout_width="wrap_content"
@@ -199,6 +246,32 @@
                     android:textColor="@color/black0"
                     android:textSize="12sp" />
 
+                <LinearLayout
+                    android:id="@+id/reply_layout2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="回复"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/reply_persen_tv2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="陈老燕："
+                        android:textColor="@color/black0"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/comment_tv2"
                     android:layout_width="wrap_content"
@@ -218,11 +291,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black0"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textSize="12sp" />
 
                 <LinearLayout
-                    android:id="@+id/reply_layout"
+                    android:id="@+id/reply_layout3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -237,7 +309,7 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/reply_persen_tv"
+                        android:id="@+id/reply_persen_tv3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"

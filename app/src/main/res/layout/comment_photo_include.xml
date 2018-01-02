@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/comment_photo_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="10dp"
+    >
+
+    <ImageView
+        android:id="@+id/comment_img"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        />
+
+    <ImageView
+        android:id="@+id/cancel_comment_img"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="right|top"
+        android:src="@mipmap/close_black" />
+
+</FrameLayout>

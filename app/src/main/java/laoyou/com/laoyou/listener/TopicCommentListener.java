@@ -28,4 +28,10 @@ public interface TopicCommentListener {
     void onDeleteSucceed();
 
     void onCommentInfo(List<ChatMessages> cm);
+
+    void onNoMore(String gets);
+
+    void onPhotoCancle();
+
+    void onPhotoImgClick();
 }

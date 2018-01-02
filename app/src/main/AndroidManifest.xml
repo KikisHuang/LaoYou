@@ -134,7 +134,8 @@
         <!-- 我的相册页面 -->
         <activity
             android:name=".activity.MyPhotoActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/PhotoTheme"></activity>
         <!-- 个人主页页面 -->
         <activity
             android:name=".activity.HomePageActivity"

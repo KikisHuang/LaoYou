@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.liaoinstan.springview.widget.SpringView;
@@ -21,7 +22,6 @@ import laoyou.com.laoyou.listener.TopicTypeDetailsListener;
 import laoyou.com.laoyou.presenter.TopicTypeDetailsPresenter;
 import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
-import laoyou.com.laoyou.view.FullyLinearLayoutManager;
 
 import static laoyou.com.laoyou.activity.TopicTypeDetailsActivity.getTopicTypeInstance;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
@@ -42,7 +42,7 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
     private TopicTypeDetailsAdapter adapter;
     private TopicTypeDetailsPresenter tp;
     private RecyclerView recyclerView;
-    private FullyLinearLayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     private String id;
     private boolean Refresh;
 
@@ -101,7 +101,7 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
     protected void init() {
         recyclerView = f(R.id.recyclerView);
 //        recyclerView.setNestedScrollingEnabled(false);
-        mLayoutManager = new FullyLinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         springView = f(R.id.springView);
         SpringUtils.SpringViewInit(springView, getActivity(), this);
@@ -126,10 +126,10 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
     protected void initData() {
         switch (tag) {
             case 0:
-                tp.getHottestAndNewestData(id, true, 1, 0);
+                tp.getHottestAndNewestData(id, true, 0, 0);
                 break;
             case 1:
-                tp.getHottestAndNewestData(id, true, 0, 0);
+                tp.getHottestAndNewestData(id, true, 1, 0);
                 break;
         }
     }
@@ -139,10 +139,10 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
 
         switch (tag) {
             case 0:
-                tp.getHottestAndNewestData(id, true, 1, init);
+                tp.getHottestAndNewestData(id, true, 0, init);
                 break;
             case 1:
-                tp.getHottestAndNewestData(id, true, 0, init);
+                tp.getHottestAndNewestData(id, true, 1, init);
                 break;
         }
     }
@@ -151,10 +151,10 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
     public void IsonLoadmore(int move) {
         switch (tag) {
             case 0:
-                tp.getHottestAndNewestData(id, false, 1, move);
+                tp.getHottestAndNewestData(id, false, 0, move);
                 break;
             case 1:
-                tp.getHottestAndNewestData(id, false, 0, move);
+                tp.getHottestAndNewestData(id, false, 1, move);
                 break;
         }
     }

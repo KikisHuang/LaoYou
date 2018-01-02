@@ -19,6 +19,8 @@ import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.listener.AppBarStateChangeListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.TopicTypeDetailsListener;
+import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
@@ -29,6 +31,7 @@ import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
+import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
 
 /**
  * Created by lian on 2017/12/19.
@@ -73,7 +76,7 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
 
                         if (tb.getReChatMessages() != null) {
 //                                JSONArray tta = new JSONArray("[" + ttb.getReChatMessages() + "]");
-                            JSONArray tta = new JSONArray(tb.getReChatMessages());
+                            JSONArray tta = new JSONArray(tb.getReChatMessages().replace(" ", ""));
 
                             Gson gson = new Gson();
                             String[][] ss = gson.fromJson(String.valueOf(tta), new TypeToken<String[][]>() {
@@ -90,6 +93,10 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
                                 outlist.add(inlist);
                             }
                             tb.setComments(outlist);
+                        }
+
+                        if (tb.getVideos() != null) {
+                            tb.setVideoBitmap(createVideoThumbnail(tb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1)));
                         }
                         if (tb.getImgs() != null) {
                             String b[] = tb.getImgs().split("[,]");

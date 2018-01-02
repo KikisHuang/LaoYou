@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <TextView
-        style="@style/line_styles2" />
+
+    <TextView style="@style/line_styles2" />
+
     <LinearLayout
         android:id="@+id/send_comment_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="50dp"
         android:background="@color/white"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -22,8 +23,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:src="@drawable/test_head_icon"
-            android:visibility="invisible" />
+            android:layout_marginRight="7dp"
+            android:src="@mipmap/photo_gray_icon" />
 
         <EditText
             android:id="@+id/comment_ed"

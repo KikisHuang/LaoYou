@@ -35,13 +35,12 @@ public class TopicCommentBean {
     private Object chatMessages;
     private String likeUsers;
     private String id;
-    private String mcUser;
     private String userId;
     private String typeId;
     private McChatTypeBean mcChatType;
     private String uid;
     private String createTime;
-    private int commentsCount;
+    private String commentsCount;
     private int num;
     private String lastTime;
     private String title;
@@ -52,6 +51,15 @@ public class TopicCommentBean {
     private String imgs;
     private String videos;
     private Object reChatMessages;
+    private McUser mcUser;
+
+    public McUser getMcUser() {
+        return mcUser;
+    }
+
+    public void setMcUser(McUser mcUser) {
+        this.mcUser = mcUser;
+    }
 
     public List<String> getPhotos() {
         return photos;
@@ -83,14 +91,6 @@ public class TopicCommentBean {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Object getMcUser() {
-        return mcUser;
-    }
-
-    public void setMcUser(String mcUser) {
-        this.mcUser = mcUser;
     }
 
     public String getUserId() {
@@ -133,11 +133,11 @@ public class TopicCommentBean {
         this.createTime = createTime;
     }
 
-    public int getCommentsCount() {
+    public String getCommentsCount() {
         return commentsCount;
     }
 
-    public void setCommentsCount(int commentsCount) {
+    public void setCommentsCount(String commentsCount) {
         this.commentsCount = commentsCount;
     }
 

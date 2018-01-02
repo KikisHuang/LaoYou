@@ -163,6 +163,7 @@ public class PhotoViewerFragment extends BaseFragment {
             public boolean onSingleTapConfirmed(MotionEvent e) {
                 Log.i(TAG, "onSingleTapConfirmed");
                 getActivity().finish();
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 return false;
             }
 

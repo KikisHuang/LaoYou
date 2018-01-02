@@ -101,8 +101,9 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
         appbar_layout = f(R.id.appbar_layout);
         active_user_layout = f(R.id.active_user_layout);
         tablist = new ArrayList<>();
-        tablist.add(gets(R.string.hosts));
         tablist.add(gets(R.string.news));
+        tablist.add(gets(R.string.hosts));
+
 //      mTab.setTabMode(TabLayout.MODE_SCROLLABLE);
         viewPager = f(R.id.viewPager);
         setImgTitles(this);

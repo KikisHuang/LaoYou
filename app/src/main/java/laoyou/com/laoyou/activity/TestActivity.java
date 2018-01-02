@@ -6,9 +6,6 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,13 +39,13 @@ public class TestActivity extends InitActivity implements View.OnClickListener, 
 
     @Override
     protected void initData() {
-        String str = "[abc,,1],[ddd,1,2]";
-        try {
-            JSONArray ar = new JSONArray("[" + str + "]");
-            Log.i(TAG, " ar ===" + ar);
+        String str = "[[高仿陈晓燕1,,高仿陈晓鸭脖,ud7163f19736d4bee8f907cfa9d2333a6,],[默默,,8325effa72,ua664fd002910441aa098bcaf295622f8,],[默默,,古古怪怪,ua664fd002910441aa098bcaf295622f8,],[默默,,Yun was a really fun day ,ua664fd002910441aa098bcaf295622f8,],[高仿陈晓燕1,,kk,ud7163f19736d4bee8f907cfa9d2333a6,]]";
+//            JSONArray ar = new JSONArray(str);
+//            Log.i(TAG, " ar ===" + ar);
 
             Gson gson = new Gson();
-            String[][] ss = gson.fromJson(String.valueOf(ar), new TypeToken<String[][]>(){}.getType());
+            String[][] ss = gson.fromJson(String.valueOf(str.replace(" ", "")), new TypeToken<String[][]>() {
+            }.getType());
             for (String[] strings : ss) {
                 Log.i(TAG, " strings ===" + strings);
                 for (String string : strings) {
@@ -56,10 +53,6 @@ public class TestActivity extends InitActivity implements View.OnClickListener, 
                     Log.i(TAG, " string ===" + string);
                 }
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
 
         List<String> images = new ArrayList<>();
 

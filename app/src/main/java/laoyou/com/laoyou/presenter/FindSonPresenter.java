@@ -17,6 +17,7 @@ import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.listener.FindSonListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
@@ -26,6 +27,7 @@ import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
+import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
 
 /**
  * Created by lian on 2017/12/11.
@@ -76,7 +78,7 @@ public class FindSonPresenter implements HttpResultListener {
 
                             if (ttb.getReChatMessages() != null) {
 //                                JSONArray tta = new JSONArray("[" + ttb.getReChatMessages() + "]");
-                                JSONArray tta = new JSONArray(ttb.getReChatMessages());
+                                JSONArray tta = new JSONArray(ttb.getReChatMessages().replace(" ", ""));
 
                                 Gson gson = new Gson();
                                 String[][] ss = gson.fromJson(String.valueOf(tta), new TypeToken<String[][]>() {
@@ -95,6 +97,8 @@ public class FindSonPresenter implements HttpResultListener {
 
                                 ttb.setComments(outlist);
                             }
+                            if (ttb.getVideos() != null)
+                                ttb.setVideoBitmap(createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1)));
 
                             if (ttb.getImgs() != null) {
                                 String b[] = ttb.getImgs().split("[,]");

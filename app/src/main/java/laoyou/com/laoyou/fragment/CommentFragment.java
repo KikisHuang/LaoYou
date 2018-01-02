@@ -18,6 +18,7 @@ import laoyou.com.laoyou.listener.HeartValueAndCommentListener;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.presenter.HeartValueAndCommentPresenter;
 import laoyou.com.laoyou.utils.SpringUtils;
+import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.utils.SynUtils.getTAG;
 
@@ -63,9 +64,9 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
         switch (flag) {
             case 0:
                 if (tag == 0)
-                    hcp.GetMyReceiverdChatMsg();
+                    hcp.GetMyReceiverdChatMsg(true);
                 else
-                    hcp.GetMyChatMsg();
+                    hcp.GetMyChatMsg(true);
                 break;
             case 1:
                 springView.setEnable(false);
@@ -93,7 +94,7 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
         commentList = new ArrayList<>();
         switch (flag) {
             case 0:
-                cadapter = new MyCommentAdapter(getActivity(), commentList);
+                cadapter = new MyCommentAdapter(getActivity(), commentList, tag);
                 listView.setAdapter(cadapter);
                 break;
             case 1:
@@ -114,9 +115,9 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
             case 0:
                 hcp.page = 0;
                 if (tag == 0)
-                    hcp.GetMyReceiverdChatMsg();
+                    hcp.GetMyReceiverdChatMsg(true);
                 else
-                    hcp.GetMyChatMsg();
+                    hcp.GetMyChatMsg(true);
                 break;
             case 1:
                 break;
@@ -127,11 +128,11 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
     public void IsonLoadmore(int move) {
         switch (flag) {
             case 0:
-                hcp.page += 10;
+                hcp.page += 20;
                 if (tag == 0)
-                    hcp.GetMyReceiverdChatMsg();
+                    hcp.GetMyReceiverdChatMsg(false);
                 else
-                    hcp.GetMyChatMsg();
+                    hcp.GetMyChatMsg(false);
                 break;
             case 1:
                 break;
@@ -140,7 +141,7 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
 
     @Override
     public void onFailedsMsg(String msg) {
-
+        ToastUtil.toast2_bottom(getActivity(), msg);
     }
 
     @Override

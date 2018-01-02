@@ -6,7 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -14,16 +17,20 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.CommentBean;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
+import static laoyou.com.laoyou.utils.DateUtils.getMyDate;
+
 /**
  * Created by lian on 2017/11/18.
  */
 public class MyCommentAdapter extends BaseAdapter {
     private List<CommentBean> list = null;
     private Context mContext;
+    private int tag;
 
-    public MyCommentAdapter(Context mContext, List<CommentBean> list) {
+    public MyCommentAdapter(Context mContext, List<CommentBean> list, int tag) {
         this.mContext = mContext.getApplicationContext();
         this.list = list;
+        this.tag = tag;
     }
 
     public int getCount() {
@@ -50,9 +57,16 @@ public class MyCommentAdapter extends BaseAdapter {
         TextView reply_name_tv = OverallViewHolder.ViewHolder.get(view, R.id.reply_name_tv);
         TextView reply_content_tv = OverallViewHolder.ViewHolder.get(view, R.id.reply_content_tv);
         TextView time_tv = OverallViewHolder.ViewHolder.get(view, R.id.time_tv);
+        LinearLayout reply_layout = OverallViewHolder.ViewHolder.get(view, R.id.reply_layout);
 
 
+        Glide.with(mContext).load(list.get(position).getUserImg()).into(head_img);
+        nickname_tv.setText(list.get(position).getUserName());
+        content_tv.setText(list.get(position).getMessageContent());
+        time_tv.setText(getMyDate(list.get(position).getCreateTime()));
 
+        reply_layout.setVisibility(tag == 1 ? View.GONE : View.VISIBLE);
+        reply_to_tv.setVisibility(tag == 1 ? View.GONE : View.VISIBLE);
 
         return view;
     }

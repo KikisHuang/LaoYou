@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
+import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.view.NineGridlayout;
 
 /**
@@ -77,6 +79,16 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
         holder.like_tv.setText(list.get(position).getLikeCount() + "");
         holder.comment_tv.setText(list.get(position).getReplyCount() + "");
 
+        if (list.get(position).getVideos() != null && list.get(position).getVideoBitmap() != null) {
+            int w = (int) (DeviceUtils.getWindowWidth(context) * 1 / 1.2);
+            int h = (int) (w * 0.8 / 1);
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(w, h);
+            holder.video_img.setLayoutParams(lp);
+            holder.video_layouts.setVisibility(View.VISIBLE);
+            holder.video_img.setImageBitmap(list.get(position).getVideoBitmap());
+        } else
+            holder.video_layouts.setVisibility(View.GONE);
+
         if (list.get(position).getComments() != null) {
             int size = list.get(position).getComments().size();
             if (size > 0) {
@@ -84,8 +96,8 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
                 switch (size) {
                     case 1:
                         List<String> one = list.get(position).getComments().get(0);
-                        setCommentData(holder.name_tv1, one.get(0), true, one.get(1), holder);
-                        setCommentData(holder.comment_tv1, one.get(2), false, null, holder);
+                        setCommentData(holder.name_tv1, one.get(0), true, one.get(1), holder.reply_layout1, holder.reply_persen_tv1);
+                        setCommentData(holder.comment_tv1, one.get(2), false, null, holder.reply_layout1, holder.reply_persen_tv1);
 
                         holder.comment_layout1.setVisibility(View.VISIBLE);
                         holder.comment_layout2.setVisibility(View.GONE);
@@ -95,11 +107,11 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
                     case 2:
                         List<String> tone = list.get(position).getComments().get(0);
                         List<String> ttwo = list.get(position).getComments().get(1);
-                        setCommentData(holder.name_tv1, tone.get(0), true, tone.get(1), holder);
-                        setCommentData(holder.comment_tv1, tone.get(2), false, null, holder);
+                        setCommentData(holder.name_tv1, tone.get(0), true, tone.get(1), holder.reply_layout1, holder.reply_persen_tv1);
+                        setCommentData(holder.comment_tv1, tone.get(2), false, null, holder.reply_layout1, holder.reply_persen_tv1);
 
-                        setCommentData(holder.name_tv2, ttwo.get(0), true, ttwo.get(1), holder);
-                        setCommentData(holder.comment_tv2, ttwo.get(2), false, null, holder);
+                        setCommentData(holder.name_tv2, ttwo.get(0), true, ttwo.get(1), holder.reply_layout2, holder.reply_persen_tv2);
+                        setCommentData(holder.comment_tv2, ttwo.get(2), false, null, holder.reply_layout3, holder.reply_persen_tv3);
 
                         holder.comment_layout1.setVisibility(View.VISIBLE);
                         holder.comment_layout2.setVisibility(View.VISIBLE);
@@ -112,14 +124,14 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
                         List<String> thtwo = list.get(position).getComments().get(1);
                         List<String> three = list.get(position).getComments().get(2);
 
-                        setCommentData(holder.name_tv1, thone.get(0), true, thone.get(1), holder);
-                        setCommentData(holder.comment_tv1, thone.get(2), false, null, holder);
+                        setCommentData(holder.name_tv1, thone.get(0), true, thone.get(1), holder.reply_layout1, holder.reply_persen_tv1);
+                        setCommentData(holder.comment_tv1, thone.get(2), false, null, holder.reply_layout1, holder.reply_persen_tv1);
 
-                        setCommentData(holder.name_tv2, thtwo.get(0), true, thtwo.get(1), holder);
-                        setCommentData(holder.comment_tv2, thtwo.get(2), false, null, holder);
+                        setCommentData(holder.name_tv2, thtwo.get(0), true, thtwo.get(1), holder.reply_layout2, holder.reply_persen_tv2);
+                        setCommentData(holder.comment_tv2, thtwo.get(2), false, null, holder.reply_layout2, holder.reply_persen_tv2);
 
-                        setCommentData(holder.name_tv3, three.get(0), true, three.get(1), holder);
-                        setCommentData(holder.comment_tv3, three.get(2), false, null, holder);
+                        setCommentData(holder.name_tv3, three.get(0), true, three.get(1), holder.reply_layout3, holder.reply_persen_tv3);
+                        setCommentData(holder.comment_tv3, three.get(2), false, null, holder.reply_layout3, holder.reply_persen_tv3);
 
                         holder.comment_layout1.setVisibility(View.VISIBLE);
                         holder.comment_layout2.setVisibility(View.VISIBLE);
@@ -133,14 +145,14 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
                         List<String> fthree = list.get(position).getComments().get(2);
 
 
-                        setCommentData(holder.name_tv1, fone.get(0), true, fone.get(1), holder);
-                        setCommentData(holder.comment_tv1, fone.get(2), false, null, holder);
+                        setCommentData(holder.name_tv1, fone.get(0), true, fone.get(1), holder.reply_layout1, holder.reply_persen_tv1);
+                        setCommentData(holder.comment_tv1, fone.get(2), false, null, holder.reply_layout1, holder.reply_persen_tv1);
 
-                        setCommentData(holder.name_tv2, ftwo.get(0), true, ftwo.get(1), holder);
-                        setCommentData(holder.comment_tv2, ftwo.get(2), false, null, holder);
+                        setCommentData(holder.name_tv2, ftwo.get(0), true, ftwo.get(1), holder.reply_layout2, holder.reply_persen_tv2);
+                        setCommentData(holder.comment_tv2, ftwo.get(2), false, null, holder.reply_layout2, holder.reply_persen_tv2);
 
-                        setCommentData(holder.name_tv3, fthree.get(0), true, fthree.get(1), holder);
-                        setCommentData(holder.comment_tv3, fthree.get(2), false, null, holder);
+                        setCommentData(holder.name_tv3, fthree.get(0), true, fthree.get(1), holder.reply_layout3, holder.reply_persen_tv3);
+                        setCommentData(holder.comment_tv3, fthree.get(2), false, null, holder.reply_layout3, holder.reply_persen_tv3);
 
                         holder.comment_layout1.setVisibility(View.VISIBLE);
                         holder.comment_layout2.setVisibility(View.VISIBLE);
@@ -150,7 +162,7 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
                 }
             } else
                 holder.check_comment_tv.setVisibility(View.GONE);
-        } else{
+        } else {
             holder.comment_layout.setVisibility(View.GONE);
             holder.check_comment_tv.setVisibility(View.GONE);
         }
@@ -218,14 +230,14 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
         });
     }
 
-    private void setCommentData(TextView tv, String str, boolean b, String s, MyViewHolder holder) {
+    private void setCommentData(TextView tv, String str, boolean b, String s, LinearLayout layout, TextView rtv) {
         if (b) {
-            if (s != null) {
+            if (s != null && !s.isEmpty()) {
                 tv.setText(str);
-                holder.reply_layout.setVisibility(View.VISIBLE);
-                holder.reply_persen_tv.setText(s + "：");
+                layout.setVisibility(View.VISIBLE);
+                rtv.setText(s + "：");
             } else {
-                holder.reply_layout.setVisibility(View.GONE);
+                layout.setVisibility(View.GONE);
                 tv.setText(str + "：");
             }
         } else
@@ -241,10 +253,13 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
 
         private TextView nickname_tv, content_tv, time_tv, like_tv, comment_tv, check_comment_tv, bottom_line;
         private TextView comment_tv1, comment_tv2, comment_tv3;
-        private TextView name_tv1, name_tv2, name_tv3, reply_persen_tv;
+        private TextView name_tv1, name_tv2, name_tv3, reply_persen_tv1, reply_persen_tv2, reply_persen_tv3;
         private ImageView head_img, more_tv, like_img;
-        private LinearLayout topic_layout, comment_layout1, comment_layout2, comment_layout3,comment_layout, view_layout, reply_layout;
+        private LinearLayout topic_layout, comment_layout1, comment_layout2, comment_layout3, comment_layout, view_layout, reply_layout1, reply_layout2, reply_layout3;
         private NineGridlayout content_img_layout;
+        private ImageView play_logo, video_img;
+        private FrameLayout video_layouts;
+
 
         public MyViewHolder(View view) {
             super(view);
@@ -266,11 +281,20 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
 
             head_img = (ImageView) view.findViewById(R.id.head_img);
             like_img = (ImageView) view.findViewById(R.id.like_img);
+
+            play_logo = (ImageView) view.findViewById(R.id.play_logo);
+            video_img = (ImageView) view.findViewById(R.id.video_img);
+            video_layouts = (FrameLayout) view.findViewById(R.id.video_layouts);
+
 //            content_img = (ImageView) view.findViewById(R.id.content_img);
             more_tv = (ImageView) view.findViewById(R.id.more_tv);
             topic_layout = (LinearLayout) view.findViewById(R.id.topic_layout);
-            reply_layout = (LinearLayout) view.findViewById(R.id.reply_layout);
-            reply_persen_tv = (TextView) view.findViewById(R.id.reply_persen_tv);
+            reply_layout1 = (LinearLayout) view.findViewById(R.id.reply_layout1);
+            reply_layout2 = (LinearLayout) view.findViewById(R.id.reply_layout2);
+            reply_layout3 = (LinearLayout) view.findViewById(R.id.reply_layout3);
+            reply_persen_tv1 = (TextView) view.findViewById(R.id.reply_persen_tv1);
+            reply_persen_tv2 = (TextView) view.findViewById(R.id.reply_persen_tv2);
+            reply_persen_tv3 = (TextView) view.findViewById(R.id.reply_persen_tv3);
 
             comment_layout1 = (LinearLayout) view.findViewById(R.id.comment_layout_1);
             comment_layout2 = (LinearLayout) view.findViewById(R.id.comment_layout_2);

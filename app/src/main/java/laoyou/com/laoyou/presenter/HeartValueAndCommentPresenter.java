@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.CommentBean;
 import laoyou.com.laoyou.bean.HeartBean;
 import laoyou.com.laoyou.listener.HeartValueAndCommentListener;
@@ -22,6 +23,7 @@ import okhttp3.Request;
 
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * Created by lian on 2017/12/23.
@@ -30,6 +32,7 @@ public class HeartValueAndCommentPresenter implements HttpResultListener {
     private static final String TAG = "HeartValueAndCommentPresenter";
     private HeartValueAndCommentListener listener;
     public int page = 0;
+    private boolean IsRefresh;
 
     public HeartValueAndCommentPresenter(HeartValueAndCommentListener listener) {
         this.listener = listener;
@@ -43,7 +46,7 @@ public class HeartValueAndCommentPresenter implements HttpResultListener {
                     List<HeartBean> hearts = new ArrayList<>();
                     JSONArray ar = getJsonAr(response);
                     for (int i = 0; i < ar.length(); i++) {
-                        HeartBean ub = new Gson().fromJson(String.valueOf(ar), HeartBean.class);
+                        HeartBean ub = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), HeartBean.class);
                         hearts.add(ub);
                     }
                     listener.onHeartData(hearts);
@@ -57,11 +60,17 @@ public class HeartValueAndCommentPresenter implements HttpResultListener {
                 try {
                     List<CommentBean> comments = new ArrayList<>();
                     JSONArray ar = getJsonAr(response);
-                    for (int i = 0; i < ar.length(); i++) {
-                        CommentBean cb = new Gson().fromJson(String.valueOf(ar), CommentBean.class);
-                        comments.add(cb);
-                    }
-                    listener.onCommentData(comments);
+                    if (ar.length() > 0) {
+                        for (int i = 0; i < ar.length(); i++) {
+                            CommentBean cb = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), CommentBean.class);
+                            comments.add(cb);
+                        }
+                        listener.onCommentData(comments);
+                    } else if (IsRefresh)
+                        listener.onFailedsMsg(gets(R.string.nodata));
+                    else if (!IsRefresh)
+                        listener.onFailedsMsg(gets(R.string.nomore));
+
                 } catch (JSONException e) {
                     Log.e(TAG, "Error === " + e);
                     e.printStackTrace();
@@ -98,20 +107,22 @@ public class HeartValueAndCommentPresenter implements HttpResultListener {
     /**
      * 我发出的评论;
      */
-    public void GetMyChatMsg() {
+    public void GetMyChatMsg(boolean b) {
+        IsRefresh = b;
         Map<String, String> map = getKeyMap();
         map.put("page", String.valueOf(page));
-        map.put("pageSize", String.valueOf(page + 10));
+        map.put("pageSize", String.valueOf(page + 20));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.GETMYCHATMESSAGE);
     }
 
     /**
      * 我收到的评论;
      */
-    public void GetMyReceiverdChatMsg() {
+    public void GetMyReceiverdChatMsg(boolean b) {
+        IsRefresh = b;
         Map<String, String> map = getKeyMap();
         map.put("page", String.valueOf(page));
-        map.put("pageSize", String.valueOf(page + 10));
+        map.put("pageSize", String.valueOf(page + 20));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.GETMYRECEIVEDCHATMESSAGE);
     }
 
