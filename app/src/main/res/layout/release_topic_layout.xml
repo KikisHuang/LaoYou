@@ -25,9 +25,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:text="标题"
+            android:text="发帖"
             android:textColor="@color/black0"
-            android:textSize="16sp" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/issue_tv"
@@ -70,12 +70,42 @@
                     android:layout_marginLeft="10dp"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Kikis"
-                        android:textColor="@color/black0"
-                        android:textSize="15sp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Kikis"
+                            android:textColor="@color/black0"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:id="@+id/issue_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="发布到"
+                                android:textColor="@color/content4" />
+
+                            <TextView
+                                android:id="@+id/topic_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/content3"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/topic_type_tv"
@@ -110,14 +140,14 @@
                 android:id="@+id/photo_gridView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginTop="20dp"
                 android:horizontalSpacing="5dp"
                 android:numColumns="3"
                 android:overScrollMode="never"
                 android:padding="10dp"
                 android:scrollbars="none"
-                android:verticalSpacing="5dp">
+                android:verticalSpacing="5dp"
+                android:visibility="gone">
 
             </laoyou.com.laoyou.view.MinheightGridView>
 
@@ -125,8 +155,8 @@
                 android:id="@+id/video_cover_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
+
                 <ImageView
                     android:id="@+id/video_img"
                     android:layout_width="match_parent"
@@ -181,6 +211,7 @@
                 android:layout_gravity="center"
                 android:src="@mipmap/right_icon" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/video_layout"
             android:layout_width="match_parent"

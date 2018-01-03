@@ -15,6 +15,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.NearbyBean;
+import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 
 import static laoyou.com.laoyou.utils.SynUtils.getDistanceKM;
 
@@ -24,10 +25,12 @@ import static laoyou.com.laoyou.utils.SynUtils.getDistanceKM;
 public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHolder> {
     private Context context;
     private List<NearbyBean> list;
+    private RecyclerViewOnItemClickListener listener;
 
-    public NearbyAdapter(Context context, List<NearbyBean> list) {
+    public NearbyAdapter(Context context, List<NearbyBean> list, RecyclerViewOnItemClickListener listener) {
         this.context = context;
         this.list = list;
+        this.listener = listener;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.name_tv.setText(list.get(position).getName());
         Glide.with(context).load(list.get(position).getHeadImgUrl()).into(holder.user_head_img);
 
@@ -48,6 +51,12 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
         else
             holder.distance_tv.setText(list.get(position).getDistance() + "m");
 
+        holder.item_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.GoPageHome(list.get(position).getId());
+            }
+        });
     }
 
     @Override
@@ -59,7 +68,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
 
         private TextView content_tv, name_tv, age_tv, distance_tv, sex_img;
         private ImageView user_head_img;
-        private LinearLayout tag_layout;
+        private LinearLayout tag_layout, item_layout;
 
         public MyViewHolder(View view) {
             super(view);
@@ -70,6 +79,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
             user_head_img = (ImageView) view.findViewById(R.id.user_head_img);
             sex_img = (TextView) view.findViewById(R.id.sex_img);
             tag_layout = (LinearLayout) view.findViewById(R.id.tag_layout);
+            item_layout = (LinearLayout) view.findViewById(R.id.item_layout);
 
         }
     }

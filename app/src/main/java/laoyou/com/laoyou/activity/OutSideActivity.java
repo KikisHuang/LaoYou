@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.activity;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -22,6 +23,7 @@ import static laoyou.com.laoyou.utils.TitleUtils.setTitles;
  * Created by lian on 2017/7/8.
  */
 public class OutSideActivity extends InitActivity implements OutSideListener {
+    private static final String TAG = "OutSideActivity";
     private String url = "";
     private WebView webView;
     private OutSidePresenter op;
@@ -40,6 +42,7 @@ public class OutSideActivity extends InitActivity implements OutSideListener {
         pg = f(R.id.progressBar);
         op = new OutSidePresenter(this);
         url = getIntent().getStringExtra("outside_url");
+        Log.i(TAG, "OutSide Url ===" + url);
 //        url = "https://www.baidu.com";
     }
 

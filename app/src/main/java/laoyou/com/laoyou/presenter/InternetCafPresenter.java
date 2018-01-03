@@ -37,12 +37,15 @@ public class InternetCafPresenter implements HttpResultListener {
     private String id = "";
     public int page = 0;
     private List<CafCommentBean> list;
+    private boolean isRefresh;
 
     public InternetCafPresenter(InternetCapListener listener, String caf_id) {
         this.listener = listener;
         this.id = caf_id;
+        list = new ArrayList<>();
         getCafDetails();
-        getCatComment(false);
+        getCatComment(true);
+
     }
 
     private void getCafDetails() {
@@ -52,6 +55,7 @@ public class InternetCafPresenter implements HttpResultListener {
     }
 
     public void getCatComment(boolean t) {
+        isRefresh = t;
         Map<String, String> map = getParamsMap();
         map.put("id", id);
         if (t)
@@ -59,7 +63,7 @@ public class InternetCafPresenter implements HttpResultListener {
         else
             map.put("page", String.valueOf(page));
 
-        map.put("pageSize", String.valueOf(page + 10));
+        map.put("pageSize", String.valueOf(page += 10));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.GETCAFCOMMENT);
     }
 
@@ -68,6 +72,7 @@ public class InternetCafPresenter implements HttpResultListener {
         switch (tag) {
             case Fields.REQUEST1:
                 try {
+
                     JSONObject ob = getJsonOb(response);
                     CafBean cb = new Gson().fromJson(String.valueOf(ob), CafBean.class);
                     listener.onInternetCafDetails(cb);
@@ -77,7 +82,9 @@ public class InternetCafPresenter implements HttpResultListener {
                 break;
             case Fields.REQUEST2:
 
-                list = new ArrayList<>();
+                if (isRefresh)
+                    list.clear();
+
                 JSONArray ar = getJsonAr(response);
                 if (ar.length() > 0) {
                     for (int i = 0; i < ar.length(); i++) {

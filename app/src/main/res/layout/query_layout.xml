@@ -5,10 +5,32 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center|top"
+        >
+
+        <ImageView
+            android:id="@+id/return_img"
+            android:layout_width="40dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center|left"
+            android:src="@mipmap/return_icon" />
+
+        <TextView
+            android:id="@+id/query_pass_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="查询上网密码"
+            android:textColor="@color/black0"
+            android:textSize="21dp" />
+    </FrameLayout>
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"
-        ></ListView>
+        android:divider="@null"></ListView>
 </LinearLayout>

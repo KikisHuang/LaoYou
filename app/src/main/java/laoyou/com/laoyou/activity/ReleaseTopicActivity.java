@@ -27,10 +27,13 @@ import laoyou.com.laoyou.listener.EdittextListener;
 import laoyou.com.laoyou.listener.ReleaseTopicListener;
 import laoyou.com.laoyou.presenter.ReleaseTopicPresenter;
 import laoyou.com.laoyou.utils.DeviceUtils;
+import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.ContainsEmojiEditText;
 import laoyou.com.laoyou.view.MinheightGridView;
 
+import static laoyou.com.laoyou.dialog.CustomProgress.Show;
+import static laoyou.com.laoyou.utils.IntentUtils.goAddTopicTypePage;
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
@@ -51,6 +54,9 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
     private FrameLayout video_cover_layout;
     private int contentNum = 0;
     private ReleaseTopicPresenter rp;
+    private String topicType = "";
+    private TextView topic_name;
+    private LinearLayout issue_layout;
 
     @Override
     protected void click() {
@@ -63,6 +69,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
         video_cover_layout.setOnClickListener(this);
         issue_tv.setOnClickListener(this);
         topic_content_ed.setContentListener(this);
+        topic_type_layout.setOnClickListener(this);
     }
 
     @Override
@@ -71,6 +78,8 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
         cancel_tv = f(R.id.cancel_tv);
         issue_tv = f(R.id.issue_tv);
         topic_type_tv = f(R.id.topic_type_tv);
+        topic_name = f(R.id.topic_name);
+        issue_layout = f(R.id.issue_layout);
         video_cover_layout = f(R.id.video_cover_layout);
         topic_content_ed = f(R.id.topic_content_ed);
         photo_gridView = f(R.id.photo_gridView);
@@ -88,13 +97,17 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
             photo_gridView.setVisibility(View.VISIBLE);
             selectList.add(null);
         }
-        videoselectList = getIntent().getParcelableArrayListExtra("Release_video");
-        if (videoselectList != null) {
-            issue_tv.setTextColor(getRouColors(R.color.blue_text));
-            photo_layout.setVisibility(View.GONE);
-            video_cover_layout.setVisibility(View.VISIBLE);
-            Glide.with(this).load(videoselectList.get(0).getPath()).into(video_img);
+        if (getIntent().getParcelableArrayListExtra("Release_video") != null) {
+            videoselectList = getIntent().getParcelableArrayListExtra("Release_video");
+
+            if (videoselectList != null) {
+                issue_tv.setTextColor(getRouColors(R.color.blue_text));
+                photo_layout.setVisibility(View.GONE);
+                video_cover_layout.setVisibility(View.VISIBLE);
+                Glide.with(this).load(videoselectList.get(0).getPath()).into(video_img);
+            }
         }
+
         adapter = new PhotoGridAdapter(this, selectList, this);
         photo_gridView.setAdapter(adapter);
     }
@@ -146,19 +159,23 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
                 break;
             case R.id.issue_tv:
                 int content = topic_content_ed.getText().toString().length();
-                int photo = selectList.size();
-                int video = videoselectList.size();
+                int photo = selectList != null ? selectList.size() : 0;
+                int video = videoselectList != null ? videoselectList.size() : 0;
+
                 if (photo > 0 || video > 0 || content > 0) {
                     List<File> photos = null;
                     if (selectList.size() > 0)
                         photos = new ArrayList<>();
                     for (LocalMedia lm : selectList) {
-                        photos.add(new File(lm.getCompressPath() == null || lm.getCompressPath().isEmpty() ? lm.getPath() : lm.getCompressPath()));
+                        if (lm != null)
+                            photos.add(new File(lm.getCompressPath() == null || lm.getCompressPath().isEmpty() ? lm.getPath() : lm.getCompressPath()));
                     }
                     File videos = null;
+                    Show(ReleaseTopicActivity.this, "发布中", true, null);
                     if (videoselectList.size() > 0)
                         videos = new File(videoselectList.get(0).getPath());
-                    rp.IssueTopic("", topic_content_ed.getText().toString(), photos, videos);
+
+                    rp.IssueTopic(topicType, topic_content_ed.getText().toString(), photos, videos);
 
                 } else
                     ToastUtil.toast2_bottom(this, gets(R.string.cannot_send_null_content));
@@ -166,7 +183,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
 
             case R.id.cancel_tv:
                 if (contentNum > 0 || selectList.size() > 0 || videoselectList.size() > 0) {
-                    new MyAlertDialog(this).builder().setCancelable(true).setMsg("确定放弃编辑内容？").setNegativeButton("取消", null).setPositiveButton("确定", new View.OnClickListener() {
+                    new MyAlertDialog(this).builder().setCancelable(true).setTitle("提示").setMsg("确定放弃编辑内容？").setNegativeButton("取消", null).setPositiveButton("确定", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             finish();
@@ -175,6 +192,10 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
                 } else
                     finish();
 
+                break;
+
+            case R.id.topic_type_layout:
+                goAddTopicTypePage(this);
                 break;
         }
     }
@@ -270,13 +291,19 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
                     Glide.with(this).load(videoselectList.get(0).getPath()).into(video_img);
                     Log.i(TAG, "onActivityResult videoselectList size === " + videoselectList.size());
                     break;
+
+                case Fields.ACRESULET5:
+                    topicType = data.getExtras().getString("Topic_Type_Id");
+                    topic_name.setText(data.getExtras().getString("Topic_Type_Name"));
+                    issue_layout.setVisibility(View.VISIBLE);
+                    break;
             }
         }
     }
 
     @Override
     public void onFaileds(String msg) {
-
+        ToastUtil.toast2_bottom(ReleaseTopicActivity.this, msg);
     }
 
     @Override

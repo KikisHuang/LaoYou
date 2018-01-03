@@ -62,13 +62,42 @@ public class PageTopBannerBean {
         this.value = value;
     }
 
-    String httpUrl;
-    String id;
-    String imgUrl;
-    String remarks;
-    int type;
-    int uid;
-    String value;
+    private String httpUrl;
+    private String id;
+    private String imgUrl;
+    private String remarks;
+    private int type;
+    private int uid;
+    private int clickCount;
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    private String info;
+    private String title;
+
+    public int getClickCount() {
+        return clickCount;
+    }
+
+    public void setClickCount(int clickCount) {
+        this.clickCount = clickCount;
+    }
+
+    private String value;
 
     public View getView() {
         return view;

@@ -5,9 +5,13 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.bumptech.glide.Glide;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
@@ -19,7 +23,6 @@ import laoyou.com.laoyou.thread.getImageCacheAsyncTask;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.RippleView;
-import me.iwf.photopicker.PhotoPicker;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
@@ -84,9 +87,15 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case PhotoPicker.REQUEST_CODE:
-                    ArrayList<String> p = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-                    op.CompressFile(this,p,200);
+                case PictureConfig.CHOOSE_REQUEST:
+
+                    List<LocalMedia> list = PictureSelector.obtainMultipleResult(data);
+                    ArrayList<String> p = new ArrayList<>();
+                    for (LocalMedia lma : list) {
+                        p.add(lma.getCompressPath() != null || !lma.getCompressPath().isEmpty() ? lma.getCompressPath() : lma.getPath());
+                    }
+//                    ArrayList<String> p = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                    op.CompressFile(this, p, 300);
                     break;
             }
         }

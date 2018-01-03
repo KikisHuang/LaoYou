@@ -72,7 +72,6 @@ public class TopicCirclePresenter implements HttpResultListener {
                     listener.onFailedMsg(gets(R.string.nodata));
                 else if (!isRefresh)
                     listener.onFailedMsg(gets(R.string.nomore));
-
                 break;
 
             case Fields.REQUEST2:

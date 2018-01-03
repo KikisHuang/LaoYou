@@ -1,5 +1,6 @@
 package laoyou.com.laoyou.activity;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -20,18 +21,28 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.HomePageAdapter;
 import laoyou.com.laoyou.bean.AttentionGameBean;
 import laoyou.com.laoyou.bean.PhotoBean;
+import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HomePageListener;
+import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 import laoyou.com.laoyou.presenter.HomePagePresenter;
+import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.tencent.model.FriendshipInfo;
+import laoyou.com.laoyou.tencent.ui.AddFriendActivity;
+import laoyou.com.laoyou.tencent.ui.ProfileActivity;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.RoundAngleImageView;
 
+import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goLikeGamePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyPhotoPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goOthersDetailsPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goTopicCommentDetailsPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goVideoPlayerPage;
 import static laoyou.com.laoyou.utils.SynUtils.IsMe;
 import static laoyou.com.laoyou.utils.SynUtils.IsNull;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -41,11 +52,11 @@ import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
 /**
  * Created by lian on 2017/12/7.
  */
-public class HomePageActivity extends InitActivity implements HomePageListener, AbsListView.OnScrollListener, View.OnClickListener {
+public class HomePageActivity extends InitActivity implements HomePageListener, RecyclerViewOnItemClickListener, AbsListView.OnScrollListener, View.OnClickListener {
     private ListView listView;
     private LinearLayout head_layout, foot_layout;
     private HomePageAdapter adapter;
-    private List<String> list;
+    private List<TopicTypeBean> list;
     private ImageView background_img, back_img;
     private CircleImageView head_img;
     private RelativeLayout title_layout;
@@ -58,6 +69,10 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     private String id;
     private boolean isMe;
     private LinearLayout like_game_layout;
+    private TextView foot_tv;
+    private boolean IsRefresh;
+    private String identify = "";
+    private String HeadImgUrl = "";
 
     @Override
     protected void click() {
@@ -66,6 +81,8 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         game_list_layout.setOnClickListener(this);
         like_game_layout.setOnClickListener(this);
         heart_layout.setOnClickListener(this);
+        chat_layout.setOnClickListener(this);
+        add_layout.setOnClickListener(this);
     }
 
     @Override
@@ -87,11 +104,8 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         heart_layout = f(R.id.heart_layout);
         back_img = f(R.id.back_img);
 
-
         list = new ArrayList<>();
-        list.add("");
-        list.add("");
-        list.add("");
+
         head_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.home_page_head_layout, null);
         foot_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.foot_include, null);
 
@@ -111,8 +125,10 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         photo_layout = (LinearLayout) head_layout.findViewById(R.id.photo_layout);
         game_list_layout = (LinearLayout) head_layout.findViewById(R.id.game_list_layout);
 
+        foot_tv = (TextView) foot_layout.findViewById(R.id.foot_tv);
+        foot_tv.setVisibility(View.GONE);
 
-        adapter = new HomePageAdapter(this, list);
+        adapter = new HomePageAdapter(this, list, this);
         listView.addHeaderView(head_layout);
         listView.addFooterView(foot_layout);
         listView.setAdapter(adapter);
@@ -177,7 +193,8 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
     @Override
     public void onShowUserInfo(UserInfoBean ub) {
-
+        identify = ub.getCloudTencentAccount();
+        HeadImgUrl = ub.getHeadImgUrl();
         Glide.with(HomePageActivity.this).load(ub.getHeadImgUrl()).into(head_img);
         nickname_tv.setText(ub.getName());
         Glide.with(this).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).into(background_img);
@@ -247,6 +264,31 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     }
 
     @Override
+    public void onBottom() {
+        if (list.size() > 0)
+            foot_tv.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onStatusInfo(List<TopicTypeBean> nblist) {
+        if (IsRefresh)
+            list.clear();
+        for (TopicTypeBean ttb : nblist) {
+            list.add(ttb);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRefresh() {
+        IsRefresh = true;
+        if (isMe)
+            hp.getPersonaldynamic(null, true);
+        else
+            hp.getPersonaldynamic(id, true);
+    }
+
+    @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
 
     }
@@ -260,6 +302,16 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
         imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 50);
         handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img);
+
+        if (visibleItemCount + firstVisibleItem == totalItemCount) {
+            if (foot_tv.getVisibility() == View.GONE) {
+                IsRefresh = false;
+                if (isMe)
+                    hp.getPersonaldynamic(null, false);
+                else
+                    hp.getPersonaldynamic(id, false);
+            }
+        }
     }
 
     @Override
@@ -269,7 +321,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
                 if (isMe)
                     goMyHomePage(this);
                 else
-                    goOthersDetailsPage(this,id);
+                    goOthersDetailsPage(this, id);
                 break;
             case R.id.like_game_layout:
                 if (isMe)
@@ -283,6 +335,51 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
                 else
                     hp.GiveHeart(id);
                 break;
+            case R.id.add_layout:
+                if (!isMe && !identify.isEmpty()) {
+                    if (FriendshipInfo.getInstance().isFriend(identify)) {
+                        ProfileActivity.navToProfile(this, identify);
+                    } else {
+                        Intent person = new Intent(this, AddFriendActivity.class);
+                        person.putExtra("id", identify);
+                        person.putExtra("name", nickname_tv.getText().toString());
+                        person.putExtra("head_img", HeadImgUrl);
+                        startActivity(person);
+                    }
+                }
+
+                break;
+            case R.id.chat_layout:
+                if (!isMe && !identify.isEmpty() && FriendshipInfo.getInstance().isFriend(identify)) {
+                    SPreferences.saveTemporaryImg(String.valueOf(HeadImgUrl));
+                }
+                break;
         }
+    }
+
+    @Override
+    public void RcOnItemClick(int pos, List<String> imgs) {
+        goPhotoViewerPage(this, imgs, pos, 1);
+    }
+
+    @Override
+    public void LikeClick(String id) {
+        Show(this, "", true, null);
+        hp.LikeChatTheme(id);
+    }
+
+    @Override
+    public void GoPageHome(String userId) {
+
+    }
+
+    @Override
+    public void GoCommentPage(String id, String userId, String name, String content) {
+        goTopicCommentDetailsPage(this, id, userId, name, content);
+    }
+
+    @Override
+    public void GoVideoPage(String url, String videoCover) {
+        goVideoPlayerPage(this, url, videoCover);
     }
 }

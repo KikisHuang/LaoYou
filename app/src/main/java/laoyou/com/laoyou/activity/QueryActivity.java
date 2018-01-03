@@ -15,6 +15,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.GamsAdAdapter;
+import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.QueryListener;
 import laoyou.com.laoyou.presenter.QueryPresenter;
@@ -24,12 +25,13 @@ import laoyou.com.laoyou.utils.ToastUtil;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goCertificationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginOperPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goOutSidePage;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
 
 /**
  * Created by lian on 2017/11/14.
  */
-public class QueryActivity extends InitActivity implements View.OnClickListener, QueryListener {
+public class QueryActivity extends InitActivity implements View.OnClickListener, QueryListener{
 
     private static final String TAG = "QueryActivity";
 
@@ -45,7 +47,7 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
     private FrameLayout head;
     private ListView listview;
     private GamsAdAdapter adapter;
-    private List<String> list;
+    private List<PageTopBannerBean> list;
 
     @Override
     protected void click() {
@@ -72,14 +74,11 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
         again_query_tv = (TextView) head.findViewById(R.id.again_query_tv);
         refuse_ed = (EditText) head.findViewById(R.id.refuse_ed);
         regain_tv = (TextView) head.findViewById(R.id.regain_tv);
-        return_img = (ImageView) head.findViewById(R.id.return_img);
+        return_img = f(R.id.return_img);
 
         listview.addHeaderView(head);
         list = new ArrayList<>();
-        list.add("");
-        list.add("");
-        list.add("");
-        adapter = new GamsAdAdapter(this, list);
+        adapter = new GamsAdAdapter(this, list,this);
         listview.setAdapter(adapter);
         hp = new QueryPresenter(this);
         HideOver();
@@ -98,7 +97,7 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
                     if (!LoginStatusQuery())
                         goLoginOperPage(QueryActivity.this);
 
-                if (flag == 1){
+                if (flag == 1) {
                     Show(QueryActivity.this, "", true, null);
                     hp.getUseDetails();
                 }
@@ -223,6 +222,19 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
     public void onMinPassSize(String passwd) {
         pass_tv.setTextSize(25);
         pass_tv.setText(passwd);
+    }
+
+    @Override
+    public void ShowBannerInfo(List<PageTopBannerBean> ar) {
+        for (PageTopBannerBean pbb : ar) {
+            list.add(pbb);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void GoOutSide(String url) {
+        goOutSidePage(this, url);
     }
 
     private void HideOver() {

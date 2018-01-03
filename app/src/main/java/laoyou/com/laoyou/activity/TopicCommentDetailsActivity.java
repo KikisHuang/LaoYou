@@ -2,6 +2,7 @@ package laoyou.com.laoyou.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -54,7 +56,11 @@ import static laoyou.com.laoyou.utils.DateUtils.getMyDate;
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goParticipationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goVideoPlayerPage;
+import static laoyou.com.laoyou.utils.SynUtils.fileIsExists;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
+import static laoyou.com.laoyou.utils.SynUtils.saveImage;
+import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
 
 /**
  * Created by lian on 2017/12/20.
@@ -89,6 +95,9 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
     private List<LocalMedia> selectList = new ArrayList<>();
     private boolean IsPhoto;
+    private String coverPath = "";
+    private ImageView video_cover_img;
+    private FrameLayout video_layout;
 
     @Override
     protected void click() {
@@ -122,6 +131,10 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
         head_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.topic_comment_head, null);
         tp = new TopicCommentPresenter(this);
+
+        video_cover_img = (ImageView) head_layout.findViewById(R.id.video_cover_img);
+        video_layout = (FrameLayout) head_layout.findViewById(R.id.video_layout);
+
         user_name = (TextView) head_layout.findViewById(R.id.user_name);
         issue_tv = (TextView) head_layout.findViewById(R.id.issue_tv);
         type_name = (TextView) head_layout.findViewById(R.id.type_name);
@@ -274,6 +287,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     @Override
     public void onThemeDetails(final TopicCommentBean tcb) {
 
+
         Glide.with(this).load(tcb.getMcUser().getHeadImgUrl()).into(user_head_img);
         user_name.setText(tcb.getMcUser().getName());
         type_name.setText(tcb.getMcChatType().getName());
@@ -282,28 +296,66 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         content_tv.setText(tcb.getMessageContent() == null || tcb.getMessageContent().isEmpty() ? "" : tcb.getMessageContent());
         content_tv.setVisibility(tcb.getMessageContent() == null || tcb.getMessageContent().isEmpty() ? View.GONE : View.VISIBLE);
 
-        like_num_tv.setText(String.valueOf(tcb.getLikeCount()) + "赞");
+        if (tcb.getLikeCount() == 0)
+            like_num_tv.setVisibility(View.GONE);
+        else {
+            like_num_tv.setVisibility(View.VISIBLE);
+            like_num_tv.setText(String.valueOf(tcb.getLikeCount()) + "赞");
+        }
+
+        comment_num_tv.setVisibility(tcb.getCommentsCount() == null ? View.GONE : View.VISIBLE);
         comment_num_tv.setText(tcb.getCommentsCount() == null ? "0" + "条评论" : tcb.getCommentsCount() + "条评论");
+        /**
+         * 图片类型;
+         */
+        if (tcb.getType() == 1) {
+            if (tcb.getPhotos() != null) {
+                for (int i = 0; i < tcb.getPhotos().size(); i++) {
 
-        if (tcb.getPhotos() != null) {
-            for (int i = 0; i < tcb.getPhotos().size(); i++) {
-
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    lp.topMargin = DeviceUtils.dip2px(this, 2);
+                    ImageView im = new ImageView(this);
+                    im.setScaleType(ImageView.ScaleType.FIT_XY);
+                    im.setLayoutParams(lp);
+                    RequestOptions options = new RequestOptions();
+                    options.centerCrop();
+                    Glide.with(this).load(tcb.getPhotos().get(i)).apply(options).into(im);
+                    final int finalI = i;
+                    im.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            goPhotoViewerPage(TopicCommentDetailsActivity.this, tcb.getPhotos(), finalI, 1);
+                        }
+                    });
+                    content_img_layout.addView(im);
+                }
+            }
+        }
+        /**
+         * 视频类型;
+         */
+        if (tcb.getType() == 2) {
+            if (tcb.getVideos() != null) {
+                if (fileIsExists(tcb.getVideos()))
+                    coverPath = saveImage(null, tcb.getVideos());
+                else {
+                    Bitmap bitmap = createVideoThumbnail(tcb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
+                    coverPath = saveImage(bitmap, tcb.getVideos());
+                }
+                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 lp.topMargin = DeviceUtils.dip2px(this, 2);
-                ImageView im = new ImageView(this);
-                im.setScaleType(ImageView.ScaleType.FIT_XY);
-                im.setLayoutParams(lp);
+                video_cover_img.setLayoutParams(lp);
                 RequestOptions options = new RequestOptions();
                 options.centerCrop();
-                Glide.with(this).load(tcb.getPhotos().get(i)).apply(options).into(im);
-                final int finalI = i;
-                im.setOnClickListener(new View.OnClickListener() {
+                Glide.with(this).load(coverPath).apply(options).into(video_cover_img);
+                video_layout.setVisibility(View.VISIBLE);
+
+                video_cover_img.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        goPhotoViewerPage(TopicCommentDetailsActivity.this, tcb.getPhotos(), finalI, 1);
+                        goVideoPlayerPage(TopicCommentDetailsActivity.this, tcb.getVideos(), coverPath);
                     }
                 });
-                content_img_layout.addView(im);
             }
         }
 
@@ -325,6 +377,11 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
     @Override
     public void onLikeNum(String num) {
+        if (Integer.valueOf(num) > 0)
+            like_num_tv.setVisibility(View.VISIBLE);
+        else
+            like_num_tv.setVisibility(View.GONE);
+
         like_num_tv.setText(num + "赞");
     }
 
@@ -343,7 +400,15 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         }
 
         if (adapter != null) {
-            if (!userId.isEmpty() && !name.isEmpty() && pos >= 0) {
+            if (!userId.isEmpty() && !name.isEmpty()) {
+                for (int i = 0; i < cm.size(); i++) {
+                    ChatMessages ctm = cm.get(i);
+                    if (userId.equals(ctm.getUserId()) && name.equals(ctm.getUserName()) && content.equals(ctm.getMessageContent())){
+                        pos = i;
+                        break;
+                    }
+
+                }
                 listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 listView.setSelection(pos + 1);
@@ -378,7 +443,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     public void GoPhotoPage(String url) {
         List<String> list = new ArrayList<>();
         list.add(url);
-        goPhotoViewerPage(this,list,0,1);
+        goPhotoViewerPage(this, list, 0, 1);
     }
 
     @Override

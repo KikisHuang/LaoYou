@@ -147,6 +147,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:text="赞25"
+                android:textColor="@color/content3"
                 android:textSize="12sp" />
 
             <ImageView
@@ -163,6 +164,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:text="评论10"
+                android:textColor="@color/content3"
                 android:textSize="12sp" />
 
             <ImageView
@@ -226,6 +228,9 @@
                     android:id="@+id/comment_tv1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/content3"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -276,6 +281,9 @@
                     android:id="@+id/comment_tv2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/content3"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -325,6 +333,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:textColor="@color/content3"
                     android:textSize="12sp" />
             </LinearLayout>
 

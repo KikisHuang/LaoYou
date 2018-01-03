@@ -3,7 +3,6 @@ package laoyou.com.laoyou.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -132,7 +131,6 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
 
     @Override
     public void IsonRefresh(int init) {
-
         switch (tag) {
             case 0:
                 tp.getHottestAndNewestData(id, true, 0, init);
@@ -167,6 +165,7 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
 
     @Override
     public void onShowDetailsInfo(List<TopicTypeBean> s) {
+
         if (adapter == null) {
             adapter = new TopicTypeDetailsAdapter(getActivity(), s, this);
             recyclerView.setAdapter(adapter);
@@ -182,18 +181,6 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
             Refresh = false;
     }
 
-    /**
-     * 是否还可以上拉
-     *
-     * @return true可以，false不可以
-     */
-    public boolean canChildScrollDown() {
-        if (android.os.Build.VERSION.SDK_INT < 14) {
-            return recyclerView.getScrollY() > 0;
-        } else {
-            return ViewCompat.canScrollVertically(recyclerView, 1);
-        }
-    }
 
     @Override
     public void onRefresh() {

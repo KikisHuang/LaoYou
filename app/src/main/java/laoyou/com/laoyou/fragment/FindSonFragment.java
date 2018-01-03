@@ -96,7 +96,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
 //              fp.getNewIncident(true);
                 break;
             case 1:
-                nearbyAdapter = new NearbyAdapter(getActivity(), list);
+                nearbyAdapter = new NearbyAdapter(getActivity(), list,this);
                 recyclerView.setAdapter(nearbyAdapter);
                 fp.getNearbyData(true);
                 break;
@@ -164,8 +164,12 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
 
     @Override
     public void RefreshNewWonders(List<TopicTypeBean> toppic) {
-        if (isRefresh)
+        if (isRefresh) {
             topics.clear();
+            if (toppic.size() < 10)
+                springView.setEnable(false);
+        }
+
 
         for (TopicTypeBean nb : toppic) {
             topics.add(nb);

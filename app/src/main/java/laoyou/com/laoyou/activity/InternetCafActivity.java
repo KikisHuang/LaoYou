@@ -9,7 +9,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -116,6 +115,8 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         SpringUtils.SpringViewInit(springView, this, this);
         send_comment_layout = f(R.id.send_comment_layout);
         photo_img = f(R.id.photo_img);
+        photo_img.setVisibility(View.GONE);
+
         comment_ed = f(R.id.comment_ed);
         send_comment_tv = f(R.id.send_comment_tv);
 
@@ -376,17 +377,17 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
 
     @Override
     public void onKeyboardChange(boolean isShow, int keyboardHeight) {
-        Log.d(TAG, "isShow = [" + isShow + "], keyboardHeight = [" + keyboardHeight + "]");
         if (!isShow) {
             menu_layout.setVisibility(View.VISIBLE);
             send_comment_layout.setVisibility(View.GONE);
+            comment_ed.setText("");
         }
     }
 
     @Override
     public void IsonRefresh(int init) {
         ip.page = init;
-        ip.getCatComment(false);
+        ip.getCatComment(true);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package laoyou.com.laoyou.presenter;
 
+import android.util.Log;
+
 import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONException;
@@ -9,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.FilesBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.ReleaseTopicListener;
@@ -16,7 +19,9 @@ import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
+import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * Created by lian on 2017/12/28.
@@ -36,23 +41,27 @@ public class ReleaseTopicPresenter implements HttpResultListener {
         switch (tag) {
             case Fields.REQUEST1:
                 listener.onSucceed();
+                Cancle();
                 break;
         }
     }
 
     @Override
     public void onError(Request request, Exception e) {
-
+        listener.onFaileds(gets(R.string.networkerror));
+        Cancle();
     }
 
     @Override
     public void onParseError(Exception e) {
-
+        Log.e(TAG, "Parse Error ===" + e);
+        Cancle();
     }
 
     @Override
     public void onFailed(String response, int code, int tag) {
-
+        listener.onFaileds(response);
+        Cancle();
     }
 
     /**

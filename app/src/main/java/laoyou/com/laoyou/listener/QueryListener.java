@@ -1,5 +1,8 @@
 package laoyou.com.laoyou.listener;
 
+import java.util.List;
+
+import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 
 /**
@@ -29,4 +32,7 @@ public interface QueryListener {
 
     void onMinPassSize(String passwd);
 
+    void ShowBannerInfo(List<PageTopBannerBean> list);
+
+    void GoOutSide(String url);
 }

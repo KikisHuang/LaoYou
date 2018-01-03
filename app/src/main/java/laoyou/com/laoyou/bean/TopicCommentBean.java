@@ -205,7 +205,7 @@ public class TopicCommentBean {
         this.imgs = imgs;
     }
 
-    public Object getVideos() {
+    public String getVideos() {
         return videos;
     }
 

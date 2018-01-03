@@ -56,8 +56,8 @@
                         android:layout_height="wrap_content"
                         android:maxEms="10"
                         android:singleLine="true"
-                        android:text="回复了你"
-                        android:textColor="@color/content3"
+                        android:text="回复了你："
+                        android:textColor="@color/content4"
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>

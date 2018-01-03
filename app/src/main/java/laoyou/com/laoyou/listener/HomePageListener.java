@@ -4,6 +4,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.bean.AttentionGameBean;
 import laoyou.com.laoyou.bean.PhotoBean;
+import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 
 /**
@@ -22,4 +23,10 @@ public interface HomePageListener {
     void onAttentGames(List<AttentionGameBean> ll);
 
     void onPhotoList(List<PhotoBean> photos);
+
+    void onBottom();
+
+    void onStatusInfo(List<TopicTypeBean> nblist);
+
+    void onRefresh();
 }

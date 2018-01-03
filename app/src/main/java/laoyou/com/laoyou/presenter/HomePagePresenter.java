@@ -1,8 +1,10 @@
 package laoyou.com.laoyou.presenter;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONArray;
@@ -17,18 +19,25 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.AttentionGameBean;
 import laoyou.com.laoyou.bean.CheckStatusBean;
 import laoyou.com.laoyou.bean.PhotoBean;
+import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HomePageListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
+import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
+import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
+import static laoyou.com.laoyou.utils.SynUtils.fileIsExists;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
+import static laoyou.com.laoyou.utils.SynUtils.saveImage;
+import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
 
 /**
  * Created by lian on 2017/12/7.
@@ -36,6 +45,7 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
 public class HomePagePresenter implements HttpResultListener {
     private static final String TAG = "HomePagePresenter";
     private HomePageListener listener;
+    public int page = 0;
 
     public HomePagePresenter(HomePageListener listener) {
         this.listener = listener;
@@ -50,6 +60,7 @@ public class HomePagePresenter implements HttpResultListener {
         getMyHeartNum(id);
         getAttentGames(id);
         getMyPhotoList(id);
+        getPersonaldynamic(id, false);
     }
 
     /**
@@ -65,7 +76,6 @@ public class HomePagePresenter implements HttpResultListener {
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETOTHERSDETAILS);
     }
 
-
     /**
      * 获取我的个人信息;
      */
@@ -74,7 +84,29 @@ public class HomePagePresenter implements HttpResultListener {
         getMyHeartNum(null);
         getAttentGames(null);
         getMyPhotoList(null);
+        getPersonaldynamic(null, false);
 //        CheckID();
+    }
+
+    /**
+     * 获取个人动态(他人动态);
+     *
+     * @param id
+     * @param b
+     */
+    public void getPersonaldynamic(String id, boolean b) {
+
+        Map<String, String> map = getKeyMap();
+        if (id != null)
+            map.put("userId", String.valueOf(id));
+        if (b)
+            map.put("page", String.valueOf(0));
+        else
+            map.put("page", String.valueOf(page));
+
+        map.put("pageSize", String.valueOf(page += Fields.SIZE));
+
+        httpUtils.OkHttpsGet(map, this, Fields.ACRESULET1, Interface.URL + Interface.GETCAREBYPAGE);
     }
 
     /**
@@ -198,21 +230,82 @@ public class HomePagePresenter implements HttpResultListener {
                 listener.onFailedMSg(gets(R.string.give_heart_succ));
                 break;
 
+            case Fields.ACRESULET1:
+                try {
+                    JSONArray status = getJsonAr(response);
+                    if (status.length() > 0) {
+                        List<TopicTypeBean> Nblist = new ArrayList<>();
+                        for (int i = 0; i < status.length(); i++) {
+                            TopicTypeBean ttb = new Gson().fromJson(String.valueOf(status.getJSONObject(i)), TopicTypeBean.class);
+
+                            if (ttb.getReChatMessages() != null) {
+                                JSONArray tta = new JSONArray(ttb.getReChatMessages().replace(" ", ""));
+                                Gson gson = new Gson();
+                                String[][] ss = gson.fromJson(String.valueOf(tta), new TypeToken<String[][]>() {
+                                }.getType());
+                                List<List<String>> outlist = new ArrayList<>();
+                                for (String[] strings : ss) {
+                                    List<String> inlist = null;
+                                    for (String string : strings) {
+                                        if (inlist == null)
+                                            inlist = new ArrayList<>();
+                                        inlist.add(string);
+                                    }
+                                    outlist.add(inlist);
+                                }
+                                ttb.setComments(outlist);
+                            }
+                            if (ttb.getVideos() != null) {
+                                if (fileIsExists(ttb.getVideos()))
+                                    ttb.setVideoCover(saveImage(null, ttb.getVideos()));
+                                else {
+                                    Bitmap bitmap = createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
+                                    ttb.setVideoCover(saveImage(bitmap, ttb.getVideos()));
+                                }
+                            }
+
+                            if (ttb.getImgs() != null) {
+                                String b[] = ttb.getImgs().split("[,]");
+                                if (b != null && b.length > 0) {
+                                    List<String> list = new ArrayList<>();
+                                    for (String str : b) {
+                                        list.add(str);
+                                    }
+                                    ttb.setPhotos(list);
+                                }
+                            }
+                            Nblist.add(ttb);
+                        }
+                        listener.onStatusInfo(Nblist);
+                    } else
+                        listener.onBottom();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case Fields.ACRESULET2:
+                listener.onRefresh();
+                break;
         }
+        Cancle();
     }
 
     @Override
     public void onError(Request request, Exception e) {
         listener.onFailedMSg(gets(R.string.networkerror));
+        Cancle();
     }
 
     @Override
     public void onParseError(Exception e) {
+        Cancle();
         listener.onFailedMSg(gets(R.string.parse_error));
     }
 
     @Override
     public void onFailed(String response, int code, int tag) {
+        Cancle();
         listener.onFailedMSg(response);
     }
 
@@ -226,5 +319,11 @@ public class HomePagePresenter implements HttpResultListener {
 
     public void getMyHeart() {
 
+    }
+
+    public void LikeChatTheme(String id) {
+        Map<String, String> map = getKeyMap();
+        map.put("chatThemeId", id);
+        httpUtils.OkHttpsGet(map, this, Fields.ACRESULET2, Interface.URL + Interface.LIKECHATTHEME);
     }
 }

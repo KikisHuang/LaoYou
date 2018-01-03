@@ -185,7 +185,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             RoundAngleImageView im = new RoundAngleImageView(getActivity());
 
             im.setLayoutParams(lp);
-            Glide.with(getActivity()).load(Fields.Catalina).into(im);
+            Glide.with(getActivity()).load(Fields.Catalina).apply(getGlideOptions()).into(im);
             dynamic_layout.addView(im);
         }
     }

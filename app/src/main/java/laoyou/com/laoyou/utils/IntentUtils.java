@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.activity.AddLikeGameActivity;
+import laoyou.com.laoyou.activity.AddTopicTypeActivity;
 import laoyou.com.laoyou.activity.AddressbookActivity;
 import laoyou.com.laoyou.activity.CertificationActivity;
 import laoyou.com.laoyou.activity.ChangePassWordActivity;
@@ -159,6 +160,17 @@ public class IntentUtils {
         intent.putParcelableArrayListExtra("Release_photo", (ArrayList<? extends Parcelable>) photo);
         intent.putParcelableArrayListExtra("Release_video", (ArrayList<? extends Parcelable>) video);
         startPage(context, intent);
+    }
+
+    /**
+     * 发布话题圈类型选择页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goAddTopicTypePage(Context context) {
+        Intent intent = new Intent(context, AddTopicTypeActivity.class);
+//        startPage(context, intent);
+        ((Activity) context).startActivityForResult(intent, Fields.ACRESULET5);
     }
 
     /**

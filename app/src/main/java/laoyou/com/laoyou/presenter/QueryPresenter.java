@@ -10,13 +10,17 @@ import android.widget.ImageView;
 import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.CheckStatusBean;
+import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.QueryListener;
@@ -27,8 +31,10 @@ import okhttp3.Request;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.thread.CheckThread.ThreadInstance;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
+import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
@@ -49,7 +55,14 @@ public class QueryPresenter implements HttpResultListener {
     public void Presenter() {
         handInit();
 //        BannerHideOfShow();
+        getBanner();
         IsLogin();
+    }
+
+    public void getBanner() {
+        Map<String, String> map = getParamsMap();
+        map.put("showPosition", "200");
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETBANNER);
     }
 
     public void getUseDetails() {
@@ -91,7 +104,20 @@ public class QueryPresenter implements HttpResultListener {
     public void onSucceed(String response, int tag) {
         switch (tag) {
             case Fields.REQUEST1:
+                try {
+                    JSONArray ar = getJsonAr(response);
+                    if (ar.length() > 0) {
+                        List<PageTopBannerBean> list = new ArrayList<>();
+                        for (int i = 0; i < ar.length(); i++) {
+                            PageTopBannerBean pb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), PageTopBannerBean.class);
+                            list.add(pb);
+                        }
+                        listener.ShowBannerInfo(list);
+                    }
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
             case Fields.REQUEST2:
                 try {

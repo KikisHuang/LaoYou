@@ -231,7 +231,6 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                             listener.onFailed(gets(R.string.The_bottom));
                     }
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

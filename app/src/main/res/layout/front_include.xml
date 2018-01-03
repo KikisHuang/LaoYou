@@ -9,31 +9,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="290dp"
+        android:layout_height="270dp"
         android:orientation="vertical">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|top"
-            android:layout_marginTop="20dp">
-
-            <ImageView
-                android:id="@+id/return_img"
-                android:layout_width="40dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center|left"
-                android:src="@mipmap/return_icon" />
-
-            <TextView
-                android:id="@+id/query_pass_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="查询上网密码"
-                android:textColor="@color/black0"
-                android:textSize="21dp" />
-        </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -61,11 +38,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
+                android:layout_marginTop="40dp"
                 android:gravity="center"
-                android:text=""
+                android:text="123123"
                 android:textColor="@color/btn_blue_query"
                 android:textSize="55dp"
-                android:visibility="gone" />
+                android:visibility="gone"
+
+                />
 
             <TextView
                 android:id="@+id/regain_tv"
@@ -151,7 +131,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:text="重新认证"
-                android:textColor="@color/white"
+                android:textColor="@color/btn_blue_query"
                 android:textSize="21dp"
                 android:visibility="gone" />
 

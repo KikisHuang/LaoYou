@@ -2,6 +2,8 @@ package laoyou.com.laoyou.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.liaoinstan.springview.widget.SpringView;
@@ -20,12 +22,13 @@ import laoyou.com.laoyou.presenter.HeartValueAndCommentPresenter;
 import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
+import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.SynUtils.getTAG;
 
 /**
  * Created by lian on 2017/5/5.
  */
-public class CommentFragment extends BaseFragment implements SpringListener, HeartValueAndCommentListener {
+public class CommentFragment extends BaseFragment implements SpringListener, HeartValueAndCommentListener, AdapterView.OnItemClickListener {
     private static final String TAG = getTAG(CommentFragment.class);
     private SpringView springView;
     private int tag;
@@ -57,7 +60,7 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
 
     @Override
     protected void click() {
-
+        listView.setOnItemClickListener(this);
     }
 
     private void getData() {
@@ -167,5 +170,13 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
             commentList.add(h);
         }
         cadapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (flag == 0){}
+//            goTopicCommentDetailsPage(getActivity(), commentList.get(position).getId(), commentList.get(position).getUserId(), "", "");
+        else
+            goHomePage(getActivity(), heartsList.get(position).getId());
     }
 }

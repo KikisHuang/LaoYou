@@ -9,9 +9,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
@@ -21,7 +22,6 @@ import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.RippleView;
-import me.iwf.photopicker.PhotoPicker;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
@@ -118,13 +118,13 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
 
                 break;
             case R.id.front_id_layout:
-                getMULTIPLEPhotoTag(this, 1, Fields.ACRESULET1);
+                getMULTIPLEPhotoTag(this, Fields.ACRESULET1);
                 break;
             case R.id.Tail_id_layout:
-                getMULTIPLEPhotoTag(this, 1, Fields.ACRESULET2);
+                getMULTIPLEPhotoTag(this, Fields.ACRESULET2);
                 break;
             case R.id.hand_id_layout:
-                getMULTIPLEPhotoTag(this, 1, Fields.ACRESULET3);
+                getMULTIPLEPhotoTag(this, Fields.ACRESULET3);
                 break;
         }
     }
@@ -133,18 +133,22 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+            List<LocalMedia> list = PictureSelector.obtainMultipleResult(data);
             switch (requestCode) {
                 case Fields.ACRESULET1:
-                    ArrayList<String> a = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-                    Compress(a, Fields.ACRESULET1);
+
+                    // 图片选择结果回调
+                    FrontFile = new File(list.get(0).getCompressPath() != null || !list.get(0).getCompressPath().isEmpty() ? list.get(0).getCompressPath() : list.get(0).getPath());
+                    Glide.with(CertificationActivity.this).load(FrontFile).apply(getGlideOptions()).into(front_img);
+
                     break;
                 case Fields.ACRESULET2:
-                    ArrayList<String> b = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-                    Compress(b, Fields.ACRESULET2);
+                    TailFile = new File(list.get(0).getCompressPath() != null || !list.get(0).getCompressPath().isEmpty() ? list.get(0).getCompressPath() : list.get(0).getPath());
+                    Glide.with(CertificationActivity.this).load(TailFile).apply(getGlideOptions()).into(tail_img);
                     break;
                 case Fields.ACRESULET3:
-                    ArrayList<String> c = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-                    Compress(c, Fields.ACRESULET3);
+                    HandFile = new File(list.get(0).getCompressPath() != null || !list.get(0).getCompressPath().isEmpty() ? list.get(0).getCompressPath() : list.get(0).getPath());
+                    Glide.with(CertificationActivity.this).load(HandFile).apply(getGlideOptions()).into(hand_img);
                     break;
             }
         }

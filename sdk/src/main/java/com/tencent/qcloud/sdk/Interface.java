@@ -292,7 +292,10 @@ public class Interface {
      * 获取话题圈列表接口;
      */
     public static final String GETCAREBYPAGE= "chat/select/getByPage.app";
-
+    /**
+     * 新增话题圈类型接口;
+     */
+    public static final String ADDCHATTYPE= "chatType/add/chatType.app";
 
 
 }

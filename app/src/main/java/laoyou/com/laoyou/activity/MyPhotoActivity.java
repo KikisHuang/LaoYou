@@ -6,6 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.entity.LocalMedia;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +20,6 @@ import laoyou.com.laoyou.bean.PhotoBean;
 import laoyou.com.laoyou.listener.MyPhotoListener;
 import laoyou.com.laoyou.presenter.MyPhotoPresenter;
 import laoyou.com.laoyou.utils.Fields;
-import me.iwf.photopicker.PhotoPicker;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
@@ -164,8 +167,14 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case PhotoPicker.REQUEST_CODE:
-                    ArrayList<String> p = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                case PictureConfig.CHOOSE_REQUEST:
+
+                    List<LocalMedia> list = PictureSelector.obtainMultipleResult(data);
+                    ArrayList<String> p = new ArrayList<>();
+                    for (LocalMedia lma : list) {
+                        p.add(lma.getCompressPath() != null || !lma.getCompressPath().isEmpty() ? lma.getCompressPath() : lma.getPath());
+                    }
+//                    ArrayList<String> p = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
                     upNum = p.size();
                     mp.ComPressFile(this, p, 300);
                     break;

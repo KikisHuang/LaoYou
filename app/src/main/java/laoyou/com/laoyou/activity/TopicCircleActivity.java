@@ -44,7 +44,7 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
     private List<TopicBean> list;
     private SpringView springView;
     private boolean IsRefresh;
-    private ImageView issue_img, photo_img,camera_img;
+    private ImageView issue_img, photo_img, camera_img;
 
     @Override
     protected void click() {

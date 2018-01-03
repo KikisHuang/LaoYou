@@ -24,19 +24,30 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp">
 
         <EditText
             android:id="@+id/topic_type_name_ed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/imaginary_circ_editt"
             android:gravity="center"
             android:hint="输入话题"
-            android:textColor="@color/text_blue"
+            android:textColor="@color/blue_text"
             android:textColorHint="@color/light_blue"
             android:textSize="13sp" />
 
+        <ImageView
+            android:id="@+id/clear_img"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="top|right"
+            android:src="@mipmap/close_icon"
+            android:visibility="gone"
+            />
     </FrameLayout>
 
     <ListView

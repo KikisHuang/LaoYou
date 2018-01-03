@@ -196,20 +196,20 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
         holder.comment_tv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.GoCommentPage(list.get(position).getId(), list.get(position).getComments().get(0).get(3), list.get(position).getComments().get(0).get(1), list.get(position).getComments().get(0).get(2));
+                listener.GoCommentPage(list.get(position).getId(), list.get(position).getComments().get(0).get(3), list.get(position).getComments().get(0).get(0), list.get(position).getComments().get(0).get(2));
             }
         });
         holder.comment_tv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.GoCommentPage(list.get(position).getId(), list.get(position).getComments().get(1).get(3), list.get(position).getComments().get(1).get(1), list.get(position).getComments().get(1).get(2));
+                listener.GoCommentPage(list.get(position).getId(), list.get(position).getComments().get(1).get(3), list.get(position).getComments().get(1).get(0), list.get(position).getComments().get(1).get(2));
 
             }
         });
         holder.comment_tv3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.GoCommentPage(list.get(position).getId(), list.get(position).getComments().get(2).get(3), list.get(position).getComments().get(2).get(1), list.get(position).getComments().get(2).get(2));
+                listener.GoCommentPage(list.get(position).getId(), list.get(position).getComments().get(2).get(3), list.get(position).getComments().get(2).get(0), list.get(position).getComments().get(2).get(2));
 
             }
         });
@@ -217,6 +217,13 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
     }
 
     private void PageHomeClick(MyViewHolder holder, final int position) {
+        holder.head_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.GoPageHome(list.get(position).getUserId());
+            }
+        });
+
         holder.name_tv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

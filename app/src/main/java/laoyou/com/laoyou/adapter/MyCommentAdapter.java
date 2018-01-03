@@ -65,8 +65,16 @@ public class MyCommentAdapter extends BaseAdapter {
         content_tv.setText(list.get(position).getMessageContent());
         time_tv.setText(getMyDate(list.get(position).getCreateTime()));
 
-        reply_layout.setVisibility(tag == 1 ? View.GONE : View.VISIBLE);
+//        reply_layout.setVisibility(tag == 1 ? View.GONE : View.VISIBLE);
+
         reply_to_tv.setVisibility(tag == 1 ? View.GONE : View.VISIBLE);
+        if (list.get(position).getReUser() != null && !list.get(position).getReUser().isEmpty()) {
+            reply_layout.setVisibility(View.VISIBLE);
+            reply_name_tv.setText(list.get(position).getReUser()+"：");
+            reply_content_tv.setText(list.get(position).getReMessage());
+        } else
+            reply_layout.setVisibility(View.GONE);
+
 
         return view;
     }

@@ -14,6 +14,9 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,7 +35,6 @@ import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.ObservableScrollView;
-import me.iwf.photopicker.PhotoPicker;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.fragment.MyFragment.SettingInstance;
@@ -41,7 +43,7 @@ import static laoyou.com.laoyou.utils.Fields.getAdministrative;
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goCertificationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLikeGamePage;
-import static laoyou.com.laoyou.utils.PhotoUtils.getMULTIPLEPhoto;
+import static laoyou.com.laoyou.utils.PhotoUtils.getMULTIPLEPhotoTag;
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
@@ -54,7 +56,7 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
     private ImageView background_img, back_img;
     private RelativeLayout title_layout;
     private CircleImageView head_img;
-    private TextView sex_tv, region_tv, attestation_state_tv, hometown_tv, height_tv, birthday_tv, love_state_tv, save_tv,like_game_tv;
+    private TextView sex_tv, region_tv, attestation_state_tv, hometown_tv, height_tv, birthday_tv, love_state_tv, save_tv, like_game_tv;
     private LinearLayout go_add_layout, attestation_layout, nickname_layout, signature_layout, game_list_layout;
     private ObservableScrollView scrollView;
     private int imageHeight;
@@ -359,11 +361,13 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
                 break;
             case R.id.head_img:
                 isHead = true;
-                getMULTIPLEPhoto(MyHomePageActivity.this, 1);
+//                getMULTIPLEPhoto(MyHomePageActivity.this, 1);
+                getMULTIPLEPhotoTag(MyHomePageActivity.this,PictureConfig.CHOOSE_REQUEST);
                 break;
             case R.id.background_img:
                 isHead = false;
-                getMULTIPLEPhoto(MyHomePageActivity.this, 1);
+                getMULTIPLEPhotoTag(MyHomePageActivity.this,PictureConfig.CHOOSE_REQUEST);
+//                getMULTIPLEPhoto(MyHomePageActivity.this, 1);
                 break;
             case R.id.attestation_layout:
                 if (!isAttes)
@@ -518,8 +522,13 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 //头像、背景图;
-                case PhotoPicker.REQUEST_CODE:
-                    ArrayList<String> p = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                case PictureConfig.CHOOSE_REQUEST:
+
+                    List<LocalMedia> list = PictureSelector.obtainMultipleResult(data);
+                    ArrayList<String> p = new ArrayList<>();
+                    for (LocalMedia lma : list) {
+                        p.add(lma.getCompressPath() != null || !lma.getCompressPath().isEmpty() ? lma.getCompressPath() : lma.getPath());
+                    }
                     if (isHead)
                         mp.CompressFile(this, p, 150);
                     else

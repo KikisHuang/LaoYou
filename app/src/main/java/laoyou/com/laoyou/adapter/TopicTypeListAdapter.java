@@ -10,16 +10,17 @@ import android.widget.TextView;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.TopicBean;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
 /**
  * Created by lian on 2017/11/18.
  */
 public class TopicTypeListAdapter extends BaseAdapter {
-    private List<String> list = null;
+    private List<TopicBean> list = null;
     private Context mContext;
 
-    public TopicTypeListAdapter(Context mContext, List<String> list) {
+    public TopicTypeListAdapter(Context mContext, List<TopicBean> list) {
         this.mContext = mContext.getApplicationContext();
         this.list = list;
     }
@@ -40,9 +41,10 @@ public class TopicTypeListAdapter extends BaseAdapter {
         if (view == null)
             view = LayoutInflater.from(mContext).inflate(R.layout.topic_type_list_item, null);
 
-        TextView name = OverallViewHolder.ViewHolder.get(view, R.id.name_tv);
-        name.setText(list.get(position));
-        
+        TextView name = OverallViewHolder.ViewHolder.get(view, R.id.topic_type_name);
+
+        name.setText(list.get(position).getName());
+
         return view;
     }
 
