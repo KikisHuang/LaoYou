@@ -15,6 +15,8 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.view.RoundAngleImageView;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 
 /**
  * Created by lian on 2017/5/3.
@@ -76,7 +78,7 @@ public class homeViewPageUtils {
 
             if (i == 0) {   //判断当i=0为该处的ImageView设置最后一张图片作为背景
 
-                Glide.with(context).load(images.get(images.size() - 1).getImgUrl()).into(imageView);
+                Glide.with(context).load(images.get(images.size() - 1).getImgUrl()).apply(getGlideOptions()).into(imageView);
 
                 pb.setType(images.get(images.size() - 1).getType());
                 pb.setId(images.get(images.size() - 1).getId());
@@ -88,7 +90,7 @@ public class homeViewPageUtils {
                 mImageViewList.add(pb);
             } else if (i == images.size() + 1) {   //判断当i=images.length+1时为该处的ImageView设置第一张图片作为背景
 //                imageView = setImg(context);
-                Glide.with(context).load(images.get(0).getImgUrl()).into(imageView);
+                Glide.with(context).load(images.get(0).getImgUrl()).apply(getGlideOptions()).into(imageView);
 
                 pb.setType(images.get(0).getType());
                 pb.setId(images.get(0).getId());
@@ -100,7 +102,7 @@ public class homeViewPageUtils {
                 mImageViewList.add(pb);
             } else {  //其他情况则为ImageView设置images[i-1]的图片作为背景
 //                imageView = setImg(context);
-                Glide.with(context).load(images.get(i - 1).getImgUrl()).into(imageView);
+                Glide.with(context).load(images.get(i - 1).getImgUrl()).apply(getGlideOptions()).into(imageView);
 
                 pb.setType(images.get(i - 1).getType());
                 pb.setId(images.get(i - 1).getId());

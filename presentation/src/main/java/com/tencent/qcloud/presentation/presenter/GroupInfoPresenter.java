@@ -1,7 +1,5 @@
 package com.tencent.qcloud.presentation.presenter;
 
-import android.app.Activity;
-
 import com.tencent.TIMGroupDetailInfo;
 import com.tencent.TIMGroupManager;
 import com.tencent.TIMValueCallBack;
@@ -18,8 +16,6 @@ import java.io.File;
 import java.util.List;
 
 import okhttp3.Call;
-
-import static com.tencent.qcloud.presentation.presenter.PhotoUtils.getMULTIPLEPhoto;
 
 
 /**
@@ -46,10 +42,6 @@ public class GroupInfoPresenter implements TIMValueCallBack<List<TIMGroupDetailI
         } else {
             TIMGroupManager.getInstance().getGroupPublicInfo(groupIds, this);
         }
-    }
-
-    public void ChangeHeadImg(Activity ac, int i) {
-        getMULTIPLEPhoto(ac, i);
     }
 
     /**

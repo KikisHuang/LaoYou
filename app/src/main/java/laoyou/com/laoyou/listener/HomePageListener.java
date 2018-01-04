@@ -1,5 +1,7 @@
 package laoyou.com.laoyou.listener;
 
+import com.tencent.TIMFriendStatus;
+
 import java.util.List;
 
 import laoyou.com.laoyou.bean.AttentionGameBean;
@@ -29,4 +31,8 @@ public interface HomePageListener {
     void onStatusInfo(List<TopicTypeBean> nblist);
 
     void onRefresh();
+
+    void onAddFriend(TIMFriendStatus timFriendStatusUnknown);
+
+    void onDelFriend(TIMFriendStatus status);
 }

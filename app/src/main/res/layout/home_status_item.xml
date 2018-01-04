@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
- >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/title_tv"
@@ -11,11 +10,23 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:paddingLeft="14dp"
+        android:padding="10dp"
         android:text="在意的人"
         android:textColor="@color/black0"
         android:textSize="18sp"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
-    <include layout="@layout/dynamic_state_include"></include>
+    <include
+        android:id="@+id/view_layout"
+        layout="@layout/dynamic_state_include"></include>
+
+    <include
+        android:id="@+id/recom_layout"
+        layout="@layout/home_fragment_foot_include"></include>
+
+    <TextView
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:visibility="gone" />
 </LinearLayout>

@@ -19,7 +19,7 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
 public class TitleUtils {
 
     // 处理标题栏颜色渐变
-    public static void handleTitleBarColorEvaluate(int height, int imageHeight, View title_layout, ImageView back_img) {
+    public static void handleTitleBarColorEvaluate(int height, int imageHeight, View title_layout, ImageView back_img, ImageView more_img) {
         //比例
         float fraction;
         if (height > 0) {
@@ -51,8 +51,12 @@ public class TitleUtils {
 
         if (fraction >= 0.8f) {
             back_img.setImageResource(R.mipmap.return_icon);
+            if (more_img != null)
+                more_img.setImageResource(R.mipmap.more_blue);
         } else {
             back_img.setImageResource(R.mipmap.return_icon_white);
+            if (more_img != null)
+                more_img.setImageResource(R.mipmap.more_white);
         }
     }
 

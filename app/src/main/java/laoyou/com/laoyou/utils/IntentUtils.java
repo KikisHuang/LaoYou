@@ -10,6 +10,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import java.util.ArrayList;
 import java.util.List;
 
+import laoyou.com.laoyou.activity.AddFriendActivity;
 import laoyou.com.laoyou.activity.AddLikeGameActivity;
 import laoyou.com.laoyou.activity.AddTopicTypeActivity;
 import laoyou.com.laoyou.activity.AddressbookActivity;
@@ -171,6 +172,16 @@ public class IntentUtils {
         Intent intent = new Intent(context, AddTopicTypeActivity.class);
 //        startPage(context, intent);
         ((Activity) context).startActivityForResult(intent, Fields.ACRESULET5);
+    }
+    /**
+     * 添加好友申请页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goAddFriendPage(Context context,String id) {
+        Intent intent = new Intent(context, AddFriendActivity.class);
+        intent.putExtra("apply_for_id", id);
+        startPage(context, intent);
     }
 
     /**
@@ -502,10 +513,11 @@ public class IntentUtils {
      *
      * @param context 上下文;
      */
-    public static void goHomePage(Context context, String id) {
+    public static void goHomePage(Context context, String id, boolean isTencent) {
 
         Intent intent = new Intent(context, HomePageActivity.class);
         intent.putExtra("Page_Home_id", id);
+        intent.putExtra("Page_Home_Tencent_Flag", isTencent + "");
         startPage(context, intent);
     }
 

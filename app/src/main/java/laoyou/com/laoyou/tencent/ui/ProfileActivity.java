@@ -33,6 +33,7 @@ import laoyou.com.laoyou.tencent.model.FriendProfile;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 
 import static laoyou.com.laoyou.activity.AddressbookActivity.AddressBookInstance;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 
 public class ProfileActivity extends FragmentActivity implements FriendshipManageView, View.OnClickListener {
 
@@ -76,7 +77,7 @@ public class ProfileActivity extends FragmentActivity implements FriendshipManag
         if (profile.getAvatarUrl() == null || profile.getAvatarUrl().isEmpty())
             avatar.setImageResource(R.drawable.head_me);
         else
-            Glide.with(this).load(profile.getAvatarUrl()).into(avatar);
+            Glide.with(this).load(profile.getAvatarUrl()).apply(getGlideOptions()).into(avatar);
 
         name.setText(profile.getName());
         LineControllerView id = (LineControllerView) findViewById(R.id.id);

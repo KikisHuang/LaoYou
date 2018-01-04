@@ -52,6 +52,10 @@ public class SPreferences {
      */
     private static final String USER_ID = "User_Id";
     /**
+     * 保存用户昵称;
+     */
+    private static final String USER_NICKNAME = "User_NickName";
+    /**
      * 临时存储聊天对象头像(仅用于单聊);
      */
     private static final String TEMPORARY_USER_HEAD = "Temporary_User_Head";
@@ -83,6 +87,19 @@ public class SPreferences {
      */
     public static String getUserId() {
         return getString(USER_ID);
+    }
+    /**
+     * 保存用户昵称;
+     */
+    public static void saveMyNickName(String token) {
+        saveString(USER_NICKNAME, token);
+    }
+
+    /**
+     * 获取用户昵称;
+     */
+    public static String getMyNickName() {
+        return getString(USER_NICKNAME);
     }
 
     /**

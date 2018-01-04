@@ -18,6 +18,8 @@ import laoyou.com.laoyou.listener.ReleaseTopicListener;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * Created by lian on 2017/11/18.
  */
@@ -56,7 +58,7 @@ public class PhotoGridAdapter extends BaseAdapter {
             remove_img.setVisibility(View.VISIBLE);
             FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams((int) (DeviceUtils.getWindowWidth(mContext) * 1 / 3.4), (int) (DeviceUtils.getWindowWidth(mContext) * 1 / 3.4));
             photo_img.setLayoutParams(lp);
-            Glide.with(mContext).load(list.get(position).getPath()).into(photo_img);
+            Glide.with(mContext).load(list.get(position).getPath()).apply(getGlideOptions()).into(photo_img);
 
             remove_img.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -19,6 +19,7 @@ import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.view.ObservableScrollView;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goLikeGamePage;
 import static laoyou.com.laoyou.utils.SynUtils.IsNull;
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
@@ -91,11 +92,11 @@ public class OthersDetailsPageActivity extends InitActivity implements OthersLis
         TencentId = ub.getCloudTencentAccount();
         op.FindsWhether(TencentId);
 
-        Glide.with(OthersDetailsPageActivity.this).load(ub.getHeadImgUrl()).into(head_img);
+        Glide.with(OthersDetailsPageActivity.this).load(ub.getHeadImgUrl()).apply(getGlideOptions()).into(head_img);
         nickname_ed.setText(ub.getName());
         sex_tv.setText(ub.getSex() == 1 ? gets(R.string.man) : gets(R.string.woman));
 
-        Glide.with(this).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).into(background_img);
+        Glide.with(this).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
         signature_ed.setText(IsNull(ub.getAutograph()) ? gets(R.string.default_signature) : ub.getAutograph());
         region_tv.setText(IsNull(ub.getAddress()) ? "" : ub.getAddress());
         if (!IsNull(ub.getIdcard())) {

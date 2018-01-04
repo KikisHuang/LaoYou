@@ -15,6 +15,7 @@ import laoyou.com.laoyou.listener.TopicCommentListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.DeviceUtils;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.SynUtils.getTAG;
 
 /**
@@ -67,7 +68,7 @@ public class CommentPhotoPopupWindow {
 //        popupWindow.showAtLocation(view, Gravity.TOP|Gravity.LEFT ,0, 0);
         } else {
             try {
-                Glide.with(mContext).load(imgPath).into(comment_img);
+                Glide.with(mContext).load(imgPath).apply(getGlideOptions()).into(comment_img);
             } catch (Exception e) {
                 Log.e(TAG, "Error === " + e);
             }
@@ -75,7 +76,7 @@ public class CommentPhotoPopupWindow {
     }
 
     private void iniData(String imgPath) {
-        Glide.with(mContext).load(imgPath).into(comment_img);
+        Glide.with(mContext).load(imgPath).apply(getGlideOptions()).into(comment_img);
     }
 
     private void click() {

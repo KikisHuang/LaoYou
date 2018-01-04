@@ -44,6 +44,7 @@ import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.RoundAngleImageView;
 
 import static laoyou.com.laoyou.utils.ClickUtils.isFastDoubleClick;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goLocationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
 import static laoyou.com.laoyou.utils.SynUtils.StringIsNull;
@@ -161,7 +162,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
             RoundAngleImageView im = new RoundAngleImageView(this);
 
             im.setLayoutParams(lp);
-            Glide.with(this).load(internetBarImgs.get(i).getImgUrl()).into(im);
+            Glide.with(this).load(internetBarImgs.get(i).getImgUrl()).apply(getGlideOptions()).into(im);
 
             final int finalI = i;
             im.setOnClickListener(new View.OnClickListener() {
@@ -214,7 +215,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         height = location[1];
 
         imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 0);
-        handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img);
+        handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img, null);
 
     }
 
@@ -238,11 +239,11 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
             caf_name_tv.setText(StringIsNull(cb.getName()));
             grade_tv.setText(StringIsNull(String.valueOf(cb.getAvgEvaluate())));
             caf_address_tv.setText(StringIsNull(cb.getAddress()));
-            Glide.with(this).load(cb.getLogoUrl()).into(caf_logo_img);
+            Glide.with(this).load(cb.getLogoUrl()).apply(getGlideOptions()).into(caf_logo_img);
             if (StringIsNull(cb.getBackgroundUrl()).isEmpty())
-                Glide.with(this).load(R.drawable.test_background).into(background_img);
+                Glide.with(this).load(R.drawable.test_background).apply(getGlideOptions()).into(background_img);
             else
-                Glide.with(this).load(cb.getBackgroundUrl()).into(background_img);
+                Glide.with(this).load(cb.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
             EnvironmentInit(cb.getInternetBarImgs());
             cpu.setText(StringIsNull(cb.getConfigureCPU()));
             caf_price_tv.setText(String.valueOf(cb.getHourlyPrice()));

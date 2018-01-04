@@ -105,7 +105,7 @@
     <!-- Add newfriend activity -->
     <string name="search_default">搜索</string>
     <string name="search_cancel">取消</string>
-    <string name="search_hint">输入对方昵称</string>
+    <string name="search_hint">输入对方昵称或手机号</string>
     <string name="search_no_result">很抱歉，没有找到符合内容</string>
 
     <!-- Add newfriend activity -->
@@ -117,6 +117,7 @@
     <string name="add_friend_send">发送添加好友请求</string>
     <string name="add_friend_succeed">请求已发送</string>
     <string name="add_friend_added">已添加好友</string>
+    <string name="add_friend_succ">添加好友成功</string>
     <string name="add_friend_refuse_all">对方拒绝添加任何人为好友</string>
     <string name="add_friend_to_blacklist">我在对方的黑名单中</string>
     <string name="add_friend_error">添加好友失败，请稍后重试</string>
@@ -437,5 +438,9 @@
     <string name="give_heart_succ">赠送心动值成功</string>
     <string name="cannot_send_null_content">不能发布空内容！！</string>
     <string name="issue_succ">发布成功！</string>
+    <string name="is_not_find">你还不是Ta的好友。</string>
+    <string name="already_find">你已经是Ta的好友了。</string>
+    <string name="pull_the_black_friend">拉黑好友</string>
+    <string name="apply_for_str">采一缕阳光，让它温暖你的心房；撷一束月光，让它涤荡你的忧伤；摘一朵鲜花，让它与幸福为你绽放；捧一盏美酒，让它与吉祥为你留香。</string>
 
 </resources>

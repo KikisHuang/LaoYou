@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp"
+    android:visibility="gone">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="为你推荐一些可能感兴趣的人"
+        android:textColor="@color/black0"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="加些好友吧"
+        android:textColor="@color/black0"
+        android:textSize="15sp" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:padding="10dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/Foot_recom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:orientation="horizontal"></LinearLayout>
+
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/recom_nick_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@color/black0"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="很高兴遇见你"
+        android:textColor="@color/black0"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="希望你能在这里招到志同道合的朋友"
+        android:textColor="@color/content3"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="玩的开心"
+        android:textColor="@color/content3"
+        android:textSize="15sp" />
+</LinearLayout>

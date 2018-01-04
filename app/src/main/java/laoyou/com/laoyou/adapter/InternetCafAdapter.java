@@ -16,6 +16,8 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.CafCommentBean;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * Created by lian on 2017/11/18.
  */
@@ -56,7 +58,7 @@ public class InternetCafAdapter extends BaseAdapter {
         nickname_tv.setText(list.get(position).getMcUserByUserId().getName());
         comment_content.setText(list.get(position).getInfo());
         time_tv.setText(list.get(position).getCreateTime());
-        Glide.with(mContext).load(list.get(position).getMcUserByUserId().getHeadImgUrl()).into(head_img);
+        Glide.with(mContext).load(list.get(position).getMcUserByUserId().getHeadImgUrl()).apply(getGlideOptions()).into(head_img);
 
         return view;
     }

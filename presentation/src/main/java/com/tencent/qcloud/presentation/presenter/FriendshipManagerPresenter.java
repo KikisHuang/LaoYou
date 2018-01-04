@@ -542,7 +542,7 @@ public class FriendshipManagerPresenter {
      */
     public void getUserProFile(List<String> list) {
         //获取用户资料
-        TIMFriendshipManager.getInstance().getFriendsProfile(list, new TIMValueCallBack<List<TIMUserProfile>>() {
+        TIMFriendshipManager.getInstance().getUsersProfile(list, new TIMValueCallBack<List<TIMUserProfile>>() {
             @Override
             public void onError(int code, String desc) {
                 //错误码code和错误描述desc，可用于定位请求失败原因

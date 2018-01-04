@@ -16,6 +16,8 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.ProfileSummary;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * 好友或群等资料摘要列表的adapter
  */
@@ -58,7 +60,7 @@ public class ProfileSummaryAdapter extends ArrayAdapter<ProfileSummary> {
         if (data.getAvatarUrl() == null || data.getAvatarUrl().isEmpty())
             viewHolder.avatar.setImageResource(data.getAvatarRes());
         else
-            Glide.with(getContext()).load(data.getAvatarUrl()).into(viewHolder.avatar);
+            Glide.with(getContext()).load(data.getAvatarUrl()).apply(getGlideOptions()).into(viewHolder.avatar);
 
         viewHolder.name.setText(data.getName());
         return view;

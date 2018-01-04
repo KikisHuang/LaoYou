@@ -218,6 +218,10 @@
         <activity
             android:name=".activity.MyCreateGroupActivity"
             android:screenOrientation="portrait"></activity>
+        <!-- 发送好友申请页面 -->
+        <activity
+            android:name=".activity.AddFriendActivity"
+            android:screenOrientation="portrait"></activity>
         <!-- 闪聊页面 -->
         <activity
             android:name=".activity.FlashChatActivity"
@@ -244,14 +248,14 @@
             android:screenOrientation="portrait"></activity>
 
         <!-- 照片选择框架页面 -->
-        <activity
+<!--        <activity
             android:name="me.iwf.photopicker.PhotoPickerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name="me.iwf.photopicker.PhotoPagerActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme" />-->
 
 
         <!-- 高德地图定位Service-->

@@ -218,7 +218,7 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
 
     @Override
     public void GoPageHome(String userId) {
-        goHomePage(getActivity(), userId);
+        goHomePage(getActivity(), userId,false);
     }
 
     @Override

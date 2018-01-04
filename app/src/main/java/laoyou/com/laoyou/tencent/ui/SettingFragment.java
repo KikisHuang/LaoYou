@@ -30,6 +30,8 @@ import java.util.Map;
 
 import laoyou.com.laoyou.R;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * 设置页面
  */
@@ -173,7 +175,7 @@ public class SettingFragment extends Fragment implements FriendInfoView {
         if (headImg == null || headImg.isEmpty())
             head_img.setImageResource(R.drawable.head_me);
         else
-            Glide.with(getActivity()).load(headImg).into(head_img);
+            Glide.with(getActivity()).load(headImg).apply(getGlideOptions()).into(head_img);
     }
 
 

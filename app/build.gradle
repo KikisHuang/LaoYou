@@ -137,5 +137,7 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     //图片选择器
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.7'
+    //zhy  base-adapter
+//    compile 'com.zhy:base-rvadapter:3.0.3'
 }
 

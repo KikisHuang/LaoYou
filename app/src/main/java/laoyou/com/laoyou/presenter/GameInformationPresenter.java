@@ -1,5 +1,7 @@
 package laoyou.com.laoyou.presenter;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
@@ -106,7 +108,7 @@ public class GameInformationPresenter implements HttpResultListener {
 
     @Override
     public void onParseError(Exception e) {
-        listener.onFailedMsg(gets(R.string.parse_error));
+        Log.e(TAG, "Parse Error ===" + e);
     }
 
     @Override

@@ -21,6 +21,8 @@ import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 import laoyou.com.laoyou.view.NineGridlayout;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * Created by lian on 2017/11/18.
  */
@@ -171,7 +173,7 @@ public class HomePageAdapter extends BaseAdapter {
         topic_layout.setVisibility(View.GONE);
 
         nickname_tv.setText(list.get(position).getUserName());
-        Glide.with(mContext).load(list.get(position).getHeadImgUrl()).into(head_img);
+        Glide.with(mContext).load(list.get(position).getHeadImgUrl()).apply(getGlideOptions()).into(head_img);
         time_tv.setText(list.get(position).getCreateTime());
         if (list.get(position).getMessageContent() == null || list.get(position).getMessageContent().isEmpty())
             content_tv.setVisibility(View.GONE);
@@ -188,7 +190,7 @@ public class HomePageAdapter extends BaseAdapter {
             FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(w, h);
             video_img.setLayoutParams(lp);
             video_layouts.setVisibility(View.VISIBLE);
-            Glide.with(mContext).load(list.get(position).getVideoCover()).into(video_img);
+            Glide.with(mContext).load(list.get(position).getVideoCover()).apply(getGlideOptions()).into(video_img);
             video_layouts.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

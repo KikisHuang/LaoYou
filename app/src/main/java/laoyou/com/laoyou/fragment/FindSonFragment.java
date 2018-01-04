@@ -196,7 +196,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
 
     @Override
     public void GoPageHome(String userId) {
-        goHomePage(getActivity(), userId);
+        goHomePage(getActivity(), userId,false);
     }
 
     @Override

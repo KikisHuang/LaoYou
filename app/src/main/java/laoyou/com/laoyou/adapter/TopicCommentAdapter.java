@@ -21,6 +21,7 @@ import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
 import static laoyou.com.laoyou.utils.DateUtils.getMyDate;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
@@ -61,7 +62,7 @@ public class TopicCommentAdapter extends BaseAdapter {
         TextView no_data_tv = OverallViewHolder.ViewHolder.get(view, R.id.no_data_tv);
         ImageView comment_img = OverallViewHolder.ViewHolder.get(view, R.id.comment_img);
 
-        Glide.with(mContext).load(list.get(position).getUserImg()).into(head_img);
+        Glide.with(mContext).load(list.get(position).getUserImg()).apply(getGlideOptions()).into(head_img);
 
         nickname_tv.setText(list.get(position).getUserName());
         content_tv.setText(list.get(position).getMessageContent());
@@ -82,7 +83,7 @@ public class TopicCommentAdapter extends BaseAdapter {
             int w = (int) (DeviceUtils.getWindowWidth(mContext) * 1 / 3.5);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(w, w);
             comment_img.setLayoutParams(lp);
-            Glide.with(mContext).load(list.get(position).getChatImgs().get(0).getUrl()).into(comment_img);
+            Glide.with(mContext).load(list.get(position).getChatImgs().get(0).getUrl()).apply(getGlideOptions()).into(comment_img);
             comment_img.setVisibility(View.VISIBLE);
             comment_img.setOnClickListener(new View.OnClickListener() {
                 @Override

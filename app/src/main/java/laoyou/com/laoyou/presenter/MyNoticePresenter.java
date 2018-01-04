@@ -1,5 +1,7 @@
 package laoyou.com.laoyou.presenter;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
@@ -26,6 +28,9 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
  * Created by lian on 2017/12/23.
  */
 public class MyNoticePresenter implements HttpResultListener {
+
+    private static final String TAG = "MyNoticePresenter";
+
     private MyNoticeListener listener;
     private boolean isMore;
 
@@ -70,7 +75,7 @@ public class MyNoticePresenter implements HttpResultListener {
 
     @Override
     public void onParseError(Exception e) {
-        listener.onFailedsMsg(gets(R.string.parse_error));
+        Log.e(TAG, "Parse Error ===" + e);
     }
 
     @Override

@@ -136,11 +136,9 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
             List<LocalMedia> list = PictureSelector.obtainMultipleResult(data);
             switch (requestCode) {
                 case Fields.ACRESULET1:
-
                     // 图片选择结果回调
                     FrontFile = new File(list.get(0).getCompressPath() != null || !list.get(0).getCompressPath().isEmpty() ? list.get(0).getCompressPath() : list.get(0).getPath());
                     Glide.with(CertificationActivity.this).load(FrontFile).apply(getGlideOptions()).into(front_img);
-
                     break;
                 case Fields.ACRESULET2:
                     TailFile = new File(list.get(0).getCompressPath() != null || !list.get(0).getCompressPath().isEmpty() ? list.get(0).getCompressPath() : list.get(0).getPath());

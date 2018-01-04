@@ -21,6 +21,9 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.Message;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
+
 /**
  * 聊天界面adapter
  */
@@ -78,25 +81,41 @@ public class ChatAdapter extends ArrayAdapter<Message> {
             data.showMessage(viewHolder, getContext());
             if (data.isSelf()) {
                 if (SPreferences.getUserHeadImg() == null || SPreferences.getUserHeadImg().equals("")) {
-                    viewHolder.rightAvatar.setImageResource(R.drawable.head_me);
+                    Glide.with(getContext()).load(R.drawable.head_me).apply(getGlideOptions()).into(viewHolder.rightAvatar);
+//                    viewHolder.rightAvatar.setImageResource(R.drawable.head_me);
                     Log.i(TAG, "SenderProfile 为空");
                 } else {
-                    Glide.with(getContext()).load(SPreferences.getUserHeadImg()).into(viewHolder.rightAvatar);
+                    Glide.with(getContext()).load(SPreferences.getUserHeadImg()).apply(getGlideOptions()).into(viewHolder.rightAvatar);
                 }
-
+                viewHolder.rightAvatar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        goHomePage(getContext(), "", false);
+                    }
+                });
             } else {
                 if (type == TIMConversationType.C2C) {
                     if (!C2CImg.isEmpty())
-                        Glide.with(getContext()).load(C2CImg).into(viewHolder.leftAvatar);
+                        Glide.with(getContext()).load(C2CImg).apply(getGlideOptions()).into(viewHolder.leftAvatar);
                     else
-                        viewHolder.leftAvatar.setImageResource(R.drawable.head_other);
+                        Glide.with(getContext()).load(R.drawable.head_other).apply(getGlideOptions()).into(viewHolder.leftAvatar);
+//                        viewHolder.leftAvatar.setImageResource(R.drawable.head_other);
                 } else {
                     if (data.getMessage().getSenderProfile() == null)
-                        viewHolder.leftAvatar.setImageResource(R.drawable.head_other);
-                     else
-                        Glide.with(getContext()).load(data.getMessage().getSenderProfile().getFaceUrl()).into(viewHolder.leftAvatar);
+                        Glide.with(getContext()).load(R.drawable.head_other).apply(getGlideOptions()).into(viewHolder.leftAvatar);
+//                        viewHolder.leftAvatar.setImageResource(R.drawable.head_other);
+                    else
+                        Glide.with(getContext()).load(data.getMessage().getSenderProfile().getFaceUrl()).apply(getGlideOptions()).into(viewHolder.leftAvatar);
 
                 }
+
+                viewHolder.leftAvatar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        goHomePage(getContext(), data.getMessage().getSenderProfile().getIdentifier(), true);
+                    }
+                });
             }
 
         }

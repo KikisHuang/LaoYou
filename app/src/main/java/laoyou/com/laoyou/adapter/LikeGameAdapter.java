@@ -18,6 +18,8 @@ import laoyou.com.laoyou.listener.LikeListener;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 import laoyou.com.laoyou.view.SwipeListLayout;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * Created by lian on 2017/11/24.
  */
@@ -56,7 +58,7 @@ public class LikeGameAdapter extends BaseAdapter {
         TextView num_tv = OverallViewHolder.ViewHolder.get(view, R.id.num_tv);
         TextView tv_delete = OverallViewHolder.ViewHolder.get(view, R.id.tv_delete);
 
-        Glide.with(mContext).load(list.get(position).getImgUrl()).into(game_icon);
+        Glide.with(mContext).load(list.get(position).getImgUrl()).apply(getGlideOptions()).into(game_icon);
         game_name.setText(list.get(position).getName().isEmpty() ? "" : list.get(position).getInfo());
         agency_name_tv.setText(list.get(position).getInfo().isEmpty() ? "" : list.get(position).getInfo());
         num_tv.setText(list.get(position).getInfo().isEmpty() ? "0" : list.get(position).getFollowCount());

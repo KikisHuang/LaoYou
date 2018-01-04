@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.activity;
 
-import android.content.Intent;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -10,10 +11,18 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.tencent.TIMConversationType;
+import com.tencent.TIMFriendResult;
+import com.tencent.TIMFriendStatus;
+import com.tencent.TIMValueCallBack;
+import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
+import com.tencent.qcloud.ui.NotifyDialog;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -23,19 +32,22 @@ import laoyou.com.laoyou.bean.AttentionGameBean;
 import laoyou.com.laoyou.bean.PhotoBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
+import laoyou.com.laoyou.dialog.ActionSheetDialog;
 import laoyou.com.laoyou.listener.HomePageListener;
 import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 import laoyou.com.laoyou.presenter.HomePagePresenter;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
-import laoyou.com.laoyou.tencent.ui.AddFriendActivity;
-import laoyou.com.laoyou.tencent.ui.ProfileActivity;
+import laoyou.com.laoyou.tencent.ui.ChatActivity;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.RoundAngleImageView;
 
+import static laoyou.com.laoyou.activity.AddressbookActivity.AddressBookInstance;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+import static laoyou.com.laoyou.utils.IntentUtils.goAddFriendPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLikeGamePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyPhotoPage;
@@ -53,11 +65,12 @@ import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
  * Created by lian on 2017/12/7.
  */
 public class HomePageActivity extends InitActivity implements HomePageListener, RecyclerViewOnItemClickListener, AbsListView.OnScrollListener, View.OnClickListener {
+    private static final String TAG = "HomePageActivity";
     private ListView listView;
     private LinearLayout head_layout, foot_layout;
     private HomePageAdapter adapter;
     private List<TopicTypeBean> list;
-    private ImageView background_img, back_img;
+    private ImageView background_img, back_img, more_img;
     private CircleImageView head_img;
     private RelativeLayout title_layout;
     private LinearLayout game_list_layout, photo_layout;
@@ -73,6 +86,9 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     private boolean IsRefresh;
     private String identify = "";
     private String HeadImgUrl = "";
+    private LinearLayout bottom_menu_layout;
+    //腾讯云id判断标识符;
+    private boolean isTencent;
 
     @Override
     protected void click() {
@@ -83,6 +99,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         heart_layout.setOnClickListener(this);
         chat_layout.setOnClickListener(this);
         add_layout.setOnClickListener(this);
+        more_img.setOnClickListener(this);
     }
 
     @Override
@@ -90,12 +107,11 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         setContentView(R.layout.home_page_layout);
         setImgTitles(this);
         id = getIntent().getStringExtra("Page_Home_id");
-        isMe = IsMe(id);
+        isTencent = Boolean.parseBoolean(getIntent().getStringExtra("Page_Home_Tencent_Flag"));
+        Log.i(TAG, " isTencent ===" + isTencent);
+        isMe = id.isEmpty() ? true : IsMe(id);
         hp = new HomePagePresenter(this);
-        if (isMe)
-            hp.getMyDetails();
-        else
-            hp.getOthersDetails(id, false);
+        bottom_menu_layout = f(R.id.bottom_menu_layout);
 
         listView = f(R.id.listView);
         title_layout = f(R.id.title_layout);
@@ -103,6 +119,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         chat_layout = f(R.id.chat_layout);
         heart_layout = f(R.id.heart_layout);
         back_img = f(R.id.back_img);
+        more_img = f(R.id.more_img);
 
         list = new ArrayList<>();
 
@@ -140,8 +157,11 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         super.onResume();
         if (isMe)
             hp.getMyDetails();
-        else
-            hp.getOthersDetails(id, false);
+        else {
+            hp.getOthersDetails(id, isTencent);
+            bottom_menu_layout.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
@@ -167,7 +187,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
             RoundAngleImageView im = new RoundAngleImageView(this);
             im.setScaleType(ImageView.ScaleType.CENTER_CROP);
             im.setLayoutParams(lp);
-            Glide.with(this).load(ll.get(i).getUrl()).into(im);
+            Glide.with(this).load(ll.get(i).getUrl()).apply(getGlideOptions()).into(im);
             photo_layout.addView(im);
 
             final int finalI = i;
@@ -193,16 +213,26 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
     @Override
     public void onShowUserInfo(UserInfoBean ub) {
+        id = ub.getId();
+        isTencent = false;
+        hp.getMyHeartNum(ub.getId());
+        hp.getAttentGames(ub.getId());
+        hp.getMyPhotoList(ub.getId());
+        hp.getPersonaldynamic(ub.getId(), false);
+
         identify = ub.getCloudTencentAccount();
         HeadImgUrl = ub.getHeadImgUrl();
         Glide.with(HomePageActivity.this).load(ub.getHeadImgUrl()).into(head_img);
         nickname_tv.setText(ub.getName());
-        Glide.with(this).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).into(background_img);
+        Glide.with(this).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
         signature_tv.setText(IsNull(ub.getAutograph()) ? gets(R.string.default_signature) : ub.getAutograph());
         page_view_tv.setText(IsNull(ub.getBrowseNumber()) ? String.valueOf(0) : ub.getBrowseNumber());
         address_tv.setText(IsNull(ub.getAddress()) ? "" : ub.getAutograph());
         authentication_tv.setText(IsNull(ub.getIdcard()) ? gets(R.string.un_certification) : gets(R.string.certification));
 
+        if (!isMe)
+            if (FriendshipInfo.getInstance().isFriend(identify))
+                more_img.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -243,7 +273,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
             CircleImageView civ = new CircleImageView(this);
             civ.setLayoutParams(lp);
             lp.rightMargin = DeviceUtils.dip2px(this, 2);
-            Glide.with(this).load(ab.getImgUrl()).into(civ);
+            Glide.with(this).load(ab.getImgUrl()).apply(getGlideOptions()).into(civ);
             civ.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -289,6 +319,47 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     }
 
     @Override
+    public void onAddFriend(TIMFriendStatus status) {
+
+        switch (status) {
+            case TIM_ADD_FRIEND_STATUS_PENDING:
+                Toast.makeText(this, getResources().getString(R.string.add_friend_succeed), Toast.LENGTH_SHORT).show();
+                break;
+            case TIM_FRIEND_STATUS_SUCC:
+                Toast.makeText(this, getResources().getString(R.string.add_friend_succ), Toast.LENGTH_SHORT).show();
+                break;
+            case TIM_ADD_FRIEND_STATUS_FRIEND_SIDE_FORBID_ADD:
+                Toast.makeText(this, getResources().getString(R.string.add_friend_refuse_all), Toast.LENGTH_SHORT).show();
+                break;
+            case TIM_ADD_FRIEND_STATUS_IN_OTHER_SIDE_BLACK_LIST:
+                Toast.makeText(this, getResources().getString(R.string.add_friend_to_blacklist), Toast.LENGTH_SHORT).show();
+                break;
+            case TIM_ADD_FRIEND_STATUS_IN_SELF_BLACK_LIST:
+                NotifyDialog dialog = new NotifyDialog();
+                dialog.show(getString(R.string.add_friend_del_black_list), getSupportFragmentManager(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FriendshipManagerPresenter.delBlackList(Collections.singletonList(identify), new TIMValueCallBack<List<TIMFriendResult>>() {
+                            @Override
+                            public void onError(int i, String s) {
+                                Toast.makeText(HomePageActivity.this, getResources().getString(R.string.add_friend_del_black_err), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onSuccess(List<TIMFriendResult> timFriendResults) {
+                                Toast.makeText(HomePageActivity.this, getResources().getString(R.string.add_friend_del_black_succ), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+                break;
+            default:
+                Toast.makeText(this, getResources().getString(R.string.add_friend_error), Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
 
     }
@@ -301,7 +372,8 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         height = location[1];
 
         imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 50);
-        handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img);
+
+        handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img, more_img.getVisibility() == View.GONE ? null : more_img);
 
         if (visibleItemCount + firstVisibleItem == totalItemCount) {
             if (foot_tv.getVisibility() == View.GONE) {
@@ -330,36 +402,92 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
                     goLikeGamePage(this, id);
                 break;
             case R.id.heart_layout:
-                if (isMe)
-                    hp.getMyHeart();
-                else
+                if (!isMe) {
+                    Show(HomePageActivity.this, "", true, null);
                     hp.GiveHeart(id);
+                }
+
                 break;
             case R.id.add_layout:
                 if (!isMe && !identify.isEmpty()) {
-                    if (FriendshipInfo.getInstance().isFriend(identify)) {
-                        ProfileActivity.navToProfile(this, identify);
-                    } else {
-                        Intent person = new Intent(this, AddFriendActivity.class);
-                        person.putExtra("id", identify);
-                        person.putExtra("name", nickname_tv.getText().toString());
-                        person.putExtra("head_img", HeadImgUrl);
-                        startActivity(person);
-                    }
+                    if (FriendshipInfo.getInstance().isFriend(identify))
+                        ToastUtil.toast2_bottom(this, gets(R.string.already_find));
+                    else
+                        goAddFriendPage(this, identify);
                 }
 
                 break;
             case R.id.chat_layout:
                 if (!isMe && !identify.isEmpty() && FriendshipInfo.getInstance().isFriend(identify)) {
                     SPreferences.saveTemporaryImg(String.valueOf(HeadImgUrl));
-                }
+                    ChatActivity.navToChat(this, identify, TIMConversationType.C2C);
+                } else
+                    ToastUtil.toast2_bottom(this, gets(R.string.is_not_find));
+
+                break;
+            case R.id.more_img:
+                if (!identify.isEmpty())
+                    ShowDialog();
                 break;
         }
     }
 
+    /**
+     * 更多操作弹窗;
+     */
+    private void ShowDialog() {
+        new ActionSheetDialog(this).builder().addSheetItem(gets(R.string.pull_the_black_friend), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+            @Override
+            public void onClick(int which) {
+                FriendshipManagerPresenter.addBlackList(Collections.singletonList(identify), new TIMValueCallBack<List<TIMFriendResult>>() {
+                    @Override
+                    public void onError(int i, String s) {
+                        Log.e(TAG, "add black list error " + s);
+                    }
+
+                    @Override
+                    public void onSuccess(List<TIMFriendResult> timFriendResults) {
+                        if (timFriendResults.get(0).getStatus() == TIMFriendStatus.TIM_FRIEND_STATUS_SUCC) {
+                            Toast.makeText(HomePageActivity.this, getString(R.string.profile_black_succ), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
+        }).addSheetItem(gets(R.string.profile_del), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+            @Override
+            public void onClick(int which) {
+                Show(HomePageActivity.this, "提交中", true, null);
+                hp.delFriend(identify);
+            }
+        }).show();
+    }
+
+    /**
+     * 删除好友结果回调
+     *
+     * @param status 返回状态
+     */
+    @Override
+    public void onDelFriend(TIMFriendStatus status) {
+        switch (status) {
+            case TIM_FRIEND_STATUS_SUCC:
+                Toast.makeText(this, getResources().getString(R.string.profile_del_succeed), Toast.LENGTH_SHORT).show();
+                AddressbookActivity ac = AddressBookInstance();
+                if (ac != null)
+                    ac.onRefresh();
+                break;
+            case TIM_FRIEND_STATUS_UNKNOWN:
+                Toast.makeText(this, getResources().getString(R.string.profile_del_fail), Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+    }
+
     @Override
     public void RcOnItemClick(int pos, List<String> imgs) {
-        goPhotoViewerPage(this, imgs, pos, 1);
+        if (pos < imgs.size())
+            goPhotoViewerPage(this, imgs, pos, 1);
     }
 
     @Override

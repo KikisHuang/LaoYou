@@ -18,6 +18,7 @@ import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.listener.QueryListener;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.SynUtils.WswitchWay;
 
 /**
@@ -59,7 +60,7 @@ public class GamsAdAdapter extends BaseAdapter {
 
         tag_tv.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
 
-        Glide.with(mContext).load(list.get(position).getImgUrl()).into(gams_img);
+        Glide.with(mContext).load(list.get(position).getImgUrl()).apply(getGlideOptions()).into(gams_img);
         info_tv.setText(list.get(position).getTitle());
         name_tv.setText(list.get(position).getInfo());
 

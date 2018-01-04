@@ -29,6 +29,7 @@ import static laoyou.com.laoyou.utils.DateUtils.IsToday;
 import static laoyou.com.laoyou.utils.DateUtils.timedate;
 import static laoyou.com.laoyou.utils.DateUtils.timedateHHMM;
 import static laoyou.com.laoyou.utils.DateUtils.timedateMMdd;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 
 /**
  * 好友关系链管理消息adapter
@@ -83,7 +84,7 @@ public class FriendManageMessageAdapter extends ArrayAdapter<FriendFuture> {
         if (data.getFaceUrl() == null || data.getFaceUrl().equals(""))
             viewHolder.avatar.setImageResource(R.drawable.head_other);
         else
-            Glide.with(getContext()).load(data.getFaceUrl()).into(viewHolder.avatar);
+            Glide.with(getContext()).load(data.getFaceUrl()).apply(getGlideOptions()).into(viewHolder.avatar);
 
         if (IsToday(timedate(data.getAddTime())))
             viewHolder.add_time.setText(timedateHHMM(String.valueOf(data.getAddTime())));

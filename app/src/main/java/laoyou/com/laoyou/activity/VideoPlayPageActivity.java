@@ -14,6 +14,8 @@ import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.jiaozi.JZMediaIjkplayer;
 import laoyou.com.laoyou.utils.jiaozi.MyJZVideoPlayerStandard;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * Created by lian on 2018/1/2.
  */
@@ -51,6 +53,7 @@ public class VideoPlayPageActivity extends InitActivity implements View.OnClickL
                 , JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "饺子快长大");
         Glide.with(this)
                 .load(coverPath)
+                .apply(getGlideOptions())
                 .into(myJZVideoPlayerStandard.thumbImageView);
         myJZVideoPlayerStandard.startVideo();
     }

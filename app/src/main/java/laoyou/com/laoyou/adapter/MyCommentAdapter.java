@@ -18,6 +18,7 @@ import laoyou.com.laoyou.bean.CommentBean;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
 import static laoyou.com.laoyou.utils.DateUtils.getMyDate;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 
 /**
  * Created by lian on 2017/11/18.
@@ -60,7 +61,7 @@ public class MyCommentAdapter extends BaseAdapter {
         LinearLayout reply_layout = OverallViewHolder.ViewHolder.get(view, R.id.reply_layout);
 
 
-        Glide.with(mContext).load(list.get(position).getUserImg()).into(head_img);
+        Glide.with(mContext).load(list.get(position).getUserImg()).apply(getGlideOptions()).into(head_img);
         nickname_tv.setText(list.get(position).getUserName());
         content_tv.setText(list.get(position).getMessageContent());
         time_tv.setText(getMyDate(list.get(position).getCreateTime()));

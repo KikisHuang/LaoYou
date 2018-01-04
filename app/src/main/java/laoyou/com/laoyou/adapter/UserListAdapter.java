@@ -16,6 +16,7 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.LikeListBean;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
@@ -60,7 +61,7 @@ public class UserListAdapter extends BaseAdapter {
 
 
         user_name.setText(list.get(position).getName());
-        Glide.with(mContext).load(list.get(position).getHeadImgUrl()).into(user_icon);
+        Glide.with(mContext).load(list.get(position).getHeadImgUrl()).apply(getGlideOptions()).into(user_icon);
 
         return view;
     }

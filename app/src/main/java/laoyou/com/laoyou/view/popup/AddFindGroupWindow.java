@@ -22,6 +22,7 @@ import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goCertificationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goOverInfoPage;
 
@@ -102,7 +103,7 @@ public class AddFindGroupWindow implements View.OnClickListener {
         layout_2 = (LinearLayout) contentView.findViewById(R.id.layout_2);
         layout_3 = (LinearLayout) contentView.findViewById(R.id.layout_3);
 
-        Glide.with(mContext).load(info.getHeadImgUrl()).into(user_icon);
+        Glide.with(mContext).load(info.getHeadImgUrl()).apply(getGlideOptions()).into(user_icon);
 
         user_name.setText(info.getName());
     }

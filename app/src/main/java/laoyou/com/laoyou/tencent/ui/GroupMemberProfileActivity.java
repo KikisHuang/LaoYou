@@ -29,6 +29,8 @@ import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.model.GroupMemberProfile;
 import laoyou.com.laoyou.tencent.model.UserInfo;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 public class GroupMemberProfileActivity extends FragmentActivity {
 
     private String userIdentify, groupIdentify, userCard, groupType, userName;
@@ -65,9 +67,9 @@ public class GroupMemberProfileActivity extends FragmentActivity {
         TemplateTitle title = (TemplateTitle) findViewById(R.id.GroupMemTitle);
         CircleImageView user_head = (CircleImageView) findViewById(R.id.user_head);
         if (!faceUrl.isEmpty())
-            Glide.with(this).load(faceUrl).into(user_head);
+            Glide.with(this).load(faceUrl).apply(getGlideOptions()).into(user_head);
         else
-            Glide.with(this).load(R.drawable.head_other).into(user_head);
+            Glide.with(this).load(R.drawable.head_other).apply(getGlideOptions()).into(user_head);
 
         title.setBackListener(new View.OnClickListener() {
             @Override

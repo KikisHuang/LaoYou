@@ -86,7 +86,7 @@ public class AddLikeGamePresenter implements HttpResultListener {
 
     @Override
     public void onParseError(Exception e) {
-        listener.onFailedMsg(gets(R.string.parse_error));
+        Log.e(TAG, "Parse Error ===" + e);
         Cancle();
     }
 

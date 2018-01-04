@@ -15,6 +15,8 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.AddressBean;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * Created by lian on 2017/11/24.
  */
@@ -46,7 +48,7 @@ public class InfoAdapter extends BaseAdapter {
 
         ImageView head = OverallViewHolder.ViewHolder.get(view, R.id.head_img);
 
-        Glide.with(mContext).load(list.get(position).getIdentifier() == null || list.get(position).getIdentifier().isEmpty() ? R.mipmap.head_img_icon : list.get(position).getFaceUrl().isEmpty() ? R.drawable.head_other : list.get(position).getFaceUrl()).into(head);
+        Glide.with(mContext).load(list.get(position).getIdentifier() == null || list.get(position).getIdentifier().isEmpty() ? R.mipmap.head_img_icon : list.get(position).getFaceUrl().isEmpty() ? R.drawable.head_other : list.get(position).getFaceUrl()).apply(getGlideOptions()).into(head);
 
         return view;
 

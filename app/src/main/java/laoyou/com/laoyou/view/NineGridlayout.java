@@ -82,6 +82,13 @@ public class NineGridlayout extends ViewGroup {
 
         for (int i = 0; i < childrenCount; i++) {
             CustomImageView childrenView = (CustomImageView) getChildAt(i);
+            final int finalI = i;
+            childrenView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.RcOnItemClick(finalI, listData);
+                }
+            });
             childrenView.setImageUrl((String) listData.get(i));
             int[] position = findPosition(i);
             int left = (singleWidth + gap) * position[1];
@@ -207,13 +214,14 @@ public class NineGridlayout extends ViewGroup {
     private CustomImageView generateImageView(final int i) {
         CustomImageView iv = new CustomImageView(getContext());
         iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        iv.setOnClickListener(new OnClickListener() {
+     /*   iv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listData.size() > 0 && listener != null)
                     listener.RcOnItemClick(i, listData);
             }
-        });
+        });*/
+
 //        iv.setBackgroundColor(Color.parseColor("#f5f5f5"));
         return iv;
     }

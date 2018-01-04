@@ -6,66 +6,77 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/listView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="40dp"
-        android:divider="@null"
-        android:overScrollMode="never"
-        android:scrollbars="none">
+        android:orientation="vertical">
 
-    </ListView>
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:divider="@null"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+        </ListView>
+
+        <LinearLayout
+            android:id="@+id/bottom_menu_layout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:background="@color/gray9"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/add_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/add_black_icon" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/chat_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/chat_black_icon" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/heart_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/heart_black_icon" />
+            </FrameLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <include
         android:id="@+id/title_layout"
         layout="@layout/no_titles_layout_include"></include>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="bottom"
-        android:background="@color/gray9"
-        android:orientation="horizontal">
-
-        <FrameLayout
-            android:id="@+id/add_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:src="@mipmap/add_black_icon" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/chat_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:src="@mipmap/chat_black_icon" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/heart_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:src="@mipmap/heart_black_icon" />
-        </FrameLayout>
-    </LinearLayout>
 
 </FrameLayout>

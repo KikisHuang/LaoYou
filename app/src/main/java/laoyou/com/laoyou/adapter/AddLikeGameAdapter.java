@@ -16,6 +16,8 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.GameBean;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * Created by lian on 2017/11/24.
  */
@@ -53,7 +55,7 @@ public class AddLikeGameAdapter extends BaseAdapter {
         TextView game_name = OverallViewHolder.ViewHolder.get(view, R.id.game_name);
         TextView agency_name_tv = OverallViewHolder.ViewHolder.get(view, R.id.agency_name_tv);
 
-        Glide.with(mContext).load(list.get(position).getImgUrl()).into(game_icon);
+        Glide.with(mContext).load(list.get(position).getImgUrl()).apply(getGlideOptions()).into(game_icon);
         game_name.setText(list.get(position).getName().isEmpty() ? "" : list.get(position).getName());
         agency_name_tv.setText(list.get(position).getInfo().isEmpty() ? "" : list.get(position).getInfo());
 

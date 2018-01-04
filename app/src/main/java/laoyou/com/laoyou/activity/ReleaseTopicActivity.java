@@ -33,6 +33,7 @@ import laoyou.com.laoyou.view.ContainsEmojiEditText;
 import laoyou.com.laoyou.view.MinheightGridView;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goAddTopicTypePage;
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -104,7 +105,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
                 issue_tv.setTextColor(getRouColors(R.color.blue_text));
                 photo_layout.setVisibility(View.GONE);
                 video_cover_layout.setVisibility(View.VISIBLE);
-                Glide.with(this).load(videoselectList.get(0).getPath()).into(video_img);
+                Glide.with(this).load(videoselectList.get(0).getPath()).apply(getGlideOptions()).into(video_img);
             }
         }
 
@@ -288,7 +289,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
                     video_cover_layout.setVisibility(View.VISIBLE);
                     // 图片选择结果回调
                     videoselectList = PictureSelector.obtainMultipleResult(data);
-                    Glide.with(this).load(videoselectList.get(0).getPath()).into(video_img);
+                    Glide.with(this).load(videoselectList.get(0).getPath()).apply(getGlideOptions()).into(video_img);
                     Log.i(TAG, "onActivityResult videoselectList size === " + videoselectList.size());
                     break;
 

@@ -18,6 +18,8 @@ import laoyou.com.laoyou.bean.AddressBean;
 import laoyou.com.laoyou.tencent.ui.ProfileActivity;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * Created by lian on 2017/11/24.
  */
@@ -68,7 +70,7 @@ public class AddressBookAdapter extends BaseAdapter {
 
 
         name.setText(this.list.get(position).getNickName());
-        Glide.with(mContext).load(list.get(position).getFaceUrl() == null || list.get(position).getFaceUrl().isEmpty() ? R.drawable.head_other : list.get(position).getFaceUrl()).into(head);
+        Glide.with(mContext).load(list.get(position).getFaceUrl() == null || list.get(position).getFaceUrl().isEmpty() ? R.drawable.head_other : list.get(position).getFaceUrl()).apply(getGlideOptions()).into(head);
 
         return view;
 

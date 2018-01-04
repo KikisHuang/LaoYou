@@ -15,6 +15,8 @@ import com.tencent.qcloud.ui.CircleImageView;
 
 import laoyou.com.laoyou.R;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 public class FriendshipHandleActivity extends Activity implements View.OnClickListener {
 
     private String id;
@@ -26,7 +28,7 @@ public class FriendshipHandleActivity extends Activity implements View.OnClickLi
         setContentView(R.layout.activity_friendship_handle);
         avatar = (CircleImageView) findViewById(R.id.avatar);
         id = getIntent().getStringExtra("id");
-        Glide.with(this).load( getIntent().getStringExtra("face_url)")).into(avatar);
+        Glide.with(this).load( getIntent().getStringExtra("face_url)")).apply(getGlideOptions()).into(avatar);
         TextView tvName = (TextView) findViewById(R.id.name);
         tvName.setText(id);
         String word = getIntent().getStringExtra("word");

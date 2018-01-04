@@ -15,30 +15,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.liaoinstan.springview.widget.SpringView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.HomeStatusAdapter;
-import laoyou.com.laoyou.bean.NearbyBean;
 import laoyou.com.laoyou.bean.PageTopBean;
+import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.dialog.MyAlertDialog;
 import laoyou.com.laoyou.listener.HomeListener;
 import laoyou.com.laoyou.listener.PositionAddListener;
+import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 import laoyou.com.laoyou.presenter.HomePresenter;
 import laoyou.com.laoyou.utils.AnimationUtil;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.DownLoadUtils;
 import laoyou.com.laoyou.utils.Fields;
-import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.utils.ViewPagerScroller;
 import laoyou.com.laoyou.view.RoundAngleImageView;
 import laoyou.com.laoyou.view.WrapContentHeightViewPager;
 
+import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.dialog.PhotoProgress.LoadingCancle;
 import static laoyou.com.laoyou.dialog.PhotoProgress.LoadingShow;
 import static laoyou.com.laoyou.utils.AnimationUtil.showAndHiddenAnimation;
@@ -46,11 +45,15 @@ import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IPUtils.isWifi;
 import static laoyou.com.laoyou.utils.IntentUtils.goFlashChatPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goGameInformationPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLocationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginOperPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goOutSidePage;
+import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goQueryPassPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goTopicCirclePage;
+import static laoyou.com.laoyou.utils.IntentUtils.goTopicCommentDetailsPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goVideoPlayerPage;
 import static laoyou.com.laoyou.utils.SynUtils.Indevelopment;
 import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
@@ -59,7 +62,7 @@ import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
 /**
  * Created by lian on 2017/4/22.
  */
-public class HomeFragment extends BaseFragment implements View.OnClickListener, HomeListener, PositionAddListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener, HomeListener, PositionAddListener, RecyclerViewOnItemClickListener {
     private static final String TAG = "HomeFragment";
 
     private WrapContentHeightViewPager mViewPager;
@@ -76,7 +79,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
-    private SpringView springview;
+//    private SpringView springview;
 
     private AppBarLayout appbar_layout;
 
@@ -86,9 +89,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private HomeStatusAdapter adapter;
 
-    private List<NearbyBean> list;
     private TextView flash_more_tv;
-
 
     @Override
     protected int initContentView() {
@@ -107,16 +108,30 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         show_hide_img.setOnClickListener(this);
         topic_circle_layout.setOnClickListener(this);
         flash_more_tv.setOnClickListener(this);
+
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    if (!recyclerView.canScrollVertically(1)) {
+                        hp.page += 10;
+                        hp.getPeopleNearby(false);
+                    }
+
+            }
+        });
+
     }
 
 
     @Override
     protected void init() {
+
+
         homeFragment = this;
         banner_img = f(R.id.banner_img);
         page_layout = f(R.id.page_layout);
-
-        list = new ArrayList<>();
 
         banner_layout = f(R.id.banner_layout);
 
@@ -135,7 +150,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         polistener = this;
 
-        springview = f(R.id.springview);
+//        springview = f(R.id.springview);
         appbar_layout = f(R.id.appbar_layout);
 
         show_hide_img = f(R.id.show_hide_img);
@@ -160,7 +175,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mViewPager.setPageMargin(0);
         hp = new HomePresenter(this, mViewPager, getActivity().getLayoutInflater(), getActivity().getApplicationContext(), mLinearLayoutDot);
-        SpringUtils.SpringViewInit(springview, getActivity(), hp.springlistener);
+//        SpringUtils.SpringViewInit(springview, getActivity(), hp.springlistener);
         mViewPager.setOffscreenPageLimit(3);
     }
 
@@ -174,6 +189,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         hp.Presenter();
         TestData();
     }
+
 
     private void TestData() {
 
@@ -340,17 +356,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     @Override
-    public void RefreshRecyclerView(List<NearbyBean> nblist) {
-        if (nblist.size() > 0) {
-            list = nblist;
-            Log.i(TAG, " list size ==" + list.size());
-            if (adapter == null) {
-                adapter = new HomeStatusAdapter(getActivity(), list);
-                recyclerView.setAdapter(adapter);
-            } else
-                adapter.notifyDataSetChanged();
+    public void RefreshRecyclerView(List<TopicTypeBean> nblist) {
 
-        }
+        if (adapter == null) {
+            adapter = new HomeStatusAdapter(getActivity(), nblist, this);
+            recyclerView.setAdapter(adapter);
+        } else
+            adapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -361,7 +374,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_HIDDEN, 500);
 
         show_hide_img.setEnabled(b);
-        springview.setEnable(b);
+//        springview.setEnable(b);
     }
 
     @Override
@@ -395,7 +408,39 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
+    @Override
+    public void onBottom() {
+
+    }
+
     public void onRefresh() {
         hp.IsLogin();
+    }
+
+
+    @Override
+    public void RcOnItemClick(int pos, List<String> imgs) {
+        goPhotoViewerPage(getActivity(), imgs, pos, 1);
+    }
+
+    @Override
+    public void LikeClick(String id) {
+        Show(getActivity(), "", true, null);
+        hp.LikeChatTheme(id);
+    }
+
+    @Override
+    public void GoPageHome(String userId) {
+        goHomePage(getActivity(), userId, false);
+    }
+
+    @Override
+    public void GoCommentPage(String id, String userId, String name, String content) {
+        goTopicCommentDetailsPage(getActivity(), id, userId, name, content);
+    }
+
+    @Override
+    public void GoVideoPage(String url, String videoCover) {
+        goVideoPlayerPage(getActivity(), url, videoCover);
     }
 }

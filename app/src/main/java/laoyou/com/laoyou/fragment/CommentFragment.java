@@ -177,6 +177,6 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
         if (flag == 0){}
 //            goTopicCommentDetailsPage(getActivity(), commentList.get(position).getId(), commentList.get(position).getUserId(), "", "");
         else
-            goHomePage(getActivity(), heartsList.get(position).getId());
+            goHomePage(getActivity(), heartsList.get(position).getId(),false);
     }
 }

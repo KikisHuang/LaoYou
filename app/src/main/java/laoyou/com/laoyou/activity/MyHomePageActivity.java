@@ -174,7 +174,7 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
 
     @Override
     public void onShowUserInfo(UserInfoBean ub) {
-        Glide.with(MyHomePageActivity.this).load(ub.getHeadImgUrl()).into(head_img);
+        Glide.with(MyHomePageActivity.this).load(ub.getHeadImgUrl()).apply(getGlideOptions()).into(head_img);
 
         Glide.with(MyHomePageActivity.this).load(ub.getBackgroundUrl() != null && !ub.getBackgroundUrl().isEmpty() ? ub.getBackgroundUrl() : Fields.Catalina).apply(getGlideOptions()).into(background_img);
 

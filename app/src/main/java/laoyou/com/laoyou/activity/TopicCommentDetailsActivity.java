@@ -22,7 +22,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -53,6 +52,7 @@ import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.AnimationUtil.TitleZoomAnima;
 import static laoyou.com.laoyou.utils.DateUtils.getMyDate;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goParticipationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
@@ -288,7 +288,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     public void onThemeDetails(final TopicCommentBean tcb) {
 
 
-        Glide.with(this).load(tcb.getMcUser().getHeadImgUrl()).into(user_head_img);
+        Glide.with(this).load(tcb.getMcUser().getHeadImgUrl()).apply(getGlideOptions()).into(user_head_img);
         user_name.setText(tcb.getMcUser().getName());
         type_name.setText(tcb.getMcChatType().getName());
         time_tv.setText(getMyDate(tcb.getCreateTime()));
@@ -317,9 +317,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
                     ImageView im = new ImageView(this);
                     im.setScaleType(ImageView.ScaleType.FIT_XY);
                     im.setLayoutParams(lp);
-                    RequestOptions options = new RequestOptions();
-                    options.centerCrop();
-                    Glide.with(this).load(tcb.getPhotos().get(i)).apply(options).into(im);
+                    Glide.with(this).load(tcb.getPhotos().get(i)).apply(getGlideOptions()).into(im);
                     final int finalI = i;
                     im.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -345,9 +343,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
                 FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 lp.topMargin = DeviceUtils.dip2px(this, 2);
                 video_cover_img.setLayoutParams(lp);
-                RequestOptions options = new RequestOptions();
-                options.centerCrop();
-                Glide.with(this).load(coverPath).apply(options).into(video_cover_img);
+                Glide.with(this).load(coverPath).apply(getGlideOptions()).into(video_cover_img);
                 video_layout.setVisibility(View.VISIBLE);
 
                 video_cover_img.setOnClickListener(new View.OnClickListener() {
@@ -363,7 +359,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
     @Override
     public void GoHomePage(String id) {
-        goHomePage(this, id);
+        goHomePage(this, id,false);
     }
 
     @Override
@@ -535,7 +531,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         if (parent instanceof GridView) {
             if (likelist.size() > 0) {
                 if (position < 7)
-                    goHomePage(this, likelist.get(position).getId());
+                    goHomePage(this, likelist.get(position).getId(),false);
                 else
                     goParticipationPage(this, 2, id);
             }

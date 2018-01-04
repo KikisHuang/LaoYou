@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 
 import com.bumptech.glide.Glide;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 public class CustomImageView extends RoundAngleImageView {
 
     private String url;
@@ -73,7 +75,7 @@ public class CustomImageView extends RoundAngleImageView {
             this.url = url;
             if (isAttachedToWindow) {
 //                Picasso.with(getContext()).load(url).placeholder(new ColorDrawable(Color.parseColor("#f5f5f5"))).into(this);
-                Glide.with(getContext()).load(url).into(this);
+                Glide.with(getContext()).load(url).apply(getGlideOptions()).into(this);
             }
         }
     }

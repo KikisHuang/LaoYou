@@ -17,6 +17,7 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.NearbyBean;
 import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.SynUtils.getDistanceKM;
 
 /**
@@ -44,7 +45,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.name_tv.setText(list.get(position).getName());
-        Glide.with(context).load(list.get(position).getHeadImgUrl()).into(holder.user_head_img);
+        Glide.with(context).load(list.get(position).getHeadImgUrl()).apply(getGlideOptions()).into(holder.user_head_img);
 
         if (list.get(position).getDistance() > 1000)
             holder.distance_tv.setText(getDistanceKM(list.get(position).getDistance() / 1000));

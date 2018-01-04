@@ -2,6 +2,7 @@ package laoyou.com.laoyou.presenter;
 
 import android.graphics.Bitmap;
 import android.support.design.widget.AppBarLayout;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -41,6 +42,7 @@ import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
  */
 public class TopicTypeDetailsPresenter extends AppBarStateChangeListener implements HttpResultListener {
 
+    private static final String TAG = "TopicTypeDetailsPresenter";
     private TopicTypeDetailsListener listener;
 
     public int page = 0;
@@ -159,7 +161,8 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
 
     @Override
     public void onParseError(Exception e) {
-        listener.onFailedsMsg(gets(R.string.parse_error));
+//        listener.onFailedsMsg(gets(R.string.parse_error));
+        Log.e(TAG, gets(R.string.parse_error) + " ===" + e);
         Cancle();
     }
 

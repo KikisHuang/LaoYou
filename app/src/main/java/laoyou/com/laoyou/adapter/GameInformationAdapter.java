@@ -15,6 +15,8 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.GameInfoBean;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * Created by lian on 2017/11/18.
  */
@@ -51,7 +53,7 @@ public class GameInformationAdapter extends BaseAdapter {
         information_titles_tv.setText(list.get(position).getTitle());
         information_content_tv.setText(list.get(position).getSummary());
 
-        Glide.with(mContext).load(list.get(position).getLogo()).into(information_img);
+        Glide.with(mContext).load(list.get(position).getLogo()).apply(getGlideOptions()).into(information_img);
 
         return view;
     }

@@ -11,6 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMConversationType;
 import com.tencent.TIMGroupAddOpt;
@@ -29,7 +32,6 @@ import com.tencent.qcloud.ui.LineControllerView;
 import com.tencent.qcloud.ui.ListPickerDialog;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -40,9 +42,11 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.model.UserInfo;
 import laoyou.com.laoyou.utils.ToastUtil;
-import me.iwf.photopicker.PhotoPicker;
-import top.zibin.luban.Luban;
-import top.zibin.luban.OnCompressListener;
+
+import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
+import static laoyou.com.laoyou.dialog.CustomProgress.Show;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+import static laoyou.com.laoyou.utils.PhotoUtils.getMULTIPLEPhotoTag;
 
 public class GroupProfileActivity extends FragmentActivity implements GroupInfoView, View.OnClickListener, FriendInfoView, GroupUpLoadListener {
 
@@ -107,9 +111,9 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
             group_head_layout.setVisibility(View.VISIBLE);
             key = getIntent().getStringExtra("key");
             if (groupInfos.get(0) == null || groupInfos.get(0).getFaceUrl().isEmpty())
-                Glide.with(GroupProfileActivity.this).load(R.drawable.head_group).into(group_head);
+                Glide.with(GroupProfileActivity.this).load(R.drawable.head_group).apply(getGlideOptions()).into(group_head);
             else
-                Glide.with(GroupProfileActivity.this).load(groupInfos.get(0).getFaceUrl()).into(group_head);
+                Glide.with(GroupProfileActivity.this).load(groupInfos.get(0).getFaceUrl()).apply(getGlideOptions()).into(group_head);
 
             member.setContent(String.valueOf(info.getMemberNum()));
             member.setOnClickListener(this);
@@ -296,7 +300,8 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
 
             case R.id.group_head_layout:
                 if (isGroupOwner)
-                    groupInfoPresenter.ChangeHeadImg(this, 1);
+                    getMULTIPLEPhotoTag(this,PictureConfig.CHOOSE_REQUEST);
+//                    groupInfoPresenter.ChangeHeadImg(this);
                 else
                     ToastUtil.toast2_bottom(GroupProfileActivity.this, "只有群主才能更改群头像");
                 break;
@@ -307,9 +312,12 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case PhotoPicker.REQUEST_CODE:
-                    ArrayList<String> p = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-                    Compress(p);
+                case PictureConfig.CHOOSE_REQUEST:
+                    Show(GroupProfileActivity.this, "提交中", true, null);
+                    List<LocalMedia> list = PictureSelector.obtainMultipleResult(data);
+                    GroupFile = new File(list.get(0).getCompressPath() == null || list.get(0).getCompressPath().isEmpty() ? list.get(0).getPath() : list.get(0).getCompressPath());
+                    Glide.with(GroupProfileActivity.this).load(GroupFile).apply(getGlideOptions()).into(group_head);
+                    UpGroupHead();
                     break;
             }
         }
@@ -323,37 +331,6 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
             }
         }
 
-    }
-
-    /**
-     * 压缩
-     */
-    private void Compress(List<String> list) {
-        Luban.with(this)
-                .load(list)                                   // 传人要压缩的图片列表
-                .ignoreBy(300)                               // 忽略不压缩图片的大小
-//                .setTargetDir(FileManager.getSaveFilePath() + "gxLuban")// 设置压缩后文件存储位置
-                .setCompressListener(new OnCompressListener() { //设置回调
-                    @Override
-                    public void onStart() {
-                        // TODO 压缩开始前调用，可以在方法内启动 loading UI
-                    }
-
-                    @Override
-                    public void onSuccess(File file) {
-                        // TODO 压缩成功后调用，返回压缩后的图片文件
-                        Log.i(TAG, "onSuccess" + file.getAbsolutePath());
-                        GroupFile = file;
-                        Glide.with(GroupProfileActivity.this).load(file).into(group_head);
-                        UpGroupHead();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // TODO 当压缩过程出现问题时调用
-                        ToastUtil.toast2_bottom(GroupProfileActivity.this, "图片获取异常！！！");
-                    }
-                }).launch();    //启动压缩
     }
 
     private void UpGroupHead() {
@@ -372,11 +349,13 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
 
     @Override
     public void onSucceed() {
+        Cancle();
         ToastUtil.toast2_bottom(GroupProfileActivity.this, "群头像上传成功！");
     }
 
     @Override
     public void onErrorMSg(String msg) {
         ToastUtil.toast2_bottom(this, msg);
+        Cancle();
     }
 }

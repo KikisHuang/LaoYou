@@ -32,6 +32,7 @@ import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goParticipationPage;
 import static laoyou.com.laoyou.utils.SynUtils.KswitchWay;
@@ -116,7 +117,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
         tp.getFollowChatType(id);
         tp.getActiveUserData(id);
         if (!imgurl.isEmpty()) {
-            Glide.with(this).load(imgurl).into(background_img);
+            Glide.with(this).load(imgurl).apply(getGlideOptions()).into(background_img);
             NoBackGroup = false;
         } else {
             background_img.setVisibility(View.GONE);
@@ -223,13 +224,13 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
 
                 CircleImageView im = new CircleImageView(this);
                 im.setLayoutParams(lp);
-                Glide.with(this).load(aub.get(i).getHeadImgUrl()).into(im);
+                Glide.with(this).load(aub.get(i).getHeadImgUrl()).apply(getGlideOptions()).into(im);
                 active_user_layout.addView(im);
                 final int finalI = i;
                 im.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        goHomePage(TopicTypeDetailsActivity.this, aub.get(finalI).getUserId());
+                        goHomePage(TopicTypeDetailsActivity.this, aub.get(finalI).getUserId(),false);
                     }
                 });
 

@@ -1,5 +1,7 @@
 package laoyou.com.laoyou.presenter;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
@@ -27,6 +29,7 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
  */
 public class TopicCirclePresenter implements HttpResultListener {
 
+    private static final String TAG = "TopicCirclePresenter";
     private TopicCircleListener listener;
     public int page = 0;
     private boolean isRefresh = true;
@@ -91,7 +94,7 @@ public class TopicCirclePresenter implements HttpResultListener {
 
     @Override
     public void onParseError(Exception e) {
-        listener.onFailedMsg(gets(R.string.parse_error));
+        Log.e(TAG, "Parse Error ===" + e);
     }
 
     @Override

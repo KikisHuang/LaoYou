@@ -52,6 +52,7 @@ import laoyou.com.laoyou.presenter.InternetCafLocationPresenter;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.StarBar;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goInternetCafPage;
 import static laoyou.com.laoyou.utils.SynUtils.convertViewToBitmap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -496,7 +497,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
         grade_tv.setText(mb.getAvgEvaluate() + "分");
         address_tv.setText(gets(R.string.address) + "：" + mb.getAddress());
 
-        Glide.with(this).load(mb.getLogoUrl()).into(caf_logo_img);
+        Glide.with(this).load(mb.getLogoUrl()).apply(getGlideOptions()).into(caf_logo_img);
     }
 
     /**

@@ -59,9 +59,9 @@ public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.MyViewHo
             if (position == 0 && list.get(0) == null)
                 Glide.with(context).load(R.mipmap.photo_add_icon).apply(getGlideOptions()).into(holder.photo_img);
             else
-                Glide.with(context).load(list.get(position).getUrl()).into(holder.photo_img);
+                Glide.with(context).load(list.get(position).getUrl()).apply(getGlideOptions()).into(holder.photo_img);
         } else
-            Glide.with(context).load(list.get(position).getUrl()).into(holder.photo_img);
+            Glide.with(context).load(list.get(position).getUrl()).apply(getGlideOptions()).into(holder.photo_img);
 
 
         holder.photo_img.setOnClickListener(new View.OnClickListener() {

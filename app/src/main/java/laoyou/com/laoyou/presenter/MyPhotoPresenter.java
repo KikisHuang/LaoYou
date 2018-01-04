@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
@@ -35,6 +36,7 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
  */
 public class MyPhotoPresenter implements HttpResultListener, OnCompressListener {
 
+    private static final String TAG = "MyPhotoPresenter";
     private MyPhotoListener listener;
     public int page = 0;
 
@@ -102,7 +104,7 @@ public class MyPhotoPresenter implements HttpResultListener, OnCompressListener 
 
     @Override
     public void onParseError(Exception e) {
-        listener.onFailedMsg(gets(R.string.parse_error));
+        Log.e(TAG, "Parse Error ===" + e);
         Cancle();
     }
 

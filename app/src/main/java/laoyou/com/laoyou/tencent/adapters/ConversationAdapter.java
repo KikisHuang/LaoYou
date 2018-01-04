@@ -18,6 +18,8 @@ import laoyou.com.laoyou.tencent.model.Conversation;
 import laoyou.com.laoyou.tencent.utils.TimeUtil;
 import laoyou.com.laoyou.view.group.GroupCircularImageView;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * 会话界面adapter
  */
@@ -60,13 +62,16 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         viewHolder.tvName.setText(data.getName());
 
         Log.i(TAG, " data.getAvatar() ====" + data.getAvatar());
-            if (data.getAvatar() instanceof Integer)
-                viewHolder.avatar.setImageResource((Integer) data.getAvatar());
-            else if (data.getAvatar() instanceof String)
-                if (((String) data.getAvatar()).isEmpty())
-                    viewHolder.avatar.setImageResource(R.drawable.head_me);
-                else
-                    Glide.with(getContext()).load(data.getAvatar()).into(viewHolder.avatar);
+        if (data.getAvatar() instanceof Integer)
+            Glide.with(getContext()).load(data.getAvatar()).apply(getGlideOptions()).into(viewHolder.avatar);
+//            viewHolder.avatar.setImageResource((Integer) data.getAvatar());
+        else if (data.getAvatar() instanceof String) {
+            if (((String) data.getAvatar()).isEmpty())
+                Glide.with(getContext()).load(R.drawable.head_me).apply(getGlideOptions()).into(viewHolder.avatar);
+//                viewHolder.avatar.setImageResource();
+            else
+                Glide.with(getContext()).load(data.getAvatar()).apply(getGlideOptions()).into(viewHolder.avatar);
+        }
 
         viewHolder.lastMessage.setText(data.getLastMessageSummary());
         viewHolder.time.setText(TimeUtil.getTimeStr(data.getLastMessageTime()));

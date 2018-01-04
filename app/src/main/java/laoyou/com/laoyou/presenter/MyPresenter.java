@@ -14,6 +14,7 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.MyListener;
+import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
@@ -50,6 +51,7 @@ public class MyPresenter implements HttpResultListener {
                 try {
                     JSONObject ob = getJsonOb(response);
                     UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
+                    SPreferences.saveMyNickName(ub.getName());
                     listener.ongetDetails(ub);
                 } catch (JSONException e) {
                     Log.e(TAG, "Error === " + e);

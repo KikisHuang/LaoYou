@@ -16,6 +16,7 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.GroupBean;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
@@ -53,7 +54,7 @@ public class FlashAdapter extends BaseAdapter {
         flash_num_tv.setText(gets(R.string.produce_msg) + ((int) list.get(position).getNextMsgSeq() - 1) + gets(R.string.info));
         name.setText(list.get(position).getName());
 
-        Glide.with(mContext).load(list.get(position).getFaceUrl() == null || list.get(position).getFaceUrl().isEmpty() ? R.drawable.head_group : list.get(position).getFaceUrl()).into(head_img);
+        Glide.with(mContext).load(list.get(position).getFaceUrl() == null || list.get(position).getFaceUrl().isEmpty() ? R.drawable.head_group : list.get(position).getFaceUrl()).apply(getGlideOptions()).into(head_img);
 
         return view;
     }

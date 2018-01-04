@@ -155,7 +155,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
                 if (sex != 99 && user_name_tv.getText().toString().length() > 0)
 //                    goOverInfoPage(getActivity(), headImgUrl, user_name_tv.getText().toString(), "", sex);
 //                    goMyHomePage(getActivity());
-                    goHomePage(getActivity(), SPreferences.getUserId());
+                    goHomePage(getActivity(), SPreferences.getUserId(),false);
                 break;
         }
     }

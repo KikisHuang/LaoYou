@@ -5,6 +5,12 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tencent.TIMAddFriendRequest;
+import com.tencent.TIMDelFriendType;
+import com.tencent.TIMFriendResult;
+import com.tencent.TIMFriendStatus;
+import com.tencent.TIMFriendshipManager;
+import com.tencent.TIMValueCallBack;
 import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONArray;
@@ -57,10 +63,6 @@ public class HomePagePresenter implements HttpResultListener {
      */
     public void getOthersDetails(String id, boolean isTencent) {
         getOthersUseDetails(id, isTencent);
-        getMyHeartNum(id);
-        getAttentGames(id);
-        getMyPhotoList(id);
-        getPersonaldynamic(id, false);
     }
 
     /**
@@ -114,7 +116,7 @@ public class HomePagePresenter implements HttpResultListener {
      *
      * @param str
      */
-    private void getMyPhotoList(String str) {
+    public void getMyPhotoList(String str) {
 
         Map<String, String> map = getKeyMap();
         if (str != null)
@@ -131,7 +133,7 @@ public class HomePagePresenter implements HttpResultListener {
      *
      * @param str
      */
-    private void getAttentGames(String str) {
+    public void getAttentGames(String str) {
         Map<String, String> map = getKeyMap();
         if (str != null)
             map.put("userId", str);
@@ -146,7 +148,7 @@ public class HomePagePresenter implements HttpResultListener {
      *
      * @param str
      */
-    private void getMyHeartNum(String str) {
+    public void getMyHeartNum(String str) {
         Map<String, String> map = getKeyMap();
         if (str != null)
             map.put("toUserId", str);
@@ -300,7 +302,8 @@ public class HomePagePresenter implements HttpResultListener {
     @Override
     public void onParseError(Exception e) {
         Cancle();
-        listener.onFailedMSg(gets(R.string.parse_error));
+//        listener.onFailedMSg(gets(R.string.parse_error));
+        Log.e(TAG, "Parse Error ===" + e);
     }
 
     @Override
@@ -317,13 +320,41 @@ public class HomePagePresenter implements HttpResultListener {
         }
     }
 
-    public void getMyHeart() {
-
-    }
 
     public void LikeChatTheme(String id) {
         Map<String, String> map = getKeyMap();
         map.put("chatThemeId", id);
         httpUtils.OkHttpsGet(map, this, Fields.ACRESULET2, Interface.URL + Interface.LIKECHATTHEME);
+    }
+
+
+    /**
+     * 删除好友
+     *
+     * @param id 删除对象Identify
+     */
+    public void delFriend(final String id) {
+        if (listener == null) return;
+        List<TIMAddFriendRequest> reqList = new ArrayList<>();
+        TIMAddFriendRequest req = new TIMAddFriendRequest();
+        req.setIdentifier(id);
+        reqList.add(req);
+        TIMFriendshipManager.getInstance().delFriend(TIMDelFriendType.TIM_FRIEND_DEL_BOTH, reqList, new TIMValueCallBack<List<TIMFriendResult>>() {
+            @Override
+            public void onError(int i, String s) {
+                listener.onAddFriend(TIMFriendStatus.TIM_FRIEND_STATUS_UNKNOWN);
+                Cancle();
+            }
+
+            @Override
+            public void onSuccess(List<TIMFriendResult> timFriendResults) {
+                for (TIMFriendResult item : timFriendResults) {
+                    if (item.getIdentifer().equals(id)) {
+                        listener.onDelFriend(item.getStatus());
+                    }
+                }
+                Cancle();
+            }
+        });
     }
 }

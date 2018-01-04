@@ -98,7 +98,7 @@ public class ParticipationActivity extends InitActivity implements Participation
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (likelist.size() > 0) {
-            goHomePage(this, likelist.get(position).getId());
+            goHomePage(this, likelist.get(position).getId(),false);
         }
     }
 

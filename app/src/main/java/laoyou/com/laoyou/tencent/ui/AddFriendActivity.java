@@ -25,6 +25,8 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * 申请添加好友界面
  */
@@ -50,7 +52,7 @@ public class AddFriendActivity extends FragmentActivity implements View.OnClickL
         if (getIntent().getStringExtra("head_img") == null || getIntent().getStringExtra("head_img").isEmpty())
             avatar.setImageResource(R.drawable.head_me);
         else
-            Glide.with(this).load(getIntent().getStringExtra("head_img")).into(avatar);
+            Glide.with(this).load(getIntent().getStringExtra("head_img")).apply(getGlideOptions()).into(avatar);
 
         idField.setContent(id);
         groupField = (LineControllerView) findViewById(R.id.group);

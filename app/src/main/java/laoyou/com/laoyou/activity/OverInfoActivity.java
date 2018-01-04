@@ -26,6 +26,7 @@ import laoyou.com.laoyou.view.RippleView;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.setTitles;
 
@@ -180,7 +181,7 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
     @Override
     public void setHeadImgAndName(String imgPath, String name) {
         if (!imgPath.isEmpty() && !name.isEmpty()) {
-            Glide.with(OverInfoActivity.this).load(imgPath).into(head_img);
+            Glide.with(OverInfoActivity.this).load(imgPath).apply(getGlideOptions()).into(head_img);
             new getImageCacheAsyncTask(getApplicationContext(), this).execute(imgPath);
 
             nickname_ed.setText(name);
@@ -212,6 +213,6 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
     @Override
     public void onCompressSucceed(File f) {
         headFile = f;
-        Glide.with(OverInfoActivity.this).load(f).into(head_img);
+        Glide.with(OverInfoActivity.this).load(f).apply(getGlideOptions()).into(head_img);
     }
 }

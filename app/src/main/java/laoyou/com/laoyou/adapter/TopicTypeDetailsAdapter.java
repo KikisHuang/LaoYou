@@ -20,6 +20,8 @@ import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.view.NineGridlayout;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * Created by lian on 2017/11/15.
  */
@@ -69,7 +71,7 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
         holder.topic_layout.setVisibility(View.GONE);
 
         holder.nickname_tv.setText(list.get(position).getUserName());
-        Glide.with(context).load(list.get(position).getHeadImgUrl()).into(holder.head_img);
+        Glide.with(context).load(list.get(position).getHeadImgUrl()).apply(getGlideOptions()).into(holder.head_img);
         holder.time_tv.setText(list.get(position).getCreateTime());
         if (list.get(position).getMessageContent() == null || list.get(position).getMessageContent().isEmpty())
             holder.content_tv.setVisibility(View.GONE);
@@ -86,7 +88,7 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
             FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(w, h);
             holder.video_img.setLayoutParams(lp);
             holder.video_layouts.setVisibility(View.VISIBLE);
-            Glide.with(context).load(list.get(position).getVideoCover()).into(holder.video_img);
+            Glide.with(context).load(list.get(position).getVideoCover()).apply(getGlideOptions()).into(holder.video_img);
             holder.video_layouts.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

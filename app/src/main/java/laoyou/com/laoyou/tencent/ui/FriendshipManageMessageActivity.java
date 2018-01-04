@@ -52,14 +52,14 @@ public class FriendshipManageMessageActivity extends Activity implements Friends
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                if (list.get(position).getType() == TIMFutureFriendType.TIM_FUTURE_FRIEND_PENDENCY_IN_TYPE) {
+              /*  if (list.get(position).getType() == TIMFutureFriendType.TIM_FUTURE_FRIEND_PENDENCY_IN_TYPE) {
                     index = position;
                     Intent intent = new Intent(FriendshipManageMessageActivity.this, FriendshipHandleActivity.class);
                     intent.putExtra("id", list.get(position).getIdentify());
                     intent.putExtra("word", list.get(position).getMessage());
                     intent.putExtra("face_url", list.get(position).getFaceUrl());
                     startActivityForResult(intent, FRIENDSHIP_REQ);
-                }
+                }*/
 
             }
         });

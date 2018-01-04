@@ -37,7 +37,7 @@ public class PhotoViewerActivity extends InitActivity {
         list = getIntent().getStringArrayListExtra("Photo_list");
         pos = Integer.parseInt(getIntent().getStringExtra("Photo_pos"));
         Function = Integer.parseInt(getIntent().getStringExtra("Photo_Function"));
-        if (pos == 0)
+        if (list.size() == 1)
             page_tv.setVisibility(View.INVISIBLE);
         else
             page_tv.setText(pos + 1 + "/" + list.size());

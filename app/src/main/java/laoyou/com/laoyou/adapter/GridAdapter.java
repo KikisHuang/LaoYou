@@ -15,6 +15,8 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.LikeListBean;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * Created by lian on 2017/11/18.
  */
@@ -46,7 +48,7 @@ public class GridAdapter extends BaseAdapter {
         ImageView icon_img = OverallViewHolder.ViewHolder.get(view, R.id.icon_img);
         ImageView more_img = OverallViewHolder.ViewHolder.get(view, R.id.more_img);
         if (position < 7) {
-            Glide.with(mContext).load(list.get(position).getHeadImgUrl()).into(icon_img);
+            Glide.with(mContext).load(list.get(position).getHeadImgUrl()).apply(getGlideOptions()).into(icon_img);
             more_img.setVisibility(View.GONE);
             icon_img.setVisibility(View.VISIBLE);
         } else {

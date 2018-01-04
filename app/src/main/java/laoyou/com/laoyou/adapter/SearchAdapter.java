@@ -17,6 +17,8 @@ import laoyou.com.laoyou.bean.AddressBean;
 import laoyou.com.laoyou.listener.AddressBookListener;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * Created by lian on 2017/11/24.
  */
@@ -51,7 +53,7 @@ public class SearchAdapter extends BaseAdapter {
 
         ImageView head = OverallViewHolder.ViewHolder.get(view, R.id.head_img);
 
-        Glide.with(mContext).load(list.get(position).getIdentifier() == null || list.get(position).getIdentifier().isEmpty() ? R.mipmap.head_img_icon : list.get(position).getFaceUrl().isEmpty() ? R.drawable.head_other : list.get(position).getFaceUrl()).into(head);
+        Glide.with(mContext).load(list.get(position).getIdentifier() == null || list.get(position).getIdentifier().isEmpty() ? R.mipmap.head_img_icon : list.get(position).getFaceUrl().isEmpty() ? R.drawable.head_other : list.get(position).getFaceUrl()).apply(getGlideOptions()).into(head);
         TextView catalog = OverallViewHolder.ViewHolder.get(view, R.id.catalog);
         TextView name = OverallViewHolder.ViewHolder.get(view, R.id.name);
         TextView line_tv = OverallViewHolder.ViewHolder.get(view, R.id.line_tv);

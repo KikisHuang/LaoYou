@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.presenter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.AppBarLayout;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONArray;
@@ -26,14 +28,17 @@ import java.util.Map;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.PageTopBannerAdapter;
 import laoyou.com.laoyou.application.MyApplication;
-import laoyou.com.laoyou.bean.NearbyBean;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.bean.PageTopBean;
+import laoyou.com.laoyou.bean.TopicTypeBean;
+import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.AppBarStateChangeListener;
 import laoyou.com.laoyou.listener.HomeListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.listener.VersionListener;
+import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.VersionUpUtils;
 import laoyou.com.laoyou.utils.homeViewPageUtils;
@@ -46,15 +51,18 @@ import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
+import static laoyou.com.laoyou.utils.SynUtils.fileIsExists;
 import static laoyou.com.laoyou.utils.SynUtils.getVersionCode;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
+import static laoyou.com.laoyou.utils.SynUtils.saveImage;
 import static laoyou.com.laoyou.utils.SynUtils.startPlay;
 import static laoyou.com.laoyou.utils.SynUtils.stopPlay;
+import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
 
 /**
  * Created by lian on 2017/10/25.
  */
-public class HomePresenter extends AppBarStateChangeListener implements HttpResultListener, SpringListener, VersionListener {
+public class HomePresenter extends AppBarStateChangeListener implements HttpResultListener, VersionListener {
     private static final String TAG = "HomePresenter";
     private HomeListener listener;
     private Handler handler;
@@ -73,9 +81,9 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     private int prePosition = 0;
     private LinearLayout mLinearLayoutDot;
     private boolean ONEIMGFLAG = false;
-    private int page = 0;
+    public int page = 0;
     private boolean RefreshFlag;
-    private List<NearbyBean> Nblist;
+    private List<TopicTypeBean> Nblist;
     public SpringListener springlistener;
 
     public HomePresenter(HomeListener listener, ViewPager mViewPager, LayoutInflater inflater, Context context, LinearLayout mLinearLayoutDot) {
@@ -87,7 +95,6 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         mImageViewDotList = new ArrayList<>();
         this.inflater = inflater;
         this.context = context;
-        springlistener = this;
     }
 
     public void Presenter() {
@@ -98,17 +105,17 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     }
 
     /**
-     * 获取附近的人(改成获取在意的人);
+     * 获取在意的人;
      *
      * @param flag
      */
-    private void getPeopleNearby(boolean flag) {
+    public void getPeopleNearby(boolean flag) {
 
         RefreshFlag = flag;
         Map<String, String> map = getKeyMap();
         map.put("page", String.valueOf(page));
         map.put("pageSize", String.valueOf(page + Fields.SIZE));
-        map.put("followFlag", String.valueOf(1));
+        map.put("followFlag", String.valueOf(0));
 
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETCAREBYPAGE);
     }
@@ -120,7 +127,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         Map<String, String> map = getKeyMap();
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.MYINFODETAILS);
 
-        CheckID();
+//        CheckID();
     }
 
     /**
@@ -182,15 +189,14 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                 }
                 break;
             case Fields.REQUEST2:
-            /*    try {
+                try {
                     JSONObject ob = getJsonOb(response);
                     UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
-                    listener.onDetails(ub);
+                    SPreferences.saveMyNickName(ub.getName());
                 } catch (JSONException e) {
                     Log.e(TAG, "Error === " + e);
                     e.printStackTrace();
                 }
-            */
                 break;
 
             case Fields.REQUEST5:
@@ -210,29 +216,66 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                 }
                 break;
             case Fields.REQUEST6:
+                //需要封装;
                 try {
                     JSONArray ar = getJsonAr(response);
+                    if (RefreshFlag)
+                        Nblist = new ArrayList<>();
 
-                    Log.i(TAG, "RefreshFlag ===" + RefreshFlag);
                     if (ar.length() > 0) {
-                        if (RefreshFlag)
-                            Nblist = new ArrayList<>();
-
                         for (int i = 0; i < ar.length(); i++) {
-                            NearbyBean pb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), NearbyBean.class);
-                            Nblist.add(pb);
+                            TopicTypeBean ttb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), TopicTypeBean.class);
+
+                            if (ttb.getReChatMessages() != null) {
+                                JSONArray tta = new JSONArray(ttb.getReChatMessages().replace(" ", ""));
+
+                                Gson gson = new Gson();
+                                String[][] ss = gson.fromJson(String.valueOf(tta), new TypeToken<String[][]>() {
+                                }.getType());
+                                List<List<String>> outlist = new ArrayList<>();
+                                for (String[] strings : ss) {
+                                    List<String> inlist = null;
+                                    for (String string : strings) {
+                                        if (inlist == null)
+                                            inlist = new ArrayList<>();
+                                        inlist.add(string);
+                                    }
+                                    outlist.add(inlist);
+                                }
+                                ttb.setComments(outlist);
+                            }
+                            if (ttb.getVideos() != null) {
+                                if (fileIsExists(ttb.getVideos()))
+                                    ttb.setVideoCover(saveImage(null, ttb.getVideos()));
+                                else {
+                                    Bitmap bitmap = createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
+                                    ttb.setVideoCover(saveImage(bitmap, ttb.getVideos()));
+                                }
+                            }
+
+                            if (ttb.getImgs() != null) {
+                                String b[] = ttb.getImgs().split("[,]");
+                                if (b != null && b.length > 0) {
+                                    List<String> list = new ArrayList<>();
+                                    for (String str : b) {
+                                        list.add(str);
+                                    }
+                                    ttb.setPhotos(list);
+                                }
+                            }
+                            Nblist.add(ttb);
                         }
 
                         listener.RefreshRecyclerView(Nblist);
-                    } else {
-                        if (RefreshFlag)
-                            listener.onForbidSlide();
-                        else
-                            listener.onFailed(gets(R.string.The_bottom));
-                    }
+
+                    } else if (RefreshFlag)
+                        listener.onFailed(gets(R.string.nodata));
+                    else if (!RefreshFlag)
+                        listener.onBottom();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.i(TAG, "解析异常 Error ===" + e);
                 }
                 break;
             case Fields.REQUEST3:
@@ -244,7 +287,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }*/
-
+                RefreshLikeThme(true);
                 break;
 
             case Fields.REQUEST4:
@@ -375,7 +418,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     public void IsLogin() {
         if (LoginStatusQuery()) {
             getPeopleNearby(true);
-//            getUseDetails();
+            getUseDetails();
         } else
             listener.onForbidSlide();
     }
@@ -386,7 +429,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     public void BannerHideOfShow() {
         httpUtils.OkHttpsGet(null, this, Fields.REQUEST5, Interface.URL + Interface.GETSETTING);
     }
-
+/*
     @Override
     public void IsonRefresh(int init) {
         page = 0;
@@ -397,7 +440,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     public void IsonLoadmore(int move) {
         page += move;
         getPeopleNearby(false);
-    }
+    }*/
 
     /**
      * AppBarLayout状态事件监听,设置SpringView的enable，防止滑动事件冲突;
@@ -435,6 +478,21 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         }
     }
 
+    /**
+     * 点赞页面刷新;
+     *
+     * @param flag
+     */
+    private void RefreshLikeThme(boolean flag) {
+        RefreshFlag = flag;
+        Map<String, String> map = getKeyMap();
+        map.put("page", String.valueOf(0));
+        map.put("pageSize", String.valueOf(page));
+        map.put("followFlag", String.valueOf(0));
+
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETCAREBYPAGE);
+    }
+
     @Override
     public void onVersionUp() {
         Map<String, String> m = getKeyMap();
@@ -446,5 +504,16 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     @Override
     public void onVersionMatching() {
         Log.i(TAG, gets(R.string.version_matching));
+    }
+
+    /**
+     * 点赞
+     *
+     * @param id
+     */
+    public void LikeChatTheme(String id) {
+        Map<String, String> map = getKeyMap();
+        map.put("chatThemeId", id);
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST3, Interface.URL + Interface.LIKECHATTHEME);
     }
 }

@@ -16,6 +16,8 @@ import java.util.Map;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.FriendProfile;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * 分组列表Adapters
  */
@@ -143,7 +145,7 @@ public class ExpandGroupListAdapter extends BaseExpandableListAdapter {
         if(data.getAvatarUrl().isEmpty())
         itemHolder.avatar.setImageResource(R.drawable.head_me);
         else
-            Glide.with(mContext).load(data.getAvatarUrl()).into( itemHolder.avatar);
+            Glide.with(mContext).load(data.getAvatarUrl()).apply(getGlideOptions()).into( itemHolder.avatar);
 
 
         itemHolder.tag.setVisibility(selectable? View.VISIBLE : View.GONE);

@@ -1,7 +1,6 @@
 package laoyou.com.laoyou.tencent.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.adapters.SearchFindAdapter;
-import laoyou.com.laoyou.tencent.model.FriendshipInfo;
+
+import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 
 /**
  * 查找添加新朋友
@@ -60,22 +59,9 @@ public class SearchFriendActivity extends Activity implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//        list.get(i).onClick(this);
-        String identify = list.get(i).getCloudTencentAccount();
-    /*       Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra("identify",identify );
-        startActivity(intent);*/
-        if (!SPreferences.getIdentifier().equals(identify)) {
-            if (FriendshipInfo.getInstance().isFriend(identify)) {
-                ProfileActivity.navToProfile(this, identify);
-            } else {
-                Intent person = new Intent(this, AddFriendActivity.class);
-                person.putExtra("id", identify);
-                person.putExtra("name", list.get(i).getName());
-                person.putExtra("head_img", list.get(i).getHeadImgUrl());
-                startActivity(person);
-            }
-        }
+//        String identify = list.get(i).getCloudTencentAccount();
+//        if (!SPreferences.getIdentifier().equals(identify))
+            goHomePage(this, list.get(i).getId(),false);
     }
 
     @Override

@@ -16,6 +16,8 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 
+import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+
 /**
  * 好友或群等资料摘要列表的adapter
  */
@@ -67,7 +69,7 @@ public class SearchFindAdapter extends BaseAdapter {
         if (list.get(position).getHeadImgUrl() == null || list.get(position).getHeadImgUrl().isEmpty())
             viewHolder.avatar.setImageResource(R.drawable.head_other);
         else
-            Glide.with(context).load(list.get(position).getHeadImgUrl()).into(viewHolder.avatar);
+            Glide.with(context).load(list.get(position).getHeadImgUrl()).apply(getGlideOptions()).into(viewHolder.avatar);
 
         viewHolder.name.setText(list.get(position).getName());
         return view;
