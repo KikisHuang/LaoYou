@@ -176,7 +176,6 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
             holder.check_comment_tv.setVisibility(View.GONE);
         }
 
-
         if (list.get(position).getPhotos() != null && list.get(position).getPhotos().size() > 0) {
             holder.content_img_layout.setItemClickListener(listener);
             holder.content_img_layout.setImagesData(list.get(position).getPhotos());

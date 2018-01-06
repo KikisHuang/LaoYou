@@ -1,7 +1,6 @@
 package laoyou.com.laoyou.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -11,7 +10,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -50,6 +48,7 @@ import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
 import static laoyou.com.laoyou.utils.SynUtils.StringIsNull;
 import static laoyou.com.laoyou.utils.SynUtils.getTypeface;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
+import static laoyou.com.laoyou.utils.SynUtils.showSoftInputFromWindow;
 import static laoyou.com.laoyou.utils.TitleUtils.handleTitleBarColorEvaluate;
 import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
 
@@ -272,9 +271,10 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         switch (v.getId()) {
             case R.id.comment_fragment_layout:
                 if (send_comment_layout.getVisibility() == View.GONE) {
+                    comment_ed.setText("");
                     send_comment_layout.setVisibility(View.VISIBLE);
                     menu_layout.setVisibility(View.GONE);
-                    showSoftInputFromWindow();
+                    showSoftInputFromWindow(comment_ed);
                 } else {
                     send_comment_layout.setVisibility(View.GONE);
                     menu_layout.setVisibility(View.VISIBLE);
@@ -365,23 +365,23 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         startActivity(intent);
     }
 
+ /*   */
+
     /**
      * EditText获取焦点并显示软键盘
-     */
+     *//*
     private void showSoftInputFromWindow() {
         comment_ed.setFocusable(true);
         comment_ed.setFocusableInTouchMode(true);
         comment_ed.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-    }
-
+    }*/
     @Override
     public void onKeyboardChange(boolean isShow, int keyboardHeight) {
         if (!isShow) {
             menu_layout.setVisibility(View.VISIBLE);
             send_comment_layout.setVisibility(View.GONE);
-            comment_ed.setText("");
         }
     }
 

@@ -8,7 +8,6 @@ import android.widget.ListView;
 
 import com.liaoinstan.springview.widget.SpringView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
@@ -21,6 +20,7 @@ import laoyou.com.laoyou.presenter.GameInformationPresenter;
 import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
+import static laoyou.com.laoyou.utils.IntentUtils.goGameInfoDetailsPage;
 import static laoyou.com.laoyou.utils.SynUtils.getTAG;
 
 /**
@@ -35,9 +35,9 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
     private ListView listView;
     private GameInformationAdapter adapter;
 
-    private List<GameInfoBean> list;
     private GameInformationPresenter gp;
     private String id;
+    private List<GameInfoBean> list;
 
     public static GameInformationFragment setTag(int tag, String id) {
         GameInformationFragment f = new GameInformationFragment();
@@ -73,9 +73,6 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
         springView = f(R.id.springView);
         SpringUtils.SpringViewInit(springView, getActivity(), this);
 
-        list = new ArrayList<>();
-        adapter = new GameInformationAdapter(getActivity(), list);
-        listView.setAdapter(adapter);
     }
 
     @Override
@@ -114,14 +111,17 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
     @Override
     public void onGameInfor(List<GameInfoBean> li) {
         list = li;
-        adapter.notifyDataSetChanged();
+        if (adapter == null) {
+            adapter = new GameInformationAdapter(getActivity(), li);
+            listView.setAdapter(adapter);
+        } else
+            adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (list != null && list.size() > 0) {
-
-
-        }
+        goGameInfoDetailsPage(getActivity(), list.get(position).getId());
     }
+
+
 }

@@ -287,15 +287,43 @@ public class Interface {
     /**
      * 获取话题圈评论 接口;
      */
-    public static final String GECHATMESSAGEBYPAGE = "chat/select/geChatMessageByPage.app";
+    public static final String GECHATMESSAGEBYPAGE = "chat/select/getChatMessageByPage.app";
     /**
      * 获取话题圈列表接口;
      */
-    public static final String GETCAREBYPAGE= "chat/select/getByPage.app";
+    public static final String GETCAREBYPAGE = "chat/select/getByPage.app";
+    /**
+     * 获取在意的人话题圈列表接口;
+     */
+    public static final String GETCARECAREBYPAGE = "heartNumber/select/getByPage.app";
     /**
      * 新增话题圈类型接口;
      */
-    public static final String ADDCHATTYPE= "chatType/add/chatType.app";
+    public static final String ADDCHATTYPE = "chatType/add/chatType.app";
 
+    /**
+     * 游戏资讯HTML;
+     */
+    public static final String NEWSDETAILS = "http://192.168.1.200/IB_news/newsDetails.html?";
+    /**
+     * 发表评论接口;
+     */
+    public static final String GAMEINFOSENDCOMMENT = "news/add/comment.app";
+    /**
+     * 校验点赞资讯接口;
+     */
+    public static final String CHECKLIKENEWS = "news/select/checkLikeNews.app";
+    /**
+     * 点赞资讯接口;
+     */
+    public static final String LIKENEWS = "news/modify/likeNews.app";
+    /**
+     * 获取活跃的群接口;
+     */
+    public static final String ACTIVEGROUP = "group/select/activeGroup.app";
+    /**
+     * 根据通讯录号码簿搜索用户;
+     */
+    public static final String SEARCHUSERBYPHONES = "user/select/searchUserByPhones.app";
 
 }

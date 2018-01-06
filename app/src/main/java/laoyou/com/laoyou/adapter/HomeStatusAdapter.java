@@ -16,13 +16,13 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.AddressBookBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.view.NineGridlayout;
-import laoyou.com.laoyou.view.RoundAngleImageView;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 
@@ -36,6 +36,7 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
     private RecyclerViewOnItemClickListener listener;
     private boolean IsReCom = false;
     private int recompos = 99;
+    private List<AddressBookBean> add;
 
     public HomeStatusAdapter(Context context, List<TopicTypeBean> list, RecyclerViewOnItemClickListener listener) {
         this.context = context;
@@ -50,6 +51,11 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
                 false));
         return holder;
     }
+
+  /*  public void setReComData(List<AddressBookBean> add) {
+        this.add = add;
+        Log.i(TAG, "add size ====" + add.size());
+    }*/
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
@@ -195,18 +201,18 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
             holder.content_img_layout.setVisibility(View.VISIBLE);
         } else
             holder.content_img_layout.setVisibility(View.GONE);
-        if (position == list.size() - 1 && !IsReCom) {
-            TestData(context, holder);
+   /*     if (position == list.size() - 1 && !IsReCom) {
+            ReComData(holder);
             holder.recom_layout.setVisibility(View.VISIBLE);
             recompos = position;
             IsReCom = true;
         } else if (position == recompos) {
-            TestData(context, holder);
+            ReComData(holder);
             holder.recom_layout.setVisibility(View.VISIBLE);
             recompos = position;
             IsReCom = true;
         } else
-            holder.recom_layout.setVisibility(View.GONE);
+            holder.recom_layout.setVisibility(View.GONE);*/
 
     }
 
@@ -342,10 +348,10 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
             comment_layout2 = (LinearLayout) view.findViewById(R.id.comment_layout_2);
             comment_layout3 = (LinearLayout) view.findViewById(R.id.comment_layout_3);
             comment_layout = (LinearLayout) view.findViewById(R.id.comment_layout);
-            recom_layout = (LinearLayout) view.findViewById(R.id.recom_layout);
+//            recom_layout = (LinearLayout) view.findViewById(R.id.recom_layout);
 
-            foot_recom_layout = (LinearLayout) view.findViewById(R.id.Foot_recom_layout);
-            recom_nick_name = (TextView) view.findViewById(R.id.recom_nick_name);
+//            foot_recom_layout = (LinearLayout) view.findViewById(R.id.Foot_recom_layout);
+//            recom_nick_name = (TextView) view.findViewById(R.id.recom_nick_name);
 
             content_img_layout = (NineGridlayout) view.findViewById(R.id.content_img_layout);
 
@@ -354,22 +360,27 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
         }
     }
 
-    private void TestData(Context context, MyViewHolder holder) {
-        holder.recom_nick_name.setText("Hi，" + SPreferences.getMyNickName());
-        if (holder.foot_recom_layout.getChildCount() > 0) {
-            Log.i(TAG, "foot_recom_layout 中有数据");
-            holder.foot_recom_layout.removeAllViews();
-        }
+    private void ReComData(MyViewHolder holder) {
+        if (add != null && add.size() > 0) {
+            if (SPreferences.getMyNickName() != null)
+                holder.recom_nick_name.setText("Hi，" + SPreferences.getMyNickName());
+            if (holder.foot_recom_layout.getChildCount() > 0) {
+                Log.i(TAG, "foot_recom_layout 中有数据");
+                holder.foot_recom_layout.removeAllViews();
+            }
+            for (AddressBookBean abb : add) {
+                LinearLayout headLayout = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.home_flash_layout_include, null);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DeviceUtils.getWindowWidth(context) * 1 / 3, ViewGroup.LayoutParams.MATCH_PARENT);
+                lp.rightMargin = DeviceUtils.dip2px(context, 10);
+                ImageView im = (ImageView) headLayout.findViewById(R.id.head_img);
+                ImageView add = (ImageView) headLayout.findViewById(R.id.add_img);
+                add.setVisibility(View.VISIBLE);
 
-        for (int i = 0; i < 8; i++) {
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DeviceUtils.getWindowWidth(context) * 1 / 3, ViewGroup.LayoutParams.MATCH_PARENT);
+                headLayout.setLayoutParams(lp);
+                Glide.with(context).load(abb.getHeadImgUrl() == null || abb.getHeadImgUrl().isEmpty() ? Fields.Catalina : abb.getHeadImgUrl()).apply(getGlideOptions()).into(im);
 
-            lp.rightMargin = DeviceUtils.dip2px(context, 10);
-            RoundAngleImageView im = new RoundAngleImageView(context);
-
-            im.setLayoutParams(lp);
-            Glide.with(context).load(Fields.Catalina).apply(getGlideOptions()).into(im);
-            holder.foot_recom_layout.addView(im);
+                holder.foot_recom_layout.addView(headLayout);
+            }
         }
     }
 }

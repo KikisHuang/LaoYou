@@ -20,9 +20,6 @@
         android:id="@+id/view_layout"
         layout="@layout/dynamic_state_include"></include>
 
-    <include
-        android:id="@+id/recom_layout"
-        layout="@layout/home_fragment_foot_include"></include>
 
     <TextView
         android:id="@+id/bottom_line"

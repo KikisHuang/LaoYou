@@ -442,5 +442,9 @@
     <string name="already_find">你已经是Ta的好友了。</string>
     <string name="pull_the_black_friend">拉黑好友</string>
     <string name="apply_for_str">采一缕阳光，让它温暖你的心房；撷一束月光，让它涤荡你的忧伤；摘一朵鲜花，让它与幸福为你绽放；捧一盏美酒，让它与吉祥为你留香。</string>
+    <string name="cancel_succ">已取消点赞</string>
+    <string name="like_succ">点赞成功</string>
+    <string name="share_succ">分享成功</string>
+    <string name="share_fail">分享失败</string>
 
 </resources>

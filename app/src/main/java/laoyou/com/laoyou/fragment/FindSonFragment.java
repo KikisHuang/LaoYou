@@ -96,7 +96,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
 //              fp.getNewIncident(true);
                 break;
             case 1:
-                nearbyAdapter = new NearbyAdapter(getActivity(), list,this);
+                nearbyAdapter = new NearbyAdapter(getActivity(), list, this);
                 recyclerView.setAdapter(nearbyAdapter);
                 fp.getNearbyData(true);
                 break;
@@ -127,14 +127,16 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
 
     @Override
     public void IsonLoadmore(int move) {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int totalItemCount = layoutManager.getItemCount();
         switch (tag) {
             case 0:
-                fp.page += move;
+                fp.page = totalItemCount;
                 isRefresh = false;
                 fp.getNewIncident(false);
                 break;
             case 1:
-                fp.page += move;
+                fp.page = totalItemCount;
                 isRefresh = false;
                 fp.getNearbyData(false);
                 break;
@@ -196,7 +198,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
 
     @Override
     public void GoPageHome(String userId) {
-        goHomePage(getActivity(), userId,false);
+        goHomePage(getActivity(), userId, false);
     }
 
     @Override

@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
+
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
@@ -41,7 +42,8 @@
     <!--打电话的权限-->
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-
+    <!-- 读取联系人权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <application
         android:name=".application.MyApplication"
         android:allowBackup="true"
@@ -53,6 +55,7 @@
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -135,8 +138,7 @@
         <!-- 我的相册页面 -->
         <activity
             android:name=".activity.MyPhotoActivity"
-            android:screenOrientation="portrait"
-            ></activity>
+            android:screenOrientation="portrait"></activity>
         <!-- 个人主页页面 -->
         <activity
             android:name=".activity.HomePageActivity"
@@ -168,15 +170,22 @@
         <activity
             android:name=".activity.GameInformationActivity"
             android:screenOrientation="portrait">
-
         </activity>
+        
+        <!-- 游戏资讯详情HTML页面 -->
+        <activity
+            android:name=".activity.GameInfoDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            >
+        </activity>
+
         <!-- 短视频播放页面 -->
         <activity
             android:name=".activity.VideoPlayPageActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"
-            android:theme="@style/PhotoTheme"
-            >
+            android:theme="@style/PhotoTheme">
 
         </activity>
 
@@ -204,8 +213,7 @@
         <activity
             android:name=".activity.PhotoViewerActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/PhotoTheme"
-            ></activity>
+            android:theme="@style/PhotoTheme"></activity>
         <!-- 参与的人页面 -->
         <activity
             android:name=".activity.ParticipationActivity"
@@ -248,14 +256,14 @@
             android:screenOrientation="portrait"></activity>
 
         <!-- 照片选择框架页面 -->
-<!--        <activity
-            android:name="me.iwf.photopicker.PhotoPickerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="me.iwf.photopicker.PhotoPagerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />-->
+        <!--        <activity
+                    android:name="me.iwf.photopicker.PhotoPickerActivity"
+                    android:screenOrientation="portrait"
+                    android:theme="@style/AppTheme" />
+                <activity
+                    android:name="me.iwf.photopicker.PhotoPagerActivity"
+                    android:screenOrientation="portrait"
+                    android:theme="@style/AppTheme" />-->
 
 
         <!-- 高德地图定位Service-->
@@ -274,6 +282,25 @@
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- QQ QQ空间-->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent101408068" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 

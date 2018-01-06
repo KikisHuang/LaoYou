@@ -29,25 +29,24 @@
                 android:id="@+id/name_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="小覃"
+                android:layout_gravity="center"
+                android:layout_marginTop="3dp"
+                android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxEms="15"
-                android:layout_marginTop="3dp"
-                android:layout_gravity="center"
                 android:singleLine="true"
+                android:text="小覃"
                 android:textColor="@color/black0"
-                android:layout_weight="1"
                 android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/distance_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/content6"
                 android:layout_gravity="center"
                 android:text=""
-                android:textSize="11dp"
-                />
+                android:textColor="@color/content6"
+                android:textSize="11dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -74,40 +73,52 @@
                 android:layout_height="10dp"
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/pink_corners"
-                android:textColor="@color/white"
-                android:text="女"
                 android:gravity="center"
-                android:textSize="7dp"
-                 />
+                android:text="女"
+                android:textColor="@color/white"
+                android:textSize="6dp" />
 
             <LinearLayout
                 android:id="@+id/tag_layout"
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
 
-                <!--     <TextView
-                         android:layout_width="wrap_content"
-                         android:layout_height="match_parent"
-                         android:text="英雄联盟"
-                         android:textColor="@color/white"
-                         android:paddingLeft="5dp"
-                         android:paddingRight="5dp"
-                         android:layout_marginLeft="5dp"
-                         android:background="@drawable/dark_blue_corners"
-                         android:textSize="10dp" />
+                <ImageView
+                    android:id="@+id/tags_one"
+                    android:layout_width="12dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_launcher"
+                    android:scaleType="centerCrop"
+                    android:textColor="@color/white"
+                    android:visibility="gone"
+                    android:textSize="10dp" />
 
 
-                     <TextView
-                         android:layout_width="wrap_content"
-                         android:layout_height="match_parent"
-                         android:text="绝地求生"
-                         android:textColor="@color/white"
-                         android:paddingLeft="5dp"
-                         android:paddingRight="5dp"
-                         android:layout_marginLeft="5dp"
-                         android:background="@drawable/dark_blue_corners"
-                         android:textSize="10dp" />-->
+                <ImageView
+                    android:id="@+id/tags_two"
+                    android:layout_width="12dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/white"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_launcher"
+                    android:visibility="gone"
+                    android:textSize="10dp" />
+
+                <ImageView
+                    android:id="@+id/tags_three"
+                    android:layout_width="16dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/white"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_launcher"
+                    android:textSize="10dp"
+                    android:visibility="gone"
+                    />
 
             </LinearLayout>
         </LinearLayout>

@@ -120,7 +120,7 @@
     <style name="line_styles2">
         <item name="android:layout_height">0.5dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:background">@color/graye6</item>
+        <item name="android:background">@color/gray12</item>
         <item name="android:layout_marginTop">2dp</item>
         <item name="android:layout_marginBottom">2dp</item>
     </style>

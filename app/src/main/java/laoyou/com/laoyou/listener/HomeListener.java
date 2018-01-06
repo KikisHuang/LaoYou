@@ -2,6 +2,8 @@ package laoyou.com.laoyou.listener;
 
 import java.util.List;
 
+import laoyou.com.laoyou.bean.ActiveBean;
+import laoyou.com.laoyou.bean.AddressBookBean;
 import laoyou.com.laoyou.bean.PageTopBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
 
@@ -11,10 +13,7 @@ import laoyou.com.laoyou.bean.TopicTypeBean;
 public interface HomeListener {
     void onFailed(String msg);
 
-    void onError(String msg);
-
     void onOneImg(PageTopBean ptb);
-
 
     void onLogout();
 
@@ -36,4 +35,9 @@ public interface HomeListener {
 
     void onRefresh();
 
+    void onHideFlashChatInfo();
+
+    void onFlashChatInfo(List<ActiveBean> ab);
+
+    void onReComInfo(List<AddressBookBean> add);
 }

@@ -124,6 +124,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/photo_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -149,6 +150,7 @@
     </HorizontalScrollView>
 
     <TextView
+        android:id="@+id/status_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"

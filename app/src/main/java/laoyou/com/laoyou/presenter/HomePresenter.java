@@ -28,6 +28,8 @@ import java.util.Map;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.PageTopBannerAdapter;
 import laoyou.com.laoyou.application.MyApplication;
+import laoyou.com.laoyou.bean.ActiveBean;
+import laoyou.com.laoyou.bean.AddressBookBean;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.bean.PageTopBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
@@ -38,6 +40,7 @@ import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.listener.VersionListener;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.VersionUpUtils;
@@ -50,6 +53,8 @@ import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
+import static laoyou.com.laoyou.utils.SynUtils.GetAllContact;
+import static laoyou.com.laoyou.utils.SynUtils.IsMe;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
 import static laoyou.com.laoyou.utils.SynUtils.fileIsExists;
 import static laoyou.com.laoyou.utils.SynUtils.getVersionCode;
@@ -101,7 +106,18 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         handInit();
         BannerHideOfShow();
         IsLogin();
+        getActiveGroup();
+
 //        getPeopleNearby(true);
+    }
+
+    /**
+     * 获取闪聊的数据;
+     */
+    private void getActiveGroup() {
+
+        Map<String, String> map = getParamsMap();
+        httpUtils.OkHttpsGet(map, this, Fields.ACRESULET1, Interface.URL + Interface.ACTIVEGROUP);
     }
 
     /**
@@ -115,9 +131,8 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         Map<String, String> map = getKeyMap();
         map.put("page", String.valueOf(page));
         map.put("pageSize", String.valueOf(page + Fields.SIZE));
-        map.put("followFlag", String.valueOf(0));
 
-        httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETCAREBYPAGE);
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETCARECAREBYPAGE);
     }
 
     /**
@@ -267,11 +282,12 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                         }
 
                         listener.RefreshRecyclerView(Nblist);
-
-                    } else if (RefreshFlag)
+                    } else if (RefreshFlag) {
                         listener.onFailed(gets(R.string.nodata));
-                    else if (!RefreshFlag)
                         listener.onBottom();
+                    } else if (!RefreshFlag)
+                        listener.onBottom();
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -293,6 +309,33 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
             case Fields.REQUEST4:
 
                 listener.onDownload(getJsonSring(response));
+                break;
+            case Fields.ACRESULET1:
+                JSONArray ar = getJsonAr(response);
+                if (ar.length() > 0) {
+                    List<ActiveBean> ab = new ArrayList<>();
+                    for (int i = 0; i < ar.length(); i++) {
+                        ActiveBean atb = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), ActiveBean.class);
+                        ab.add(atb);
+                    }
+                    listener.onFlashChatInfo(ab);
+                } else
+                    listener.onHideFlashChatInfo();
+
+                break;
+            case Fields.ACRESULET2:
+                JSONArray address = getJsonAr(response);
+                List<AddressBookBean> add = new ArrayList<>();
+                for (int i = 0; i < address.length(); i++) {
+                    if (i > 7)
+                        break;
+
+                    AddressBookBean atb = new Gson().fromJson(String.valueOf(address.optJSONObject(i)), AddressBookBean.class);
+                    if (!FriendshipInfo.getInstance().isFriend(atb.getCloudTencentAccount()) && !IsMe(atb.getId()))
+                        add.add(atb);
+                }
+                listener.onReComInfo(add);
+
                 break;
         }
     }
@@ -371,7 +414,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
 
     @Override
     public void onError(Request request, Exception e) {
-        listener.onError(gets(R.string.networkerror));
+        listener.onFailed(gets(R.string.networkerror));
     }
 
     @Override
@@ -419,6 +462,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         if (LoginStatusQuery()) {
             getPeopleNearby(true);
             getUseDetails();
+            getAddressBook();
         } else
             listener.onForbidSlide();
     }
@@ -488,9 +532,8 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         Map<String, String> map = getKeyMap();
         map.put("page", String.valueOf(0));
         map.put("pageSize", String.valueOf(page));
-        map.put("followFlag", String.valueOf(0));
 
-        httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETCAREBYPAGE);
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETCARECAREBYPAGE);
     }
 
     @Override
@@ -515,5 +558,39 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         Map<String, String> map = getKeyMap();
         map.put("chatThemeId", id);
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST3, Interface.URL + Interface.LIKECHATTHEME);
+    }
+
+    /**
+     * 获取本地通讯录;
+     */
+    public void getAddressBook() {
+        List<String> phone = new ArrayList<>();
+        try {
+            List<Map<String, Object>> list = GetAllContact();
+            for (int i = 0; i < list.size(); i++) {
+                phone.add(String.valueOf(list.get(i).get("mobile")).replace("-", "").replace(" ", ""));
+                Log.i(TAG, "得到的通讯录号码 ===" + phone.get(i));
+            }
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        if (phone.size() > 0) {
+            String phones = "";
+            for (int i = 0; i < phone.size(); i++) {
+                if (i == phone.size() - 1)
+                    phones += phone.get(i);
+                else
+                    phones += phone.get(i) + ",";
+            }
+            Log.i(TAG, "phones ===" + phones);
+            searchUserByPhones(phones);
+        }
+
+    }
+
+    private void searchUserByPhones(String phones) {
+        Map<String, String> map = getParamsMap();
+        map.put("phones", phones);
+        httpUtils.OkHttpsGet(map, this, Fields.ACRESULET2, Interface.URL + Interface.SEARCHUSERBYPHONES);
     }
 }

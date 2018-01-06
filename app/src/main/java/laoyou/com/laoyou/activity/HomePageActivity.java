@@ -89,6 +89,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     private LinearLayout bottom_menu_layout;
     //腾讯云id判断标识符;
     private boolean isTencent;
+    private TextView status_tv, photo_tv;
 
     @Override
     protected void click() {
@@ -125,6 +126,9 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
         head_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.home_page_head_layout, null);
         foot_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.foot_include, null);
+
+        status_tv = (TextView) head_layout.findViewById(R.id.status_tv);
+        photo_tv = (TextView) head_layout.findViewById(R.id.photo_tv);
 
         background_img = (ImageView) head_layout.findViewById(R.id.background_img);
         head_img = (CircleImageView) head_layout.findViewById(R.id.head_img);
@@ -215,6 +219,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     public void onShowUserInfo(UserInfoBean ub) {
         id = ub.getId();
         isTencent = false;
+
         hp.getMyHeartNum(ub.getId());
         hp.getAttentGames(ub.getId());
         hp.getMyPhotoList(ub.getId());
@@ -290,17 +295,23 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
     @Override
     public void onPhotoList(List<PhotoBean> photos) {
+        photo_tv.setVisibility(photos.size() > 0 ? View.VISIBLE : View.GONE);
         addPhotoList(photos);
     }
 
     @Override
     public void onBottom() {
+
         if (list.size() > 0)
             foot_tv.setVisibility(View.VISIBLE);
+        else
+            status_tv.setVisibility(View.GONE);
     }
 
     @Override
     public void onStatusInfo(List<TopicTypeBean> nblist) {
+        status_tv.setVisibility(View.VISIBLE);
+
         if (IsRefresh)
             list.clear();
         for (TopicTypeBean ttb : nblist) {

@@ -139,16 +139,20 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
                 tp.getHottestAndNewestData(id, true, 1, init);
                 break;
         }
+
     }
 
     @Override
     public void IsonLoadmore(int move) {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int totalItemCount = layoutManager.getItemCount();
+
         switch (tag) {
             case 0:
-                tp.getHottestAndNewestData(id, false, 0, move);
+                tp.getHottestAndNewestData(id, false, 0, totalItemCount);
                 break;
             case 1:
-                tp.getHottestAndNewestData(id, false, 1, move);
+                tp.getHottestAndNewestData(id, false, 1, totalItemCount);
                 break;
         }
     }

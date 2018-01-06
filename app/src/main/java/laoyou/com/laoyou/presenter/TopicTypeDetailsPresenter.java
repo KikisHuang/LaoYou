@@ -186,18 +186,14 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
 
     //最热;
     public void getHottestAndNewestData(String id, boolean b, int model, int i) {
-        if (b)
-            page = i;
-        else
-            page += i;
-
+        page = i;
         isRefresh = b;
         Map<String, String> map = getKeyMap();
         map.put("model", String.valueOf(model));
         map.put("chatTypeId", id);
         map.put("followFlag", String.valueOf(0));
         map.put("page", String.valueOf(page));
-        map.put("pageSize", String.valueOf(page += 10));
+        map.put("pageSize", String.valueOf(page + 10));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETTOPICTYPEDETAILS);
     }
 

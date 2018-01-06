@@ -19,7 +19,6 @@ import laoyou.com.laoyou.listener.QueryListener;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
-import static laoyou.com.laoyou.utils.SynUtils.WswitchWay;
 
 /**
  * Created by lian on 2017/11/18.
@@ -61,10 +60,10 @@ public class GamsAdAdapter extends BaseAdapter {
         tag_tv.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
 
         Glide.with(mContext).load(list.get(position).getImgUrl()).apply(getGlideOptions()).into(gams_img);
-        info_tv.setText(list.get(position).getTitle());
-        name_tv.setText(list.get(position).getInfo());
+        info_tv.setText(list.get(position).getInfo());
+        name_tv.setText(list.get(position).getTitle());
 
-        number_tv.setText(WswitchWay(list.get(position).getClickCount()) + "人在玩");
+//      number_tv.setText(WswitchWay(list.get(position).getClickCount()) + "人在玩");
         come_in_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

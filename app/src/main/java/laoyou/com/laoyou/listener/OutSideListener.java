@@ -8,4 +8,10 @@ public interface OutSideListener {
     void onCancleProgress();
 
     void onShowProgress(int pro);
+
+    void onCommentSucced();
+
+    void onFailedMsg(String gets);
+
+    void onLikeStatus(boolean b);
 }

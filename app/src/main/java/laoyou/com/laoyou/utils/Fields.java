@@ -14,6 +14,9 @@ public class Fields {
     public static final String WECHATAPPID = "wx16258856fb255f4b";
     public static final String WECHATAPPSECRET = "b92df5eccddc26af53b6e02cc692087b";
 
+    public static final String QQAPPID = "101455644";
+    public static final String QQAPPSECRET = "b94e759ecd0abfb670bf3a0dcae07922";
+
     public static final String VIDEOTYPE = "video/mp4";
     public static final String IMAGETYPE = "image/jpeg";
 

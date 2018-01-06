@@ -103,4 +103,19 @@ public class OutSideActivity extends InitActivity implements OutSideListener {
         pg.setVisibility(View.VISIBLE);
         pg.setProgress(pro);
     }
+
+    @Override
+    public void onCommentSucced() {
+
+    }
+
+    @Override
+    public void onFailedMsg(String gets) {
+
+    }
+
+    @Override
+    public void onLikeStatus(boolean b) {
+
+    }
 }

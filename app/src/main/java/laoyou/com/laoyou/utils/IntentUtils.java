@@ -22,6 +22,7 @@ import laoyou.com.laoyou.activity.FlashChatBasicsActivity;
 import laoyou.com.laoyou.activity.FlashChatGambitActivity;
 import laoyou.com.laoyou.activity.FlashChatMemberActivity;
 import laoyou.com.laoyou.activity.ForgetPasswordActivity;
+import laoyou.com.laoyou.activity.GameInfoDetailsActivity;
 import laoyou.com.laoyou.activity.GameInformationActivity;
 import laoyou.com.laoyou.activity.HomePageActivity;
 import laoyou.com.laoyou.activity.InternetCafActivity;
@@ -173,12 +174,13 @@ public class IntentUtils {
 //        startPage(context, intent);
         ((Activity) context).startActivityForResult(intent, Fields.ACRESULET5);
     }
+
     /**
      * 添加好友申请页面;
      *
      * @param context 上下文;
      */
-    public static void goAddFriendPage(Context context,String id) {
+    public static void goAddFriendPage(Context context, String id) {
         Intent intent = new Intent(context, AddFriendActivity.class);
         intent.putExtra("apply_for_id", id);
         startPage(context, intent);
@@ -329,6 +331,18 @@ public class IntentUtils {
      */
     public static void goGameInformationPage(Context context) {
         Intent intent = new Intent(context, GameInformationActivity.class);
+        startPage(context, intent);
+    }
+
+    /**
+     * 游戏资讯详情页面;
+     *
+     * @param context 上下文;
+     * @param id
+     */
+    public static void goGameInfoDetailsPage(Context context, String id) {
+        Intent intent = new Intent(context, GameInfoDetailsActivity.class);
+        intent.putExtra("game_info_id", id);
         startPage(context, intent);
     }
 

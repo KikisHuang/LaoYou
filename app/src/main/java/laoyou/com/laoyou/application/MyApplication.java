@@ -101,6 +101,7 @@ public class MyApplication extends Application {
         Config.DEBUG = false;
         //微信
         PlatformConfig.setWeixin(Fields.WECHATAPPID, Fields.WECHATAPPSECRET);
+        PlatformConfig.setWeixin(Fields.QQAPPID, Fields.QQAPPSECRET);
 
         CHANNEL = AnalyticsConfig.getChannel(getApplicationContext());
         Log.i(TAG, "CHANNEL ==========" + CHANNEL);

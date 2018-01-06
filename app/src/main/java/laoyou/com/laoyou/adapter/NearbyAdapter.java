@@ -19,6 +19,7 @@ import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.SynUtils.getDistanceKM;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * Created by lian on 2017/11/15.
@@ -45,7 +46,47 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.name_tv.setText(list.get(position).getName());
-        Glide.with(context).load(list.get(position).getHeadImgUrl()).apply(getGlideOptions()).into(holder.user_head_img);
+        holder.content_tv.setText(list.get(position).getAutograph());
+
+        holder.sex_img.setText(list.get(position).getSex() == 1 ? gets(R.string.man) : gets(R.string.woman));
+        holder.sex_img.setBackgroundResource(list.get(position).getSex() == 1 ? R.drawable.blue_corners : R.drawable.pink_corners);
+
+        if (list.get(position).getGameImgs() != null && list.get(position).getImgsList() != null) {
+
+            switch (list.get(position).getImgsList().size()) {
+
+                case 1:
+                    Glide.with(context).load(list.get(position).getImgsList().get(0)).into(holder.tags_one);
+                    holder.tags_one.setVisibility(View.VISIBLE);
+                    holder.tags_two.setVisibility(View.GONE);
+                    holder.tags_three.setVisibility(View.GONE);
+                    break;
+                case 2:
+                    Glide.with(context).load(list.get(position).getImgsList().get(0)).into(holder.tags_one);
+                    Glide.with(context).load(list.get(position).getImgsList().get(1)).into(holder.tags_two);
+                    holder.tags_one.setVisibility(View.VISIBLE);
+                    holder.tags_two.setVisibility(View.VISIBLE);
+                    holder.tags_three.setVisibility(View.GONE);
+                    break;
+                case 3:
+                    Glide.with(context).load(list.get(position).getImgsList().get(0)).into(holder.tags_one);
+                    Glide.with(context).load(list.get(position).getImgsList().get(1)).into(holder.tags_two);
+                    Glide.with(context).load(list.get(position).getImgsList().get(2)).into(holder.tags_three);
+
+                    holder.tags_one.setVisibility(View.VISIBLE);
+                    holder.tags_two.setVisibility(View.VISIBLE);
+                    holder.tags_three.setVisibility(View.VISIBLE);
+                    break;
+            }
+
+        } else {
+            holder.tags_one.setVisibility(View.GONE);
+            holder.tags_two.setVisibility(View.GONE);
+            holder.tags_three.setVisibility(View.GONE);
+        }
+
+
+        Glide.with(context).load(list.get(position).getHead_img_url()).apply(getGlideOptions()).into(holder.user_head_img);
 
         if (list.get(position).getDistance() > 1000)
             holder.distance_tv.setText(getDistanceKM(list.get(position).getDistance() / 1000));
@@ -68,7 +109,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
     static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView content_tv, name_tv, age_tv, distance_tv, sex_img;
-        private ImageView user_head_img;
+        private ImageView user_head_img, tags_one, tags_two, tags_three;
         private LinearLayout tag_layout, item_layout;
 
         public MyViewHolder(View view) {
@@ -78,6 +119,11 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
             age_tv = (TextView) view.findViewById(R.id.age_tv);
             distance_tv = (TextView) view.findViewById(R.id.distance_tv);
             user_head_img = (ImageView) view.findViewById(R.id.user_head_img);
+
+            tags_one = (ImageView) view.findViewById(R.id.tags_one);
+            tags_two = (ImageView) view.findViewById(R.id.tags_two);
+            tags_three = (ImageView) view.findViewById(R.id.tags_three);
+
             sex_img = (TextView) view.findViewById(R.id.sex_img);
             tag_layout = (LinearLayout) view.findViewById(R.id.tag_layout);
             item_layout = (LinearLayout) view.findViewById(R.id.item_layout);

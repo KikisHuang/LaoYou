@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.presenter;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -58,9 +59,22 @@ public class FindSonPresenter implements HttpResultListener {
                     if (ar.length() > 0) {
                         for (int i = 0; i < ar.length(); i++) {
                             NearbyBean pb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), NearbyBean.class);
-                            Nblist.add(pb);
-                        }
+                            if (pb.getCloud_tencent_account() != null && !pb.getCloud_tencent_account().isEmpty()) {
+                                if (pb.getGameImgs() != null && !pb.getGameImgs().isEmpty()) {
 
+                                    String b[] = pb.getGameImgs().split("[,]");
+
+                                    if (b != null && b.length > 0) {
+                                        List<String> list = new ArrayList<>();
+                                        for (String str : b) {
+                                            list.add(str);
+                                        }
+                                        pb.setImgsList(list);
+                                    }
+                                }
+                                Nblist.add(pb);
+                            }
+                        }
                         listener.RefreshNearby(Nblist);
                     } else if (RefreshFlag)
                         listener.onFailedMsg(gets(R.string.nodata));
@@ -143,17 +157,17 @@ public class FindSonPresenter implements HttpResultListener {
 
     @Override
     public void onError(Request request, Exception e) {
-
+        listener.onFailedMsg(gets(R.string.networkerror));
     }
 
     @Override
     public void onParseError(Exception e) {
-
+        Log.e(TAG, "parse Error ==" + e);
     }
 
     @Override
     public void onFailed(String response, int code, int tag) {
-
+        listener.onFailedMsg(response);
     }
 
     /**
