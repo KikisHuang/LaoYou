@@ -161,7 +161,8 @@ public class IntentUtils {
         Intent intent = new Intent(context, ReleaseTopicActivity.class);
         intent.putParcelableArrayListExtra("Release_photo", (ArrayList<? extends Parcelable>) photo);
         intent.putParcelableArrayListExtra("Release_video", (ArrayList<? extends Parcelable>) video);
-        startPage(context, intent);
+//        startPage(context, intent);
+        ((Activity) context).startActivityForResult(intent, Fields.ACRESULET5);
     }
 
     /**

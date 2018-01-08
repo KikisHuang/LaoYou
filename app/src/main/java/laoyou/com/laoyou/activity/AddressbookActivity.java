@@ -21,6 +21,8 @@ import laoyou.com.laoyou.tencent.ui.SearchFriendActivity;
 import laoyou.com.laoyou.utils.SideBar;
 import laoyou.com.laoyou.utils.ToastUtil;
 
+import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
+
 /**
  * Created by lian on 2017/11/23.
  */
@@ -77,7 +79,7 @@ public class AddressbookActivity extends InitActivity implements AddressBookList
         listView.addHeaderView(view);
 
         list = new ArrayList<>();
-        adapter = new AddressBookAdapter(this, list);
+        adapter = new AddressBookAdapter(this, list,this);
         listView.setAdapter(adapter);
     }
 
@@ -121,6 +123,11 @@ public class AddressbookActivity extends InitActivity implements AddressBookList
     @Override
     public void onSelected(List<AddressBean> list, int pos) {
 
+    }
+
+    @Override
+    public void GoHomePage(String identifier) {
+        goHomePage(this, identifier, true);
     }
 
     public void onRefresh() {

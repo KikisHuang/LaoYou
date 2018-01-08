@@ -1,7 +1,6 @@
 package laoyou.com.laoyou.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.AddressBean;
-import laoyou.com.laoyou.tencent.ui.ProfileActivity;
+import laoyou.com.laoyou.listener.AddressBookListener;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
@@ -26,10 +25,12 @@ import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 public class AddressBookAdapter extends BaseAdapter {
     private List<AddressBean> list = null;
     private Context mContext;
+    private AddressBookListener listener;
 
-    public AddressBookAdapter(Context mContext, List<AddressBean> list) {
+    public AddressBookAdapter(Context mContext, List<AddressBean> list,AddressBookListener listener) {
         this.mContext = mContext.getApplicationContext();
         this.list = list;
+        this.listener = listener;
     }
 
     public int getCount() {
@@ -80,10 +81,11 @@ public class AddressBookAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ProfileActivity.class);
-                intent.putExtra("identify", list.get(pos).getIdentifier());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
+//                Intent intent = new Intent(mContext, ProfileActivity.class);
+//                intent.putExtra("identify", list.get(pos).getIdentifier());
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                mContext.startActivity(intent);
+                listener.GoHomePage(list.get(pos).getIdentifier());
             }
         });
     }

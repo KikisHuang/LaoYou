@@ -10,12 +10,12 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.FlashChatGambitAdapter;
+import laoyou.com.laoyou.bean.FlashTypeIconBean;
 import laoyou.com.laoyou.listener.FlashChatGambitListener;
 import laoyou.com.laoyou.presenter.FlashChatGambitPresenter;
 import laoyou.com.laoyou.utils.Fields;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goFlashChatMemberPage;
-import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 import static laoyou.com.laoyou.utils.TitleUtils.setTitlesAndBack;
 
 /**
@@ -27,10 +27,11 @@ public class FlashChatGambitActivity extends InitActivity implements FlashChatGa
     private StaggeredGridLayoutManager mLayoutManager;
     private FlashChatGambitPresenter fp;
     private FlashChatGambitAdapter adapter;
-    private List<String> list;
+    private List<FlashTypeIconBean> list;
     private String GroupName;
     private String GroupInfo;
     private RelativeLayout titles_layout;
+
     @Override
     protected void click() {
     }
@@ -39,9 +40,9 @@ public class FlashChatGambitActivity extends InitActivity implements FlashChatGa
     protected void init() {
         setContentView(R.layout.flash_chat_gambit_layout);
         recyclerView = f(R.id.recyclerView);
-        setTitlesAndBack(this,"","");
+        setTitlesAndBack(this, "", "");
         titles_layout = f(R.id.titles_layout);
-        titles_layout.setBackgroundResource(getRouColors(R.color.background_color));
+        titles_layout.setBackgroundResource(R.color.background_color);
         list = new ArrayList<>();
         //使用不规则的网格布局
         mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);//3列，纵向排列
@@ -55,15 +56,19 @@ public class FlashChatGambitActivity extends InitActivity implements FlashChatGa
 
     @Override
     protected void initData() {
-        for (int i = 0; i < 20; i++) {
-            list.add("主题" + i);
-        }
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onItemClick(int position) {
-        goFlashChatMemberPage(this,GroupName,GroupInfo,"");
+        goFlashChatMemberPage(this, GroupName, GroupInfo, "");
+    }
+
+    @Override
+    public void onIconInfo(List<FlashTypeIconBean> ar) {
+        /*for (FlashTypeIconBean ftib : ar) {
+
+        }*/
     }
 
     @Override

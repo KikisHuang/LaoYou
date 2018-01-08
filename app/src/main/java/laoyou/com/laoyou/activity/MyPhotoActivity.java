@@ -50,9 +50,9 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                    if (!recyclerView.canScrollVertically(1)) {
+                    if (!recyclerView.canScrollVertically(1) && list.size()>0) {
                         Refresh = false;
-                        mp.page += 10;
+                        mp.page = list.size() - 1;
                         mp.getPhotoListData(id);
                     }
 

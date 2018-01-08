@@ -1,11 +1,8 @@
 package laoyou.com.laoyou.presenter;
 
-import android.graphics.Bitmap;
 import android.support.design.widget.AppBarLayout;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONArray;
@@ -21,21 +18,18 @@ import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.listener.AppBarStateChangeListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.TopicTypeDetailsListener;
-import laoyou.com.laoyou.save.SPreferences;
-import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
+import static laoyou.com.laoyou.utils.JsonUtils.StatusPaser;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
-import static laoyou.com.laoyou.utils.SynUtils.fileIsExists;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
-import static laoyou.com.laoyou.utils.SynUtils.saveImage;
-import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
 
 /**
  * Created by lian on 2017/12/19.
@@ -75,65 +69,18 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
                 if (isRefresh)
                     list.clear();
                 JSONArray ar = getJsonAr(response);
-                if (ar.length() > 0) {
-                    for (int i = 0; i < ar.length(); i++) {
-                        TopicTypeBean tb = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), TopicTypeBean.class);
-
-                        if (tb.getReChatMessages() != null) {
-//                                JSONArray tta = new JSONArray("[" + ttb.getReChatMessages() + "]");
-                            JSONArray tta = new JSONArray(tb.getReChatMessages().replace(" ", ""));
-
-                            Gson gson = new Gson();
-                            String[][] ss = gson.fromJson(String.valueOf(tta), new TypeToken<String[][]>() {
-                            }.getType());
-                            List<List<String>> outlist = new ArrayList<>();
-                            for (String[] strings : ss) {
-                                List<String> inlist = null;
-                                for (String string : strings) {
-                                    if (inlist == null)
-                                        inlist = new ArrayList<>();
-
-                                    inlist.add(string);
-                                }
-                                outlist.add(inlist);
-                            }
-                            tb.setComments(outlist);
-                        }
-                        if (tb.getVideos() != null) {
-
-                            if (fileIsExists(tb.getVideos()))
-                                tb.setVideoCover(saveImage(null, tb.getVideos()));
-                            else {
-                                Bitmap bitmap = createVideoThumbnail(tb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
-                                tb.setVideoCover(saveImage(bitmap, tb.getVideos()));
-                            }
-                        }
-                        if (tb.getImgs() != null) {
-                            String b[] = tb.getImgs().split("[,]");
-                            if (b != null && b.length > 0) {
-                                List<String> list = new ArrayList<>();
-                                for (String str : b) {
-                                    list.add(str);
-                                }
-                                tb.setPhotos(list);
-                            }
-                        }
-                        list.add(tb);
-                    }
+                StatusPaser(ar, list);
+                if (ar.length() > 0)
                     listener.onShowDetailsInfo(list);
-                } else if (isRefresh)
+                else if (isRefresh)
                     listener.onFailedsMsg(gets(R.string.nodata));
                 else if (!isRefresh)
                     listener.onFailedsMsg(gets(R.string.nomore));
                 break;
             //活跃用户列表;
             case Fields.REQUEST2:
-                List<ActiveUserBean> aub = new ArrayList<>();
-                JSONArray a = getJsonAr(response);
-                for (int i = 0; i < a.length(); i++) {
-                    ActiveUserBean ab = new Gson().fromJson(String.valueOf(a.optJSONObject(i)), ActiveUserBean.class);
-                    aub.add(ab);
-                }
+
+                List<ActiveUserBean> aub = GsonUtil.jsonToList(getJsonSring(response), ActiveUserBean.class);
                 listener.GetActiveUserData(aub);
                 break;
             //点赞;

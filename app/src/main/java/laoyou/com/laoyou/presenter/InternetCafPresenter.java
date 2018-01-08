@@ -2,12 +2,9 @@ package laoyou.com.laoyou.presenter;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +16,11 @@ import laoyou.com.laoyou.bean.CafCommentBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.InternetCapListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -71,28 +68,17 @@ public class InternetCafPresenter implements HttpResultListener {
     public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-                try {
 
-                    JSONObject ob = getJsonOb(response);
-                    CafBean cb = new Gson().fromJson(String.valueOf(ob), CafBean.class);
-                    listener.onInternetCafDetails(cb);
-                } catch (Exception e) {
-                    Log.e(TAG, "Error ====" + e);
-                }
+                CafBean ub = GsonUtil.GsonToBean(getJsonSring(response), CafBean.class);
+                listener.onInternetCafDetails(ub);
+
                 break;
             case Fields.REQUEST2:
-
                 if (isRefresh)
                     list.clear();
-
-                JSONArray ar = getJsonAr(response);
-                if (ar.length() > 0) {
-                    for (int i = 0; i < ar.length(); i++) {
-                        CafCommentBean cc = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), CafCommentBean.class);
-                        list.add(cc);
-                    }
+                list = GsonUtil.jsonToList(getJsonSring(response), CafCommentBean.class);
+                if (list.size() > 0)
                     listener.onInternetCafComment(list);
-                }
 
                 break;
             case Fields.REQUEST3:

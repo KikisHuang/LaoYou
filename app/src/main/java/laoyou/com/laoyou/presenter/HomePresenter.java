@@ -1,7 +1,6 @@
 package laoyou.com.laoyou.presenter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.AppBarLayout;
@@ -13,8 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONArray;
@@ -31,7 +28,6 @@ import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.ActiveBean;
 import laoyou.com.laoyou.bean.AddressBookBean;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
-import laoyou.com.laoyou.bean.PageTopBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.AppBarStateChangeListener;
@@ -41,13 +37,14 @@ import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.listener.VersionListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
-import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.VersionUpUtils;
 import laoyou.com.laoyou.utils.homeViewPageUtils;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
+import static laoyou.com.laoyou.utils.JsonUtils.StatusPaser;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
@@ -56,13 +53,10 @@ import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.GetAllContact;
 import static laoyou.com.laoyou.utils.SynUtils.IsMe;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
-import static laoyou.com.laoyou.utils.SynUtils.fileIsExists;
 import static laoyou.com.laoyou.utils.SynUtils.getVersionCode;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
-import static laoyou.com.laoyou.utils.SynUtils.saveImage;
 import static laoyou.com.laoyou.utils.SynUtils.startPlay;
 import static laoyou.com.laoyou.utils.SynUtils.stopPlay;
-import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
 
 /**
  * Created by lian on 2017/10/25.
@@ -181,128 +175,49 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-                try {
+                toplist.clear();
+                toplist = GsonUtil.jsonToList(getJsonSring(response), PageTopBannerBean.class);
+                if (toplist.size() > 0) {
+                    initPageData();
+                    setViewPager();
+                    startPlay(handler, mViewPager, 0);
+                }/* else if (toplist.size() > 0) {
+                    ONEIMGFLAG = true;
                     JSONArray ar = getJsonAr(response);
-                    if (ar.length() > 1) {
-                        toplist.clear();
-                        for (int i = 0; i < ar.length(); i++) {
-                            PageTopBannerBean pb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), PageTopBannerBean.class);
-                            toplist.add(pb);
-                        }
-
-                        initPageData();
-                        setViewPager();
-                        startPlay(handler, mViewPager, 0);
-                    } else if (ar.length() > 0) {
-                        ONEIMGFLAG = true;
-                        PageTopBean ptb = new Gson().fromJson(String.valueOf(ar.optJSONObject(0)), PageTopBean.class);
-                        listener.onOneImg(ptb);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    PageTopBean ptb = new Gson().fromJson(String.valueOf(ar.get(0)), PageTopBean.class);
+                    listener.onOneImg(ptb);
+                }*/
                 break;
             case Fields.REQUEST2:
-                try {
-                    JSONObject ob = getJsonOb(response);
-                    UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
-                    SPreferences.saveMyNickName(ub.getName());
-                } catch (JSONException e) {
-                    Log.e(TAG, "Error === " + e);
-                    e.printStackTrace();
-                }
+                UserInfoBean ub = GsonUtil.GsonToBean(getJsonSring(response), UserInfoBean.class);
+                SPreferences.saveMyNickName(ub.getName());
                 break;
 
             case Fields.REQUEST5:
-                try {
-                    JSONObject ob = getJsonOb(response);
-                    int flag = ob.optInt("hideBannerFlag");
-
-                    VersionUpUtils.VersionCheck(ob.optInt("androidVersion"), this);
-
-                    if (flag == 0)
-                        listener.BannerShow();
-                    else if (flag == 1)
-                        listener.BannerHide();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                JSONObject ob = getJsonOb(response);
+                int flag = ob.optInt("hideBannerFlag");
+                VersionUpUtils.VersionCheck(ob.optInt("androidVersion"), this);
+                if (flag == 0)
+                    listener.BannerShow();
+                else if (flag == 1)
+                    listener.BannerHide();
                 break;
             case Fields.REQUEST6:
-                //需要封装;
-                try {
-                    JSONArray ar = getJsonAr(response);
-                    if (RefreshFlag)
-                        Nblist = new ArrayList<>();
 
-                    if (ar.length() > 0) {
-                        for (int i = 0; i < ar.length(); i++) {
-                            TopicTypeBean ttb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), TopicTypeBean.class);
-
-                            if (ttb.getReChatMessages() != null) {
-                                JSONArray tta = new JSONArray(ttb.getReChatMessages().replace(" ", ""));
-
-                                Gson gson = new Gson();
-                                String[][] ss = gson.fromJson(String.valueOf(tta), new TypeToken<String[][]>() {
-                                }.getType());
-                                List<List<String>> outlist = new ArrayList<>();
-                                for (String[] strings : ss) {
-                                    List<String> inlist = null;
-                                    for (String string : strings) {
-                                        if (inlist == null)
-                                            inlist = new ArrayList<>();
-                                        inlist.add(string);
-                                    }
-                                    outlist.add(inlist);
-                                }
-                                ttb.setComments(outlist);
-                            }
-                            if (ttb.getVideos() != null) {
-                                if (fileIsExists(ttb.getVideos()))
-                                    ttb.setVideoCover(saveImage(null, ttb.getVideos()));
-                                else {
-                                    Bitmap bitmap = createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
-                                    ttb.setVideoCover(saveImage(bitmap, ttb.getVideos()));
-                                }
-                            }
-
-                            if (ttb.getImgs() != null) {
-                                String b[] = ttb.getImgs().split("[,]");
-                                if (b != null && b.length > 0) {
-                                    List<String> list = new ArrayList<>();
-                                    for (String str : b) {
-                                        list.add(str);
-                                    }
-                                    ttb.setPhotos(list);
-                                }
-                            }
-                            Nblist.add(ttb);
-                        }
-
-                        listener.RefreshRecyclerView(Nblist);
-                    } else if (RefreshFlag) {
-                        listener.onFailed(gets(R.string.nodata));
-                        listener.onBottom();
-                    } else if (!RefreshFlag)
-                        listener.onBottom();
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.i(TAG, "解析异常 Error ===" + e);
-                }
+                JSONArray ar = getJsonAr(response);
+                if (RefreshFlag)
+                    Nblist = new ArrayList<>();
+                StatusPaser(ar, Nblist);
+                if (ar.length() > 0)
+                    listener.RefreshRecyclerView(Nblist);
+                else if (RefreshFlag) {
+                    listener.onFailed(gets(R.string.nodata));
+                    listener.onBottom();
+                } else if (!RefreshFlag)
+                    listener.onBottom();
                 break;
-            case Fields.REQUEST3:
-               /* try {
-                    JSONObject ob = getJsonOb(response);
-                    CheckStatusBean cb = new Gson().fromJson(String.valueOf(ob), CheckStatusBean.class);
-                    listener.onCheckStatus(cb.getStatus());
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
+            case Fields.REQUEST3:
                 RefreshLikeThme(true);
                 break;
 
@@ -311,31 +226,25 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                 listener.onDownload(getJsonSring(response));
                 break;
             case Fields.ACRESULET1:
-                JSONArray ar = getJsonAr(response);
-                if (ar.length() > 0) {
-                    List<ActiveBean> ab = new ArrayList<>();
-                    for (int i = 0; i < ar.length(); i++) {
-                        ActiveBean atb = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), ActiveBean.class);
-                        ab.add(atb);
-                    }
-                    listener.onFlashChatInfo(ab);
-                } else
+
+                List<ActiveBean> atvb = GsonUtil.jsonToList(getJsonSring(response), ActiveBean.class);
+                if (atvb.size() > 0)
+                    listener.onFlashChatInfo(atvb);
+                else
                     listener.onHideFlashChatInfo();
 
                 break;
             case Fields.ACRESULET2:
-                JSONArray address = getJsonAr(response);
+                List<AddressBookBean> ab = GsonUtil.jsonToList(getJsonSring(response), AddressBookBean.class);
+
                 List<AddressBookBean> add = new ArrayList<>();
-                for (int i = 0; i < address.length(); i++) {
+                for (int i = 0; i < ab.size(); i++) {
                     if (i > 7)
                         break;
-
-                    AddressBookBean atb = new Gson().fromJson(String.valueOf(address.optJSONObject(i)), AddressBookBean.class);
-                    if (!FriendshipInfo.getInstance().isFriend(atb.getCloudTencentAccount()) && !IsMe(atb.getId()))
-                        add.add(atb);
+                    if (!FriendshipInfo.getInstance().isFriend(ab.get(i).getCloudTencentAccount()) && !IsMe(ab.get(i).getId()) && ab.get(i).getCloudTencentAccount() != null)
+                        add.add(ab.get(i));
                 }
                 listener.onReComInfo(add);
-
                 break;
         }
     }

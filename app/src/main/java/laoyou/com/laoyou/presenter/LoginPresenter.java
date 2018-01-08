@@ -5,11 +5,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -19,13 +17,13 @@ import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.LoginListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.utils.ImUtils.CreateUserIm;
 import static laoyou.com.laoyou.utils.ImUtils.getImIdentifier;
 import static laoyou.com.laoyou.utils.ImUtils.getImUserSig;
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -103,68 +101,49 @@ public class LoginPresenter implements HttpResultListener {
     }
 
     @Override
-    public void onSucceed(String response, int tag) {
+    public void onSucceed(String response, int tag) throws JSONException {
 
         switch (tag) {
             case Fields.REQUEST1:
-                try {
-                    Log.i(TAG, "server key === " + getJsonSring(response));
+                Log.i(TAG, "server key === " + getJsonSring(response));
 
-                    SPreferences.saveUserToken(getJsonSring(response));
-                    //REQUEST2
-                    getImIdentifier(this);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-//                listener.onSucceed();
+                SPreferences.saveUserToken(getJsonSring(response));
+                //REQUEST2
+                getImIdentifier(this);
                 break;
             case Fields.REQUEST6:
-                try {
-                    JSONObject ob = getJsonOb(response);
-                    UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
-                    if (!ub.getCloudTencentAccount().isEmpty()) {
-                        SPreferences.saveIdentifier(ub.getCloudTencentAccount());
-                        Log.i(TAG, "创建获得的id ===" + ub.getCloudTencentAccount());
-                        //REQUEST4
-                        getImUserSig(ub.getCloudTencentAccount(), this);
-//                      ImportImInfo(id, name, faceUrl, this);
-                    }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                UserInfoBean ub = GsonUtil.GsonToBean(getJsonSring(response), UserInfoBean.class);
+
+                if (!ub.getCloudTencentAccount().isEmpty()) {
+                    SPreferences.saveIdentifier(ub.getCloudTencentAccount());
+                    Log.i(TAG, "创建获得的id ===" + ub.getCloudTencentAccount());
+                    //REQUEST4
+                    getImUserSig(ub.getCloudTencentAccount(), this);
+//                      ImportImInfo(id, name, faceUrl, this);
                 }
                 break;
             case Fields.REQUEST4:
                 Log.i(TAG, "user sig ===" + response);
-                try {
-                    SPreferences.saveUserSig(getJsonSring(response));
-                    listener.onSucceed();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    listener.onImFailed(gets(R.string.getuser_sig_error));
-                }
+                SPreferences.saveUserSig(getJsonSring(response));
+                listener.onSucceed();
                 break;
 
             case Fields.REQUEST2:
-                try {
-                    JSONObject ob = getJsonOb(response);
-                    UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
-                    SPreferences.saveUserId(ub.getId());
-                    faceUrl = ub.getHeadImgUrl();
-                    name = ub.getName();
 
-                    if (ub.getCloudTencentAccount() != null && !ub.getCloudTencentAccount().isEmpty()) {
-                        Log.i(TAG, "详情获得的id ===" + ub.getCloudTencentAccount());
-                        SPreferences.saveIdentifier(ub.getCloudTencentAccount());
-                        //REQUEST4
-                        getImUserSig(ub.getCloudTencentAccount(), this);
-                    } else
-                        CreateUserIm(this);
+                UserInfoBean uub = GsonUtil.GsonToBean(getJsonSring(response), UserInfoBean.class);
+                SPreferences.saveUserId(uub.getId());
+                faceUrl = uub.getHeadImgUrl();
+                name = uub.getName();
 
-                } catch (JSONException e) {
-                    Log.e(TAG, "Error === " + e);
-                    e.printStackTrace();
-                }
+                if (uub.getCloudTencentAccount() != null && !uub.getCloudTencentAccount().isEmpty()) {
+                    Log.i(TAG, "详情获得的id ===" + uub.getCloudTencentAccount());
+                    SPreferences.saveIdentifier(uub.getCloudTencentAccount());
+                    //REQUEST4
+                    getImUserSig(uub.getCloudTencentAccount(), this);
+                } else
+                    CreateUserIm(this);
+
                 break;
             case Fields.REQUEST5:
                 Log.i(TAG, response);

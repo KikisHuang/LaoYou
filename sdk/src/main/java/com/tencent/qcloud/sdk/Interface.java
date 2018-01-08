@@ -325,5 +325,9 @@ public class Interface {
      * 根据通讯录号码簿搜索用户;
      */
     public static final String SEARCHUSERBYPHONES = "user/select/searchUserByPhones.app";
+    /**
+     * 获取图标;
+     */
+    public static final String GETICON = "icon/getIcon.app ";
 
 }

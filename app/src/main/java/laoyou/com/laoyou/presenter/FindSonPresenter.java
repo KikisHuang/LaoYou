@@ -1,10 +1,7 @@
 package laoyou.com.laoyou.presenter;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONArray;
@@ -20,19 +17,17 @@ import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.listener.FindSonListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.save.SPreferences;
-import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
+import static laoyou.com.laoyou.utils.JsonUtils.StatusPaser;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
-import static laoyou.com.laoyou.utils.SynUtils.fileIsExists;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
-import static laoyou.com.laoyou.utils.SynUtils.saveImage;
-import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
 
 /**
  * Created by lian on 2017/12/11.
@@ -53,29 +48,23 @@ public class FindSonPresenter implements HttpResultListener {
         switch (tag) {
             case Fields.REQUEST1:
                 try {
-                    JSONArray ar = getJsonAr(response);
-                    List<NearbyBean> Nblist = new ArrayList<>();
-
-                    if (ar.length() > 0) {
-                        for (int i = 0; i < ar.length(); i++) {
-                            NearbyBean pb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), NearbyBean.class);
-                            if (pb.getCloud_tencent_account() != null && !pb.getCloud_tencent_account().isEmpty()) {
-                                if (pb.getGameImgs() != null && !pb.getGameImgs().isEmpty()) {
-
-                                    String b[] = pb.getGameImgs().split("[,]");
-
+                    List<NearbyBean> ar = GsonUtil.jsonToList(getJsonSring(response), NearbyBean.class);
+                    if (ar.size() > 0) {
+                        for (NearbyBean nbb : ar) {
+                            if (nbb.getCloud_tencent_account() != null && !nbb.getCloud_tencent_account().isEmpty()) {
+                                if (nbb.getGameImgs() != null && !nbb.getGameImgs().isEmpty()) {
+                                    String b[] = nbb.getGameImgs().split("[,]");
                                     if (b != null && b.length > 0) {
                                         List<String> list = new ArrayList<>();
                                         for (String str : b) {
                                             list.add(str);
                                         }
-                                        pb.setImgsList(list);
+                                        nbb.setImgsList(list);
                                     }
                                 }
-                                Nblist.add(pb);
                             }
                         }
-                        listener.RefreshNearby(Nblist);
+                        listener.RefreshNearby(ar);
                     } else if (RefreshFlag)
                         listener.onFailedMsg(gets(R.string.nodata));
                     else if (!RefreshFlag)
@@ -89,57 +78,10 @@ public class FindSonPresenter implements HttpResultListener {
                 try {
                     JSONArray ar = getJsonAr(response);
                     List<TopicTypeBean> toppic = new ArrayList<>();
-
-                    if (ar.length() > 0) {
-                        for (int i = 0; i < ar.length(); i++) {
-                            TopicTypeBean ttb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), TopicTypeBean.class);
-
-                            if (ttb.getReChatMessages() != null) {
-//                                JSONArray tta = new JSONArray("[" + ttb.getReChatMessages() + "]");
-                                JSONArray tta = new JSONArray(ttb.getReChatMessages().replace(" ", ""));
-
-                                Gson gson = new Gson();
-                                String[][] ss = gson.fromJson(String.valueOf(tta), new TypeToken<String[][]>() {
-                                }.getType());
-                                List<List<String>> outlist = new ArrayList<>();
-                                for (String[] strings : ss) {
-                                    List<String> inlist = null;
-                                    for (String string : strings) {
-                                        if (inlist == null)
-                                            inlist = new ArrayList<>();
-
-                                        inlist.add(string);
-                                    }
-                                    outlist.add(inlist);
-                                }
-
-                                ttb.setComments(outlist);
-                            }
-                            if (ttb.getVideos() != null) {
-                                if (fileIsExists(ttb.getVideos()))
-                                    ttb.setVideoCover(saveImage(null, ttb.getVideos()));
-                                else {
-                                    Bitmap bitmap = createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
-                                    ttb.setVideoCover(saveImage(bitmap, ttb.getVideos()));
-                                }
-                            }
-
-                            if (ttb.getImgs() != null) {
-                                String b[] = ttb.getImgs().split("[,]");
-                                if (b != null && b.length > 0) {
-                                    List<String> list = new ArrayList<>();
-                                    for (String str : b) {
-                                        list.add(str);
-                                    }
-                                    ttb.setPhotos(list);
-                                }
-                            }
-                            toppic.add(ttb);
-                        }
-
+                    StatusPaser(ar, toppic);
+                    if (ar.length() > 0)
                         listener.RefreshNewWonders(toppic);
-
-                    } else if (RefreshFlag)
+                    else if (RefreshFlag)
                         listener.onFailedMsg(gets(R.string.nodata));
                     else if (!RefreshFlag)
                         listener.onFailedMsg(gets(R.string.nomore));

@@ -20,4 +20,6 @@ public interface AddressBookListener {
     void onCreateGroupSuccess(String gets);
 
     void onSelected(List<AddressBean> list, int pos);
+
+    void GoHomePage(String identifier);
 }

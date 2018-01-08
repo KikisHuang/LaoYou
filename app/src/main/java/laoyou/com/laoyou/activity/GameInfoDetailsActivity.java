@@ -182,7 +182,7 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
                 UMWeb web = new UMWeb(Interface.NEWSDETAILS + "id=" + id);
                 web.setTitle(gets(R.string.game_information));//标题
                 web.setThumb(new UMImage(this, R.mipmap.logo_icon));  //缩略图
-                web.setDescription("");//描述
+                web.setDescription(gets(R.string.game_information));//描述
 
                 new ShareAction(this)
                         .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE)

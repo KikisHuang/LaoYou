@@ -1,14 +1,9 @@
 package laoyou.com.laoyou.presenter;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +13,11 @@ import laoyou.com.laoyou.bean.HeartBean;
 import laoyou.com.laoyou.listener.HeartValueAndCommentListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
@@ -42,39 +38,20 @@ public class HeartValueAndCommentPresenter implements HttpResultListener {
     public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-                try {
-                    List<HeartBean> hearts = new ArrayList<>();
-                    JSONArray ar = getJsonAr(response);
-                    for (int i = 0; i < ar.length(); i++) {
-                        HeartBean ub = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), HeartBean.class);
-                        hearts.add(ub);
-                    }
-                    listener.onHeartData(hearts);
-                } catch (JSONException e) {
-                    Log.e(TAG, "Error === " + e);
-                    e.printStackTrace();
-                }
+                List<HeartBean> hearts = GsonUtil.jsonToList(getJsonSring(response), HeartBean.class);
+                listener.onHeartData(hearts);
+
                 break;
 
             case Fields.REQUEST2:
-                try {
-                    List<CommentBean> comments = new ArrayList<>();
-                    JSONArray ar = getJsonAr(response);
-                    if (ar.length() > 0) {
-                        for (int i = 0; i < ar.length(); i++) {
-                            CommentBean cb = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), CommentBean.class);
-                            comments.add(cb);
-                        }
-                        listener.onCommentData(comments);
-                    } else if (IsRefresh)
-                        listener.onFailedsMsg(gets(R.string.nodata));
-                    else if (!IsRefresh)
-                        listener.onFailedsMsg(gets(R.string.nomore));
+                List<CommentBean> comments = GsonUtil.jsonToList(getJsonSring(response), CommentBean.class);
 
-                } catch (JSONException e) {
-                    Log.e(TAG, "Error === " + e);
-                    e.printStackTrace();
-                }
+                if (comments.size() > 0)
+                    listener.onCommentData(comments);
+                else if (IsRefresh)
+                    listener.onFailedsMsg(gets(R.string.nodata));
+                else if (!IsRefresh)
+                    listener.onFailedsMsg(gets(R.string.nomore));
 
                 break;
         }

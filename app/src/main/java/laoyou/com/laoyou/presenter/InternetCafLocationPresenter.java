@@ -13,14 +13,17 @@ import java.util.List;
 import java.util.Map;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.FlashTypeIconBean;
 import laoyou.com.laoyou.bean.MarkerBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.InternetCafLocationListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.SynUtils.ArrayIsNull;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -53,15 +56,10 @@ public class InternetCafLocationPresenter implements HttpResultListener {
     public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-                JSONArray ar = getJsonAr(response);
-                List<MarkerBean> list = new ArrayList<>();
-                if (!ArrayIsNull(ar)) {
-                    for (int i = 0; i < ar.length(); i++) {
-                        MarkerBean mb = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), MarkerBean.class);
-                        list.add(mb);
-                    }
+                List<MarkerBean> list = GsonUtil.jsonToList(getJsonSring(response), MarkerBean.class);
+                if (list.size() > 0)
                     listener.onInternetCafDataList(list);
-                } else
+                else
                     listener.onFailesMsg(gets(R.string.no_bar_data));
                 break;
         }

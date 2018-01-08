@@ -43,7 +43,7 @@ public class httpUtils {
         build.execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                Log.i(TAG, "服务端异常信息 ====" + e);
+                Log.e(TAG, "服务端异常信息 ====" + e);
                 listener.onError(call.request(), e);
                 Cancle();
             }
@@ -62,7 +62,7 @@ public class httpUtils {
                     }
                     Cancle();
                 } catch (Exception e) {
-                    Log.i(TAG, "解析异常信息 ====" + e);
+                    Log.e(TAG, "解析异常信息 ====" + e);
                     listener.onParseError(e);
                     Cancle();
                 }
@@ -95,7 +95,7 @@ public class httpUtils {
         build.execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                Log.i(TAG, "服务端异常信息 ====" + e);
+                Log.e(TAG, "服务端异常信息 ====" + e);
                 listener.onError(call.request(), e);
                 Cancle();
 

@@ -310,6 +310,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
     @Override
     public void onSucceed() {
         ToastUtil.toast2_bottom(this, gets(R.string.issue_succ));
+        setResult(RESULT_OK);
         finish();
     }
 

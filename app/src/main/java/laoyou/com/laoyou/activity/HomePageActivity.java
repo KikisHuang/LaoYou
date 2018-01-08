@@ -487,6 +487,10 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
                 AddressbookActivity ac = AddressBookInstance();
                 if (ac != null)
                     ac.onRefresh();
+
+//                if (ConversationInstance() != null)
+//                    ConversationInstance().MyDelMethod(identify);
+
                 break;
             case TIM_FRIEND_STATUS_UNKNOWN:
                 Toast.makeText(this, getResources().getString(R.string.profile_del_fail), Toast.LENGTH_SHORT).show();

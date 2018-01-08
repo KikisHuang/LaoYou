@@ -3,10 +3,8 @@ package laoyou.com.laoyou.presenter;
 import android.util.Log;
 import android.view.View;
 
-import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,11 +21,11 @@ import laoyou.com.laoyou.bean.TopicCommentBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.TopicCommentListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import laoyou.com.laoyou.view.popup.CommentPhotoPopupWindow;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
@@ -94,21 +92,16 @@ public class TopicCommentPresenter implements HttpResultListener {
                 listener.onLikeStatus(status == 1 ? true : false);
                 break;
             case Fields.REQUEST2:
-                JSONObject ob = getJsonOb(response);
-                TopicCommentBean tcb = new Gson().fromJson(String.valueOf(ob), TopicCommentBean.class);
-
-                if (tcb.getImgs() != null) {
-                    String b[] = tcb.getImgs().split("[,]");
-                    if (b != null && b.length > 0) {
-                        List<String> list = new ArrayList<>();
-                        for (String str : b) {
-                            list.add(str);
-                        }
-                        tcb.setPhotos(list);
+                TopicCommentBean tcb = GsonUtil.GsonToBean(getJsonSring(response), TopicCommentBean.class);
+                String b[] = tcb.getImgs().split("[,]");
+                if (b != null && b.length > 0) {
+                    List<String> list = new ArrayList<>();
+                    for (String str : b) {
+                        list.add(str);
                     }
+                    tcb.setPhotos(list);
                 }
                 listener.onThemeDetails(tcb);
-
                 break;
             case Fields.REQUEST3:
                 if (Integer.valueOf(getJsonSring(response)) == 1)
@@ -117,13 +110,8 @@ public class TopicCommentPresenter implements HttpResultListener {
                     listener.onFailedMsg(gets(R.string.comment_failed));
                 break;
             case Fields.REQUEST4:
-                JSONArray ar = getJsonAr(response);
-                List<LikeListBean> li = new ArrayList<>();
-                for (int i = 0; i < ar.length(); i++) {
-                    LikeListBean like = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), LikeListBean.class);
-                    li.add(like);
-                }
-                listener.LikeListData(li);
+                List<LikeListBean> ar = GsonUtil.jsonToList(getJsonSring(response), LikeListBean.class);
+                listener.LikeListData(ar);
                 break;
 
             case Fields.REQUEST5:
@@ -137,19 +125,14 @@ public class TopicCommentPresenter implements HttpResultListener {
                 break;
 
             case Fields.ACRESULET5:
-                JSONArray info = getJsonAr(response);
-                List<ChatMessages> list = new ArrayList<>();
-                if (info.length() > 0) {
-                    for (int i = 0; i < info.length(); i++) {
-                        ChatMessages cm = new Gson().fromJson(String.valueOf(info.optJSONObject(i)), ChatMessages.class);
-                        list.add(cm);
-                    }
+                List<ChatMessages> list = GsonUtil.jsonToList(getJsonSring(response), ChatMessages.class);
+                if (list.size() > 0)
                     listener.onCommentInfo(list);
-                } else
+                else
                     listener.onNoMore(gets(R.string.nomore));
-
                 break;
         }
+
     }
 
     @Override

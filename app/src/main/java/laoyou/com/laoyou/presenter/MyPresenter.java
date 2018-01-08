@@ -1,12 +1,8 @@
 package laoyou.com.laoyou.presenter;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -16,10 +12,11 @@ import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.MyListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
@@ -41,22 +38,16 @@ public class MyPresenter implements HttpResultListener {
      */
     public void getUseDetails() {
         Map<String, String> map = getKeyMap();
-        httpUtils.OkHttpsPost(map, this, Fields.REQUEST1, Interface.URL + Interface.MYINFODETAILS,null,null);
+        httpUtils.OkHttpsPost(map, this, Fields.REQUEST1, Interface.URL + Interface.MYINFODETAILS, null, null);
     }
 
     @Override
-    public void onSucceed(String response, int tag) {
+    public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-                try {
-                    JSONObject ob = getJsonOb(response);
-                    UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
-                    SPreferences.saveMyNickName(ub.getName());
-                    listener.ongetDetails(ub);
-                } catch (JSONException e) {
-                    Log.e(TAG, "Error === " + e);
-                    e.printStackTrace();
-                }
+                UserInfoBean ub = GsonUtil.GsonToBean(getJsonSring(response), UserInfoBean.class);
+                SPreferences.saveMyNickName(ub.getName());
+                listener.ongetDetails(ub);
                 break;
 
         }

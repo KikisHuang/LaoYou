@@ -3,10 +3,8 @@ package laoyou.com.laoyou.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.File;
@@ -21,13 +19,14 @@ import laoyou.com.laoyou.bean.PhotoBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.MyPhotoListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 import top.zibin.luban.OnCompressListener;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.utils.ComPressUtils.Compress;
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
@@ -53,6 +52,7 @@ public class MyPhotoPresenter implements HttpResultListener, OnCompressListener 
         map.put("pageSize", String.valueOf(page + 10));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETPHOTOBYPAGE);
     }
+
     public void RefreshPhotoListData(String id) {
         Map<String, String> map = getKeyMap();
         map.put("page", String.valueOf(0));
@@ -64,24 +64,14 @@ public class MyPhotoPresenter implements HttpResultListener, OnCompressListener 
     }
 
     @Override
-    public void onSucceed(String response, int tag) {
+    public void onSucceed(String response, int tag) throws JSONException {
 
         switch (tag) {
             case Fields.REQUEST1:
-                try {
-                    JSONArray ar = getJsonAr(response);
 
-                    if (ar.length() > 0) {
-                        List<PhotoBean> list = new ArrayList<>();
-                        for (int i = 0; i < ar.length(); i++) {
-                            PhotoBean pb = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), PhotoBean.class);
-                            list.add(pb);
-                        }
-                        listener.onPhotoList(list);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                List<PhotoBean> ar = GsonUtil.jsonToList(getJsonSring(response), PhotoBean.class);
+                if (ar.size() > 0)
+                    listener.onPhotoList(ar);
 
                 break;
             case Fields.REQUEST2:

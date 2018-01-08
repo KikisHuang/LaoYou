@@ -164,6 +164,11 @@ public class MyCreateGroupActivity extends InitActivity implements AddressBookLi
     }
 
     @Override
+    public void GoHomePage(String identifier) {
+
+    }
+
+    @Override
     public void onAdd(String faceUrl, String identifier, String name) {
 
         if (addGroupPeopleList.size() == 1 && addGroupPeopleList.get(0).getIdentifier().isEmpty()) {

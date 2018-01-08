@@ -49,6 +49,7 @@ import laoyou.com.laoyou.tencent.adapters.ConversationAdapter;
 import laoyou.com.laoyou.tencent.model.Conversation;
 import laoyou.com.laoyou.tencent.model.CustomMessage;
 import laoyou.com.laoyou.tencent.model.FriendshipConversation;
+import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.tencent.model.GroupManageConversation;
 import laoyou.com.laoyou.tencent.model.MessageFactory;
 import laoyou.com.laoyou.tencent.model.NomalConversation;
@@ -184,6 +185,7 @@ public class ConversationFragment extends Fragment implements ConversationView, 
     @Override
     public void updateMessage(TIMMessage message) {
 
+
         if (message == null) {
             adapter.notifyDataSetChanged();
             return;
@@ -206,16 +208,20 @@ public class ConversationFragment extends Fragment implements ConversationView, 
         }
 
         conversation.setLastMessage(MessageFactory.getMessage(message));
+
         conversationList.add(conversation);
+
         Collections.sort(conversationList);
         refresh();
         List<String> groupId = new ArrayList<>();
         for (Conversation con : conversationList) {
             if (con.getType() == TIMConversationType.Group)
                 groupId.add(con.getIdentify());
-            }
+        }
         if (groupId.size() > 0)
             presenter.getGroupDetails(groupId);
+
+
     }
 
     /**
@@ -264,6 +270,11 @@ public class ConversationFragment extends Fragment implements ConversationView, 
      */
     @Override
     public void refresh() {
+        for (int i = 0; i < conversationList.size(); i++) {
+            Conversation conve = conversationList.get(i);
+            if (conve.getType() != null && conve.getType() == TIMConversationType.C2C && !FriendshipInfo.getInstance().isFriend(conve.getIdentify()))
+                conversationList.remove(i);
+        }
         Collections.sort(conversationList);
         adapter.notifyDataSetChanged();
         if (getActivity() instanceof HomeActivity)
@@ -347,6 +358,7 @@ public class ConversationFragment extends Fragment implements ConversationView, 
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         NomalConversation conversation = (NomalConversation) conversationList.get(info.position);
         switch (item.getItemId()) {
@@ -362,6 +374,28 @@ public class ConversationFragment extends Fragment implements ConversationView, 
                 break;
         }
         return super.onContextItemSelected(item);
+    }
+
+    /**
+     * 自定删除方法;
+     *
+     * @param identify
+     */
+    public void MyDelMethod(String identify) {
+        if (conversationList != null && conversationList.size() > 0) {
+            for (Conversation cst : conversationList) {
+                if (identify.equals(cst.getIdentify())) {
+                    NomalConversation conversation = (NomalConversation) cst;
+                    if (conversation != null) {
+                        if (presenter.delConversation(conversation.getType(), conversation.getIdentify())) {
+                            conversationList.remove(conversation);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     private long getTotalUnreadNum() {

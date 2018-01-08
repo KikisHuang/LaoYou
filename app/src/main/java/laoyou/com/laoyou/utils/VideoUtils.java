@@ -12,7 +12,13 @@ import java.util.HashMap;
  * Created by lian on 2017/12/29.
  */
 public class VideoUtils {
-
+    /**
+     * 获取网络视频截图;
+     * @param url 路径
+     * @param width 宽
+     * @param height 高
+     * @return
+     */
     public static Bitmap createVideoThumbnail(String url, int width, int height) {
 
         Bitmap bitmap = null;

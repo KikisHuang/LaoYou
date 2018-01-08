@@ -13,15 +13,18 @@ import java.util.List;
 import java.util.Map;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.FlashTypeIconBean;
 import laoyou.com.laoyou.bean.GameInfoBean;
 import laoyou.com.laoyou.bean.GameTypeBean;
 import laoyou.com.laoyou.listener.GameInformationListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.ArrayIsNull;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -70,33 +73,26 @@ public class GameInformationPresenter implements HttpResultListener {
     public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-                List<GameTypeBean> list = new ArrayList<>();
-                JSONArray ar = getJsonAr(response);
-                if (!ArrayIsNull(ar)) {
-                    for (int i = 0; i < ar.length(); i++) {
-                        GameTypeBean pb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), GameTypeBean.class);
-                        list.add(pb);
-                    }
+
+                List<GameTypeBean> list = GsonUtil.jsonToList(getJsonSring(response), GameTypeBean.class);
+                if (list.size() > 0)
                     listener.onGameTypeInforMation(list);
-                } else
+                else
                     listener.onFailedMsg(gets(R.string.nodata));
                 break;
             case Fields.REQUEST2:
-                JSONArray a = getJsonAr(response);
+
                 if (InfoRefresh)
                     li = new ArrayList<>();
 
-                if (!ArrayIsNull(a)) {
-                    for (int i = 0; i < a.length(); i++) {
-                        GameInfoBean gb = new Gson().fromJson(String.valueOf(a.optJSONObject(i)), GameInfoBean.class);
-                        li.add(gb);
-                    }
+                li = GsonUtil.jsonToList(getJsonSring(response), GameInfoBean.class);
+
+                if (li.size() > 0)
                     listener.onGameInfor(li);
-                } else if (InfoRefresh)
+                else if (InfoRefresh)
                     listener.onFailedMsg(gets(R.string.nodata));
                 else
                     listener.onFailedMsg(gets(R.string.The_bottom));
-
                 break;
         }
     }

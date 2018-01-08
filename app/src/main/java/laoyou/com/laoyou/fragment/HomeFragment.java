@@ -265,6 +265,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             headLayout.setLayoutParams(lp);
 
             Glide.with(getActivity()).load(atv.getFaceUrl() == null || atv.getFaceUrl().isEmpty() ? Fields.Catalina : atv.getFaceUrl()).apply(getGlideOptions()).into(im);
+
             im.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -304,6 +305,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onResume() {
         super.onResume();
+        hp.IsLogin();
         hp.setAppBarLayoutStateChangeListener(appbar_layout);
         Log.i(TAG, "onResume");
         try {
@@ -579,12 +581,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 ImageView im = (ImageView) headLayout.findViewById(R.id.head_img);
                 ImageView addicon = (ImageView) headLayout.findViewById(R.id.add_img);
                 addicon.setVisibility(View.VISIBLE);
+                if (LoginStatusQuery()) {
                 headLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         goHomePage(getActivity(), abb.getId(), false);
                     }
                 });
+                } else {
+                    ToastUtil.toast2_bottom(getActivity(), "请先登录！");
+                    goLoginOperPage(getActivity());
+                }
                 headLayout.setLayoutParams(lp);
                 Glide.with(getActivity()).load(abb.getHeadImgUrl() == null || abb.getHeadImgUrl().isEmpty() ? Fields.Catalina : abb.getHeadImgUrl()).apply(getGlideOptions()).into(im);
 
@@ -602,7 +609,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
      */
     @Override
     public void RcOnItemClick(int pos, List<String> imgs) {
-        goPhotoViewerPage(getActivity(), imgs, pos, 1);
+        if (LoginStatusQuery()) {
+            goPhotoViewerPage(getActivity(), imgs, pos, 1);
+        } else {
+            ToastUtil.toast2_bottom(getActivity(), "请先登录！");
+            goLoginOperPage(getActivity());
+        }
+
+
     }
 
     /**
@@ -621,7 +635,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
      */
     @Override
     public void GoPageHome(String userId) {
-        goHomePage(getActivity(), userId, false);
+
+        if (LoginStatusQuery()) {
+            goHomePage(getActivity(), userId, false);
+        } else {
+            ToastUtil.toast2_bottom(getActivity(), "请先登录！");
+            goLoginOperPage(getActivity());
+        }
+
     }
 
     /**
@@ -634,7 +655,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
      */
     @Override
     public void GoCommentPage(String id, String userId, String name, String content) {
-        goTopicCommentDetailsPage(getActivity(), id, userId, name, content);
+
+        if (LoginStatusQuery()) {
+            goTopicCommentDetailsPage(getActivity(), id, userId, name, content);
+        } else {
+            ToastUtil.toast2_bottom(getActivity(), "请先登录！");
+            goLoginOperPage(getActivity());
+        }
     }
 
     /**
@@ -645,7 +672,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
      */
     @Override
     public void GoVideoPage(String url, String videoCover) {
-        goVideoPlayerPage(getActivity(), url, videoCover);
+
+        if (LoginStatusQuery()) {
+            goVideoPlayerPage(getActivity(), url, videoCover);
+        } else {
+            ToastUtil.toast2_bottom(getActivity(), "请先登录！");
+            goLoginOperPage(getActivity());
+        }
+
     }
 
     /**

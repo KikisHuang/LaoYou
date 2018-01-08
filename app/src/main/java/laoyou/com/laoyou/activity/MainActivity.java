@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.dialog.MyAlertDialog;
 import laoyou.com.laoyou.fragment.FindFragment;
 import laoyou.com.laoyou.fragment.HomeFragment;
 import laoyou.com.laoyou.fragment.MyFragment;
@@ -41,7 +42,6 @@ import laoyou.com.laoyou.listener.MainListener;
 import laoyou.com.laoyou.presenter.MainPresenter;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.ui.ConversationFragment;
-import laoyou.com.laoyou.tencent.ui.customview.DialogActivity;
 import laoyou.com.laoyou.tencent.utils.PushUtil;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -125,9 +125,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         TIMManager.getInstance().setUserStatusListener(new TIMUserStatusListener() {
             @Override
             public void onForceOffline() {
-                Log.d(TAG, "receive force offline message");
+               /* Log.d(TAG, "receive force offline message");
                 Intent intent = new Intent(MainActivity.this, DialogActivity.class);
-                startActivity(intent);
+                startActivity(intent);*/
+                new MyAlertDialog(MainActivity.this).builder().setCancelable(false).setTitle("提示").setMsg(getString(R.string.kick_logout)).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        LogOut(MainActivity.this);
+                        if (MainInstance() != null)
+                            MainInstance().onInitFragment();
+                    }
+                }).setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        LogOut(MainActivity.this);
+                        if (MainInstance() != null)
+                            MainInstance().onInitFragment();
+                    }
+                }).show();
             }
 
             @Override
@@ -217,6 +233,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
         ft.commitAllowingStateLoss();
     }
+
     public void Find() {
 //        ObjectAnimator anima = ShakeAnima(msg_img);
 //        anima.start();
@@ -443,14 +460,31 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         Log.e(TAG, "login error : code " + i + " " + s);
         switch (i) {
             case 6208:
-                //离线状态下被其他终端踢下线
-                NotifyDialog dialog = new NotifyDialog();
+            //离线状态下被其他终端踢下线
+             /*   NotifyDialog dialog = new NotifyDialog();
                 dialog.show(getString(R.string.kick_logout), getSupportFragmentManager(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         LogOut(MainActivity.this);
                     }
                 });
+*/
+                /*new MyAlertDialog(this).builder().setCancelable(false).setTitle("提示").setMsg(getString(R.string.kick_logout)).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        LogOut(MainActivity.this);
+                        if (MainInstance() != null)
+                            MainInstance().onInitFragment();
+                    }
+                }).setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        LogOut(MainActivity.this);
+                        if (MainInstance() != null)
+                            MainInstance().onInitFragment();
+                    }
+                }).show();*/
                 break;
             case 6200:
                 SPreferences.saveUserToken("");

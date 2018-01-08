@@ -7,14 +7,10 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
-import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,13 +22,13 @@ import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.QueryListener;
 import laoyou.com.laoyou.thread.CheckThread;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.thread.CheckThread.ThreadInstance;
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
@@ -101,33 +97,17 @@ public class QueryPresenter implements HttpResultListener {
     }
 
     @Override
-    public void onSucceed(String response, int tag) {
+    public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-                try {
-                    JSONArray ar = getJsonAr(response);
-                    if (ar.length() > 0) {
-                        List<PageTopBannerBean> list = new ArrayList<>();
-                        for (int i = 0; i < ar.length(); i++) {
-                            PageTopBannerBean pb = new Gson().fromJson(String.valueOf(ar.getJSONObject(i)), PageTopBannerBean.class);
-                            list.add(pb);
-                        }
-                        listener.ShowBannerInfo(list);
-                    }
+                List<PageTopBannerBean> list = GsonUtil.jsonToList(getJsonSring(response), PageTopBannerBean.class);
+                if (list.size() > 0)
+                    listener.ShowBannerInfo(list);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 break;
             case Fields.REQUEST2:
-                try {
-                    JSONObject ob = getJsonOb(response);
-                    UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
-                    listener.onDetails(ub);
-                } catch (JSONException e) {
-                    Log.e(TAG, "Error === " + e);
-                    e.printStackTrace();
-                }
+                UserInfoBean ub = GsonUtil.GsonToBean(getJsonSring(response), UserInfoBean.class);
+                listener.onDetails(ub);
 
                 break;
             case Fields.REQUEST4:
@@ -138,39 +118,32 @@ public class QueryPresenter implements HttpResultListener {
                 break;
             case Fields.REQUEST3:
                 Cancle();
-                try {
-                    JSONObject ob = getJsonOb(response);
-                    CheckStatusBean cb = new Gson().fromJson(String.valueOf(ob), CheckStatusBean.class);
+
+                CheckStatusBean cb = GsonUtil.GsonToBean(getJsonSring(response), CheckStatusBean.class);
 //                    listener.onCheckStatus(cb.getStatus());
-                    //	status  审核状态 0未审核，1已通过，-1已拒绝，2密码错误要求复检,3重新上传
-                    switch (cb.getStatus()) {
-                        case 0:
-                            listener.unCheck();
-                            QueryPassData();
-                            break;
-                        case 1:
-                            CloseQueryThread();
-                            listener.CheckOK(cb.getPassword());
-                            break;
-                        case -1:
-                            CloseQueryThread();
-                            listener.Refuse(cb.getFailReasons());
-                            break;
-                        case 2:
-                            QueryPassData();
-                            listener.unCheck();
-                            break;
-                        case 3:
-                            QueryPassData();
-                            listener.unCheck();
-                            break;
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                //	status  审核状态 0未审核，1已通过，-1已拒绝，2密码错误要求复检,3重新上传
+                switch (cb.getStatus()) {
+                    case 0:
+                        listener.unCheck();
+                        QueryPassData();
+                        break;
+                    case 1:
+                        CloseQueryThread();
+                        listener.CheckOK(cb.getPassword());
+                        break;
+                    case -1:
+                        CloseQueryThread();
+                        listener.Refuse(cb.getFailReasons());
+                        break;
+                    case 2:
+                        QueryPassData();
+                        listener.unCheck();
+                        break;
+                    case 3:
+                        QueryPassData();
+                        listener.unCheck();
+                        break;
                 }
-
                 break;
         }
     }

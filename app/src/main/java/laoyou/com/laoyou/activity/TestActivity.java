@@ -3,22 +3,28 @@ package laoyou.com.laoyou.activity;
 import android.util.Log;
 import android.view.View;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.tencent.qcloud.sdk.Interface;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+
 import java.util.List;
+import java.util.Map;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.httpUtils;
 import laoyou.com.laoyou.view.CustomImageView;
 import laoyou.com.laoyou.view.NineGridlayout;
+import okhttp3.Request;
+
+import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 
 /**
  * Created by lian on 2017/11/4.
  */
-public class TestActivity extends InitActivity implements View.OnClickListener, RecyclerViewOnItemClickListener {
+public class TestActivity extends InitActivity implements View.OnClickListener, RecyclerViewOnItemClickListener, HttpResultListener {
 
     private static final String TAG = "TestActivity";
     private NineGridlayout nine_gd_layout;
@@ -39,31 +45,12 @@ public class TestActivity extends InitActivity implements View.OnClickListener, 
 
     @Override
     protected void initData() {
-        String str = "[[高仿陈晓燕1,,高仿陈晓鸭脖,ud7163f19736d4bee8f907cfa9d2333a6,],[默默,,8325effa72,ua664fd002910441aa098bcaf295622f8,],[默默,,古古怪怪,ua664fd002910441aa098bcaf295622f8,],[默默,,Yun was a really fun day ,ua664fd002910441aa098bcaf295622f8,],[高仿陈晓燕1,,kk,ud7163f19736d4bee8f907cfa9d2333a6,]]";
-//            JSONArray ar = new JSONArray(str);
-//            Log.i(TAG, " ar ===" + ar);
 
-            Gson gson = new Gson();
-            String[][] ss = gson.fromJson(String.valueOf(str.replace(" ", "")), new TypeToken<String[][]>() {
-            }.getType());
-            for (String[] strings : ss) {
-                Log.i(TAG, " strings ===" + strings);
-                for (String string : strings) {
-                    System.out.println(string);
-                    Log.i(TAG, " string ===" + string);
-                }
-            }
 
-        List<String> images = new ArrayList<>();
+        Map<String, String> map = getParamsMap();
+        map.put("showPosition", "0");
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETBANNER);
 
-        images.add(Fields.Catalina);
-        images.add(Fields.Catalina);
-        images.add(Fields.Catalina);
-        images.add(Fields.Catalina);
-        images.add(Fields.Catalina);
-
-        nine_gd_layout.setItemClickListener(this);
-        nine_gd_layout.setImagesData(images);
     }
 
     @Override
@@ -98,6 +85,27 @@ public class TestActivity extends InitActivity implements View.OnClickListener, 
 
     @Override
     public void GoVideoPage(String url, String videoCover) {
+
+    }
+
+    @Override
+    public void onSucceed(String response, int tag) throws JSONException {
+
+
+    }
+
+    @Override
+    public void onError(Request request, Exception e) {
+
+    }
+
+    @Override
+    public void onParseError(Exception e) {
+
+    }
+
+    @Override
+    public void onFailed(String response, int code, int tag) {
 
     }
 }

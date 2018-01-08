@@ -2,13 +2,10 @@ package laoyou.com.laoyou.presenter;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +14,11 @@ import laoyou.com.laoyou.bean.TopicBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.MyNoticeListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
@@ -50,16 +48,10 @@ public class MyNoticePresenter implements HttpResultListener {
         switch (tag) {
             case Fields.REQUEST1:
 
-                JSONArray ar = getJsonAr(response);
-
-                if (ar.length() > 0) {
-                    List<TopicBean> list = new ArrayList<>();
-                    for (int i = 0; i < ar.length(); i++) {
-                        TopicBean tb = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), TopicBean.class);
-                        list.add(tb);
-                    }
-                    listener.onTopicTypeList(list);
-                } else if (!isMore)
+                List<TopicBean> ar = GsonUtil.jsonToList(getJsonSring(response), TopicBean.class);
+                if (ar.size() > 0)
+                    listener.onTopicTypeList(ar);
+                else if (!isMore)
                     listener.onFailedsMsg(gets(R.string.nomore));
                 else
                     listener.onFailedsMsg(gets(R.string.nodata));

@@ -1,10 +1,7 @@
 package laoyou.com.laoyou.presenter;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tencent.TIMAddFriendRequest;
 import com.tencent.TIMDelFriendType;
 import com.tencent.TIMFriendResult;
@@ -15,7 +12,6 @@ import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,21 +25,17 @@ import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HomePageListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
-import laoyou.com.laoyou.save.SPreferences;
-import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
+import static laoyou.com.laoyou.utils.JsonUtils.StatusPaser;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
-import static laoyou.com.laoyou.utils.SynUtils.fileIsExists;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
-import static laoyou.com.laoyou.utils.SynUtils.saveImage;
-import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
 
 /**
  * Created by lian on 2017/12/7.
@@ -177,55 +169,29 @@ public class HomePagePresenter implements HttpResultListener {
     public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-                try {
-                    JSONObject ob = getJsonOb(response);
-                    UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
-                    listener.onShowUserInfo(ub);
-                } catch (JSONException e) {
-                    Log.e(TAG, "Error === " + e);
-                    e.printStackTrace();
-                }
+
+                UserInfoBean ub = GsonUtil.GsonToBean(getJsonSring(response), UserInfoBean.class);
+                listener.onShowUserInfo(ub);
+
                 break;
             case Fields.REQUEST3:
-                try {
 
-                    JSONObject ob = getJsonOb(response);
-                    CheckStatusBean cb = new Gson().fromJson(String.valueOf(ob), CheckStatusBean.class);
-                    listener.onCertificaTion(cb.getStatus());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                CheckStatusBean cb = GsonUtil.GsonToBean(getJsonSring(response), CheckStatusBean.class);
+                listener.onCertificaTion(cb.getStatus());
                 break;
 
             case Fields.REQUEST2:
-
-                try {
-                    listener.onMyHeartValue(getJsonSring(response));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                listener.onMyHeartValue(getJsonSring(response));
                 break;
 
             case Fields.REQUEST4:
-                List<AttentionGameBean> ll = new ArrayList<>();
-                JSONArray ar = getJsonAr(response);
-                for (int i = 0; i < ar.length(); i++) {
-                    AttentionGameBean agb = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), AttentionGameBean.class);
-                    ll.add(agb);
-                }
+                List<AttentionGameBean> ll = GsonUtil.jsonToList(getJsonSring(response), AttentionGameBean.class);
                 listener.onAttentGames(ll);
 
                 break;
 
             case Fields.REQUEST5:
-                JSONArray p = getJsonAr(response);
-                List<PhotoBean> photos = new ArrayList<>();
-                for (int i = 0; i < p.length(); i++) {
-                    PhotoBean pb = new Gson().fromJson(String.valueOf(p.optJSONObject(i)), PhotoBean.class);
-                    photos.add(pb);
-                }
+                List<PhotoBean> photos = GsonUtil.jsonToList(getJsonSring(response), PhotoBean.class);
                 listener.onPhotoList(photos);
                 break;
             case Fields.REQUEST6:
@@ -237,47 +203,7 @@ public class HomePagePresenter implements HttpResultListener {
                     JSONArray status = getJsonAr(response);
                     if (status.length() > 0) {
                         List<TopicTypeBean> Nblist = new ArrayList<>();
-                        for (int i = 0; i < status.length(); i++) {
-                            TopicTypeBean ttb = new Gson().fromJson(String.valueOf(status.getJSONObject(i)), TopicTypeBean.class);
-
-                            if (ttb.getReChatMessages() != null) {
-                                JSONArray tta = new JSONArray(ttb.getReChatMessages().replace(" ", ""));
-                                Gson gson = new Gson();
-                                String[][] ss = gson.fromJson(String.valueOf(tta), new TypeToken<String[][]>() {
-                                }.getType());
-                                List<List<String>> outlist = new ArrayList<>();
-                                for (String[] strings : ss) {
-                                    List<String> inlist = null;
-                                    for (String string : strings) {
-                                        if (inlist == null)
-                                            inlist = new ArrayList<>();
-                                        inlist.add(string);
-                                    }
-                                    outlist.add(inlist);
-                                }
-                                ttb.setComments(outlist);
-                            }
-                            if (ttb.getVideos() != null) {
-                                if (fileIsExists(ttb.getVideos()))
-                                    ttb.setVideoCover(saveImage(null, ttb.getVideos()));
-                                else {
-                                    Bitmap bitmap = createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
-                                    ttb.setVideoCover(saveImage(bitmap, ttb.getVideos()));
-                                }
-                            }
-
-                            if (ttb.getImgs() != null) {
-                                String b[] = ttb.getImgs().split("[,]");
-                                if (b != null && b.length > 0) {
-                                    List<String> list = new ArrayList<>();
-                                    for (String str : b) {
-                                        list.add(str);
-                                    }
-                                    ttb.setPhotos(list);
-                                }
-                            }
-                            Nblist.add(ttb);
-                        }
+                        StatusPaser(status, Nblist);
                         listener.onStatusInfo(Nblist);
                     } else
                         listener.onBottom();

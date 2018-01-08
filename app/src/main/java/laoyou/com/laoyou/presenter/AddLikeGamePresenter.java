@@ -2,10 +2,8 @@ package laoyou.com.laoyou.presenter;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
@@ -17,11 +15,11 @@ import laoyou.com.laoyou.bean.GameBean;
 import laoyou.com.laoyou.listener.AddLikeGameListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -51,20 +49,8 @@ public class AddLikeGamePresenter implements HttpResultListener {
     public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-
-                try {
-                    JSONArray p = getJsonAr(response);
-                    List<GameBean> games = new ArrayList<>();
-                    for (int i = 0; i < p.length(); i++) {
-                        GameBean pb = new Gson().fromJson(String.valueOf(p.optJSONObject(i)), GameBean.class);
-                        games.add(pb);
-                    }
-                    listener.onGamesInfo(games);
-                } catch (JSONException e) {
-                    Log.e(TAG, "Error === " + e);
-                    e.printStackTrace();
-                }
-
+                List<GameBean> games = GsonUtil.jsonToList(getJsonSring(response), GameBean.class);
+                listener.onGamesInfo(games);
                 break;
             case Fields.REQUEST2:
                 int f = Integer.parseInt(getJsonSring(response));
@@ -72,7 +58,6 @@ public class AddLikeGamePresenter implements HttpResultListener {
                     listener.onAddLikeGames();
                 else
                     listener.onFailedMsg(gets(R.string.already_game));
-
                 break;
         }
         Cancle();

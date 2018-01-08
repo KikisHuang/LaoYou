@@ -22,6 +22,7 @@ import laoyou.com.laoyou.bean.TopicBean;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.listener.TopicCircleListener;
 import laoyou.com.laoyou.presenter.TopicCirclePresenter;
+import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
@@ -209,6 +210,11 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
                     List<LocalMedia> video = PictureSelector.obtainMultipleResult(data);
                     goReleaseTopicPage(this, null, video);
 
+                    break;
+                case Fields.ACRESULET5:
+                    IsRefresh = true;
+                    tp.page = 0;
+                    tp.getTopicDataList(true);
                     break;
             }
         }

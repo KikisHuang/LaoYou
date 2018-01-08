@@ -9,11 +9,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.FlashTypeIconBean;
 import laoyou.com.laoyou.listener.FlashChatGambitListener;
+import laoyou.com.laoyou.utils.GlideUtils;
 
 
 /**
@@ -21,9 +25,10 @@ import laoyou.com.laoyou.listener.FlashChatGambitListener;
  */
 public class FlashChatGambitAdapter extends RecyclerView.Adapter<FlashChatGambitAdapter.ViewHolder> {
     private static final String TAG = "FlashChatGambitAdapter";
-    private List<String> list;
+    private List<FlashTypeIconBean> list;
     private Context context;
     private FlashChatGambitListener listener;
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, anda
     // you provide access to all the views for a data item in a view holder
@@ -32,6 +37,7 @@ public class FlashChatGambitAdapter extends RecyclerView.Adapter<FlashChatGambit
         private TextView name_tv;
         private CircleImageView gambit_img;
         private LinearLayout gambit_layout;
+
         private ViewHolder(View v) {
             super(v);
             name_tv = (TextView) v.findViewById(R.id.name_tv);
@@ -42,7 +48,7 @@ public class FlashChatGambitAdapter extends RecyclerView.Adapter<FlashChatGambit
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public FlashChatGambitAdapter(Context context, List<String> list, FlashChatGambitListener listener) {
+    public FlashChatGambitAdapter(Context context, List<FlashTypeIconBean> list, FlashChatGambitListener listener) {
         this.context = context.getApplicationContext();
         this.list = list;
         this.listener = listener;
@@ -65,7 +71,10 @@ public class FlashChatGambitAdapter extends RecyclerView.Adapter<FlashChatGambit
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        holder.name_tv.setText(list.get(position));
+        holder.name_tv.setText(list.get(position).getTitle());
+
+        Glide.with(context).load(list.get(position).getUrl()).apply(GlideUtils.getGlideOptions()).into(holder.gambit_img);
+
         holder.gambit_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

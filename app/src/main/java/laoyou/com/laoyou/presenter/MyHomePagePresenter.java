@@ -3,15 +3,11 @@ package laoyou.com.laoyou.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +18,7 @@ import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.MyHomePageListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 import top.zibin.luban.OnCompressListener;
@@ -29,8 +26,7 @@ import top.zibin.luban.OnCompressListener;
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.utils.ComPressUtils.Compress;
 import static laoyou.com.laoyou.utils.JsonUtils.getFileMap;
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -122,59 +118,27 @@ public class MyHomePagePresenter implements HttpResultListener, OnCompressListen
     public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-                try {
-                    JSONObject ob = getJsonOb(response);
-                    UserInfoBean ub = new Gson().fromJson(String.valueOf(ob), UserInfoBean.class);
-                    listener.onShowUserInfo(ub);
-                } catch (JSONException e) {
-                    Log.e(TAG, "Error === " + e);
-                    e.printStackTrace();
-                }
+                UserInfoBean ub = GsonUtil.GsonToBean(getJsonSring(response), UserInfoBean.class);
+                listener.onShowUserInfo(ub);
                 break;
             case Fields.REQUEST3:
-                try {
-
-                    JSONObject ob = getJsonOb(response);
-                    CheckStatusBean cb = new Gson().fromJson(String.valueOf(ob), CheckStatusBean.class);
-                    listener.onCertificaTion(cb.getStatus());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                CheckStatusBean cb = GsonUtil.GsonToBean(getJsonSring(response), CheckStatusBean.class);
+                listener.onCertificaTion(cb.getStatus());
                 break;
             case Fields.REQUEST2:
-                try {
-                    List<ProvinceBean> list = new ArrayList<>();
-                    JSONArray ar = getJsonAr(response);
-                    for (int i = 0; i < ar.length(); i++) {
-                        ProvinceBean pb = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), ProvinceBean.class);
-                        list.add(pb);
-                    }
-                    listener.onProvinceInfo(list);
-                    /**
-                     * 获取市级数据;
-                     */
-                    Map<String, String> ms = getParamsMap();
-                    httpUtils.OkHttpsGet(ms, this, Fields.REQUEST4, Interface.URL + Interface.GETCITYBYPAGE);
-                } catch (Exception e) {
-                    Log.e(TAG, "Error ===" + e);
-                    e.printStackTrace();
-                }
+
+                List<ProvinceBean> list = GsonUtil.jsonToList(getJsonSring(response), ProvinceBean.class);
+                listener.onProvinceInfo(list);
+                /**
+                 * 获取市级数据;
+                 */
+                Map<String, String> ms = getParamsMap();
+                httpUtils.OkHttpsGet(ms, this, Fields.REQUEST4, Interface.URL + Interface.GETCITYBYPAGE);
 
                 break;
             case Fields.REQUEST4:
-                try {
-                    List<ProvinceBean> list = new ArrayList<>();
-                    JSONArray ar = getJsonAr(response);
-                    for (int i = 0; i < ar.length(); i++) {
-                        ProvinceBean pb = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), ProvinceBean.class);
-                        list.add(pb);
-                    }
-                    listener.onCityInfo(list);
-                } catch (Exception e) {
-                    Log.e(TAG, "Error ===" + e);
-                    e.printStackTrace();
-                }
+                List<ProvinceBean> lis = GsonUtil.jsonToList(getJsonSring(response), ProvinceBean.class);
+                listener.onCityInfo(lis);
                 break;
             case Fields.REQUEST5:
                 listener.onSucceed();

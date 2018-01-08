@@ -2,14 +2,10 @@ package laoyou.com.laoyou.presenter;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.tencent.qcloud.sdk.Interface;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +14,11 @@ import laoyou.com.laoyou.bean.LikeListBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.ParticipationListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
@@ -42,35 +39,19 @@ public class ParticipationPresenter implements HttpResultListener {
     public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST2:
-                JSONArray ar = getJsonAr(response);
-                if (ar.length() > 0) {
-                    List<LikeListBean> li = new ArrayList<>();
 
-                    for (int i = 0; i < ar.length(); i++) {
-                        LikeListBean like = new Gson().fromJson(String.valueOf(ar.optJSONObject(i)), LikeListBean.class);
-                        li.add(like);
-                    }
-                    listener.LikeListData(li);
-                } else
+                List<LikeListBean> ar = GsonUtil.jsonToList(getJsonSring(response), LikeListBean.class);
+                if (ar.size() > 0)
+                    listener.LikeListData(ar);
+                else
                     listener.NoData();
-
-
                 break;
 
             case Fields.REQUEST1:
-                JSONArray a = getJsonAr(response);
-                if (a.length() > 0) {
-                    List<LikeListBean> list = new ArrayList<>();
-                    for (int i = 0; i < a.length(); i++) {
-                        LikeListBean like = new LikeListBean();
-                        JSONObject ob = a.getJSONObject(i);
-                        like.setId(ob.optString("userId"));
-                        like.setName(ob.optString("userName"));
-                        like.setHeadImgUrl(ob.optString("headImgUrl"));
-                        list.add(like);
-                    }
-                    listener.LikeListData(list);
-                } else
+                List<LikeListBean> a = GsonUtil.jsonToList(getJsonSring(response), LikeListBean.class);
+                if (a.size() > 0)
+                    listener.LikeListData(a);
+                else
                     listener.NoData();
                 break;
         }
