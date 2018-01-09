@@ -61,14 +61,17 @@ public class FlashChatGambitActivity extends InitActivity implements FlashChatGa
 
     @Override
     public void onItemClick(int position) {
-        goFlashChatMemberPage(this, GroupName, GroupInfo, "");
+        if (list.size() > 0)
+            goFlashChatMemberPage(this, GroupName, GroupInfo, list.get(position).getUrl());
     }
 
     @Override
     public void onIconInfo(List<FlashTypeIconBean> ar) {
-        /*for (FlashTypeIconBean ftib : ar) {
-
-        }*/
+        list.clear();
+        for (FlashTypeIconBean ftib : ar) {
+            list.add(ftib);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override

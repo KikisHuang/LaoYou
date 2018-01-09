@@ -41,13 +41,17 @@ import laoyou.com.laoyou.fragment.MyFragment;
 import laoyou.com.laoyou.listener.MainListener;
 import laoyou.com.laoyou.presenter.MainPresenter;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.services.JobSchedulerManager;
 import laoyou.com.laoyou.tencent.ui.ConversationFragment;
 import laoyou.com.laoyou.tencent.utils.PushUtil;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
 import static laoyou.com.laoyou.fragment.MyFragment.SettingInstance;
+import static laoyou.com.laoyou.save.SPreferences.getSkipFlag;
+import static laoyou.com.laoyou.save.SPreferences.saveSkipFlag;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginOperPage;
 import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
@@ -74,6 +78,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public AMapLocationClientOption mLocationOption = null;
     private static MainActivity activity;
 
+    // JobService，执行系统任务
+    private JobSchedulerManager mJobManager;
+
     @Override
     protected void click() {
         home_ll.setOnClickListener(this);
@@ -92,6 +99,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void init() {
         clearNotification();
         setContentView(R.layout.activity_main);
+        ActivityCollector.addActivity(this, getClass());
         mp = new MainPresenter(this);
         activity = this;
         home_ll = f(R.id.home_ll);
@@ -110,8 +118,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         my_tv = f(R.id.my_tv);
         my_img = f(R.id.my_img);
         mp.Presenter();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // 2. 启动系统任务
+            mJobManager = JobSchedulerManager.getJobSchedulerInstance(this);
+            mJobManager.startJobScheduler();
+        }
+
         if (SPreferences.getUserSig() != null && !SPreferences.getUserSig().isEmpty())
             IMInit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 
     public void IMInit() {
@@ -132,14 +152,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     @Override
                     public void onClick(View v) {
 
-                        LogOut(MainActivity.this);
+                        LogOut(MainActivity.this, true);
                         if (MainInstance() != null)
                             MainInstance().onInitFragment();
                     }
                 }).setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LogOut(MainActivity.this);
+                        LogOut(MainActivity.this, true);
                         if (MainInstance() != null)
                             MainInstance().onInitFragment();
                     }
@@ -152,7 +172,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 new NotifyDialog().show(getString(R.string.tls_expire), getSupportFragmentManager(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        LogOut(MainActivity.this);
+                        LogOut(MainActivity.this, true);
                     }
                 });
             }
@@ -396,6 +416,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (getSkipFlag() == 2) {
+            ft = fm.beginTransaction();
+            setSelected(msg_ll);
+            Msg();
+            saveSkipFlag(1);
+        }
+    }
+
+    @Override
     public void onInitFragment() {
         ft = fm.beginTransaction();
         setSelected(home_ll);
@@ -460,7 +491,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         Log.e(TAG, "login error : code " + i + " " + s);
         switch (i) {
             case 6208:
-            //离线状态下被其他终端踢下线
+                //离线状态下被其他终端踢下线
              /*   NotifyDialog dialog = new NotifyDialog();
                 dialog.show(getString(R.string.kick_logout), getSupportFragmentManager(), new DialogInterface.OnClickListener() {
                     @Override

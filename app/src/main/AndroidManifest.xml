@@ -53,6 +53,7 @@
         android:theme="@style/BaseTheme">
         <activity
             android:name=".activity.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -168,16 +169,13 @@
         <!-- 游戏资讯页面 -->
         <activity
             android:name=".activity.GameInformationActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        
+            android:screenOrientation="portrait"></activity>
+
         <!-- 游戏资讯详情HTML页面 -->
         <activity
             android:name=".activity.GameInfoDetailsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            >
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
 
         <!-- 短视频播放页面 -->
         <activity
@@ -284,24 +282,24 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- QQ QQ空间-->
-       <!-- <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+        <!-- <activity
+             android:name="com.tencent.tauth.AuthActivity"
+             android:launchMode="singleTask"
+             android:noHistory="true">
+             <intent-filter>
+                 <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                 <category android:name="android.intent.category.DEFAULT" />
+                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="tencent101408068" />
-            </intent-filter>
-        </activity>
+                 <data android:scheme="tencent101408068" />
+             </intent-filter>
+         </activity>
 
-        <activity
-            android:name="com.tencent.connect.common.AssistActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
+         <activity
+             android:name="com.tencent.connect.common.AssistActivity"
+             android:screenOrientation="portrait"
+             android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
         <activity
             android:name="com.umeng.qq.tencent.AuthActivity"
             android:launchMode="singleTask"
@@ -416,5 +414,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <!-- 进程守护-->
+        <service
+            android:name=".services.AliveJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 </manifest>

@@ -944,9 +944,10 @@ public class SynUtils {
      * 登出通用方法;
      *
      * @param context
+     * @param relogin
      * @return
      */
-    public static void LogOut(Context context) {
+    public static void LogOut(Context context, boolean relogin) {
         SPreferences.saveUserToken("");
         SPreferences.saveIdentifier("");
         SPreferences.saveUserSig("");
@@ -957,8 +958,10 @@ public class SynUtils {
         MessageEvent.getInstance().clear();
         FriendshipInfo.getInstance().clear();
         GroupInfo.getInstance().clear();
-        Intent intent = new Intent(context, LoginOperationActivity.class);
-        context.startActivity(intent);
+        if (relogin) {
+            Intent intent = new Intent(context, LoginOperationActivity.class);
+            context.startActivity(intent);
+        }
     }
 
     /**

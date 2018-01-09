@@ -92,7 +92,7 @@ public class SettingActivity extends InitActivity implements View.OnClickListene
 
                         Cancle();
                         Toast.makeText(SettingActivity.this, getResources().getString(R.string.setting_logout_succeed), Toast.LENGTH_SHORT).show();
-                        LogOut(SettingActivity.this);
+                        LogOut(SettingActivity.this, true);
                         if (MainInstance() != null)
                             MainInstance().onInitFragment();
 

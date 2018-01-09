@@ -10,9 +10,11 @@ public class Fields {
 
 
     public static String KEY = "key";
+    public static final boolean DEBUG = false;
 
     public static final String WECHATAPPID = "wx16258856fb255f4b";
     public static final String WECHATAPPSECRET = "b92df5eccddc26af53b6e02cc692087b";
+    public static final String PACKAGE_NAME = "laoyou.com.laoyou";
 
     public static final String QQAPPID = "101455644";
     public static final String QQAPPSECRET = "b94e759ecd0abfb670bf3a0dcae07922";
@@ -20,6 +22,7 @@ public class Fields {
     public static final String VIDEOTYPE = "video/mp4";
     public static final String IMAGETYPE = "image/jpeg";
 
+    public static final int C2CCHAT = 2821;
 
     public static final int REQUEST1 = 348851;
     public static final int REQUEST2 = 348852;
@@ -56,9 +59,9 @@ public class Fields {
      * 全局广告触摸时间变量;
      */
     public static long TouchTime = 0;
-    public static  final int ISFIND = 32;
-    public static  final int ISGAME = 33;
-    public static  final int ISTOPIC = 34;
+    public static final int ISFIND = 32;
+    public static final int ISGAME = 33;
+    public static final int ISTOPIC = 34;
     public static boolean CHECKFLAG = true;
     public static String[] ADMINISTRATIVEAREA = {"香港", "澳门", "台湾"};
 

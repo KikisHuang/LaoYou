@@ -51,7 +51,7 @@ public class OutSideActivity extends InitActivity implements OutSideListener {
         try {
 //            Show(this, "加载中", true, null);
             op.Presetner(webView, url);
-            synCookies(this, url);
+//            synCookies(this, url);
         } catch (Exception e) {
             ToastUtil.toast2_bottom(OutSideActivity.this, "非常抱歉,该页面发生了异常!");
             Cancle();

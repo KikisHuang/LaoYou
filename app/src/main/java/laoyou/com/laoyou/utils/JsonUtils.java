@@ -119,6 +119,14 @@ public class JsonUtils {
         return code;
     }
 
+    /**
+     * 动态接口通用解析;
+     *
+     * @param ar
+     * @param nblist
+     * @return
+     * @throws JSONException
+     */
     public static List<TopicTypeBean> StatusPaser(JSONArray ar, List<TopicTypeBean> nblist) throws JSONException {
 
         if (ar.length() > 0) {

@@ -59,9 +59,12 @@ public class SPreferences {
      * 临时存储聊天对象头像(仅用于单聊);
      */
     private static final String TEMPORARY_USER_HEAD = "Temporary_User_Head";
+    /**
+     * 临时存储聊天对象头像(仅用于单聊);
+     */
+    private static final String SKIP_FLAG = "Skip_Flag";
 
     /**
-     * /**
      * 保存登录Token;
      */
     public static void saveUserToken(String token) {
@@ -73,6 +76,20 @@ public class SPreferences {
      */
     public static String getUserToken() {
         return getString(KEY_USER_TOKEN);
+    }
+
+    /**
+     * 保存MainActivity 页面切换标识符;
+     */
+    public static void saveSkipFlag(int token) {
+        saveInteger(SKIP_FLAG, token);
+    }
+
+    /**
+     * 获取MainActivity 页面切换标识符;
+     */
+    public static int getSkipFlag() {
+        return getInteger(SKIP_FLAG);
     }
 
     /**
@@ -88,6 +105,7 @@ public class SPreferences {
     public static String getUserId() {
         return getString(USER_ID);
     }
+
     /**
      * 保存用户昵称;
      */
@@ -226,6 +244,16 @@ public class SPreferences {
     }
 
     /**
+     * 读取int方法;
+     *
+     * @param key
+     * @return boolean
+     */
+    private static int getInteger(String key) {
+        return getSharedPreferences().getInt(key, 1);
+    }
+
+    /**
      * 读取boolean方法;
      *
      * @param key
@@ -270,6 +298,18 @@ public class SPreferences {
     private static void saveString(String key, String value) {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString(key, value);
+        editor.commit();
+    }
+
+    /**
+     * 保存int方法;
+     *
+     * @param key
+     * @param value
+     */
+    private static void saveInteger(String key, int value) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.putInt(key, value);
         editor.commit();
     }
 

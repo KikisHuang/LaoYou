@@ -53,7 +53,7 @@ public abstract class Message {
         if (message.isSelf()) {
             viewHolder.leftPanel.setVisibility(View.GONE);
             viewHolder.rightPanel.setVisibility(View.VISIBLE);
-                return viewHolder.rightMessage;
+            return viewHolder.rightMessage;
         } else {
             viewHolder.leftPanel.setVisibility(View.VISIBLE);
             viewHolder.rightPanel.setVisibility(View.GONE);
@@ -167,6 +167,8 @@ public abstract class Message {
      * 获取发送者
      */
     public String getSender() {
+        if (message.getSenderProfile().getNickName() != null)
+            return message.getSenderProfile().getNickName();
         if (message.getSender() == null) return "";
         return message.getSender();
     }

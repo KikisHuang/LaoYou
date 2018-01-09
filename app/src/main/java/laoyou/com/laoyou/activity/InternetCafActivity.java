@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -43,6 +44,7 @@ import laoyou.com.laoyou.view.RoundAngleImageView;
 
 import static laoyou.com.laoyou.utils.ClickUtils.isFastDoubleClick;
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLocationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
 import static laoyou.com.laoyou.utils.SynUtils.StringIsNull;
@@ -55,7 +57,7 @@ import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
 /**
  * Created by lian on 2017/12/12.
  */
-public class InternetCafActivity extends InitActivity implements AbsListView.OnScrollListener, SpringListener, KeyboardChangeListener.KeyBoardListener, InternetCapListener, View.OnClickListener {
+public class InternetCafActivity extends InitActivity implements AbsListView.OnScrollListener, AdapterView.OnItemClickListener, SpringListener, KeyboardChangeListener.KeyBoardListener, InternetCapListener, View.OnClickListener {
 
     private static final String TAG = "InternetCafActivity";
 
@@ -73,7 +75,6 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     private int imageHeight;
     private InternetCafAdapter adapter;
 
-
     private TextView cpu, card, mouse, key, play;
 
     private InternetCafPresenter ip;
@@ -88,10 +89,12 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     private EditText comment_ed;
     private TextView send_comment_tv;
     private SpringView springView;
+    private List<CafCommentBean> list;
 
     @Override
     protected void click() {
         listView.setOnScrollListener(this);
+        listView.setOnItemClickListener(this);
         comment_fragment_layout.setOnClickListener(this);
         call_fragment_layout.setOnClickListener(this);
         loacation_fragment_layout.setOnClickListener(this);
@@ -119,9 +122,10 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
 
         comment_ed = f(R.id.comment_ed);
         send_comment_tv = f(R.id.send_comment_tv);
-
+        list = new ArrayList<>();
         head_layout = LayoutInflater.from(this).inflate(R.layout.internet_cat_head_layout, null);
         ip = new InternetCafPresenter(this, caf_id);
+
         config_top_layout = (LinearLayout) head_layout.findViewById(R.id.config_top_layout);
         config_mid_layout = (LinearLayout) head_layout.findViewById(R.id.config_mid_layout);
         config_bottom_layout = (LinearLayout) head_layout.findViewById(R.id.config_bottom_layout);
@@ -137,6 +141,11 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         back_img = f(R.id.back_img);
         title_layout = f(R.id.title_layout);
         listView.addHeaderView(head_layout);
+
+
+        adapter = new InternetCafAdapter(this, list);
+        listView.setAdapter(adapter);
+
         grade_tv.setTypeface(getTypeface(this));
         caf_price_tv.setTypeface(getTypeface(this));
     }
@@ -259,10 +268,13 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
 
     @Override
     public void onInternetCafComment(List<CafCommentBean> l) {
-        if (adapter == null) {
-            adapter = new InternetCafAdapter(this, l);
-            listView.setAdapter(adapter);
-        } else
+        if (ip.isRefresh)
+            list.clear();
+
+        for (CafCommentBean cfb : l) {
+            list.add(cfb);
+        }
+        if (adapter != null)
             adapter.notifyDataSetChanged();
     }
 
@@ -394,5 +406,11 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     @Override
     public void IsonLoadmore(int move) {
         ip.getCatComment(false);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position != 0)
+            goHomePage(this, list.get(position).getId(), false);
     }
 }

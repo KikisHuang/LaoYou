@@ -51,11 +51,11 @@ public class FlashChatPresenter implements HttpResultListener {
     }
 
     @Override
-    public void onSucceed(String response, int tag) {
+    public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
+
                 List<GroupBean> list = new ArrayList<>();
-                try {
                     JSONObject ar = getJsonOb(response);
                     if (ar.length() > 0) {
                         GroupBean gb = new Gson().fromJson(String.valueOf(ar), GroupBean.class);
@@ -65,11 +65,6 @@ public class FlashChatPresenter implements HttpResultListener {
                     } else if (!refresh) {
                         listener.onFailedMsg(gets(R.string.The_bottom));
                     }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
                 break;
         }

@@ -6,8 +6,14 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.liaoinstan.springview.widget.SpringView;
+import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
 import java.util.List;
 
@@ -46,6 +52,10 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
     private LinearLayoutManager mLayoutManager;
     private String id;
     private boolean Refresh;
+    private int LSize = 0;
+    private LinearLayout foot_layout;
+    private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
+    private TextView foot_tv;
 
     public static TopicTypeDetailsFragment setTag(int tag, String id) {
         TopicTypeDetailsFragment f = new TopicTypeDetailsFragment();
@@ -69,7 +79,7 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && LSize >= 10) {
                     int firstVisiblePosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
                     if (firstVisiblePosition == 0)
                         getTopicTypeInstance().getAppBar().setExpanded(true, true);
@@ -79,7 +89,8 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
                     else
                         springView.setEnable(false);
 
-                }
+                } else
+                    springView.setEnable(false);
 
             }
         });
@@ -105,6 +116,12 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         springView = f(R.id.springView);
+        foot_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.foot_include, null);
+        LinearLayout.LayoutParams lps = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        foot_layout.setLayoutParams(lps);
+        foot_tv = (TextView) foot_layout.findViewById(R.id.foot_tv);
+        foot_tv.setVisibility(View.INVISIBLE);
+
         SpringUtils.SpringViewInit(springView, getActivity(), this);
         tp = new TopicTypeDetailsPresenter(this);
     }
@@ -169,12 +186,23 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
 
     @Override
     public void onShowDetailsInfo(List<TopicTypeBean> s) {
+        LSize = s.size();
+        if (s.size() < 10) {
+            springView.setEnable(false);
+            foot_tv.setVisibility(View.VISIBLE);
+        } else {
+            springView.setEnable(true);
+            foot_tv.setVisibility(View.INVISIBLE);
+        }
 
         if (adapter == null) {
             adapter = new TopicTypeDetailsAdapter(getActivity(), s, this);
-            recyclerView.setAdapter(adapter);
+            mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(adapter);
+
+            mHeaderAndFooterWrapper.addFootView(foot_layout);
+            recyclerView.setAdapter(mHeaderAndFooterWrapper);
         } else
-            adapter.notifyDataSetChanged();
+            mHeaderAndFooterWrapper.notifyDataSetChanged();
     }
 
     @Override
@@ -222,7 +250,7 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
 
     @Override
     public void GoPageHome(String userId) {
-        goHomePage(getActivity(), userId,false);
+        goHomePage(getActivity(), userId, false);
     }
 
     @Override

@@ -287,7 +287,6 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     @Override
     public void onThemeDetails(final TopicCommentBean tcb) {
 
-
         Glide.with(this).load(tcb.getMcUser().getHeadImgUrl()).apply(getGlideOptions()).into(user_head_img);
         user_name.setText(tcb.getMcUser().getName());
         type_name.setText(tcb.getMcChatType().getName());

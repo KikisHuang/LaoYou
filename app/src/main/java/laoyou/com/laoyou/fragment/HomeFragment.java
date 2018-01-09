@@ -64,7 +64,6 @@ import static laoyou.com.laoyou.utils.IntentUtils.goQueryPassPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goTopicCirclePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goTopicCommentDetailsPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goVideoPlayerPage;
-import static laoyou.com.laoyou.utils.SynUtils.Indevelopment;
 import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
 
@@ -173,12 +172,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         page_layout = f(R.id.page_layout);
         flash_title_layout = f(R.id.flash_title_layout);
         dynamic_scroll = f(R.id.dynamic_scroll);
-        recom_layout = f(R.id.recom_layout);
 
         banner_layout = f(R.id.banner_layout);
         foot_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.home_fragment_foot_include, null);
         foot_layout.setVisibility(View.INVISIBLE);
         recom_nick_name = (TextView) foot_layout.findViewById(R.id.recom_nick_name);
+        recom_layout = (LinearLayout) foot_layout.findViewById(R.id.recom_layout);
         foot_recom_layout = (LinearLayout) foot_layout.findViewById(R.id.Foot_recom_layout);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DeviceUtils.getWindowWidth(getActivity()) * 2 / 5);
@@ -338,7 +337,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         goOutSidePage(getActivity(), pb.getHttpUrl());
                     break;
                 case R.id.dynamic_layout:
-                    Indevelopment(getActivity());
+                    goFlashChatPage(getActivity());
+//                    Indevelopment(getActivity());
                     break;
                 case R.id.query_pass_layout:
                     goQueryPassPage(getActivity());
@@ -361,7 +361,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     goTopicCirclePage(getActivity());
                     break;
                 case R.id.flash_more_tv:
-
+                    goFlashChatPage(getActivity());
                     break;
             }
         } else {
@@ -401,7 +401,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
      */
     @Override
     public void onLogout() {
-        LogOut(getActivity());
+        LogOut(getActivity(), true);
         ToastUtil.toast2_bottom(getActivity(), "已退出登录");
         hp.Presenter();
     }
@@ -582,12 +582,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 ImageView addicon = (ImageView) headLayout.findViewById(R.id.add_img);
                 addicon.setVisibility(View.VISIBLE);
                 if (LoginStatusQuery()) {
-                headLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        goHomePage(getActivity(), abb.getId(), false);
-                    }
-                });
+                    headLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            goHomePage(getActivity(), abb.getId(), false);
+                        }
+                    });
                 } else {
                     ToastUtil.toast2_bottom(getActivity(), "请先登录！");
                     goLoginOperPage(getActivity());

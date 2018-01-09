@@ -23,6 +23,7 @@ import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
+import static laoyou.com.laoyou.utils.IntentUtils.goTopicCommentDetailsPage;
 import static laoyou.com.laoyou.utils.SynUtils.getTAG;
 
 /**
@@ -97,7 +98,7 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
         commentList = new ArrayList<>();
         switch (flag) {
             case 0:
-                cadapter = new MyCommentAdapter(getActivity(), commentList, tag);
+                cadapter = new MyCommentAdapter(getActivity(), commentList, tag, this);
                 listView.setAdapter(cadapter);
                 break;
             case 1:
@@ -173,10 +174,15 @@ public class CommentFragment extends BaseFragment implements SpringListener, Hea
     }
 
     @Override
+    public void GoHomePage(String userId) {
+        goHomePage(getActivity(), userId, false);
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (flag == 0){}
-//            goTopicCommentDetailsPage(getActivity(), commentList.get(position).getId(), commentList.get(position).getUserId(), "", "");
-        else
-            goHomePage(getActivity(), heartsList.get(position).getId(),false);
+        if (flag == 0) {
+            goTopicCommentDetailsPage(getActivity(), commentList.get(position).getChatThemeId(), commentList.get(position).getUserId(), "", "");
+        } else
+            goHomePage(getActivity(), heartsList.get(position).getId(), false);
     }
 }

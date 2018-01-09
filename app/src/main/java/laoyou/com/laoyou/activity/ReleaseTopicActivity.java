@@ -108,7 +108,12 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
                 Glide.with(this).load(videoselectList.get(0).getPath()).apply(getGlideOptions()).into(video_img);
             }
         }
-
+        if (getIntent().getStringArrayListExtra("Release_type") != null) {
+            issue_layout.setVisibility(View.VISIBLE);
+            topicType = getIntent().getStringArrayListExtra("Release_type").get(0);
+            topic_name.setText(getIntent().getStringArrayListExtra("Release_type").get(1));
+        }
+        
         adapter = new PhotoGridAdapter(this, selectList, this);
         photo_gridView.setAdapter(adapter);
     }

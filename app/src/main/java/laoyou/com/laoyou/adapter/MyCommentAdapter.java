@@ -15,6 +15,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.CommentBean;
+import laoyou.com.laoyou.listener.HeartValueAndCommentListener;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
 import static laoyou.com.laoyou.utils.DateUtils.getMyDate;
@@ -27,11 +28,13 @@ public class MyCommentAdapter extends BaseAdapter {
     private List<CommentBean> list = null;
     private Context mContext;
     private int tag;
+    private HeartValueAndCommentListener listener;
 
-    public MyCommentAdapter(Context mContext, List<CommentBean> list, int tag) {
+    public MyCommentAdapter(Context mContext, List<CommentBean> list, int tag, HeartValueAndCommentListener listener) {
         this.mContext = mContext.getApplicationContext();
         this.list = list;
         this.tag = tag;
+        this.listener = listener;
     }
 
     public int getCount() {
@@ -62,6 +65,13 @@ public class MyCommentAdapter extends BaseAdapter {
 
 
         Glide.with(mContext).load(list.get(position).getUserImg()).apply(getGlideOptions()).into(head_img);
+        Glide.with(mContext).load(list.get(position).getHasImg()).apply(getGlideOptions()).into(preview_img);
+        head_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.GoHomePage(list.get(position).getUserId());
+            }
+        });
         nickname_tv.setText(list.get(position).getUserName());
         content_tv.setText(list.get(position).getMessageContent());
         time_tv.setText(getMyDate(list.get(position).getCreateTime()));
@@ -71,7 +81,7 @@ public class MyCommentAdapter extends BaseAdapter {
         reply_to_tv.setVisibility(tag == 1 ? View.GONE : View.VISIBLE);
         if (list.get(position).getReUser() != null && !list.get(position).getReUser().isEmpty()) {
             reply_layout.setVisibility(View.VISIBLE);
-            reply_name_tv.setText(list.get(position).getReUser()+"：");
+            reply_name_tv.setText(list.get(position).getReUser() + "：");
             reply_content_tv.setText(list.get(position).getReMessage());
         } else
             reply_layout.setVisibility(View.GONE);

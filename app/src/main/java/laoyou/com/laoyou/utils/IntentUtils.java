@@ -155,12 +155,14 @@ public class IntentUtils {
      * 发布话题圈动态页面;
      *
      * @param context 上下文;
+     * @param str
      */
-    public static void goReleaseTopicPage(Context context, List<LocalMedia> photo, List<LocalMedia> video) {
+    public static void goReleaseTopicPage(Context context, List<LocalMedia> photo, List<LocalMedia> video, List<String> str) {
 
         Intent intent = new Intent(context, ReleaseTopicActivity.class);
         intent.putParcelableArrayListExtra("Release_photo", (ArrayList<? extends Parcelable>) photo);
         intent.putParcelableArrayListExtra("Release_video", (ArrayList<? extends Parcelable>) video);
+        intent.putStringArrayListExtra("Release_type", (ArrayList<String>) str);
 //        startPage(context, intent);
         ((Activity) context).startActivityForResult(intent, Fields.ACRESULET5);
     }

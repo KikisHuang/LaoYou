@@ -143,7 +143,7 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.issue_img:
-                goReleaseTopicPage(this, null, null);
+                goReleaseTopicPage(this, null, null, null);
                 break;
             case R.id.photo_img:
                 PhotoSelect();
@@ -203,12 +203,12 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
                 case PictureConfig.CHOOSE_REQUEST:
                     // 图片选择结果回调
                     List<LocalMedia> photo = PictureSelector.obtainMultipleResult(data);
-                    goReleaseTopicPage(this, photo, null);
+                    goReleaseTopicPage(this, photo, null, null);
                     break;
 
                 case PictureConfig.REQUEST_CAMERA:
                     List<LocalMedia> video = PictureSelector.obtainMultipleResult(data);
-                    goReleaseTopicPage(this, null, video);
+                    goReleaseTopicPage(this, null, video, null);
 
                     break;
                 case Fields.ACRESULET5:

@@ -17,4 +17,6 @@ public interface HeartValueAndCommentListener {
     void onHeartData(List<HeartBean> hb);
 
     void onCommentData(List<CommentBean> comments);
+
+    void GoHomePage(String userId);
 }

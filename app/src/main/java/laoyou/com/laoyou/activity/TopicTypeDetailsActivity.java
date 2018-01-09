@@ -35,6 +35,7 @@ import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goParticipationPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goReleaseTopicPage;
 import static laoyou.com.laoyou.utils.SynUtils.KswitchWay;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
@@ -59,7 +60,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
     private int followCount;
     private int chatThemeCount;
     private TextView title_tv, status_tv;
-    private ImageView background_img;
+    private ImageView background_img, issue_img;
     private String imgurl;
     private static TopicTypeDetailsActivity activity;
     private boolean NoBackGroup = false;
@@ -77,6 +78,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
     @Override
     protected void click() {
         attention_tv.setOnClickListener(this);
+        issue_img.setOnClickListener(this);
     }
 
     @Override
@@ -93,6 +95,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
         mTab = f(R.id.tab_layout);
         title_tv = f(R.id.title_tv);
         back_img = f(R.id.back_img);
+        issue_img = f(R.id.issue_img);
 
         status_tv = f(R.id.status_tv);
         background_img = f(R.id.background_img);
@@ -214,7 +217,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
                 im.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        goParticipationPage(TopicTypeDetailsActivity.this, 1,id);
+                        goParticipationPage(TopicTypeDetailsActivity.this, 1, id);
                     }
                 });
             } else {
@@ -230,7 +233,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
                 im.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        goHomePage(TopicTypeDetailsActivity.this, aub.get(finalI).getUserId(),false);
+                        goHomePage(TopicTypeDetailsActivity.this, aub.get(finalI).getUserId(), false);
                     }
                 });
 
@@ -293,6 +296,15 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
             case R.id.attention_tv:
                 Show(TopicTypeDetailsActivity.this, "", true, null);
                 tp.AttentionTopic(id);
+                break;
+            case R.id.issue_img:
+                if (!id.isEmpty() && !name.isEmpty()) {
+                    List<String> str = new ArrayList<>();
+                    str.add(id);
+                    str.add(name);
+                    goReleaseTopicPage(this, null, null, str);
+                }
+
                 break;
         }
     }

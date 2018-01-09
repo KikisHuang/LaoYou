@@ -123,8 +123,8 @@ public class FlashChatActivity extends InitActivity implements FlashChatListener
             if (gi.getGroupId().indexOf(Fields.OFFICIAL) != -1 && gi.getGroupId().indexOf(Fields.TGS) == -1)
                 list.add(gi);
         }
-        int NearbyNum = result.get(0).getGroupInfo().size() - list.size();
-        flash_num_tv.setText("附近有" + NearbyNum + "个闪聊");
+//        int NearbyNum = result.get(0).getGroupInfo().size() - list.size();
+//        flash_num_tv.setText("附近有" + NearbyNum + "个闪聊");
         adapter.notifyDataSetChanged();
     }
 

@@ -10,7 +10,6 @@ public class MessageFactory {
 
     private MessageFactory() {}
 
-
     /**
      * 消息工厂方法
      */
@@ -35,7 +34,5 @@ public class MessageFactory {
                 return null;
         }
     }
-
-
 
 }

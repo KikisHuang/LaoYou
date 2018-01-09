@@ -25,6 +25,15 @@ public class CommentBean {
     private String reUser;
     private String reMessage;
     private String createTime;
+    private String chatThemeId;
+
+    public String getChatThemeId() {
+        return chatThemeId;
+    }
+
+    public void setChatThemeId(String chatThemeId) {
+        this.chatThemeId = chatThemeId;
+    }
 
     public String getId() {
         return id;

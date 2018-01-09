@@ -61,10 +61,10 @@ public class OutSidePresenter implements HttpResultListener {
                 int c = Integer.parseInt(getJsonSring(response));
                 if (c == 0) {
                     listener.onLikeStatus(true);
-                    listener.onFailedMsg(gets(R.string.cancel_succ));
+                    listener.onFailedMsg(gets(R.string.like_succ));
                 } else if (c == 1) {
                     listener.onLikeStatus(false);
-                    listener.onFailedMsg(gets(R.string.like_succ));
+                    listener.onFailedMsg(gets(R.string.cancel_succ));
                 }
 
                 break;

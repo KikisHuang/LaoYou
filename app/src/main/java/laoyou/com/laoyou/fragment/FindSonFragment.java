@@ -159,7 +159,8 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
             list.clear();
 
         for (NearbyBean nb : nblist) {
-            list.add(nb);
+            if (nb.getCloud_tencent_account() != null && !nb.getCloud_tencent_account().isEmpty())
+                list.add(nb);
         }
         nearbyAdapter.notifyDataSetChanged();
     }

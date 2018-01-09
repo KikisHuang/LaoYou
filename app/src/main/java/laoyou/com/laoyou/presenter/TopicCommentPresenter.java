@@ -93,13 +93,15 @@ public class TopicCommentPresenter implements HttpResultListener {
                 break;
             case Fields.REQUEST2:
                 TopicCommentBean tcb = GsonUtil.GsonToBean(getJsonSring(response), TopicCommentBean.class);
-                String b[] = tcb.getImgs().split("[,]");
-                if (b != null && b.length > 0) {
-                    List<String> list = new ArrayList<>();
-                    for (String str : b) {
-                        list.add(str);
+                if (tcb.getImgs() != null) {
+                    String b[] = tcb.getImgs().split("[,]");
+                    if (b != null && b.length > 0) {
+                        List<String> list = new ArrayList<>();
+                        for (String str : b) {
+                            list.add(str);
+                        }
+                        tcb.setPhotos(list);
                     }
-                    tcb.setPhotos(list);
                 }
                 listener.onThemeDetails(tcb);
                 break;

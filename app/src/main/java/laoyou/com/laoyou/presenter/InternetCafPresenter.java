@@ -34,15 +34,14 @@ public class InternetCafPresenter implements HttpResultListener {
     private String id = "";
     public int page = 0;
     private List<CafCommentBean> list;
-    private boolean isRefresh;
+    public boolean isRefresh;
 
     public InternetCafPresenter(InternetCapListener listener, String caf_id) {
         this.listener = listener;
         this.id = caf_id;
-        list = new ArrayList<>();
+        this.list = new ArrayList<>();
         getCafDetails();
         getCatComment(true);
-
     }
 
     private void getCafDetails() {
@@ -74,11 +73,11 @@ public class InternetCafPresenter implements HttpResultListener {
 
                 break;
             case Fields.REQUEST2:
-                if (isRefresh)
-                    list.clear();
-                list = GsonUtil.jsonToList(getJsonSring(response), CafCommentBean.class);
+                List<CafCommentBean> list = GsonUtil.jsonToList(getJsonSring(response), CafCommentBean.class);
                 if (list.size() > 0)
                     listener.onInternetCafComment(list);
+                else if (!isRefresh)
+                    listener.onFailedMsg(gets(R.string.nomore));
 
                 break;
             case Fields.REQUEST3:
