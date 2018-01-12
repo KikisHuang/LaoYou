@@ -5,5 +5,8 @@ package laoyou.com.laoyou.listener;
  */
 public interface MainListener {
     void onCheckePermission();
+
     void onInitFragment();
+
+    void goFirstaddLikeGames();
 }

@@ -151,7 +151,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         Map<String, String> map = getParamsMap();
         map.put("showPosition", "0");
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETBANNER);
-//        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, "http://fns.mozu123.com:8080/mcFnsInterface/" + Interface.GETBANNER);
+//      httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, "http://fns.mozu123.com:8080/mcFnsInterface/" + Interface.GETBANNER);
     }
 
     public void handInit() {
@@ -368,6 +368,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
      * 登录判断;
      */
     public void IsLogin() {
+
         if (LoginStatusQuery()) {
             getPeopleNearby(true);
             getUseDetails();

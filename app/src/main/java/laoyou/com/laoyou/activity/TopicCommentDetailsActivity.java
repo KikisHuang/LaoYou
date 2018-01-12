@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.GridAdapter;
 import laoyou.com.laoyou.adapter.TopicCommentAdapter;
+import laoyou.com.laoyou.adapter.TopicPhotoAdapter;
 import laoyou.com.laoyou.bean.ChatMessages;
 import laoyou.com.laoyou.bean.LikeListBean;
 import laoyou.com.laoyou.bean.TopicCommentBean;
@@ -45,6 +47,7 @@ import laoyou.com.laoyou.presenter.TopicCommentPresenter;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
+import laoyou.com.laoyou.view.ChildLiistView;
 import laoyou.com.laoyou.view.HandleDataListView;
 import laoyou.com.laoyou.view.MinheightGridView;
 
@@ -60,6 +63,7 @@ import static laoyou.com.laoyou.utils.IntentUtils.goVideoPlayerPage;
 import static laoyou.com.laoyou.utils.SynUtils.fileIsExists;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.SynUtils.saveImage;
+import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
 import static laoyou.com.laoyou.utils.VideoUtils.createVideoThumbnail;
 
 /**
@@ -98,6 +102,10 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     private String coverPath = "";
     private ImageView video_cover_img;
     private FrameLayout video_layout;
+    private String invitationId = "";
+    private ChildLiistView PhotolistView;
+    private TopicPhotoAdapter photoAdapter;
+    private TopicCommentListener topic;
 
     @Override
     protected void click() {
@@ -110,11 +118,14 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         listView.setDataChangedListener(this);
         gridView.setOnItemClickListener(this);
         photo_img.setOnClickListener(this);
+        user_head_img.setOnClickListener(this);
+
     }
 
     @Override
     protected void init() {
         setContentView(R.layout.topic_details_comment_layout);
+        setImgTitles(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         listView = f(R.id.listView);
@@ -127,10 +138,10 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         comment_layout = f(R.id.comment_layout);
 
         photo_img = f(R.id.photo_img);
-
+        topic = this;
 
         head_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.topic_comment_head, null);
-        tp = new TopicCommentPresenter(this);
+        tp = new TopicCommentPresenter(topic);
 
         video_cover_img = (ImageView) head_layout.findViewById(R.id.video_cover_img);
         video_layout = (FrameLayout) head_layout.findViewById(R.id.video_layout);
@@ -145,6 +156,8 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         gridView = (MinheightGridView) head_layout.findViewById(R.id.gridView);
 
         content_img_layout = (LinearLayout) head_layout.findViewById(R.id.content_img_layout);
+
+        PhotolistView = (ChildLiistView) head_layout.findViewById(R.id.PhotolistView);
 
 
         user_head_img = (CircleImageView) head_layout.findViewById(R.id.user_head_img);
@@ -170,7 +183,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     protected void initData() {
         tp.getTopicDetails(id);
         tp.getLikeStatus(id);
-        tp.getComment(id);
+        tp.getComment(id, 0);
     }
 
     @Override
@@ -205,6 +218,14 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
             case R.id.photo_img:
                 IsPhoto = true;
                 SelectPhoto();
+                break;
+
+            case R.id.user_head_img:
+                if (invitationId != null && !invitationId.isEmpty()){
+                    goHomePage(this, invitationId, false);
+                    finish();
+                }
+
                 break;
 
         }
@@ -263,9 +284,8 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         send_comment_layout.setVisibility(View.GONE);
 
         isRefresh = true;
-        tp.page = 0;
 //      tp.getTopicDetails(id);
-        tp.getComment(id);
+        tp.getComment(id, 0);
         Cancle();
     }
 
@@ -287,6 +307,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     @Override
     public void onThemeDetails(final TopicCommentBean tcb) {
 
+        invitationId = tcb.getMcUser().getId();
         Glide.with(this).load(tcb.getMcUser().getHeadImgUrl()).apply(getGlideOptions()).into(user_head_img);
         user_name.setText(tcb.getMcUser().getName());
         type_name.setText(tcb.getMcChatType().getName());
@@ -308,8 +329,13 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
          * 图片类型;
          */
         if (tcb.getType() == 1) {
-            if (tcb.getPhotos() != null) {
-                for (int i = 0; i < tcb.getPhotos().size(); i++) {
+            if (tcb.getPhotos() != null && tcb.getPhotos().size() > 0) {
+                PhotolistView.setVisibility(View.VISIBLE);
+                photoAdapter = new TopicPhotoAdapter(this, tcb.getPhotos(),this);
+                PhotolistView.setAdapter(photoAdapter);
+                setListViewHeight(PhotolistView);
+
+               /* for (int i = 0; i < tcb.getPhotos().size(); i++) {
 
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     lp.topMargin = DeviceUtils.dip2px(this, 2);
@@ -325,7 +351,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
                         }
                     });
                     content_img_layout.addView(im);
-                }
+                }*/
             }
         }
         /**
@@ -358,7 +384,8 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
     @Override
     public void GoHomePage(String id) {
-        goHomePage(this, id,false);
+        goHomePage(this, id, false);
+        finish();
     }
 
     @Override
@@ -398,7 +425,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
             if (!userId.isEmpty() && !name.isEmpty()) {
                 for (int i = 0; i < cm.size(); i++) {
                     ChatMessages ctm = cm.get(i);
-                    if (userId.equals(ctm.getUserId()) && name.equals(ctm.getUserName()) && content.equals(ctm.getMessageContent())){
+                    if (userId.equals(ctm.getUserId()) && name.equals(ctm.getUserName()) && content.equals(ctm.getMessageContent())) {
                         pos = i;
                         break;
                     }
@@ -529,8 +556,11 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
         if (parent instanceof GridView) {
             if (likelist.size() > 0) {
-                if (position < 7)
-                    goHomePage(this, likelist.get(position).getId(),false);
+                if (position < 7){
+                    goHomePage(this, likelist.get(position).getId(), false);
+                    finish();
+                }
+
                 else
                     goParticipationPage(this, 2, id);
             }
@@ -542,8 +572,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && loadmore) {
             isRefresh = false;
-            tp.page += 10;
-            tp.getComment(id);
+            tp.getComment(id, 10);
         }
     }
 
@@ -555,4 +584,34 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     public void onDataChangedSuccess() {
 
     }
+
+
+    public void setListViewHeight(ListView listView) {
+
+        ListAdapter listAdapter = listView.getAdapter();
+
+        if (listAdapter == null) {
+
+            return;
+
+        }
+        int totalHeight = 0;
+
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+
+            View listItem = listAdapter.getView(i, null, listView);
+
+            listItem.measure(0, 0);
+
+            totalHeight += listItem.getMeasuredHeight();
+
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+
+        listView.setLayoutParams(params);
+
+    }
+
 }

@@ -60,9 +60,13 @@ public class SPreferences {
      */
     private static final String TEMPORARY_USER_HEAD = "Temporary_User_Head";
     /**
-     * 临时存储聊天对象头像(仅用于单聊);
+     * 跳转标识符;
      */
     private static final String SKIP_FLAG = "Skip_Flag";
+    /**
+     * 第一次登录喜欢的游戏添加跳转;
+     */
+    private static final String LIKE_GAMES_STATUS = "Like_Games_Status";
 
     /**
      * 保存登录Token;
@@ -76,6 +80,20 @@ public class SPreferences {
      */
     public static String getUserToken() {
         return getString(KEY_USER_TOKEN);
+    }
+
+    /**
+     * 保存喜欢的游戏状态;
+     */
+    public static void saveLikeGamesStatus(boolean flag) {
+        saveBoolean(LIKE_GAMES_STATUS, flag);
+    }
+
+    /**
+     * 获取喜欢的游戏状态;
+     */
+    public static boolean getLikeGamesStatus() {
+        return getBoolean(LIKE_GAMES_STATUS);
     }
 
     /**
@@ -260,7 +278,7 @@ public class SPreferences {
      * @return boolean
      */
     private static boolean getBoolean(String key) {
-        return getSharedPreferences().getBoolean(key, true);
+        return getSharedPreferences().getBoolean(key, false);
     }
 
     /**

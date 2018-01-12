@@ -80,7 +80,6 @@ public class SplashActivity extends FragmentActivity implements SplashView, TIMC
         } else {
             init();
         }
-
     }
 
     /**

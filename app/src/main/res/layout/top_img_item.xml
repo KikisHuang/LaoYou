@@ -6,12 +6,13 @@
     android:paddingLeft="12dp"
     >
 
-    <laoyou.com.laoyou.view.RoundAngleImageView
+    <laoyou.com.laoyou.view.RoundImageView
         android:id="@+id/top_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        app:roundHeight="5dp"
-        app:roundWidth="5dp" />
+        app:x_radius="3dp"
+        app:y_radius="3dp"
+       />
 
 </RelativeLayout>

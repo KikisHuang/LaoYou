@@ -25,7 +25,7 @@ public class IcSearchAdapter extends BaseAdapter {
 
     public IcSearchAdapter(Context context, moveListener move) {
         this.move = move;
-        li = LayoutInflater.from(context);
+        li = LayoutInflater.from(context.getApplicationContext());
     }
 
     /**

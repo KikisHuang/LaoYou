@@ -37,13 +37,15 @@ public class MyPhotoPresenter implements HttpResultListener, OnCompressListener 
 
     private static final String TAG = "MyPhotoPresenter";
     private MyPhotoListener listener;
-    public int page = 0;
+    private int page = 0;
 
     public MyPhotoPresenter(MyPhotoListener listener) {
         this.listener = listener;
     }
 
-    public void getPhotoListData(String id) {
+    public void getPhotoListData(String id,int pp) {
+
+        page = pp;
         Map<String, String> map = getKeyMap();
         map.put("page", String.valueOf(page));
         if (!id.isEmpty())
@@ -75,8 +77,7 @@ public class MyPhotoPresenter implements HttpResultListener, OnCompressListener 
 
                 break;
             case Fields.REQUEST2:
-                page = 0;
-                getPhotoListData("");
+                getPhotoListData("",0);
                 break;
 
             case Fields.REQUEST3:

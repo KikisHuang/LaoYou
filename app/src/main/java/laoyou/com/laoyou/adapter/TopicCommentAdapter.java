@@ -71,7 +71,7 @@ public class TopicCommentAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                listener.GoHomePage(list.get(position).getId());
+                listener.GoHomePage(list.get(position).getUserId());
             }
         });
         if (list.get(position).getReUser() != null) {

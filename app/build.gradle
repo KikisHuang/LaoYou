@@ -62,6 +62,14 @@ android {
 
     }
 
+    sourceSets {
+        main {
+            //jni库的调用会到资源文件夹下libs里面找so文件
+            jniLibs.srcDirs = ['libs']
+        }
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
     productFlavors {
         vivo {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "1f2720441bbd"]
@@ -123,6 +131,12 @@ dependencies {
     compile 'cn.jzvd:jiaozivideoplayer:6.2.3'
     compile 'tv.danmaku.ijk.media:ijkplayer-java:0.8.4'
     compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'
+
+    //# Other ABIs: optional
+    compile 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.4'
+    compile 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.4'
+    compile 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.4'
+    compile 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.4'
     //分包;
     compile 'com.android.support:multidex:1.0.1'
     compile project(':presentation')
@@ -138,5 +152,10 @@ dependencies {
     compile 'com.zhy:base-rvadapter:3.0.3'
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/umeng_social_shareboard.jar')
+
+    //阻尼效果
+    compile 'com.lzy.widget:view-core:0.2.2'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
 }
 

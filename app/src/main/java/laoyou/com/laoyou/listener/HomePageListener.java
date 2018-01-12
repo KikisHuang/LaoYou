@@ -35,4 +35,5 @@ public interface HomePageListener {
     void onAddFriend(TIMFriendStatus timFriendStatusUnknown);
 
     void onDelFriend(TIMFriendStatus status);
+
 }

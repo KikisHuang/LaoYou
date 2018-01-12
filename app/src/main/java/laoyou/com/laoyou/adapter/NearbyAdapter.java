@@ -30,7 +30,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
     private RecyclerViewOnItemClickListener listener;
 
     public NearbyAdapter(Context context, List<NearbyBean> list, RecyclerViewOnItemClickListener listener) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         this.list = list;
         this.listener = listener;
     }

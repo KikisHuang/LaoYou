@@ -31,7 +31,7 @@ public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetai
     private RecyclerViewOnItemClickListener listener;
 
     public TopicTypeDetailsAdapter(Context context, List<TopicTypeBean> list, RecyclerViewOnItemClickListener listener) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         this.listener = listener;
         this.list = list;
     }

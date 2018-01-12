@@ -31,7 +31,7 @@ import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 /**
  * Created by lian on 2018/1/9.
  */
-public class AliveJobService extends JobService implements TIMCallBack {
+public class AliveJobService extends JobService implements TIMCallBack, TIMUserStatusListener {
     private final static String TAG = "KeepAliveService";
     // 告知编译器，这个变量不能被优化
     private volatile static Service mKeepAliveService = null;
@@ -45,12 +45,13 @@ public class AliveJobService extends JobService implements TIMCallBack {
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-
-            if (!Foreground.get().isForeground())
-                if (SPreferences.getUserSig() != null && SPreferences.getUserSig().isEmpty())
+            //互踢下线逻辑
+            if (!Foreground.get().isForeground() && !ActivityCollector.isActivityExist(MainActivity.class))
+                if (SPreferences.getUserSig() != null && !SPreferences.getUserSig().isEmpty())
                     rejectInit();
-            // 具体任务逻辑
 
+
+            // 具体任务逻辑
             if (!ActivityCollector.isActivityExist(MainActivity.class)) {
                 if (SPreferences.getUserSig() != null && !SPreferences.getUserSig().isEmpty())
                     IMInit();
@@ -63,19 +64,7 @@ public class AliveJobService extends JobService implements TIMCallBack {
     });
 
     private void rejectInit() {
-        //互踢下线逻辑
-        TIMManager.getInstance().setUserStatusListener(new TIMUserStatusListener() {
-            @Override
-            public void onForceOffline() {
-                LogOut(SPreferences.context, false);
-                Log.d(TAG, "被踢掉线了...");
-            }
-
-            @Override
-            public void onUserSigExpired() {
-                LogOut(SPreferences.context, false);
-            }
-        });
+        TIMManager.getInstance().setUserStatusListener(this);
     }
 
 
@@ -133,5 +122,16 @@ public class AliveJobService extends JobService implements TIMCallBack {
         PushUtil.getInstance();
         //初始化消息监听
         MessageEvent.getInstance();
+    }
+
+    @Override
+    public void onForceOffline() {
+        LogOut(SPreferences.context, false);
+        Log.d(TAG, "被踢掉线了...");
+    }
+
+    @Override
+    public void onUserSigExpired() {
+
     }
 }

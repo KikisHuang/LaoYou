@@ -31,6 +31,8 @@ public class AddLikeGamePresenter implements HttpResultListener {
     private static final String TAG = "AddLikeGamePresenter";
     private AddLikeGameListener listener;
     public int page = 0;
+    private int MaxSize = 0;
+    private int AtSize = 0;
 
     public AddLikeGamePresenter(AddLikeGameListener listener) {
         this.listener = listener;
@@ -53,14 +55,23 @@ public class AddLikeGamePresenter implements HttpResultListener {
                 listener.onGamesInfo(games);
                 break;
             case Fields.REQUEST2:
-                int f = Integer.parseInt(getJsonSring(response));
-                if (f == 0)
-                    listener.onAddLikeGames();
-                else
-                    listener.onFailedMsg(gets(R.string.already_game));
+                if (MaxSize > 0) {
+                    if (MaxSize == AtSize) {
+                        listener.onAddLikeGames();
+                        Cancle();
+                    }
+
+                } else {
+                    int f = Integer.parseInt(getJsonSring(response));
+                    if (f == 0)
+                        listener.onAddLikeGames();
+                    else
+                        listener.onFailedMsg(gets(R.string.already_game));
+                }
+                Cancle();
                 break;
         }
-        Cancle();
+
     }
 
     @Override
@@ -94,6 +105,13 @@ public class AddLikeGamePresenter implements HttpResultListener {
     }
 
     private void Commit(List<String> data) {
+        MaxSize = data.size();
+        for (String str : data) {
+            AtSize++;
+            Map<String, String> map = getKeyMap();
+            map.put("id", str);
+            httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.FOLLOWGAME);
+        }
 
     }
 

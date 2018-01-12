@@ -1,7 +1,9 @@
 package laoyou.com.laoyou.activity;
 
 import android.content.Intent;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -83,7 +85,16 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
         issue_layout = f(R.id.issue_layout);
         video_cover_layout = f(R.id.video_cover_layout);
         topic_content_ed = f(R.id.topic_content_ed);
+
+        topic_content_ed.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        topic_content_ed.setGravity(Gravity.TOP);
+        //改变默认的单行模式
+        topic_content_ed.setSingleLine(false);
+        //水平滚动设置为False
+        topic_content_ed.setHorizontallyScrolling(false);
+
         photo_gridView = f(R.id.photo_gridView);
+
         topic_type_layout = f(R.id.topic_type_layout);
         photo_layout = f(R.id.photo_layout);
         video_img = f(R.id.video_img);
@@ -113,7 +124,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
             topicType = getIntent().getStringArrayListExtra("Release_type").get(0);
             topic_name.setText(getIntent().getStringArrayListExtra("Release_type").get(1));
         }
-        
+
         adapter = new PhotoGridAdapter(this, selectList, this);
         photo_gridView.setAdapter(adapter);
     }
@@ -258,6 +269,11 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
                 .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        PictureFileUtils.deleteCacheDirFile(this);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

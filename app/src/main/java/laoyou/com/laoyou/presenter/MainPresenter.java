@@ -11,16 +11,22 @@ import com.tencent.qcloud.presentation.event.RefreshEvent;
 import com.tencent.qcloud.sdk.Interface;
 import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
 
+import org.json.JSONException;
+
+import java.util.List;
 import java.util.Map;
 
+import laoyou.com.laoyou.bean.GameBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.MainListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.UserInfo;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 
 /**
@@ -37,6 +43,14 @@ public class MainPresenter implements HttpResultListener {
     public void Presenter() {
         listener.onCheckePermission();
         listener.onInitFragment();
+
+    }
+
+    public void CheckLikeGames() {
+        Map<String, String> map = getKeyMap();
+        map.put("page", String.valueOf(0));
+        map.put("pageSize", String.valueOf(10));
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.GETMYGAME);
     }
 
 
@@ -48,7 +62,18 @@ public class MainPresenter implements HttpResultListener {
     }
 
     @Override
-    public void onSucceed(String response, int tag) {
+    public void onSucceed(String response, int tag) throws JSONException {
+        switch (tag) {
+            case Fields.REQUEST2:
+
+                List<GameBean> games = GsonUtil.jsonToList(getJsonSring(response), GameBean.class);
+                if (games != null && games.size() > 0) {
+
+                } else
+                    listener.goFirstaddLikeGames();
+                break;
+        }
+
         Log.i(TAG, "GPS定位上传成功！");
     }
 

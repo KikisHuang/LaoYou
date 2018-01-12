@@ -44,16 +44,16 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
     private boolean Photo_IsMe;
     private String id = "";
 
+
     protected void click() {
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                    if (!recyclerView.canScrollVertically(1) && list.size()>0) {
+                    if (!recyclerView.canScrollVertically(1) && list.size() > 0) {
                         Refresh = false;
-                        mp.page = list.size() - 1;
-                        mp.getPhotoListData(id);
+                        mp.getPhotoListData(id,list.size() - 1);
                     }
 
             }
@@ -66,7 +66,6 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
         setTitlesAndBack(this, gets(R.string.goback), "");
         Photo_IsMe = getIntent().getBooleanExtra("Photo_IsMe", false);
         id = getIntent().getStringExtra("Photo_id");
-
         recyclerView = f(R.id.recyclerView);
         mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);//3列，纵向排列
         recyclerView.setLayoutManager(mLayoutManager);
@@ -77,7 +76,7 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
         if (Photo_IsMe)
             list.add(null);
 
-        mp.getPhotoListData(id);
+        mp.getPhotoListData(id,0);
 
         adapter = new MyPhotoAdapter(this, list, this, Photo_IsMe);
         recyclerView.setAdapter(adapter);
@@ -184,5 +183,10 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

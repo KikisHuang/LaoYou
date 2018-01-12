@@ -68,27 +68,8 @@ public class AddLikeGameActivity extends InitActivity implements AddLikeGameList
         tag = Integer.parseInt(getIntent().getStringExtra("add_like_game_tag"));
         if (tag == 0)
             commit_bt.setVisibility(View.VISIBLE);
-        if (tag == 1)
-            ap.getGameListData();
-//        GameBean gb = new GameBean();
-//        gb.setName("test");
-//        gb.setHeadUrl("123");
-//        gb.setId("test1");
-//        gb.setSlector(false);
-//        list.add(gb);
-//        GameBean gb1 = new GameBean();
-//        gb1.setName("test");
-//        gb1.setHeadUrl("123");
-//        gb1.setId("test2");
-//        gb1.setSlector(false);
-//        list.add(gb1);
-//
-//        GameBean gb2 = new GameBean();
-//        gb2.setName("test");
-//        gb2.setHeadUrl("123");
-//        gb2.setId("test3");
-//        gb2.setSlector(false);
-//        list.add(gb2);
+
+        ap.getGameListData();
         foot_layout.setVisibility(View.GONE);
         listView.addFooterView(foot_layout);
 
@@ -138,6 +119,11 @@ public class AddLikeGameActivity extends InitActivity implements AddLikeGameList
 
     @Override
     public void onAddLikeGames() {
+        if (tag == 0) {
+            Intent inten = new Intent();
+            setResult(RESULT_OK, inten);
+            finish();
+        }
         if (games != null) {
             Intent inten = new Intent();
             inten.putExtra("like_game_bean", games);

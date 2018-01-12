@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,7 @@ import static laoyou.com.laoyou.utils.IntentUtils.goTopicCommentDetailsPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goVideoPlayerPage;
 import static laoyou.com.laoyou.utils.SynUtils.IsMe;
 import static laoyou.com.laoyou.utils.SynUtils.IsNull;
+import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.handleTitleBarColorEvaluate;
 import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
@@ -79,7 +81,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     private HomePagePresenter hp;
     private int imageHeight;
     private int height;
-    private String id;
+    private String id = "";
     private boolean isMe;
     private LinearLayout like_game_layout;
     private TextView foot_tv;
@@ -90,6 +92,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     //腾讯云id判断标识符;
     private boolean isTencent;
     private TextView status_tv, photo_tv;
+
 
     @Override
     protected void click() {
@@ -107,11 +110,12 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     protected void init() {
         setContentView(R.layout.home_page_layout);
         setImgTitles(this);
-        id = getIntent().getStringExtra("Page_Home_id");
+   /*     id = getIntent().getStringExtra("Page_Home_id");
         isTencent = Boolean.parseBoolean(getIntent().getStringExtra("Page_Home_Tencent_Flag"));
         Log.i(TAG, " isTencent ===" + isTencent);
-        isMe = id.isEmpty() ? true : IsMe(id);
+        isMe = id.isEmpty() ? true : IsMe(id);*/
         hp = new HomePagePresenter(this);
+
         bottom_menu_layout = f(R.id.bottom_menu_layout);
 
         listView = f(R.id.listView);
@@ -125,7 +129,40 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         list = new ArrayList<>();
 
         head_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.home_page_head_layout, null);
+//        head_layout = f(R.id.head_layout);
         foot_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.foot_include, null);
+        HeadViewInit();
+
+        detailsOfcompile_tv.setText(isMe ? gets(R.string.compile_info) : gets(R.string.view_details));
+
+        foot_tv = (TextView) foot_layout.findViewById(R.id.foot_tv);
+        foot_tv.setVisibility(View.GONE);
+
+        adapter = new HomePageAdapter(this, list, this);
+        listView.addHeaderView(head_layout);
+        listView.addFooterView(foot_layout);
+        listView.setAdapter(adapter);
+
+    }
+
+    private void HeadViewInit() {
+      /*  status_tv = f(R.id.status_tv);
+        photo_tv = f(R.id.photo_tv);
+
+        background_img = f(R.id.background_img);
+        head_img = f(R.id.head_img);
+        nickname_tv = f(R.id.nickname_tv);
+        signature_tv = f(R.id.signature_tv);
+        page_view_tv = f(R.id.page_view_tv);
+        cardiac_value_tv = f(R.id.cardiac_value_tv);
+        authentication_tv = f(R.id.authentication_tv);
+        detailsOfcompile_tv = f(R.id.detailsOfcompile_tv);
+        like_game_layout = f(R.id.like_game_layout);
+
+        address_tv = f(R.id.address_tv);
+        photo_layout = f(R.id.photo_layout);
+        game_list_layout = f(R.id.game_list_layout);*/
+
 
         status_tv = (TextView) head_layout.findViewById(R.id.status_tv);
         photo_tv = (TextView) head_layout.findViewById(R.id.photo_tv);
@@ -140,28 +177,52 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         detailsOfcompile_tv = (TextView) head_layout.findViewById(R.id.detailsOfcompile_tv);
         like_game_layout = (LinearLayout) head_layout.findViewById(R.id.like_game_layout);
 
-        detailsOfcompile_tv.setText(isMe ? gets(R.string.compile_info) : gets(R.string.view_details));
-
         address_tv = (TextView) head_layout.findViewById(R.id.address_tv);
         photo_layout = (LinearLayout) head_layout.findViewById(R.id.photo_layout);
         game_list_layout = (LinearLayout) head_layout.findViewById(R.id.game_list_layout);
+    }
 
-        foot_tv = (TextView) foot_layout.findViewById(R.id.foot_tv);
-        foot_tv.setVisibility(View.GONE);
 
-        adapter = new HomePageAdapter(this, list, this);
-        listView.addHeaderView(head_layout);
-        listView.addFooterView(foot_layout);
-        listView.setAdapter(adapter);
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (isMe)
+
+        if (id != null && !id.isEmpty() && !getIntent().getStringExtra("Page_Home_id").equals(id)) {
+            IsRefresh = true;
+            hp.page = 0;
+            listView.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    listView.setSelection(0);
+                    back_img.setImageResource(R.mipmap.return_icon_white);
+                    title_layout.setBackgroundColor(getRouColors(R.color.transparent));
+                    if (more_img.getVisibility() == View.VISIBLE)
+                        more_img.setImageResource(R.mipmap.more_white);
+
+                }
+            });
+
+        }
+
+        id = getIntent().getStringExtra("Page_Home_id");
+
+        isTencent = Boolean.parseBoolean(getIntent().getStringExtra("Page_Home_Tencent_Flag"));
+
+        Log.i(TAG, " isTencent ===" + isTencent);
+        isMe = id.isEmpty() ? true : IsMe(id);
+
+        if (isMe) {
             hp.getMyDetails();
-        else {
+            IsRefresh = true;
+        } else {
+            IsRefresh = true;
             hp.getOthersDetails(id, isTencent);
             bottom_menu_layout.setVisibility(View.VISIBLE);
         }
@@ -194,12 +255,10 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
             Glide.with(this).load(ll.get(i).getUrl()).apply(getGlideOptions()).into(im);
             photo_layout.addView(im);
 
-            final int finalI = i;
             im.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     goMyPhotoPage(HomePageActivity.this, isMe, id);
-//                    goPhotoViewerPage(HomePageActivity.this, photo, finalI, 1);
                 }
             });
         }
@@ -217,18 +276,23 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
     @Override
     public void onShowUserInfo(UserInfoBean ub) {
+        foot_tv.setVisibility(View.GONE);
         id = ub.getId();
         isTencent = false;
-
-        hp.getMyHeartNum(ub.getId());
-        hp.getAttentGames(ub.getId());
-        hp.getMyPhotoList(ub.getId());
-        hp.getPersonaldynamic(ub.getId(), false);
+        if (!isMe) {
+            hp.getMyHeartNum(ub.getId());
+            hp.getAttentGames(ub.getId());
+            hp.getMyPhotoList(ub.getId());
+            hp.getPersonaldynamic(ub.getId(), true);
+        }
 
         identify = ub.getCloudTencentAccount();
         HeadImgUrl = ub.getHeadImgUrl();
         Glide.with(HomePageActivity.this).load(ub.getHeadImgUrl()).into(head_img);
+//        Picasso.with(getApplicationContext()).load(ub.getHeadImgUrl()).into(head_img);
         nickname_tv.setText(ub.getName());
+
+//        Picasso.with(getApplicationContext()).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).into(background_img);
         Glide.with(this).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
         signature_tv.setText(IsNull(ub.getAutograph()) ? gets(R.string.default_signature) : ub.getAutograph());
         page_view_tv.setText(IsNull(ub.getBrowseNumber()) ? String.valueOf(0) : ub.getBrowseNumber());
@@ -317,6 +381,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         for (TopicTypeBean ttb : nblist) {
             list.add(ttb);
         }
+
         adapter.notifyDataSetChanged();
     }
 
@@ -382,12 +447,13 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         head_layout.getLocationInWindow(location);
         height = location[1];
 
-        imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 50);
+        imageHeight = head_layout.getHeight() / 4 - DeviceUtils.dip2px(this, 50);
 
         handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img, more_img.getVisibility() == View.GONE ? null : more_img);
 
         if (visibleItemCount + firstVisibleItem == totalItemCount) {
             if (foot_tv.getVisibility() == View.GONE) {
+                Log.i(TAG, "More ");
                 IsRefresh = false;
                 if (isMe)
                     hp.getPersonaldynamic(null, false);
@@ -497,6 +563,11 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
                 break;
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

@@ -1,19 +1,11 @@
 package laoyou.com.laoyou.tencent.model;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.tencent.TIMGroupMemberInfo;
-import com.tencent.TIMGroupTipsElem;
 import com.tencent.TIMMessage;
 
-import java.util.Iterator;
-import java.util.Map;
-
-import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.application.MyApplication;
-import laoyou.com.laoyou.bean.TemporaryBean;
 import laoyou.com.laoyou.tencent.adapters.ChatAdapter;
 
 /**
@@ -44,12 +36,13 @@ public class GroupTipMessage extends Message {
      */
     @Override
     public String getSummary() {
-        final TIMGroupTipsElem e = (TIMGroupTipsElem) message.getElement(0);
+        /*final TIMGroupTipsElem e = (TIMGroupTipsElem) message.getElement(0);
 
         StringBuilder stringBuilder = new StringBuilder();
         Iterator<Map.Entry<String, TIMGroupMemberInfo>> iterator = e.getChangedGroupMemberInfo().entrySet().iterator();
-        Log.i(TAG, "TipsType ====" + e.getTipsType());
-        switch (e.getTipsType()) {
+        Log.i(TAG, "TipsType ====" + e.getTipsType());*/
+
+       /* switch (e.getTipsType()) {
             case CancelAdmin:
             case SetAdmin:
                 return MyApplication.getContext().getString(R.string.summary_group_admin_change);
@@ -98,7 +91,7 @@ public class GroupTipMessage extends Message {
 //                        MyApplication.getContext().getString(R.string.summary_group_mem_quit);
             case ModifyGroupInfo:
                 return MyApplication.getContext().getString(R.string.summary_group_info_change);
-        }
+        }*/
         return "";
     }
 

@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -222,7 +223,7 @@ public class NineGridlayout extends ViewGroup {
             }
         });*/
 
-//        iv.setBackgroundColor(Color.parseColor("#f5f5f5"));
+        iv.setBackgroundColor(Color.parseColor("#fefefe"));
         return iv;
     }
 }

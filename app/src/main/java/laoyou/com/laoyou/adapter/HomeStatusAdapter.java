@@ -39,7 +39,7 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
     private List<AddressBookBean> add;
 
     public HomeStatusAdapter(Context context, List<TopicTypeBean> list, RecyclerViewOnItemClickListener listener) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         this.listener = listener;
         this.list = list;
     }

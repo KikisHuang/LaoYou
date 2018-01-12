@@ -78,7 +78,7 @@ public class HomePagePresenter implements HttpResultListener {
         getMyHeartNum(null);
         getAttentGames(null);
         getMyPhotoList(null);
-        getPersonaldynamic(null, false);
+        getPersonaldynamic(null, true);
 //        CheckID();
     }
 

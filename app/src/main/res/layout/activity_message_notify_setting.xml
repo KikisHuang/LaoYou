@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     tools:context=".tencent.ui.MessageNotifySettingActivity">
     <com.tencent.qcloud.ui.TemplateTitle
         android:layout_width="match_parent"
@@ -31,6 +32,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isSwitch="true"
-        app:isBottom="true"
         app:name="@string/message_notify_group_music" />
 </LinearLayout>

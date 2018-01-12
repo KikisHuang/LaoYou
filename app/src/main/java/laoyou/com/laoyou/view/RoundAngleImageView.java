@@ -23,8 +23,8 @@ import laoyou.com.laoyou.R;
 public  class RoundAngleImageView extends ImageView {
 
     private Paint paint;
-    private int roundWidth = 3;
-    private int roundHeight = 3;
+    private int roundWidth = 5;
+    private int roundHeight = 5;
     private Paint paint2;
 
     public RoundAngleImageView(Context context, AttributeSet attrs, int defStyle) {

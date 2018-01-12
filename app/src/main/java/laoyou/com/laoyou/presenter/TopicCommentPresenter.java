@@ -44,7 +44,7 @@ public class TopicCommentPresenter implements HttpResultListener {
         this.listener = listener;
     }
 
-    public int page = 0;
+    private int page = 0;
     private CommentPhotoPopupWindow commentPhotoPopupWindow;
 
     /**
@@ -221,7 +221,12 @@ public class TopicCommentPresenter implements HttpResultListener {
      *
      * @param id
      */
-    public void getComment(String id) {
+    public void getComment(String id, int pp) {
+        if (pp > 0)
+            page += pp;
+        else
+            page = pp;
+
         Map<String, String> map = getKeyMap();
         map.put("chatThemeId", id);
         map.put("page", String.valueOf(page));
@@ -241,7 +246,9 @@ public class TopicCommentPresenter implements HttpResultListener {
     }
 
     public void ClosePopupWindow() {
-        if (commentPhotoPopupWindow != null)
+        if (commentPhotoPopupWindow != null) {
             commentPhotoPopupWindow.ClosePopup();
+        }
+
     }
 }

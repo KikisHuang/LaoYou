@@ -52,6 +52,7 @@ import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
 import static laoyou.com.laoyou.fragment.MyFragment.SettingInstance;
 import static laoyou.com.laoyou.save.SPreferences.getSkipFlag;
 import static laoyou.com.laoyou.save.SPreferences.saveSkipFlag;
+import static laoyou.com.laoyou.utils.IntentUtils.goAddLikeGamePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginOperPage;
 import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
@@ -395,13 +396,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             if ((checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
                 permissionsList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (permissionsList.size() == 0) {
-//                init();
             } else
                 requestPermissions(permissionsList.toArray(new String[permissionsList.size()]), REQUEST_PHONE_PERMISSIONS);
-
         }
-//            init();
-
     }
 
     @Override
@@ -413,11 +410,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             if (SettingInstance() != null)
                 SettingInstance().SettingInstance().mp.getUseDetails();
         }
+        if (resultCode == RESULT_OK && requestCode == Fields.ACRESULET5)
+            ToastUtil.toast2_bottom(this, "添加成功");
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (!SPreferences.getLikeGamesStatus() && LoginStatusQuery()) {
+            SPreferences.saveLikeGamesStatus(true);
+            mp.CheckLikeGames();
+        }
+
         if (getSkipFlag() == 2) {
             ft = fm.beginTransaction();
             setSelected(msg_ll);
@@ -431,6 +436,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         ft = fm.beginTransaction();
         setSelected(home_ll);
         Home();
+    }
+
+    @Override
+    public void goFirstaddLikeGames() {
+        goAddLikeGamePage(this, 0);
     }
 
     @Override

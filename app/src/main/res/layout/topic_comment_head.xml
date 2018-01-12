@@ -78,6 +78,16 @@
         android:layout_marginTop="10dp"
         android:orientation="vertical">
 
+        <laoyou.com.laoyou.view.ChildLiistView
+            android:id="@+id/PhotolistView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:visibility="gone"
+            ></laoyou.com.laoyou.view.ChildLiistView>
+
         <FrameLayout
             android:id="@+id/video_layout"
             android:layout_width="match_parent"

@@ -69,6 +69,9 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
     public void onResume() {
         super.onResume();
         if (tag == 0) {
+            LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+            int totalItemCount = layoutManager.getItemCount();
+            fp.page = totalItemCount;
             isRefresh = true;
             fp.getHottestAndNewestRefresh();
         }
@@ -169,11 +172,10 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
     public void RefreshNewWonders(List<TopicTypeBean> toppic) {
         if (isRefresh) {
             topics.clear();
+
             if (toppic.size() < 10)
                 springView.setEnable(false);
         }
-
-
         for (TopicTypeBean nb : toppic) {
             topics.add(nb);
         }

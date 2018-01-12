@@ -63,9 +63,11 @@ public class MyCommentAdapter extends BaseAdapter {
         TextView time_tv = OverallViewHolder.ViewHolder.get(view, R.id.time_tv);
         LinearLayout reply_layout = OverallViewHolder.ViewHolder.get(view, R.id.reply_layout);
 
+        if (list.get(position).getChatThemeImgs() != null)
+            Glide.with(mContext).load(list.get(position).getChatThemeImgs().get(0)).into(preview_img);
 
         Glide.with(mContext).load(list.get(position).getUserImg()).apply(getGlideOptions()).into(head_img);
-        Glide.with(mContext).load(list.get(position).getHasImg()).apply(getGlideOptions()).into(preview_img);
+
         head_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

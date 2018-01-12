@@ -1,19 +1,26 @@
 package laoyou.com.laoyou.bean;
 
+import java.util.List;
+
 /**
  * Created by lian on 2017/12/26.
  */
 public class CommentBean {
     /**
-     * id : m-ab89d90b1a0646de9ad940283c5f88a8
+     * id : m-13e25a3e3d9e48ea9eb18f94085592c2
      * userId : ud7163f19736d4bee8f907cfa9d2333a6
-     * userName : 高端大气
-     * userImg : http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1513578624590aa83ff.jpg
-     * messageContent : 回复hhh测试
+     * userName : 高仿陈晓燕1
+     * userImg : http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/15149577824502a9d65.jpg
+     * messageContent : 请讲普通话
      * hasImg : null
-     * reUser : 默默
-     * reMessage : 古古怪怪
-     * createTime : 2017-12-22 20:18:51
+     * reUserId : null
+     * reUser : null
+     * reMessage : null
+     * createTime : 2018-01-02 23:31:52
+     * chatImgs : null
+     * chatVideo : null
+     * chatThemeImgs : ["http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1514963572741e48a0c.jpg"]
+     * chatThemeId : t-11f801a3d9984ad3a7fc2100be245f53
      */
 
     private String id;
@@ -22,18 +29,14 @@ public class CommentBean {
     private String userImg;
     private String messageContent;
     private String hasImg;
+    private String reUserId;
     private String reUser;
     private String reMessage;
     private String createTime;
+    private String chatImgs;
+    private String chatVideo;
     private String chatThemeId;
-
-    public String getChatThemeId() {
-        return chatThemeId;
-    }
-
-    public void setChatThemeId(String chatThemeId) {
-        this.chatThemeId = chatThemeId;
-    }
+    private List<String> chatThemeImgs;
 
     public String getId() {
         return id;
@@ -83,6 +86,14 @@ public class CommentBean {
         this.hasImg = hasImg;
     }
 
+    public String getReUserId() {
+        return reUserId;
+    }
+
+    public void setReUserId(String reUserId) {
+        this.reUserId = reUserId;
+    }
+
     public String getReUser() {
         return reUser;
     }
@@ -94,13 +105,49 @@ public class CommentBean {
     public String getReMessage() {
         return reMessage;
     }
+
     public void setReMessage(String reMessage) {
         this.reMessage = reMessage;
     }
+
     public String getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
+
+    public Object getChatImgs() {
+        return chatImgs;
+    }
+
+    public void setChatImgs(String chatImgs) {
+        this.chatImgs = chatImgs;
+    }
+
+    public String getChatVideo() {
+        return chatVideo;
+    }
+
+    public void setChatVideo(String chatVideo) {
+        this.chatVideo = chatVideo;
+    }
+
+    public String getChatThemeId() {
+        return chatThemeId;
+    }
+
+    public void setChatThemeId(String chatThemeId) {
+        this.chatThemeId = chatThemeId;
+    }
+
+    public List<String> getChatThemeImgs() {
+        return chatThemeImgs;
+    }
+
+    public void setChatThemeImgs(List<String> chatThemeImgs) {
+        this.chatThemeImgs = chatThemeImgs;
+    }
+
 }

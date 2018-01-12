@@ -109,7 +109,7 @@ public class LikeGameActivity extends InitActivity implements LikeListener, View
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case Fields.ACRESULET1:
+                case Fields.ACRESULET5:
                     Bundle bundle = data.getExtras();
 //                  list.add((GameBean) bundle.getSerializable("like_game_bean"));
                     lp.page = 0;

@@ -51,9 +51,9 @@ public class OutSidePresenter implements HttpResultListener {
                 //date1表示已点赞，0表示未点赞
                 int data = Integer.parseInt(getJsonSring(response));
                 if (data == 0)
-                    listener.onLikeStatus(false);
-                else if (data == 1)
                     listener.onLikeStatus(true);
+                else if (data == 1)
+                    listener.onLikeStatus(false);
 
                 break;
             case Fields.REQUEST3:
@@ -164,7 +164,7 @@ public class OutSidePresenter implements HttpResultListener {
 
     public void CheckLike(String id) {
         Map<String, String> map = getKeyMap();
-        map.put("newsId", id);
+        map.put("id", id);
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.CHECKLIKENEWS);
     }
 

@@ -369,7 +369,7 @@ public class IntentUtils {
     public static void goAddLikeGamePage(Context context, int tag) {
         Intent intent = new Intent(context, AddLikeGameActivity.class);
         intent.putExtra("add_like_game_tag", String.valueOf(tag));
-        ((Activity) context).startActivityForResult(intent, Fields.ACRESULET1);
+        ((Activity) context).startActivityForResult(intent, Fields.ACRESULET5);
     }
 
     /**

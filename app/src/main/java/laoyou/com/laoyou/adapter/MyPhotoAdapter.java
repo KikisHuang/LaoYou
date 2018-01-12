@@ -29,7 +29,7 @@ public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.MyViewHo
     private boolean IsMe;
 
     public MyPhotoAdapter(Context context, List<PhotoBean> list, MyPhotoListener listener, boolean photo_IsMe) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         this.list = list;
         this.IsMe = photo_IsMe;
         this.listener = listener;
@@ -42,6 +42,7 @@ public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.MyViewHo
                 false));
         return holder;
     }
+
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
@@ -83,7 +84,7 @@ public class MyPhotoAdapter extends RecyclerView.Adapter<MyPhotoAdapter.MyViewHo
         return list.size();
     }
 
-    static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView photo_img;
 
