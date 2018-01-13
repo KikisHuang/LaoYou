@@ -11,14 +11,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ListView
+        <laoyou.com.laoyou.view.ParallaxScollListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:divider="@null"
             android:overScrollMode="never"
-            android:scrollbars="none"></ListView>
+            android:scrollbars="none"></laoyou.com.laoyou.view.ParallaxScollListView>
 
 
         <LinearLayout

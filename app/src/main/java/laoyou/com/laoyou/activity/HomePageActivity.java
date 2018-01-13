@@ -9,7 +9,6 @@ import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +42,7 @@ import laoyou.com.laoyou.tencent.ui.ChatActivity;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
+import laoyou.com.laoyou.view.ParallaxScollListView;
 import laoyou.com.laoyou.view.RoundAngleImageView;
 
 import static laoyou.com.laoyou.activity.AddressbookActivity.AddressBookInstance;
@@ -68,7 +68,7 @@ import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
  */
 public class HomePageActivity extends InitActivity implements HomePageListener, RecyclerViewOnItemClickListener, AbsListView.OnScrollListener, View.OnClickListener {
     private static final String TAG = "HomePageActivity";
-    private ListView listView;
+    private ParallaxScollListView listView;
     private LinearLayout head_layout, foot_layout;
     private HomePageAdapter adapter;
     private List<TopicTypeBean> list;
@@ -92,7 +92,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     //腾讯云id判断标识符;
     private boolean isTencent;
     private TextView status_tv, photo_tv;
-
+    private FrameLayout top_background_head;
 
     @Override
     protected void click() {
@@ -129,7 +129,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         list = new ArrayList<>();
 
         head_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.home_page_head_layout, null);
-//        head_layout = f(R.id.head_layout);
+//        head_layout = getHeaderImage();
         foot_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.foot_include, null);
         HeadViewInit();
 
@@ -139,9 +139,13 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         foot_tv.setVisibility(View.GONE);
 
         adapter = new HomePageAdapter(this, list, this);
+        listView.setZoomRatio(ParallaxScollListView.ZOOM_X2);
+        listView.setParallaxImageView(background_img);
+
         listView.addHeaderView(head_layout);
         listView.addFooterView(foot_layout);
         listView.setAdapter(adapter);
+
 
     }
 
@@ -180,6 +184,8 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         address_tv = (TextView) head_layout.findViewById(R.id.address_tv);
         photo_layout = (LinearLayout) head_layout.findViewById(R.id.photo_layout);
         game_list_layout = (LinearLayout) head_layout.findViewById(R.id.game_list_layout);
+        top_background_head = (FrameLayout) head_layout.findViewById(R.id.top_background_head);
+
     }
 
 
@@ -447,12 +453,13 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         head_layout.getLocationInWindow(location);
         height = location[1];
 
-        imageHeight = head_layout.getHeight() / 4 - DeviceUtils.dip2px(this, 50);
+        imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 50);
 
         handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img, more_img.getVisibility() == View.GONE ? null : more_img);
 
         if (visibleItemCount + firstVisibleItem == totalItemCount) {
             if (foot_tv.getVisibility() == View.GONE) {
+
                 Log.i(TAG, "More ");
                 IsRefresh = false;
                 if (isMe)

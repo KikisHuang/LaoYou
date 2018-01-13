@@ -4,9 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <laoyou.com.laoyou.view.ObservableScrollView
+    <laoyou.com.laoyou.view.ZoomInScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,6 +21,7 @@
             android:orientation="vertical">
 
             <FrameLayout
+                android:id="@+id/head_layout"
                 android:layout_width="match_parent"
                 android:layout_height="400dp">
 
@@ -312,7 +315,7 @@
             <include layout="@layout/private_data_include"></include>
 
         </LinearLayout>
-    </laoyou.com.laoyou.view.ObservableScrollView>
+    </laoyou.com.laoyou.view.ZoomInScrollView>
 
     <include
         android:id="@+id/title_layout"

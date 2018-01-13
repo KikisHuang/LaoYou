@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -34,7 +35,7 @@ import laoyou.com.laoyou.presenter.MyHomePagePresenter;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
-import laoyou.com.laoyou.view.ObservableScrollView;
+import laoyou.com.laoyou.view.ZoomInScrollView;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.fragment.MyFragment.SettingInstance;
@@ -51,14 +52,14 @@ import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
 /**
  * Created by lian on 2017/12/6.
  */
-public class MyHomePageActivity extends InitActivity implements ObservableScrollView.ScrollViewListener, MyHomePageListener, View.OnClickListener {
+public class MyHomePageActivity extends InitActivity implements ZoomInScrollView.OnScrollListener, MyHomePageListener, View.OnClickListener {
     private static final String TAG = "MyHomePageActivity";
     private ImageView background_img, back_img;
     private RelativeLayout title_layout;
     private CircleImageView head_img;
     private TextView sex_tv, region_tv, attestation_state_tv, hometown_tv, height_tv, birthday_tv, love_state_tv, save_tv, like_game_tv;
     private LinearLayout go_add_layout, attestation_layout, nickname_layout, signature_layout, game_list_layout;
-    private ObservableScrollView scrollView;
+    private ZoomInScrollView scrollView;
     private int imageHeight;
     private MyHomePagePresenter mp;
     private OptionsPickerView pvOptions;
@@ -66,6 +67,7 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
     private TimePickerView pvTime;
     private EditText nickname_ed, signature_ed;
     private ImageView nickname_change, signature_change;
+    private FrameLayout head_layout;
 
     private int sex = 0;
 
@@ -82,7 +84,7 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
 
     @Override
     protected void click() {
-        scrollView.setScrollViewListener(MyHomePageActivity.this);
+        scrollView.setOnScrollListener(MyHomePageActivity.this);
         sex_tv.setOnClickListener(this);
         nickname_layout.setOnClickListener(this);
         signature_layout.setOnClickListener(this);
@@ -111,6 +113,7 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
         nickname_ed = f(R.id.nickname_ed);
         nickname_layout = f(R.id.nickname_layout);
         signature_layout = f(R.id.signature_layout);
+        head_layout = f(R.id.head_layout);
         sex_tv = f(R.id.sex_tv);
         nickname_change = f(R.id.nickname_change);
         signature_change = f(R.id.signature_change);
@@ -131,6 +134,7 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
         love_state_tv = f(R.id.love_state_tv);
         imageHeight = DeviceUtils.dip2px(MyHomePageActivity.this, 360);
         initTimePicker();
+        scrollView.setHeaderView(head_layout);
     }
 
     @Override
@@ -141,11 +145,9 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
     }
 
     @Override
-    public void onScrollChanged(ObservableScrollView scrollView, int x, int y, int oldx, int oldy) {
-        // TODO Auto-generated method stub
-
+    public void onScroll(int x, int y, int oldx, int oldy) {
         if (y <= 0) {
-            title_layout.setBackgroundColor(Color.argb((int) 0, 227, 29, 26));//AGB由相关工具获得，或者美工提供
+            title_layout.setBackgroundColor(getRouColors(R.color.transparent));//AGB由相关工具获得，或者美工提供
             back_img.setImageResource(R.mipmap.return_icon_white);
         } else if (y > 0 && y <= imageHeight) {
             float scale = (float) y / imageHeight;
@@ -155,7 +157,6 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
             back_img.setImageResource(R.mipmap.return_icon);
         } else
             title_layout.setBackgroundColor(Color.argb((int) 255, 255, 255, 255));
-
     }
 
     @Override
@@ -362,11 +363,11 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
             case R.id.head_img:
                 isHead = true;
 //                getMULTIPLEPhoto(MyHomePageActivity.this, 1);
-                getMULTIPLEPhotoTag(MyHomePageActivity.this,PictureConfig.CHOOSE_REQUEST);
+                getMULTIPLEPhotoTag(MyHomePageActivity.this, PictureConfig.CHOOSE_REQUEST);
                 break;
             case R.id.background_img:
                 isHead = false;
-                getMULTIPLEPhotoTag(MyHomePageActivity.this,PictureConfig.CHOOSE_REQUEST);
+                getMULTIPLEPhotoTag(MyHomePageActivity.this, PictureConfig.CHOOSE_REQUEST);
 //                getMULTIPLEPhoto(MyHomePageActivity.this, 1);
                 break;
             case R.id.attestation_layout:
@@ -540,4 +541,6 @@ public class MyHomePageActivity extends InitActivity implements ObservableScroll
         if (resultCode == Fields.ACRESULET3)
             mp.CheckID();
     }
+
+
 }

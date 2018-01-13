@@ -12,15 +12,17 @@
         android:orientation="vertical">
 
         <FrameLayout
+            android:id="@+id/top_background_head"
             android:layout_width="match_parent"
-            android:layout_height="360dp">
+            android:layout_height="360dp"
+            >
 
             <ImageView
                 android:id="@+id/background_img"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="360dp"
                 android:scaleType="centerCrop"
-                android:visibility="gone"
+                android:src="@drawable/white_corners2"
                  />
 
             <LinearLayout

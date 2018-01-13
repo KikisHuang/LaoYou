@@ -48,6 +48,7 @@
             android:id="@+id/appbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:elevation="0dp"
             android:fitsSystemWindows="true">
 
             <!--app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"-->
