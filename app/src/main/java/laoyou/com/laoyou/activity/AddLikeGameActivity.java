@@ -16,11 +16,13 @@ import laoyou.com.laoyou.adapter.AddLikeGameAdapter;
 import laoyou.com.laoyou.bean.GameBean;
 import laoyou.com.laoyou.listener.AddLikeGameListener;
 import laoyou.com.laoyou.presenter.AddLikeGamePresenter;
+import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.RippleView;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
+import static laoyou.com.laoyou.utils.SynUtils.IsListViewTopOfBottom;
 
 /**
  * Created by lian on 2017/12/9.
@@ -151,13 +153,12 @@ public class AddLikeGameActivity extends InitActivity implements AddLikeGameList
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        if (visibleItemCount + firstVisibleItem == totalItemCount) {
-            if (foot_layout.getVisibility() == View.GONE) {
+
+
+        if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom) {
                 isRefresh = false;
                 ap.page += 10;
                 ap.getGameListData();
-            }
         }
-
     }
 }

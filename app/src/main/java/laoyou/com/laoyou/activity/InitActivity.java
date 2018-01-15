@@ -21,8 +21,8 @@ public abstract class InitActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.savedInstanceState = savedInstanceState;
         super.onCreate(savedInstanceState);
+        this.savedInstanceState = savedInstanceState;
         init();
         click();
         initData();

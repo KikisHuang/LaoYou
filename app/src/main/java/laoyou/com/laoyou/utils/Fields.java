@@ -38,6 +38,10 @@ public class Fields {
     public static final int ACRESULET4 = 3214;
     public static final int ACRESULET5 = 3215;
 
+    public static final int IsBottom = (1 << 0);
+    public static final int IsTop = (1 << 1);
+
+
     public static final String OFFICIAL = "official-";
     public static final String TGS = "@TGS#";
 

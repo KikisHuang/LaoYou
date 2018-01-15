@@ -37,6 +37,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.tencent.qcloud.presentation.event.MessageEvent;
@@ -1128,5 +1129,27 @@ public class SynUtils {
         editText.requestFocus();
         InputMethodManager imm = (InputMethodManager) SPreferences.context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    /**
+     * ListView滑动到顶部、底部精准判断;
+     * int top = 0 ,bottom = 1;
+     */
+    public static int IsListViewTopOfBottom(int firstVisibleItem, int visibleItemCount, int totalItemCount,ListView mListView) {
+
+        if (firstVisibleItem == 0) {
+            View firstVisibleItemView = mListView.getChildAt(0);
+            if (firstVisibleItemView != null && firstVisibleItemView.getTop() == 0) {
+//                Log.d("ListView", "##### 滚动到顶部 #####");
+                return Fields.IsTop;
+            }
+        } else if ((firstVisibleItem + visibleItemCount) == totalItemCount) {
+            View lastVisibleItemView = mListView.getChildAt(mListView.getChildCount() - 1);
+            if (lastVisibleItemView != null && lastVisibleItemView.getBottom() == mListView.getHeight()) {
+                Log.d("ListView", "##### 滚动到底部 ######");
+                return Fields.IsBottom;
+            }
+        }
+        return 99;
     }
 }

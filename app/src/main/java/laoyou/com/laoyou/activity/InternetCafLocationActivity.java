@@ -200,7 +200,6 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
      * 初始化定位;
      */
     private void setUpMap() {
-
         //自定义系统定位小蓝点
         myLocationStyle = new MyLocationStyle();
      /*   myLocationStyle.myLocationIcon(BitmapDescriptorFactory

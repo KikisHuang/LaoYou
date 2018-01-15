@@ -16,4 +16,6 @@ public interface InternetCapListener {
     void onInternetCafDetails(CafBean cb);
 
     void onInternetCafComment(List<CafCommentBean> list);
+
+    void onEndBottom();
 }

@@ -56,6 +56,7 @@ import static laoyou.com.laoyou.utils.IntentUtils.goOthersDetailsPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goTopicCommentDetailsPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goVideoPlayerPage;
+import static laoyou.com.laoyou.utils.SynUtils.IsListViewTopOfBottom;
 import static laoyou.com.laoyou.utils.SynUtils.IsMe;
 import static laoyou.com.laoyou.utils.SynUtils.IsNull;
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
@@ -457,16 +458,12 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
         handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img, more_img.getVisibility() == View.GONE ? null : more_img);
 
-        if (visibleItemCount + firstVisibleItem == totalItemCount) {
-            if (foot_tv.getVisibility() == View.GONE) {
-
-                Log.i(TAG, "More ");
+        if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom) {
                 IsRefresh = false;
                 if (isMe)
                     hp.getPersonaldynamic(null, false);
                 else
                     hp.getPersonaldynamic(id, false);
-            }
         }
     }
 

@@ -335,9 +335,9 @@
 
     <!-- message notify activity -->
     <string name="message_notify_title">消息提醒</string>
-    <string name="message_notify_push">离线消息推送</string>
-    <string name="message_notify_c2c_music">自定义C2C消息推送声音</string>
-    <string name="message_notify_group_music">自定义群消息推送声音</string>
+    <string name="message_notify_push">消息推送声音</string>
+    <string name="message_notify_c2c_music">开启私聊消息声音</string>
+    <string name="message_notify_group_music">开启群消息声音</string>
     <string name="msg">消息</string>
     <string name="home_page">首页</string>
     <string name="nearbyuser">附近的人</string>

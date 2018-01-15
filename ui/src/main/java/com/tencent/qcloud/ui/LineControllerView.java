@@ -54,6 +54,7 @@ public class LineControllerView extends LinearLayout {
         LinearLayout contentPanel = (LinearLayout) findViewById(R.id.contentText);
         contentPanel.setVisibility(isSwitch ? GONE : VISIBLE);
         Switch switchPanel = (Switch) findViewById(R.id.btnSwitch);
+
         switchPanel.setVisibility(isSwitch?VISIBLE:GONE);
 
     }

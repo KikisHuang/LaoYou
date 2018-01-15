@@ -59,7 +59,7 @@ public class InternetCafPresenter implements HttpResultListener {
         else
             map.put("page", String.valueOf(page));
 
-        map.put("pageSize", String.valueOf(page += 10));
+        map.put("pageSize", String.valueOf(page + 10));
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST2, Interface.URL + Interface.GETCAFCOMMENT);
     }
 
@@ -77,7 +77,7 @@ public class InternetCafPresenter implements HttpResultListener {
                 if (list.size() > 0)
                     listener.onInternetCafComment(list);
                 else if (!isRefresh)
-                    listener.onFailedMsg(gets(R.string.nomore));
+                    listener.onEndBottom();
 
                 break;
             case Fields.REQUEST3:

@@ -16,12 +16,10 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.liaoinstan.springview.widget.SpringView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +36,9 @@ import laoyou.com.laoyou.listener.RequestPermissionType;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.presenter.InternetCafPresenter;
 import laoyou.com.laoyou.utils.DeviceUtils;
-import laoyou.com.laoyou.utils.SpringUtils;
+import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
+import laoyou.com.laoyou.view.ParallaxScollListView;
 import laoyou.com.laoyou.view.RoundAngleImageView;
 
 import static laoyou.com.laoyou.utils.ClickUtils.isFastDoubleClick;
@@ -47,6 +46,7 @@ import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLocationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
+import static laoyou.com.laoyou.utils.SynUtils.IsListViewTopOfBottom;
 import static laoyou.com.laoyou.utils.SynUtils.StringIsNull;
 import static laoyou.com.laoyou.utils.SynUtils.getTypeface;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -67,8 +67,9 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     private TextView caf_name_tv;
     private TextView caf_address_tv;
     private TextView caf_price_tv;
-    private ListView listView;
+    private ParallaxScollListView listView;
     private View head_layout;
+    private View foot_layout;
     private ImageView back_img, background_img;
     private RelativeLayout title_layout;
     private int height;
@@ -87,8 +88,8 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     private LinearLayout send_comment_layout, menu_layout;
     private CircleImageView photo_img;
     private EditText comment_ed;
-    private TextView send_comment_tv;
-    private SpringView springView;
+    private TextView send_comment_tv, foot_tv;
+
     private List<CafCommentBean> list;
 
     @Override
@@ -114,8 +115,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         call_fragment_layout = f(R.id.call_fragment_layout);
         comment_fragment_layout = f(R.id.comment_fragment_layout);
         menu_layout = f(R.id.menu_layout);
-        springView = f(R.id.springView);
-        SpringUtils.SpringViewInit(springView, this, this);
+
         send_comment_layout = f(R.id.send_comment_layout);
         photo_img = f(R.id.photo_img);
         photo_img.setVisibility(View.GONE);
@@ -123,8 +123,39 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         comment_ed = f(R.id.comment_ed);
         send_comment_tv = f(R.id.send_comment_tv);
         list = new ArrayList<>();
-        head_layout = LayoutInflater.from(this).inflate(R.layout.internet_cat_head_layout, null);
+
         ip = new InternetCafPresenter(this, caf_id);
+        listView = f(R.id.listView);
+        back_img = f(R.id.back_img);
+        title_layout = f(R.id.title_layout);
+        HeadViewInit();
+        FootViewInit();
+        listView.addHeaderView(head_layout);
+        listView.addFooterView(foot_layout);
+
+
+        adapter = new InternetCafAdapter(this, list);
+        listView.setAdapter(adapter);
+
+        grade_tv.setTypeface(getTypeface(this));
+        caf_price_tv.setTypeface(getTypeface(this));
+    }
+
+    /**
+     * 底部控件初始化;
+     */
+    private void FootViewInit() {
+        foot_layout = LayoutInflater.from(this).inflate(R.layout.foot_include, null);
+
+        foot_tv = (TextView) foot_layout.findViewById(R.id.foot_tv);
+        foot_tv.setVisibility(View.GONE);
+    }
+
+    /**
+     * 头部控件初始化;
+     */
+    private void HeadViewInit() {
+        head_layout = LayoutInflater.from(this).inflate(R.layout.internet_cat_head_layout, null);
 
         config_top_layout = (LinearLayout) head_layout.findViewById(R.id.config_top_layout);
         config_mid_layout = (LinearLayout) head_layout.findViewById(R.id.config_mid_layout);
@@ -137,17 +168,10 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         caf_name_tv = (TextView) head_layout.findViewById(R.id.caf_name_tv);
         caf_address_tv = (TextView) head_layout.findViewById(R.id.caf_address_tv);
         caf_price_tv = (TextView) head_layout.findViewById(R.id.caf_price_tv);
-        listView = f(R.id.listView);
-        back_img = f(R.id.back_img);
-        title_layout = f(R.id.title_layout);
-        listView.addHeaderView(head_layout);
 
+        listView.setZoomRatio(ParallaxScollListView.ZOOM_X2);
+        listView.setParallaxImageView(background_img);
 
-        adapter = new InternetCafAdapter(this, list);
-        listView.setAdapter(adapter);
-
-        grade_tv.setTypeface(getTypeface(this));
-        caf_price_tv.setTypeface(getTypeface(this));
     }
 
     @Override
@@ -225,6 +249,10 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 0);
         handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img, null);
 
+        if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom) {
+            ip.page = list.size();
+            ip.getCatComment(false);
+        }
     }
 
     @Override
@@ -268,6 +296,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
 
     @Override
     public void onInternetCafComment(List<CafCommentBean> l) {
+        foot_tv.setVisibility(View.GONE);
         if (ip.isRefresh)
             list.clear();
 
@@ -276,6 +305,11 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         }
         if (adapter != null)
             adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onEndBottom() {
+        foot_tv.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -377,18 +411,6 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         startActivity(intent);
     }
 
- /*   */
-
-    /**
-     * EditText获取焦点并显示软键盘
-     *//*
-    private void showSoftInputFromWindow() {
-        comment_ed.setFocusable(true);
-        comment_ed.setFocusableInTouchMode(true);
-        comment_ed.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-    }*/
     @Override
     public void onKeyboardChange(boolean isShow, int keyboardHeight) {
         if (!isShow) {
@@ -405,6 +427,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
 
     @Override
     public void IsonLoadmore(int move) {
+        ip.page = list.size();
         ip.getCatComment(false);
     }
 

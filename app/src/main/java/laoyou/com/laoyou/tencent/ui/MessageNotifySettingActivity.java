@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.tencent.TIMManager;
 import com.tencent.TIMOfflinePushSettings;
@@ -33,6 +34,7 @@ public class MessageNotifySettingActivity extends Activity {
             public void onSuccess(TIMOfflinePushSettings timOfflinePushSettings) {
                 settings = timOfflinePushSettings;
                 LineControllerView messagePush = (LineControllerView) findViewById(R.id.messagePush);
+                Switch mSwitch = (Switch) messagePush.findViewById(com.tencent.qcloud.ui.R.id.btnSwitch);
                 messagePush.setSwitch(settings.isEnabled());
                 messagePush.setCheckListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override

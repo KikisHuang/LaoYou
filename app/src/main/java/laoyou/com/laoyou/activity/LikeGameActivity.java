@@ -23,6 +23,7 @@ import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.IntentUtils.goAddLikeGamePage;
+import static laoyou.com.laoyou.utils.SynUtils.IsListViewTopOfBottom;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.setTitlesAndBack;
 
@@ -134,37 +135,30 @@ public class LikeGameActivity extends InitActivity implements LikeListener, View
             list.clear();
 
         if (!isRefresh && games.size() <= 0) {
-            foot_layout.setVisibility(View.VISIBLE);
             if (list.size() > 3)
                 foot_layout.findViewById(R.id.foot_tv).setVisibility(View.VISIBLE);
             else
                 foot_layout.findViewById(R.id.foot_tv).setVisibility(View.GONE);
         }
-
-
         for (GameBean gb : games) {
             list.add(gb);
         }
         adapter.notifyDataSetChanged();
-        if (list.size() == 0)
-            foot_layout.findViewById(R.id.foot_tv).setVisibility(View.GONE);
+        foot_layout.setVisibility(list.size() > 0 ? View.GONE : View.VISIBLE);
     }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
 
+
     }
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-       /* if (firstVisibleItem == 0) {
-        }*/
-        if (visibleItemCount + firstVisibleItem == totalItemCount) {
-            if (foot_layout.getVisibility() == View.GONE) {
-                isRefresh = false;
-                lp.page += 20;
-                lp.getMyLikeGameDataList(id);
-            }
+        if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom) {
+            isRefresh = false;
+            lp.page += 20;
+            lp.getMyLikeGameDataList(id);
         }
     }
 }

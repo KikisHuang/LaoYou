@@ -203,6 +203,9 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
 
     @Override
     public void GetActiveUserData(final List<ActiveUserBean> aub) {
+
+        active_user_layout.setVisibility(aub != null && aub.size() > 0 ? View.VISIBLE : View.GONE);
+
         int w = DeviceUtils.getWindowWidth(this) * 1 / 11;
         for (int i = 0; i < aub.size(); i++) {
             if (i > 7)
@@ -238,9 +241,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
                 });
 
             }
-
         }
-
     }
 
 

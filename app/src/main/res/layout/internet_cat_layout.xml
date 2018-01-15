@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whitefc"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -10,20 +10,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.liaoinstan.springview.widget.SpringView
-            android:id="@+id/springView"
+        <laoyou.com.laoyou.view.ParallaxScollListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            >
-            <ListView
-                android:id="@+id/listView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/whitefc"
-                android:divider="@null"
-                android:scrollbars="none"></ListView>
-        </com.liaoinstan.springview.widget.SpringView>
+            android:background="@color/whitefc"
+            android:divider="@null"
+            android:overScrollMode="never"
+            android:scrollbars="none"></laoyou.com.laoyou.view.ParallaxScollListView>
 
         <FrameLayout
             android:layout_width="match_parent"

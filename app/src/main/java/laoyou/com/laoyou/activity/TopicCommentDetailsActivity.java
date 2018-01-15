@@ -109,6 +109,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
     @Override
     protected void click() {
+
         like_layout.setOnClickListener(this);
         comment_layout.setOnClickListener(this);
         send_comment_tv.setOnClickListener(this);
@@ -221,7 +222,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
                 break;
 
             case R.id.user_head_img:
-                if (invitationId != null && !invitationId.isEmpty()){
+                if (invitationId != null && !invitationId.isEmpty()) {
                     goHomePage(this, invitationId, false);
                     finish();
                 }
@@ -331,7 +332,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         if (tcb.getType() == 1) {
             if (tcb.getPhotos() != null && tcb.getPhotos().size() > 0) {
                 PhotolistView.setVisibility(View.VISIBLE);
-                photoAdapter = new TopicPhotoAdapter(this, tcb.getPhotos(),this);
+                photoAdapter = new TopicPhotoAdapter(this, tcb.getPhotos(), this);
                 PhotolistView.setAdapter(photoAdapter);
                 setListViewHeight(PhotolistView);
 
@@ -556,12 +557,10 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
         if (parent instanceof GridView) {
             if (likelist.size() > 0) {
-                if (position < 7){
+                if (position < 7) {
                     goHomePage(this, likelist.get(position).getId(), false);
                     finish();
-                }
-
-                else
+                } else
                     goParticipationPage(this, 2, id);
             }
 
@@ -578,6 +577,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
     }
 
     @Override
@@ -585,16 +585,16 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
 
     }
 
-
+    /**
+     * 动态设置listView高度;
+     *
+     * @param listView
+     */
     public void setListViewHeight(ListView listView) {
-
         ListAdapter listAdapter = listView.getAdapter();
 
-        if (listAdapter == null) {
-
+        if (listAdapter == null)
             return;
-
-        }
         int totalHeight = 0;
 
         for (int i = 0; i < listAdapter.getCount(); i++) {

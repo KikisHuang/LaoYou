@@ -5,15 +5,5 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <laoyou.com.laoyou.view.NineGridlayout
-        android:id="@+id/nine_gd_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
-
-    <laoyou.com.laoyou.view.CustomImageView
-        android:id="@+id/customImageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>
