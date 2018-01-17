@@ -229,7 +229,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         mHeaderAndFooterWrapper.addFootView(foot_layout);
 
         recyclerView.setAdapter(mHeaderAndFooterWrapper);
-//        mHeaderAndFooterWrapper.notifyDataSetChanged();
+//      mHeaderAndFooterWrapper.notifyDataSetChanged();
+
     }
 
 

@@ -48,8 +48,8 @@
             android:id="@+id/appbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="0dp"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            app:elevation="0dp">
 
             <!--app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"-->
             <android.support.design.widget.CollapsingToolbarLayout
@@ -111,7 +111,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        >
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -125,7 +125,6 @@
                                 android:id="@+id/nearby_wb_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginRight="15dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:orientation="vertical">
@@ -134,8 +133,8 @@
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
                                     android:layout_gravity="center"
-                                    android:layout_marginBottom="10dp"
-                                    android:background="@color/gray4" />
+                                    android:layout_marginBottom="5dp"
+                                    android:src="@mipmap/internetcaf_icon" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -150,7 +149,6 @@
                                 android:id="@+id/topic_circle_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginRight="15dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:orientation="vertical">
@@ -159,8 +157,8 @@
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
                                     android:layout_gravity="center"
-                                    android:layout_marginBottom="10dp"
-                                    android:background="@color/gray4" />
+                                    android:layout_marginBottom="5dp"
+                                    android:src="@mipmap/page_topic_icon" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -175,7 +173,6 @@
                                 android:id="@+id/query_pass_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginRight="15dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:orientation="vertical">
@@ -184,8 +181,8 @@
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
                                     android:layout_gravity="center"
-                                    android:layout_marginBottom="10dp"
-                                    android:background="@color/gray4" />
+                                    android:layout_marginBottom="5dp"
+                                    android:src="@mipmap/query_pass_icon" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -200,7 +197,6 @@
                                 android:id="@+id/wifi_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginRight="15dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:orientation="vertical">
@@ -209,8 +205,8 @@
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
                                     android:layout_gravity="center"
-                                    android:layout_marginBottom="10dp"
-                                    android:background="@color/gray4" />
+                                    android:layout_marginBottom="5dp"
+                                    android:src="@mipmap/flash_chat" />
 
 
                                 <TextView
@@ -227,7 +223,6 @@
                                 android:id="@+id/player_community_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginRight="15dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:orientation="vertical">
@@ -236,8 +231,8 @@
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
                                     android:layout_gravity="center"
-                                    android:layout_marginBottom="10dp"
-                                    android:background="@color/gray4" />
+                                    android:layout_marginBottom="5dp"
+                                    android:src="@mipmap/games_icon" />
 
 
                                 <TextView

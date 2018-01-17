@@ -6,6 +6,66 @@ import android.view.View;
  * Created by lian on 2017/6/15.
  */
 public class PageTopBannerBean {
+
+    private String httpUrl;
+    private String id;
+    private String imgUrl;
+    private String remarks;
+    private int type;
+    private int uid;
+    private int clickCount;
+
+    private String info;
+    private String title;
+    private String value;
+    private int showPosition;
+
+    @Override
+    public String toString() {
+        return "PageTopBannerBean{" +
+                "httpUrl='" + httpUrl + '\'' +
+                ", id='" + id + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", remarks='" + remarks + '\'' +
+                ", type=" + type +
+                ", uid=" + uid +
+                ", clickCount=" + clickCount +
+                ", info='" + info + '\'' +
+                ", title='" + title + '\'' +
+                ", value='" + value + '\'' +
+                ", showPosition=" + showPosition +
+                ", view=" + view +
+                '}';
+    }
+
+    public int getShowPosition() {
+        return showPosition;
+    }
+
+    public void setShowPosition(int showPosition) {
+        this.showPosition = showPosition;
+    }
+
+    private View view;
+
+    public PageTopBannerBean() {
+
+    }
+
+    public PageTopBannerBean(String id,String httpUrl, String imgUrl, String remarks, int type, int uid, int clickCount, String info, String title, String value, int showPosition) {
+        this.httpUrl = httpUrl;
+        this.id = id;
+        this.imgUrl = imgUrl;
+        this.remarks = remarks;
+        this.type = type;
+        this.uid = uid;
+        this.clickCount = clickCount;
+        this.info = info;
+        this.title = title;
+        this.value = value;
+        this.showPosition = showPosition;
+    }
+
     public String getHttpUrl() {
         return httpUrl;
     }
@@ -62,13 +122,6 @@ public class PageTopBannerBean {
         this.value = value;
     }
 
-    private String httpUrl;
-    private String id;
-    private String imgUrl;
-    private String remarks;
-    private int type;
-    private int uid;
-    private int clickCount;
 
     public String getInfo() {
         return info;
@@ -86,9 +139,6 @@ public class PageTopBannerBean {
         this.title = title;
     }
 
-    private String info;
-    private String title;
-
     public int getClickCount() {
         return clickCount;
     }
@@ -97,8 +147,6 @@ public class PageTopBannerBean {
         this.clickCount = clickCount;
     }
 
-    private String value;
-
     public View getView() {
         return view;
     }
@@ -106,7 +154,5 @@ public class PageTopBannerBean {
     public void setView(View view) {
         this.view = view;
     }
-
-    View view;
 
 }

@@ -337,6 +337,8 @@
     <string name="message_notify_title">消息提醒</string>
     <string name="message_notify_push">消息推送声音</string>
     <string name="message_notify_c2c_music">开启私聊消息声音</string>
+    <string name="open_c2c_music">开启私聊通知</string>
+    <string name="open_group_music">开启群组通知</string>
     <string name="message_notify_group_music">开启群消息声音</string>
     <string name="msg">消息</string>
     <string name="home_page">首页</string>

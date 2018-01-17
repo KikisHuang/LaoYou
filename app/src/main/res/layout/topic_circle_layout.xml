@@ -47,7 +47,7 @@
                 android:id="@+id/camera_img"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@mipmap/video_icon" />
         </LinearLayout>
     </LinearLayout>
 
@@ -60,6 +60,8 @@
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@null"></ListView>
+            android:divider="@null"
+            android:overScrollMode="never"
+            android:scrollbars="none"></ListView>
     </com.liaoinstan.springview.widget.SpringView>
 </LinearLayout>

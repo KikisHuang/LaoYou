@@ -6,6 +6,22 @@ package laoyou.com.laoyou.bean;
 public class ActiveBean {
 
 
+    public ActiveBean() {
+    }
+
+    public ActiveBean(String id, String groupId, String type, String name, String introduction, String faceUrl, int lastMsgTime, int memberNum,int maxMemberNum, String applyJoinOption) {
+        MaxMemberNum = maxMemberNum;
+        GroupId = groupId;
+        Type = type;
+        Name = name;
+        Introduction = introduction;
+        FaceUrl = faceUrl;
+        LastMsgTime = lastMsgTime;
+        MemberNum = memberNum;
+        ApplyJoinOption = applyJoinOption;
+        this.id = id;
+    }
+
     /**
      * GroupId : official-f81bd9e560544b889e2f49b8828112f4
      * Type : Public
@@ -27,6 +43,32 @@ public class ActiveBean {
     private int MemberNum;
     private int MaxMemberNum;
     private String ApplyJoinOption;
+
+    @Override
+    public String toString() {
+        return "ActiveBean{" +
+                "GroupId='" + GroupId + '\'' +
+                ", Type='" + Type + '\'' +
+                ", Name='" + Name + '\'' +
+                ", Introduction='" + Introduction + '\'' +
+                ", FaceUrl='" + FaceUrl + '\'' +
+                ", LastMsgTime=" + LastMsgTime +
+                ", MemberNum=" + MemberNum +
+                ", MaxMemberNum=" + MaxMemberNum +
+                ", ApplyJoinOption='" + ApplyJoinOption + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
+
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getGroupId() {
         return GroupId;

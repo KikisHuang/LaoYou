@@ -27,6 +27,8 @@ import java.util.concurrent.TimeUnit;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.TemporaryBean;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.save.db.LouSQLite;
+import laoyou.com.laoyou.save.db.MyDbCallBack;
 import laoyou.com.laoyou.tencent.utils.Foreground;
 import laoyou.com.laoyou.utils.CrashHandler;
 import laoyou.com.laoyou.utils.Fields;
@@ -43,11 +45,11 @@ public class MyApplication extends Application {
     //CrashHandler实例
     public static CrashHandler crashHandler;
 
-
     @Override
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        DbInit();
         MultiDex.install(this);
         Foreground.init(this);
         ErrorCrashInit();
@@ -56,6 +58,14 @@ public class MyApplication extends Application {
         QBX5Init();
         UmengInt();
         initTecentIM();
+    }
+
+    /**
+     * 本地数据库初始化;
+     */
+    private void DbInit() {
+//        LouSQLite.deleteDatabase(context);
+        LouSQLite.init(context, new MyDbCallBack());
     }
 
     /**

@@ -132,7 +132,7 @@ public class LoginOperationPresenter implements HttpResultListener {
 //      map.put("channelCode", null);
 //      map.put("useInvitationCode", null);
 
-        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, url);
+        httpUtils.OkHttpsPost(map, this, Fields.REQUEST1, url, null, null);
     }
 
 }

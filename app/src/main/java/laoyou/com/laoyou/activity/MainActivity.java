@@ -101,6 +101,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         clearNotification();
         setContentView(R.layout.activity_main);
         ActivityCollector.addActivity(this, getClass());
+
         mp = new MainPresenter(this);
         activity = this;
         home_ll = f(R.id.home_ll);
@@ -119,6 +120,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         my_tv = f(R.id.my_tv);
         my_img = f(R.id.my_img);
         mp.Presenter();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // 2. 启动系统任务
             mJobManager = JobSchedulerManager.getJobSchedulerInstance(this);

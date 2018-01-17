@@ -59,6 +59,7 @@
     <color name="whitefc">#fcfcfc</color>
     <color name="whiteff">#ffffff</color>
     <color name="whitefb">#fbfbfb</color>
+    <color name="back978">#f9f7f8</color>
     <!-- 黑色渐变 -->
     <color name="black1">#11000000</color>
     <color name="black2">#22000000</color>

@@ -36,6 +36,8 @@ import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.listener.VersionListener;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.save.db.LouSQLite;
+import laoyou.com.laoyou.save.db.PhraseEntry;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
@@ -44,6 +46,7 @@ import laoyou.com.laoyou.utils.homeViewPageUtils;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
+import static laoyou.com.laoyou.save.db.dbUtils.CacheDb;
 import static laoyou.com.laoyou.utils.JsonUtils.StatusPaser;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
@@ -84,6 +87,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     private boolean RefreshFlag;
     private List<TopicTypeBean> Nblist;
     public SpringListener springlistener;
+    private List<ActiveBean> atvb;
 
     public HomePresenter(HomeListener listener, ViewPager mViewPager, LayoutInflater inflater, Context context, LinearLayout mLinearLayoutDot) {
         this.listener = listener;
@@ -98,17 +102,53 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
 
     public void Presenter() {
         handInit();
+        getLocalityData();
         BannerHideOfShow();
         IsLogin();
         getActiveGroup();
 
 //        getPeopleNearby(true);
     }
+    /**
+     * 获取本地数据;
+     */
+    private void getLocalityData() {
+        getLocalityBannerData();
+        getLocalityActiveGroupData();
+
+    }
+
+    /**
+     * 获取本地sq Banner数据;
+     */
+    private void getLocalityBannerData() {
+        toplist.clear();
+        List<PageTopBannerBean> temp = LouSQLite.query(PhraseEntry.TABLE_NAME_BANNER, PhraseEntry.SELECTFROM + PhraseEntry.TABLE_NAME_BANNER, null);
+        for (PageTopBannerBean ptbb : temp) {
+            if (ptbb.getShowPosition() == 0)
+                toplist.add(ptbb);
+        }
+        if (toplist.size() > 0) {
+            initPageData();
+            setViewPager();
+            startPlay(handler, mViewPager, 0);
+        }
+    }
+
+    /**
+     * 获取本地sq 话题圈数据;
+     */
+    private void getLocalityActiveGroupData() {
+        List<ActiveBean> te = LouSQLite.query(PhraseEntry.TABLE_NAME_ACTIVE_GROUP, PhraseEntry.SELECTFROM + PhraseEntry.TABLE_NAME_ACTIVE_GROUP, null);
+        if (te.size() > 0)
+            listener.onFlashChatInfo(te);
+    }
 
     /**
      * 获取闪聊的数据;
      */
     private void getActiveGroup() {
+
 
         Map<String, String> map = getParamsMap();
         httpUtils.OkHttpsGet(map, this, Fields.ACRESULET1, Interface.URL + Interface.ACTIVEGROUP);
@@ -147,7 +187,11 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         httpUtils.OkHttpsGet(m, this, Fields.REQUEST3, Interface.URL + Interface.GETAPPLYQUERY);
     }
 
+    /**
+     * Banner;
+     */
     public void getBanner() {
+
         Map<String, String> map = getParamsMap();
         map.put("showPosition", "0");
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETBANNER);
@@ -181,6 +225,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                     initPageData();
                     setViewPager();
                     startPlay(handler, mViewPager, 0);
+                    CacheDb(toplist);
                 }/* else if (toplist.size() > 0) {
                     ONEIMGFLAG = true;
                     JSONArray ar = getJsonAr(response);
@@ -227,10 +272,11 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                 break;
             case Fields.ACRESULET1:
 
-                List<ActiveBean> atvb = GsonUtil.jsonToList(getJsonSring(response), ActiveBean.class);
-                if (atvb.size() > 0)
+                atvb = GsonUtil.jsonToList(getJsonSring(response), ActiveBean.class);
+                if (atvb.size() > 0) {
                     listener.onFlashChatInfo(atvb);
-                else
+                    CacheDb(atvb);
+                } else
                     listener.onHideFlashChatInfo();
 
                 break;
