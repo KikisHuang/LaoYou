@@ -175,7 +175,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         banner_layout = f(R.id.banner_layout);
         foot_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.home_fragment_foot_include, null);
-        foot_layout.setVisibility(View.INVISIBLE);
+        foot_layout.setVisibility(View.GONE);
         recom_nick_name = (TextView) foot_layout.findViewById(R.id.recom_nick_name);
         recom_layout = (LinearLayout) foot_layout.findViewById(R.id.recom_layout);
         foot_recom_layout = (LinearLayout) foot_layout.findViewById(R.id.Foot_recom_layout);
@@ -461,7 +461,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         }
         mHeaderAndFooterWrapper.notifyDataSetChanged();
 
-        foot_layout.setVisibility(View.INVISIBLE);
+        foot_layout.setVisibility(View.GONE);
 
         coordinatorlayout.setOnTouchListener(new View.OnTouchListener() {
             @Override

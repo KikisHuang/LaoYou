@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.jiaozi.JZMediaIjkplayer;
 import laoyou.com.laoyou.utils.jiaozi.MyJZVideoPlayerStandard;
 
@@ -39,7 +38,7 @@ public class VideoPlayPageActivity extends InitActivity implements View.OnClickL
         coverPath = getIntent().getStringExtra("Video_coverPath");
         myJZVideoPlayerStandard = f(R.id.videoplayer);
         video_layout = f(R.id.video_layout);
-        FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DeviceUtils.getWindowHeight(this) * 1 / 3);
+        FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
         fp.gravity = Gravity.CENTER;
         myJZVideoPlayerStandard.setLayoutParams(fp);
         JZVideoPlayer.setMediaInterface(new JZMediaIjkplayer());

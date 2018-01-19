@@ -6,6 +6,27 @@ import java.util.List;
  * Created by lian on 2017/12/20.
  */
 public class TopicTypeBean {
+
+    public TopicTypeBean() {
+    }
+
+    public TopicTypeBean(String chatTypeId, String imgs, String chatTypeName, String videos, int likeCount, String userName, String userId, int replyCount, String headImgUrl, String createTime, String reChatMessages, int likeFlag, String id, String messageContent) {
+        this.chatTypeId = chatTypeId;
+        this.imgs = imgs;
+        this.chatTypeName = chatTypeName;
+        this.videos = videos;
+        this.likeCount = likeCount;
+        this.userName = userName;
+        this.userId = userId;
+        this.replyCount = replyCount;
+        this.headImgUrl = headImgUrl;
+        this.createTime = createTime;
+        this.reChatMessages = reChatMessages;
+        this.likeFlag = likeFlag == 1 ? true : false;
+        this.id = id;
+        this.messageContent = messageContent;
+    }
+
     /**
      * chatTypeId : test0
      * imgs : http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1514359266842c85571.png,http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/1514359266842c85571.png
@@ -37,6 +58,27 @@ public class TopicTypeBean {
     private boolean likeFlag;
     private String id;
     private String messageContent;
+
+    @Override
+    public String toString() {
+        return "TopicTypeBean{" +
+                "chatTypeId='" + chatTypeId + '\'' +
+                ", imgs='" + imgs + '\'' +
+                ", chatTypeName='" + chatTypeName + '\'' +
+                ", videos='" + videos + '\'' +
+                ", likeCount=" + likeCount +
+                ", userName='" + userName + '\'' +
+                ", userId='" + userId + '\'' +
+                ", replyCount=" + replyCount +
+                ", headImgUrl='" + headImgUrl + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", reChatMessages='" + reChatMessages + '\'' +
+                ", likeFlag=" + likeFlag +
+                ", id='" + id + '\'' +
+                ", messageContent='" + messageContent + '\'' +
+                '}';
+    }
+
     private List<String> photos;
     private List<List<String>> comments;
     private String videoFile;

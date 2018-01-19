@@ -176,4 +176,59 @@ public class JsonUtils {
         }
         return nblist;
     }
+    /**
+     * 动态本地数据库通用解析;
+     *
+     * @param nblist
+     * @return
+     * @throws JSONException
+     */
+    public static List<TopicTypeBean> StatusPaser(List<TopicTypeBean> nblist) throws JSONException {
+
+        if (nblist.size() > 0) {
+            for (int i = 0; i < nblist.size(); i++) {
+                TopicTypeBean ttb = nblist.get(i);
+
+                if (ttb.getReChatMessages() != null) {
+                    JSONArray tta = new JSONArray(ttb.getReChatMessages().replace(" ", ""));
+
+                    Gson gson = new Gson();
+                    String[][] ss = gson.fromJson(String.valueOf(tta), new TypeToken<String[][]>() {
+                    }.getType());
+                    List<List<String>> outlist = new ArrayList<>();
+                    for (String[] strings : ss) {
+                        List<String> inlist = null;
+                        for (String string : strings) {
+                            if (inlist == null)
+                                inlist = new ArrayList<>();
+                            inlist.add(string);
+                        }
+                        outlist.add(inlist);
+                    }
+                    ttb.setComments(outlist);
+                }
+                if (ttb.getVideos() != null) {
+                    if (fileIsExists(ttb.getVideos()))
+                        ttb.setVideoCover(saveImage(null, ttb.getVideos()));
+                    else {
+                        Bitmap bitmap = createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
+                        ttb.setVideoCover(saveImage(bitmap, ttb.getVideos()));
+                    }
+                }
+
+                if (ttb.getImgs() != null) {
+                    String b[] = ttb.getImgs().split("[,]");
+                    if (b != null && b.length > 0) {
+                        List<String> list = new ArrayList<>();
+                        for (String str : b) {
+                            list.add(str);
+                        }
+                        ttb.setPhotos(list);
+                    }
+                }
+            }
+
+        }
+        return nblist;
+    }
 }

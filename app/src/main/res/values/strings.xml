@@ -386,6 +386,7 @@
     <string name="photo">相册</string>
     <string name="add_like_game">添加喜欢的游戏</string>
     <string name="commit">提交</string>
+    <string name="login">快速登录</string>
     <string name="add_game_is_null">请选择至少一款游戏</string>
     <string name="topic_circle">话题圈</string>
     <string name="internet_bar">网咖</string>

@@ -4,15 +4,18 @@ package laoyou.com.laoyou.save.db;
  * Created by lian on 2018/1/16.
  */
 public class PhraseEntry {
+    //数据库版本号;
+    public static final int DATABASE_VERSION = 1;
 
     public static final String TABLE_NAME_PHRASE = "phrase";
     public static final String TABLE_NAME_FAVORITE = "favorite";
     public static final String TABLE_NAME_MSG_NOTICE = "msgnotice";
     public static final String TABLE_NAME_ACTIVE_GROUP = "activegroup";
     public static final String TABLE_NAME_BANNER = "banner";
+    public static final String TABLE_NAME_STATE = "dynamic";
 
     public static final String DATABASE_NAME = "hoop.db";
-    public static final int DATABASE_VERSION = 1;
+
     public static final String TYPE_TEXT = " TEXT";
     public static final String TYPE_INTEGER = " INTEGER";
     public static final String SEP_COMMA = ",";
@@ -86,8 +89,47 @@ public class PhraseEntry {
                     R;
 
 
+    /**
+     * 首页在意的人表单创建;
+     */
+    public static final String TABLE_SCHEMA_FRIEND_STATUS =
+            PhraseEntry.CREATETABLE + TABLE_NAME_STATE + L +
+                    PhraseEntry.ROW_ID + TYPE_INTEGER + PRIMARYKEY +
+                    PhraseEntry.COLEUM_CHATTYPEID + TYPE_TEXT + SEP_COMMA +
+                    PhraseEntry.COLEUM_IMGS + TYPE_TEXT + SEP_COMMA +
+                    PhraseEntry.COLEUM_CHATTYPENAME + TYPE_TEXT + SEP_COMMA +
+                    PhraseEntry.COLEUM_VIDEOS + TYPE_TEXT + SEP_COMMA +
+                    PhraseEntry.COLEUM_LIKECOUNT + TYPE_INTEGER + SEP_COMMA +
+                    PhraseEntry.COLEUM_USERNAME + TYPE_INTEGER + SEP_COMMA +
+                    PhraseEntry.COLEUM_USERID + TYPE_TEXT + SEP_COMMA +
+                    PhraseEntry.COLEUM_REPLYCOUNT + TYPE_INTEGER + SEP_COMMA +
+                    PhraseEntry.COLEUM_HEADIMGURL + TYPE_TEXT + SEP_COMMA +
+                    PhraseEntry.COLEUM_CREATETIME + TYPE_TEXT + SEP_COMMA +
+                    PhraseEntry.COLEUM_RECHATMESSAGES + TYPE_TEXT + SEP_COMMA +
+                    PhraseEntry.COLEUM_LIKEFLAG + TYPE_INTEGER + SEP_COMMA +
+                    PhraseEntry.COLEUM_NAME_ID + TYPE_TEXT + SEP_COMMA +
+                    PhraseEntry.COLEUM_MESSAGECONTENT + TYPE_TEXT +
+                    R;
+
+
+
+
     public static final String ROW_ID = "rowid";
     public static final String COLEUM_NAME_ID = "id";
+
+    public static final String COLEUM_CHATTYPEID = "chatTypeId";
+    public static final String COLEUM_IMGS = "imgs";
+    public static final String COLEUM_CHATTYPENAME = "chatTypeName";
+    public static final String COLEUM_VIDEOS = "videos";
+    public static final String COLEUM_LIKECOUNT = "likeCount";
+    public static final String COLEUM_USERNAME = "userName";
+    public static final String COLEUM_USERID = "userId";
+    public static final String COLEUM_REPLYCOUNT = "replyCount";
+    public static final String COLEUM_HEADIMGURL = "headImgUrl";
+    public static final String COLEUM_CREATETIME = "createTime";
+    public static final String COLEUM_RECHATMESSAGES = "reChatMessages";
+    public static final String COLEUM_LIKEFLAG = "likeFlag";
+    public static final String COLEUM_MESSAGECONTENT = "messageContent";
 
     public static final String COLEUM_HTTPURL = "httpUrl";
     public static final String COLEUM_IMGURL = "imgUrl";
@@ -116,7 +158,7 @@ public class PhraseEntry {
     public static final String COLEUM_NAME_CONTENT = "content";
     public static final String COLEUM_NAME_FAVORITE = "favorite";
     public static final String SELECTFROM = "select * from ";
-    public static final String CREATETABLE = "CREATE TABLE ";
+    public static final String CREATETABLE = "CREATE TABLE IF NOT EXISTS ";
 
 
 }

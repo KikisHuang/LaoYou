@@ -28,6 +28,7 @@ import static laoyou.com.laoyou.utils.ImUtils.getImUserSig;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
+import static laoyou.com.laoyou.utils.SynUtils.validPhoneNumber;
 import static laoyou.com.laoyou.utils.tpartyLoginUtils.getUMAuthListener;
 
 /**
@@ -91,6 +92,13 @@ public class LoginOperationPresenter implements HttpResultListener {
 //                  ImportImInfo(id, name, faceUrl, this);
                 }
                 break;
+
+            case Fields.REQUEST3:
+                Log.i(TAG, "server key === " + getJsonSring(response));
+                SPreferences.saveUserToken(getJsonSring(response));
+                //REQUEST2
+                getImIdentifier(this);
+                break;
         }
 
     }
@@ -135,4 +143,19 @@ public class LoginOperationPresenter implements HttpResultListener {
         httpUtils.OkHttpsPost(map, this, Fields.REQUEST1, url, null, null);
     }
 
+
+    public void Login(String phone, String pass) {
+        if (!phone.isEmpty() && !pass.isEmpty() && validPhoneNumber(phone)) {
+            Map<String, String> map = getParamsMap();
+            map.put("account", phone);
+            map.put("password", pass);
+            httpUtils.OkHttpsPost(map, this, Fields.REQUEST3, Interface.URL + Interface.LOGIN, null, null);
+        } else if (phone.isEmpty())
+            listener.onFailed(gets(R.string.phonenullmsg));
+        else if (!validPhoneNumber(phone))
+            listener.onFailed(gets(R.string.phoneuncorrectmsg));
+        else if (pass.isEmpty())
+            listener.onFailed(gets(R.string.passnullmsg));
+
+    }
 }

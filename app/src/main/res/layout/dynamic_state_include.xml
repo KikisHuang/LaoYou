@@ -138,7 +138,7 @@
                 android:id="@+id/like_img"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@mipmap/heart_black_icon" />
+                android:src="@mipmap/off_like_icon" />
 
             <TextView
                 android:id="@+id/like_tv"
@@ -154,7 +154,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="20dp"
-                android:src="@mipmap/chat_black_icon" />
+                android:src="@mipmap/black_comment_icon" />
 
             <TextView
                 android:id="@+id/comment_tv"

@@ -1,5 +1,6 @@
 package laoyou.com.laoyou.activity;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -7,6 +8,7 @@ import android.widget.ImageView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.SendCodeListener;
 import laoyou.com.laoyou.presenter.SendCodePresenter;
+import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
@@ -61,11 +63,18 @@ public class SendPhoneCodeActivity extends InitActivity implements View.OnClickL
     }
 
     @Override
-    public void onSucceed() {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Fields.ACRESULET2) {
+            setResult(Fields.ACRESULET2);
+            finish();
+        }
+    }
 
+    @Override
+    public void onSucceed() {
         ToastUtil.toast2_bottom(this, "已发送验证码..");
         goForGetPassPage(this, phone_ed.getText().toString());
-        finish();
     }
 
     @Override

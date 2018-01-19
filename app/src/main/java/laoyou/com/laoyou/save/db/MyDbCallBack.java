@@ -11,12 +11,15 @@ import laoyou.com.laoyou.bean.ActiveBean;
 import laoyou.com.laoyou.bean.Notice;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.bean.Phrase;
+import laoyou.com.laoyou.bean.TopicTypeBean;
 
 
 /**
  * Created by lian on 2018/1/16.
  */
 public class MyDbCallBack implements LouSQLite.ICallBack {
+
+    private static final String TAG = "MyDbCallBack";
 
     public MyDbCallBack() {
     }
@@ -28,7 +31,8 @@ public class MyDbCallBack implements LouSQLite.ICallBack {
                 PhraseEntry.TABLE_SCHEMA_FAVORITE,
                 PhraseEntry.TABLE_SCHEMA_MSG_NOTICE_STATUS,
                 PhraseEntry.TABLE_SCHEMA_BEANNER,
-                PhraseEntry.TABLE_SCHEMA_ACTIVE_GROUP
+                PhraseEntry.TABLE_SCHEMA_ACTIVE_GROUP,
+                PhraseEntry.TABLE_SCHEMA_FRIEND_STATUS
         );
     }
 
@@ -45,14 +49,14 @@ public class MyDbCallBack implements LouSQLite.ICallBack {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        switch (oldVersion) {
+    /*    switch (oldVersion) {
             case 0:
                 db.execSQL(PhraseEntry.TABLE_SCHEMA_FAVORITE); // 升级操作；
             case 1:
                 break;
             default:
                 break;
-        }
+        }*/
     }
 
 
@@ -116,6 +120,25 @@ public class MyDbCallBack implements LouSQLite.ICallBack {
                     values.put(PhraseEntry.COLEUM_APPLYJOINOPTION, ac.getApplyJoinOption());
                 }
                 break;
+            case PhraseEntry.TABLE_NAME_STATE:
+                if (t instanceof TopicTypeBean) {
+                    TopicTypeBean ac = (TopicTypeBean) t;
+                    values.put(PhraseEntry.COLEUM_CHATTYPEID, ac.getChatTypeId());
+                    values.put(PhraseEntry.COLEUM_IMGS, ac.getImgs());
+                    values.put(PhraseEntry.COLEUM_CHATTYPENAME, ac.getChatTypeName());
+                    values.put(PhraseEntry.COLEUM_VIDEOS, ac.getVideos());
+                    values.put(PhraseEntry.COLEUM_LIKECOUNT, ac.getLikeCount());
+                    values.put(PhraseEntry.COLEUM_USERNAME, ac.getUserName());
+                    values.put(PhraseEntry.COLEUM_USERID, ac.getUserId());
+                    values.put(PhraseEntry.COLEUM_REPLYCOUNT, ac.getReplyCount());
+                    values.put(PhraseEntry.COLEUM_HEADIMGURL, ac.getHeadImgUrl());
+                    values.put(PhraseEntry.COLEUM_CREATETIME, ac.getCreateTime());
+                    values.put(PhraseEntry.COLEUM_RECHATMESSAGES, ac.getReChatMessages());
+                    values.put(PhraseEntry.COLEUM_LIKEFLAG, ac.isLikeFlag());
+                    values.put(PhraseEntry.COLEUM_NAME_ID, ac.getId());
+                    values.put(PhraseEntry.COLEUM_MESSAGECONTENT, ac.getMessageContent());
+                }
+                break;
         }
     }
 
@@ -167,6 +190,24 @@ public class MyDbCallBack implements LouSQLite.ICallBack {
                         cursor.getInt(cursor.getColumnIndex(PhraseEntry.COLEUM_MEMBERNUM)),
                         cursor.getInt(cursor.getColumnIndex(PhraseEntry.COLEUM_MAXMEMBERNUM)),
                         cursor.getString(cursor.getColumnIndex(PhraseEntry.COLEUM_APPLYJOINOPTION))
+                );
+
+            case PhraseEntry.TABLE_NAME_STATE:
+                return new TopicTypeBean(
+                        cursor.getString(cursor.getColumnIndex(PhraseEntry.COLEUM_CHATTYPEID)),
+                        cursor.getString(cursor.getColumnIndex(PhraseEntry.COLEUM_IMGS)),
+                        cursor.getString(cursor.getColumnIndex(PhraseEntry.COLEUM_CHATTYPENAME)),
+                        cursor.getString(cursor.getColumnIndex(PhraseEntry.COLEUM_VIDEOS)),
+                        cursor.getInt(cursor.getColumnIndex(PhraseEntry.COLEUM_LIKECOUNT)),
+                        cursor.getString(cursor.getColumnIndex(PhraseEntry.COLEUM_USERNAME)),
+                        cursor.getString(cursor.getColumnIndex(PhraseEntry.COLEUM_USERID)),
+                        cursor.getInt(cursor.getColumnIndex(PhraseEntry.COLEUM_REPLYCOUNT)),
+                        cursor.getString(cursor.getColumnIndex(PhraseEntry.COLEUM_HEADIMGURL)),
+                        cursor.getString(cursor.getColumnIndex(PhraseEntry.COLEUM_CREATETIME)),
+                        cursor.getString(cursor.getColumnIndex(PhraseEntry.COLEUM_RECHATMESSAGES)),
+                        cursor.getInt(cursor.getColumnIndex(PhraseEntry.COLEUM_LIKEFLAG)),
+                        cursor.getString(cursor.getColumnIndex(PhraseEntry.COLEUM_NAME_ID)),
+                        cursor.getString(cursor.getColumnIndex(PhraseEntry.COLEUM_MESSAGECONTENT))
                 );
 
         }

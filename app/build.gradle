@@ -38,7 +38,7 @@ android {
 //        minSdkVersion 20
 //        targetSdkVersion 22
         versionCode 1
-        versionName "1.0"
+        versionName "1"
         multiDexEnabled true
 //      manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"] //默认名称
 

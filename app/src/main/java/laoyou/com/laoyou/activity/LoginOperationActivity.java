@@ -2,8 +2,10 @@ package laoyou.com.laoyou.activity;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.umeng.socialize.UMShareAPI;
 
@@ -13,14 +15,15 @@ import laoyou.com.laoyou.presenter.LoginOperationPresenter;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
+import laoyou.com.laoyou.view.RippleView;
 
 import static laoyou.com.laoyou.activity.MainActivity.MainInstance;
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
 import static laoyou.com.laoyou.fragment.MyFragment.SettingInstance;
-import static laoyou.com.laoyou.utils.IntentUtils.goLoginPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goRegisterPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goSendPhoneCodePage;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
@@ -33,17 +36,20 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
     private LoginOperationPresenter lp;
     private ImageView wechat_img;
     private LinearLayout login_layout;
-    private LinearLayout register_layout;
+    private TextView register_layout;
     private static LoginOperationActivity instance;
-
+    private TextView forget_pass;
     private UMShareAPI mShareAPI;
+    private RippleView login_bt;
+    private EditText pass_ed, phone_ed;
 
 
     @Override
     protected void click() {
         wechat_img.setOnClickListener(this);
-        login_layout.setOnClickListener(this);
+        forget_pass.setOnClickListener(this);
         register_layout.setOnClickListener(this);
+        login_bt.setOnClickListener(this);
     }
 
     @Override
@@ -51,9 +57,12 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
         setContentView(R.layout.login_operation_layout);
         instance = this;
         wechat_img = f(R.id.wechat_img);
+        phone_ed = f(R.id.phone_ed);
+        pass_ed = f(R.id.pass_ed);
         login_layout = f(R.id.login_layout);
         register_layout = f(R.id.register_layout);
-
+        login_bt = f(R.id.login_bt);
+        forget_pass = f(R.id.forget_pass);
         mShareAPI = UMShareAPI.get(this);
 
         lp = new LoginOperationPresenter(this);
@@ -85,10 +94,17 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
                 lp.getWeChatInfo(LoginOperationActivity.this, mShareAPI);
                 break;
             case R.id.login_layout:
-                goLoginPage(this);
+//                goLoginPage(this);
                 break;
             case R.id.register_layout:
                 goRegisterPage(this);
+                break;
+            case R.id.forget_pass:
+                goSendPhoneCodePage(this);
+                break;
+            case R.id.login_bt:
+                Show(LoginOperationActivity.this, "登录中", true, null);
+                lp.Login(phone_ed.getText().toString(), pass_ed.getText().toString());
                 break;
         }
     }
@@ -120,6 +136,7 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
 
     @Override
     public void onFailed(String response) {
+        ToastUtil.toast2_bottom(this, response);
         Cancle();
     }
 
@@ -129,7 +146,7 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
         ToastUtil.toast2_bottom(this, gets(R.string.loginok));
         if (MainInstance() != null)
             MainInstance().IMInit();
-        if(SettingInstance()!=null)
+        if (SettingInstance() != null)
             SettingInstance().mp.getUseDetails();
         if (getHomeInstance() != null)
             getHomeInstance().onRefresh();

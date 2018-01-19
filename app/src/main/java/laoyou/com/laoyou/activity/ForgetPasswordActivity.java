@@ -8,9 +8,9 @@ import android.widget.TextView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.ForgetPassListener;
 import laoyou.com.laoyou.presenter.ForgetPassPresenter;
+import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 
-import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
 import static laoyou.com.laoyou.utils.SynUtils.getHidePhone;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.setTitles;
@@ -69,8 +69,9 @@ public class ForgetPasswordActivity extends InitActivity implements View.OnClick
     @Override
     public void onSucceed() {
         ToastUtil.toast2_bottom(this, gets(R.string.changepassok));
-        if (getHomeInstance() != null)
-            getHomeInstance().onRefresh();
+        setResult(Fields.ACRESULET2);
+        /*if (getHomeInstance() != null)
+            getHomeInstance().onRefresh();*/
         finish();
     }
 

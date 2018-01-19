@@ -121,6 +121,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
             bottom_banner_card.setVisibility(View.GONE);
         }
     }
+
     private void ViewInit() {
         ip = new InternetCafLocationPresenter(this);
         caf_name_tv = f(R.id.caf_name_tv);
@@ -137,7 +138,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
         starBar.setIntegerMark(false);
         starBar.ClickOpen(false);
 
-        starBar.setStarMark(0f);
+        starBar.setStarMark(3.5f);
         //路线规划初始化;
         routeSearch = new RouteSearch(this);
         routeSearch.setRouteSearchListener(this);

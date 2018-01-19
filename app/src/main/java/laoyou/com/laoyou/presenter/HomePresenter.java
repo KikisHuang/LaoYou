@@ -104,18 +104,36 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         handInit();
         getLocalityData();
         BannerHideOfShow();
-        IsLogin();
+//        IsLogin();
         getActiveGroup();
-
 //        getPeopleNearby(true);
     }
+
     /**
      * 获取本地数据;
      */
     private void getLocalityData() {
         getLocalityBannerData();
         getLocalityActiveGroupData();
+        getLocalityDynamicstate();
+    }
 
+    /**
+     * 获取本地sq 在意的人数据;
+     */
+    private void getLocalityDynamicstate() {
+        if (LoginStatusQuery()) {
+            Nblist = LouSQLite.query(PhraseEntry.TABLE_NAME_STATE, PhraseEntry.SELECTFROM + PhraseEntry.TABLE_NAME_STATE, null);
+            if (Nblist.size() > 0) {
+                try {
+                    Nblist = StatusPaser(Nblist);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.i(TAG, "获取本地sq 在意的人数据 JSONException " + e);
+                }
+                listener.RefreshRecyclerView(Nblist);
+            }
+        }
     }
 
     /**
@@ -253,10 +271,13 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                 if (RefreshFlag)
                     Nblist = new ArrayList<>();
                 StatusPaser(ar, Nblist);
-                if (ar.length() > 0)
+                if (ar.length() > 0){
                     listener.RefreshRecyclerView(Nblist);
+                    CacheDb(Nblist);
+                }
+
                 else if (RefreshFlag) {
-                    listener.onFailed(gets(R.string.nodata));
+//                    listener.onFailed(gets(R.string.nodata));
                     listener.onBottom();
                 } else if (!RefreshFlag)
                     listener.onBottom();
@@ -487,7 +508,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         RefreshFlag = flag;
         Map<String, String> map = getKeyMap();
         map.put("page", String.valueOf(0));
-        map.put("pageSize", String.valueOf(page));
+        map.put("pageSize", String.valueOf(page > 0 ? page : page + Fields.SIZE));
 
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETCARECAREBYPAGE);
     }

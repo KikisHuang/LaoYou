@@ -60,7 +60,6 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
-
         if (position == 0 && list.size() > 0)
             holder.title_tv.setVisibility(View.VISIBLE);
         else
@@ -68,7 +67,7 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
 
         holder.bottom_line.setVisibility(position + 1 == list.size() ? View.VISIBLE : View.GONE);
 
-        Glide.with(context).load(list.get(position).isLikeFlag() ? R.mipmap.heart_icon : R.mipmap.heart_black_icon).into(holder.like_img);
+        Glide.with(context).load(list.get(position).isLikeFlag() ? R.mipmap.on_like_icon : R.mipmap.off_like_icon).into(holder.like_img);
 
         holder.more_tv.setVisibility(View.GONE);
         holder.view_layout.setOnClickListener(new View.OnClickListener() {

@@ -97,7 +97,7 @@ public class HomePageAdapter extends BaseAdapter {
 
         bottom_line.setVisibility(position + 1 == list.size() ? View.VISIBLE : View.GONE);
 
-        Glide.with(mContext).load(list.get(position).isLikeFlag() ? R.mipmap.heart_icon : R.mipmap.heart_black_icon).into(like_img);
+        Glide.with(mContext).load(list.get(position).isLikeFlag() ? R.mipmap.on_like_icon : R.mipmap.off_like_icon).into(like_img);
 
         more_tv.setVisibility(View.GONE);
         view_layout.setOnClickListener(new View.OnClickListener() {

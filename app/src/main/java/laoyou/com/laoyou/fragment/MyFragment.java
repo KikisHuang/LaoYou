@@ -100,7 +100,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
         comment.setText(R.string.comment);
 
         ImageView heart_icon = (ImageView) heart_layout.findViewById(R.id.menu_icon);
-        Glide.with(getActivity().getApplicationContext()).load(R.mipmap.heart_icon).into(heart_icon);
+        Glide.with(getActivity().getApplicationContext()).load(R.mipmap.myheart_icon).into(heart_icon);
         TextView heart = (TextView) heart_layout.findViewById(R.id.menu_name_tv);
         heart.setText(R.string.heart_value);
 

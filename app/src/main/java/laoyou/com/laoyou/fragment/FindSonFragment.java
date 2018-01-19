@@ -130,16 +130,14 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
 
     @Override
     public void IsonLoadmore(int move) {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        int totalItemCount = layoutManager.getItemCount();
         switch (tag) {
             case 0:
-                fp.page = totalItemCount;
+                fp.page = topics.size();
                 isRefresh = false;
                 fp.getNewIncident(false);
                 break;
             case 1:
-                fp.page = totalItemCount;
+                fp.page = list.size();
                 isRefresh = false;
                 fp.getNearbyData(false);
                 break;

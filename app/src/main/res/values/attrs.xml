@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <declare-styleable name="CustomBehavior">
+        <attr name="finalHeight" format="dimension"/>
+    </declare-styleable>
+
     <!--圆形图片 -->
     <declare-styleable name="roundedimageview">
         <attr name="border_thickness" format="dimension" />

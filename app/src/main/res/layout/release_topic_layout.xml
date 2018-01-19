@@ -191,9 +191,9 @@
             android:paddingTop="5dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_launcher" />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/photo_icon" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -206,8 +206,8 @@
                 android:textSize="14sp" />
 
             <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:src="@mipmap/right_icon" />
         </LinearLayout>
@@ -223,9 +223,9 @@
             android:paddingTop="5dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_launcher" />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/video_icon" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -238,8 +238,8 @@
                 android:textSize="14sp" />
 
             <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:src="@mipmap/right_icon" />
         </LinearLayout>
@@ -255,9 +255,9 @@
             android:paddingTop="5dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_launcher" />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/word_icon" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -270,8 +270,8 @@
                 android:textSize="14sp" />
 
             <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:src="@mipmap/right_icon" />
         </LinearLayout>

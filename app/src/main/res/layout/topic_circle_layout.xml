@@ -31,22 +31,20 @@
 
             <ImageView
                 android:id="@+id/issue_img"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="10dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@mipmap/word_icon" />
 
             <ImageView
                 android:id="@+id/photo_img"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="10dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@mipmap/photo_icon" />
 
             <ImageView
                 android:id="@+id/camera_img"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@mipmap/video_icon" />
         </LinearLayout>
     </LinearLayout>

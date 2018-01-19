@@ -124,7 +124,7 @@ public class IntentUtils {
 
         Intent intent = new Intent(context, ForgetPasswordActivity.class);
         intent.putExtra("forget_phone", phone);
-        startPage(context, intent);
+        ((Activity) context).startActivityForResult(intent, Fields.ACRESULET2);
     }
 
     /**
@@ -283,7 +283,8 @@ public class IntentUtils {
     public static void goSendPhoneCodePage(Context context) {
 
         Intent intent = new Intent(context, SendPhoneCodeActivity.class);
-        startPage(context, intent);
+//        startPage(context, intent);
+        ((Activity) context).startActivityForResult(intent, Fields.ACRESULET2);
     }
 
     /**
