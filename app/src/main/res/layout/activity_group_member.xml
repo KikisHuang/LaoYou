@@ -8,7 +8,7 @@
     tools:context=".tencent.ui.GroupMemberActivity"
     android:background="@color/white"
     >
-    <com.tencent.qcloud.ui.TemplateTitle
+    <laoyou.com.laoyou.tencent.view.TemplateTitle
         android:id="@+id/group_mem_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

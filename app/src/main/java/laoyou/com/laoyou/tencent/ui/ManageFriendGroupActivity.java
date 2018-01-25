@@ -18,9 +18,6 @@ import android.widget.Toast;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMFriendResult;
 import com.tencent.TIMValueCallBack;
-import com.tencent.qcloud.presentation.event.FriendshipEvent;
-import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
-import com.tencent.qcloud.ui.NotifyDialog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +26,9 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.adapters.GroupListAdapter;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
+import laoyou.com.laoyou.tencent.presentation.event.FriendshipEvent;
+import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
+import laoyou.com.laoyou.tencent.view.NotifyDialog;
 
 /**
  * 好友分组管理

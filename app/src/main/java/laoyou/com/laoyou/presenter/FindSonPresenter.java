@@ -2,8 +2,6 @@ package laoyou.com.laoyou.presenter;
 
 import android.util.Log;
 
-import com.tencent.qcloud.sdk.Interface;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -16,13 +14,16 @@ import laoyou.com.laoyou.bean.NearbyBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.listener.FindSonListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
+import laoyou.com.laoyou.listener.ThumbnailListener;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.thread.ThumbnailAsyncTask;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.JsonUtils.StatusPaser;
+import static laoyou.com.laoyou.thread.ThumbnailAsyncTask.ThumbNailInstance;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
@@ -32,7 +33,7 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
 /**
  * Created by lian on 2017/12/11.
  */
-public class FindSonPresenter implements HttpResultListener {
+public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
 
     private static final String TAG = "FindSonPresenter";
     private FindSonListener listener;
@@ -75,20 +76,15 @@ public class FindSonPresenter implements HttpResultListener {
                 }
                 break;
             case Fields.REQUEST2:
-                try {
-                    JSONArray ar = getJsonAr(response);
-                    List<TopicTypeBean> toppic = new ArrayList<>();
-                    StatusPaser(ar, toppic);
-                    if (ar.length() > 0)
-                        listener.RefreshNewWonders(toppic);
-                    else if (RefreshFlag)
-                        listener.onFailedMsg(gets(R.string.nodata));
-                    else if (!RefreshFlag)
-                        listener.onFailedMsg(gets(R.string.nomore));
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                JSONArray ar = getJsonAr(response);
+                List<TopicTypeBean> toppic = new ArrayList<>();
+
+                if (!RefreshFlag && ar.length() <= 0)
+                    listener.onFailedMsg(gets(R.string.nomore));
+                else if (ThumbNailInstance() == null)
+                    new ThumbnailAsyncTask(this).execute(ar, toppic);
+
                 break;
             case Fields.REQUEST3:
                 int data = Integer.parseInt(getJsonSring(response));
@@ -115,7 +111,7 @@ public class FindSonPresenter implements HttpResultListener {
     /**
      * 附近的人数据获取;
      */
-    public void getNearbyData(boolean flag) {
+    public void getNearbyData(boolean flag, int sex) {
         /**
          * 如果没有经纬度，不能获取附近的人信息;
          */
@@ -126,6 +122,8 @@ public class FindSonPresenter implements HttpResultListener {
             map.put("pageSize", String.valueOf(page + Fields.SIZE));
             map.put("latitude", String.valueOf(SPreferences.getLatitud()));
             map.put("longitude", String.valueOf(SPreferences.getLongitude()));
+            if (sex != 99)
+                map.put("sex", String.valueOf(sex));
 
             httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETNEARBYUSER);
         }
@@ -166,5 +164,16 @@ public class FindSonPresenter implements HttpResultListener {
         Map<String, String> map = getKeyMap();
         map.put("chatThemeId", id);
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST3, Interface.URL + Interface.LIKECHATTHEME);
+    }
+
+    @Override
+    public void onThumbnailResult(List<TopicTypeBean> list) {
+        if (list.size() > 0)
+            listener.RefreshNewWonders(list);
+        else if (RefreshFlag)
+            listener.onFailedMsg(gets(R.string.nodata));
+
+        if (ThumbNailInstance() != null)
+            ThumbNailInstance().CloseThumb();
     }
 }

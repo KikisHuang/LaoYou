@@ -21,6 +21,7 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.TemporaryBean;
 import laoyou.com.laoyou.tencent.ui.ChatActivity;
+import laoyou.com.laoyou.utils.Fields;
 
 /**
  * 好友或群聊的会话
@@ -83,7 +84,7 @@ public class NomalConversation extends Conversation {
             boolean flag = false;
             switch (e.getTipsType()) {
                 case Kick:
-                    for (TemporaryBean tb : MyApplication.temporary) {
+                    for (TemporaryBean tb : Fields.temporary) {
                         if (tb.getId().equals(e.getUserList().get(0)))
                             flag = true;
                     }
@@ -96,7 +97,7 @@ public class NomalConversation extends Conversation {
                         stringBuilder.append(getNames(item.getValue()));
                         stringBuilder.append(" ");
                     }
-                    for (TemporaryBean tb : MyApplication.temporary) {
+                    for (TemporaryBean tb : Fields.temporary) {
                         if (tb.getId().equals(String.valueOf(stringBuilder)))
                             flag = true;
                     }
@@ -110,7 +111,7 @@ public class NomalConversation extends Conversation {
                         stringBuilder.append(getNames(item.getValue()));
                         stringBuilder.append(" ");
                     }
-                    for (TemporaryBean tb : MyApplication.temporary) {
+                    for (TemporaryBean tb : Fields.temporary) {
                         if (tb.getId().equals(String.valueOf(stringBuilder)))
                             flag = true;
                     }
@@ -118,7 +119,7 @@ public class NomalConversation extends Conversation {
                         getUserProFile(String.valueOf(stringBuilder));
                     break;
                 case Quit:
-                    for (TemporaryBean tb : MyApplication.temporary) {
+                    for (TemporaryBean tb : Fields.temporary) {
                         if (tb.getId().equals(e.getOpUser()))
                             flag = true;
                     }
@@ -227,7 +228,7 @@ public class NomalConversation extends Conversation {
                 TemporaryBean tem = new TemporaryBean();
                 tem.setId(strings);
                 tem.setName(result.get(0).getNickName());
-                MyApplication.temporary.add(tem);
+                Fields.temporary.add(tem);
 
             }
         });

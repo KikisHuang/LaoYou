@@ -1,5 +1,8 @@
 <resources>
 
+    <style name="maskDialog" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <item name="android:windowBackground">@color/colorMask</item>
+    </style>
 
     <style name="BaseTheme" parent="@style/Theme.AppCompat.Light">
         <item name="android:windowNoTitle">true</item>

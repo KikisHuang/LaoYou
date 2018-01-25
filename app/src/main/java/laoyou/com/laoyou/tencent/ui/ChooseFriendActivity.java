@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import com.tencent.qcloud.ui.TemplateTitle;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +15,7 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.adapters.ExpandGroupListAdapter;
 import laoyou.com.laoyou.tencent.model.FriendProfile;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
+import laoyou.com.laoyou.tencent.view.TemplateTitle;
 
 public class ChooseFriendActivity extends Activity {
 

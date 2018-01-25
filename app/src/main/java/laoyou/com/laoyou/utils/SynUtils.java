@@ -40,9 +40,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.tencent.qcloud.presentation.event.MessageEvent;
-import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
-
 import org.json.JSONArray;
 
 import java.io.File;
@@ -68,6 +65,8 @@ import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.model.UserInfo;
+import laoyou.com.laoyou.tencent.presentation.event.MessageEvent;
+import laoyou.com.laoyou.tencent.service.TlsBusiness;
 
 
 /**
@@ -650,7 +649,9 @@ public class SynUtils {
      * @return File
      */
     public static String saveImage(Bitmap bmp, String fileName) {
+
         File appDir = new File(Environment.getExternalStorageDirectory(), "Hoop_Photo");
+
         if (!appDir.exists()) {
             appDir.mkdir();
         }
@@ -1020,7 +1021,7 @@ public class SynUtils {
     }
 
     public static String StringIsNull(String str) {
-        return str != null && !str.isEmpty() ? str : "";
+        return str != null && !str.isEmpty() && !str.equals("null") ? str : "";
     }
 
     public static List<Map<String, Object>> GetAllContact() throws Throwable {
@@ -1135,7 +1136,7 @@ public class SynUtils {
      * ListView滑动到顶部、底部精准判断;
      * int top = 0 ,bottom = 1;
      */
-    public static int IsListViewTopOfBottom(int firstVisibleItem, int visibleItemCount, int totalItemCount,ListView mListView) {
+    public static int IsListViewTopOfBottom(int firstVisibleItem, int visibleItemCount, int totalItemCount, ListView mListView) {
 
         if (firstVisibleItem == 0) {
             View firstVisibleItemView = mListView.getChildAt(0);

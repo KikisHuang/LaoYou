@@ -30,6 +30,7 @@ import laoyou.com.laoyou.activity.InternetCafLocationActivity;
 import laoyou.com.laoyou.activity.LikeGameActivity;
 import laoyou.com.laoyou.activity.LoginActivity;
 import laoyou.com.laoyou.activity.LoginOperationActivity;
+import laoyou.com.laoyou.activity.MainActivity;
 import laoyou.com.laoyou.activity.MyCommentActivity;
 import laoyou.com.laoyou.activity.MyHomePageActivity;
 import laoyou.com.laoyou.activity.MyNoticeActivity;
@@ -49,6 +50,7 @@ import laoyou.com.laoyou.activity.TopicCircleActivity;
 import laoyou.com.laoyou.activity.TopicCommentDetailsActivity;
 import laoyou.com.laoyou.activity.TopicTypeDetailsActivity;
 import laoyou.com.laoyou.activity.VideoPlayPageActivity;
+import laoyou.com.laoyou.activity.WelcomeActivity;
 import laoyou.com.laoyou.activity.WifiActivity;
 import laoyou.com.laoyou.tencent.ui.BlackListActivity;
 import laoyou.com.laoyou.tencent.ui.MessageNotifySettingActivity;
@@ -57,8 +59,29 @@ import laoyou.com.laoyou.tencent.ui.MessageNotifySettingActivity;
  * Created by lian on 2017/10/25.
  */
 public class IntentUtils {
+
     private static final String TAG = "IntentUtils";
 
+
+    /**
+     * 欢迎页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goWelcomePage(Context context) {
+        Intent intent = new Intent(context, WelcomeActivity.class);
+        startPage(context, intent);
+    }
+
+    /**
+     * 主页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goMainPage(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        startPage(context, intent);
+    }
     /**
      * 登录页面;
      *

@@ -10,7 +10,6 @@ import android.util.Log;
 import com.tencent.TIMConversationType;
 import com.tencent.TIMGroupReceiveMessageOpt;
 import com.tencent.TIMMessage;
-import com.tencent.qcloud.presentation.event.MessageEvent;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -22,6 +21,7 @@ import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.CustomMessage;
 import laoyou.com.laoyou.tencent.model.Message;
 import laoyou.com.laoyou.tencent.model.MessageFactory;
+import laoyou.com.laoyou.tencent.presentation.event.MessageEvent;
 
 /**
  * 在线消息通知展示

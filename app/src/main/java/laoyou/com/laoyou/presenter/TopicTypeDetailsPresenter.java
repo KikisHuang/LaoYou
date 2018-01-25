@@ -3,8 +3,6 @@ package laoyou.com.laoyou.presenter;
 import android.support.design.widget.AppBarLayout;
 import android.util.Log;
 
-import com.tencent.qcloud.sdk.Interface;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -17,14 +15,17 @@ import laoyou.com.laoyou.bean.ActiveUserBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.listener.AppBarStateChangeListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
+import laoyou.com.laoyou.listener.ThumbnailListener;
 import laoyou.com.laoyou.listener.TopicTypeDetailsListener;
+import laoyou.com.laoyou.thread.ThumbnailAsyncTask;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
-import static laoyou.com.laoyou.utils.JsonUtils.StatusPaser;
+import static laoyou.com.laoyou.thread.ThumbnailAsyncTask.ThumbNailInstance;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
@@ -34,7 +35,7 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
 /**
  * Created by lian on 2017/12/19.
  */
-public class TopicTypeDetailsPresenter extends AppBarStateChangeListener implements HttpResultListener {
+public class TopicTypeDetailsPresenter extends AppBarStateChangeListener implements HttpResultListener, ThumbnailListener {
 
     private static final String TAG = "TopicTypeDetailsPresenter";
     private TopicTypeDetailsListener listener;
@@ -68,14 +69,15 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
             case Fields.REQUEST1:
                 if (isRefresh)
                     list.clear();
+
                 JSONArray ar = getJsonAr(response);
-                StatusPaser(ar, list);
-                if (ar.length() > 0)
-                    listener.onShowDetailsInfo(list);
-                else if (isRefresh)
-                    listener.onFailedsMsg(gets(R.string.nodata));
-                else if (!isRefresh)
+                if (ar.length() <= 0 && !isRefresh)
                     listener.onFailedsMsg(gets(R.string.nomore));
+                else if (ar.length() <= 0 && isRefresh)
+                    listener.onFailedsMsg(gets(R.string.nodata));
+                else if (ThumbNailInstance() == null)
+                    new ThumbnailAsyncTask(this).execute(ar, list);
+
                 break;
             //活跃用户列表;
             case Fields.REQUEST2:
@@ -199,5 +201,15 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
      */
     public void removeAppBarLayoutStateChangeListener(AppBarLayout appbar_layout) {
         appbar_layout.removeOnOffsetChangedListener(this);
+    }
+
+    @Override
+    public void onThumbnailResult(List<TopicTypeBean> list) {
+        if (list.size() > 0)
+            listener.onShowDetailsInfo(list);
+
+        if (ThumbNailInstance() != null)
+            ThumbNailInstance().CloseThumb();
+
     }
 }

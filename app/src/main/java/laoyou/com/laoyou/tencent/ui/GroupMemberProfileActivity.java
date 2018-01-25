@@ -15,10 +15,6 @@ import com.tencent.TIMGroupManager;
 import com.tencent.TIMGroupMemberResult;
 import com.tencent.TIMGroupMemberRoleType;
 import com.tencent.TIMValueCallBack;
-import com.tencent.qcloud.ui.CircleImageView;
-import com.tencent.qcloud.ui.LineControllerView;
-import com.tencent.qcloud.ui.ListPickerDialog;
-import com.tencent.qcloud.ui.TemplateTitle;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -28,6 +24,10 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.model.GroupMemberProfile;
 import laoyou.com.laoyou.tencent.model.UserInfo;
+import laoyou.com.laoyou.tencent.view.CircleImageView;
+import laoyou.com.laoyou.tencent.view.LineControllerView;
+import laoyou.com.laoyou.tencent.view.ListPickerDialog;
+import laoyou.com.laoyou.tencent.view.TemplateTitle;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 

@@ -26,14 +26,6 @@ import com.tencent.TIMGroupDetailInfo;
 import com.tencent.TIMGroupPendencyItem;
 import com.tencent.TIMMessage;
 import com.tencent.TIMUserProfile;
-import com.tencent.qcloud.presentation.presenter.ConversationPresenter;
-import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
-import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
-import com.tencent.qcloud.presentation.viewfeatures.ConversationView;
-import com.tencent.qcloud.presentation.viewfeatures.FriendInfoView;
-import com.tencent.qcloud.presentation.viewfeatures.FriendshipMessageView;
-import com.tencent.qcloud.presentation.viewfeatures.GroupInfoView;
-import com.tencent.qcloud.presentation.viewfeatures.GroupManageMessageView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +35,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.activity.MainActivity;
 import laoyou.com.laoyou.activity.MyCreateGroupActivity;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.adapters.ConversationAdapter;
@@ -53,6 +46,14 @@ import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.tencent.model.GroupManageConversation;
 import laoyou.com.laoyou.tencent.model.MessageFactory;
 import laoyou.com.laoyou.tencent.model.NomalConversation;
+import laoyou.com.laoyou.tencent.presentation.presenter.ConversationPresenter;
+import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
+import laoyou.com.laoyou.tencent.presentation.presenter.GroupManagerPresenter;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.ConversationView;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.FriendInfoView;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.FriendshipMessageView;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.GroupInfoView;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.GroupManageMessageView;
 import laoyou.com.laoyou.tencent.utils.PushUtil;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goAddressBookPage;
@@ -277,8 +278,8 @@ public class ConversationFragment extends Fragment implements ConversationView, 
         }
         Collections.sort(conversationList);
         adapter.notifyDataSetChanged();
-        if (getActivity() instanceof HomeActivity)
-            ((HomeActivity) getActivity()).setMsgUnread(getTotalUnreadNum() == 0);
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).setMsgUnread(getTotalUnreadNum() == 0);
     }
 
 

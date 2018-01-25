@@ -1,7 +1,9 @@
 package laoyou.com.laoyou.fragment;
 
+import android.os.SystemClock;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,7 +21,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMConversationType;
-import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
 import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ import laoyou.com.laoyou.listener.PositionAddListener;
 import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 import laoyou.com.laoyou.presenter.HomePresenter;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.tencent.presentation.presenter.GroupManagerPresenter;
 import laoyou.com.laoyou.tencent.ui.ChatActivity;
 import laoyou.com.laoyou.utils.AnimationUtil;
 import laoyou.com.laoyou.utils.DeviceUtils;
@@ -66,12 +68,13 @@ import static laoyou.com.laoyou.utils.IntentUtils.goTopicCommentDetailsPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goVideoPlayerPage;
 import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
+import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 
 
 /**
  * Created by lian on 2017/4/22.
  */
-public class HomeFragment extends BaseFragment implements View.OnClickListener, HomeListener, TIMCallBack, PositionAddListener, RecyclerViewOnItemClickListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener, HomeListener, SwipeRefreshLayout.OnRefreshListener, TIMCallBack, PositionAddListener, RecyclerViewOnItemClickListener{
     private static final String TAG = "HomeFragment";
 
     private WrapContentHeightViewPager mViewPager;
@@ -88,7 +91,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
-//    private SpringView springview;
 
     private AppBarLayout appbar_layout;
 
@@ -97,13 +99,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private CoordinatorLayout coordinatorlayout;
 
     private HomeStatusAdapter adapter;
-    private TextView flash_more_tv, recom_nick_name;
+    private TextView flash_more_tv, recom_nick_name, foot_tv;
     private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
     private LinearLayout foot_layout, flash_title_layout, foot_recom_layout, recom_layout;
     private String groupId = "";
     private TIMCallBack back;
     private HorizontalScrollView dynamic_scroll;
     private List<TopicTypeBean> Nblist;
+    private int recomeSize = 0;
+    private SwipeRefreshLayout swiperefreshlayout;
 
     @Override
     protected int initContentView() {
@@ -113,7 +117,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     protected void click() {
         banner_img.setOnClickListener(this);
-
         dynamic_layout.setOnClickListener(this);
         query_pass_layout.setOnClickListener(this);
         wifi_layout.setOnClickListener(this);
@@ -128,8 +131,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-
-                    if (isVisBottom(recyclerView)) {
+                    if (isVisBottom(recyclerView) && (Fields.VPT == 0 || System.currentTimeMillis() - Fields.VPT >= 2000)) {
+                        Fields.VPT = System.currentTimeMillis();
                         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                         int totalItemCount = layoutManager.getItemCount();
                         hp.page = totalItemCount - 1;
@@ -146,13 +149,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         //屏幕中最后一个可见子项的position
         int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-        Log.i(TAG, "lastVisibleItemPosition  === " + lastVisibleItemPosition);
         //当前屏幕所看到的子项个数
         int visibleItemCount = layoutManager.getChildCount();
-        Log.i(TAG, "visibleItemCount  === " + visibleItemCount);
         //当前RecyclerView的所有子项个数
         int totalItemCount = layoutManager.getItemCount();
-        Log.i(TAG, "totalItemCount  === " + totalItemCount);
         //RecyclerView的滑动状态
         int state = recyclerView.getScrollState();
         if (visibleItemCount > 0 && lastVisibleItemPosition == totalItemCount - 1 && state == recyclerView.SCROLL_STATE_IDLE) {
@@ -172,11 +172,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         page_layout = f(R.id.page_layout);
         flash_title_layout = f(R.id.flash_title_layout);
         dynamic_scroll = f(R.id.dynamic_scroll);
-
+        swiperefreshlayout = f(R.id.swiperefreshlayout);
+        RefreshInit();
         banner_layout = f(R.id.banner_layout);
+
         foot_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.home_fragment_foot_include, null);
         foot_layout.setVisibility(View.GONE);
+
         recom_nick_name = (TextView) foot_layout.findViewById(R.id.recom_nick_name);
+        foot_tv = (TextView) foot_layout.findViewById(R.id.foot_tv);
         recom_layout = (LinearLayout) foot_layout.findViewById(R.id.recom_layout);
         foot_recom_layout = (LinearLayout) foot_layout.findViewById(R.id.Foot_recom_layout);
 
@@ -194,7 +198,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         polistener = this;
 
-//        springview = f(R.id.springview);
         appbar_layout = f(R.id.appbar_layout);
 
         show_hide_img = f(R.id.show_hide_img);
@@ -219,18 +222,26 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mViewPager.setPageMargin(0);
         hp = new HomePresenter(this, mViewPager, getActivity().getLayoutInflater(), getActivity().getApplicationContext(), mLinearLayoutDot);
-//      SpringUtils.SpringViewInit(springview, getActivity(), hp.springlistener);
         mViewPager.setOffscreenPageLimit(3);
 
         adapter = new HomeStatusAdapter(getActivity(), Nblist, this);
         mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(adapter);
+
         LinearLayout.LayoutParams lps = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         foot_layout.setLayoutParams(lps);
         mHeaderAndFooterWrapper.addFootView(foot_layout);
 
         recyclerView.setAdapter(mHeaderAndFooterWrapper);
-//      mHeaderAndFooterWrapper.notifyDataSetChanged();
 
+    }
+
+    private void RefreshInit() {
+        //设置监听
+        swiperefreshlayout.setOnRefreshListener(this);
+        //设置向下拉多少出现刷新
+        swiperefreshlayout.setProgressViewEndTarget (true,500);
+        //改变加载显示的颜色
+        swiperefreshlayout.setColorSchemeColors(getRouColors(R.color.dominant_ton), getRouColors(R.color.dominant_ton));
     }
 
 
@@ -260,6 +271,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             lp.rightMargin = DeviceUtils.dip2px(getActivity(), 10);
             ImageView im = (ImageView) headLayout.findViewById(R.id.head_img);
             TextView income = (TextView) headLayout.findViewById(R.id.come_in_tv);
+            TextView name_tv = (TextView) headLayout.findViewById(R.id.name_tv);
+            name_tv.setText(atv.getName());
+
             income.setVisibility(View.VISIBLE);
 
             headLayout.setLayoutParams(lp);
@@ -288,11 +302,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         if (!hidden) {
             hp.start();
             polistener = this;
-            Log.i(TAG, "onResume");
+            Log.i(TAG, "onHiddenChanged onResume");
         } else {
             polistener = null;
             hp.stop();
-            Log.i(TAG, "onPauser");
+            Log.i(TAG, "onHiddenChanged onPauser");
         }
     }
 
@@ -305,7 +319,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onResume() {
         super.onResume();
-        hp.IsLogin();
+        if (!LoginStatusQuery())
+            swiperefreshlayout.setEnabled(false);
+        if (Nblist.size() > 0)
+            hp.RefreshLikeThme(true);
+        else
+            hp.IsLogin();
+
         hp.setAppBarLayoutStateChangeListener(appbar_layout);
         Log.i(TAG, "onResume");
         try {
@@ -354,6 +374,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     goGameInformationPage(getActivity());
                     break;
                 case R.id.show_hide_img:
+                    //必须先停止recyclerView的滑动，不然跳到顶部后无法跳回来；
+                    forceStopRecyclerViewScroll();
                     mLayoutManager.scrollToPositionWithOffset(0, 0);
                     mLayoutManager.setStackFromEnd(true);
                     appbar_layout.setExpanded(true);
@@ -371,6 +393,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         }
     }
 
+    //强制停止RecyclerView滑动方法
+    public void forceStopRecyclerViewScroll() {
+        recyclerView.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
+    }
+
     /**
      * Banner递增回调;
      */
@@ -384,7 +411,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
      */
     @Override
     public void onFailed(String msg) {
-        ToastUtil.toast2_bottom(getActivity(), msg);
+        if (!msg.isEmpty())
+            ToastUtil.toast2_bottom(getActivity(), msg);
+
+        swiperefreshlayout.setRefreshing(false);
     }
 
     /**
@@ -459,9 +489,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         for (TopicTypeBean ttb : nblist) {
             Nblist.add(ttb);
         }
+
+        Log.i(TAG, "Nblist size =====" + Nblist.size());
         mHeaderAndFooterWrapper.notifyDataSetChanged();
 
         foot_layout.setVisibility(View.GONE);
+        recom_layout.setVisibility(View.GONE);
+        foot_tv.setVisibility(View.GONE);
 
         coordinatorlayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -475,6 +509,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 return false;
             }
         });
+
+        swiperefreshlayout.setRefreshing(false);
     }
 
     /**
@@ -488,7 +524,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_HIDDEN, 500);
 
         show_hide_img.setEnabled(b);
-//        springview.setEnable(b);
+        swiperefreshlayout.setEnabled(!b);
     }
 
     /**
@@ -531,12 +567,28 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onBottom() {
         foot_layout.setVisibility(View.VISIBLE);
+        foot_tv.setVisibility(View.VISIBLE);
+
+        Log.i(TAG, "recomeSize ==" + recomeSize);
+        if (recomeSize > 0)
+            recom_layout.setVisibility(View.VISIBLE);
+        else
+            recom_layout.setVisibility(View.GONE);
+    }
+
+    /**
+     * 谷歌刷新;
+     */
+    @Override
+    public void onRefresh() {
+        hp.page = 0;
+        hp.getPeopleNearby(true);
     }
 
     /**
      * 刷新页面回调;
      */
-    public void onRefresh() {
+    public void onRefreshs() {
         hp.IsLogin();
     }
 
@@ -566,9 +618,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         ReComData(add);
     }
 
+    /**
+     * 推荐好友;
+     *
+     * @param add
+     */
     private void ReComData(List<AddressBookBean> add) {
         if (add != null && add.size() > 0) {
-            recom_layout.setVisibility(View.VISIBLE);
+            recomeSize = add.size();
+
             if (SPreferences.getMyNickName() != null)
                 recom_nick_name.setText("Hi，" + SPreferences.getMyNickName());
             if (foot_recom_layout.getChildCount() > 0) {
@@ -581,6 +639,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 lp.rightMargin = DeviceUtils.dip2px(getActivity(), 10);
                 ImageView im = (ImageView) headLayout.findViewById(R.id.head_img);
                 ImageView addicon = (ImageView) headLayout.findViewById(R.id.add_img);
+
+                LinearLayout layout = (LinearLayout) headLayout.findViewById(R.id.layout);
+                layout.setBackgroundResource(R.drawable.blue_corners3);
+
+                TextView name_tv = (TextView) headLayout.findViewById(R.id.name_tv);
+                name_tv.setTextColor(getRouColors(R.color.white));
+                name_tv.setText(abb.getName());
+
                 addicon.setVisibility(View.VISIBLE);
                 if (LoginStatusQuery()) {
                     headLayout.setOnClickListener(new View.OnClickListener() {
@@ -598,8 +664,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
                 foot_recom_layout.addView(headLayout);
             }
-        } else
-            recom_layout.setVisibility(View.GONE);
+        }
     }
 
     /**

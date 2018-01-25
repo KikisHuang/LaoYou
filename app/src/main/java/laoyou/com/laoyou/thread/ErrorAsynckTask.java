@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import laoyou.com.laoyou.utils.Interface;
+
 import static laoyou.com.laoyou.utils.SynUtils.getTAG;
 
 /**
@@ -36,7 +38,7 @@ public class ErrorAsynckTask extends AsyncTask {
         String path = String.valueOf(params[1]);
 
         try {
-            URL url = new URL("http://14.23.169.42:8788/" + "BencServlet/ErrorServlet");
+            URL url = new URL(Interface.ERRORURL);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             /* 允许Input、Output，不使用Cache */
             con.setDoInput(true);

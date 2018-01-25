@@ -1,7 +1,6 @@
 package laoyou.com.laoyou.presenter;
 
 import com.google.gson.Gson;
-import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +15,7 @@ import laoyou.com.laoyou.listener.FlashChatListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 

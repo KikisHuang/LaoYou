@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".tencent.ui.MessageNotifySettingActivity">
 
-    <com.tencent.qcloud.ui.TemplateTitle
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:backText="@string/setting"
@@ -26,24 +26,5 @@
     <include
         android:id="@+id/groupMusic"
         layout="@layout/setting_message_include"></include>
-    <!--
-        <com.tencent.qcloud.ui.LineControllerView
-            android:id="@+id/messagePush"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:name="@string/message_notify_push"
-            app:isSwitch="true"/>
-        <com.tencent.qcloud.ui.LineControllerView
-            android:id="@+id/c2cMusic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:isSwitch="true"
-            app:name="@string/message_notify_c2c_music" />
-        <com.tencent.qcloud.ui.LineControllerView
-            android:id="@+id/groupMusic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:isSwitch="true"
-            app:name="@string/message_notify_group_music" />-->
+
 </LinearLayout>

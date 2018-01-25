@@ -67,6 +67,11 @@ public class SPreferences {
      * 第一次登录喜欢的游戏添加跳转;
      */
     private static final String LIKE_GAMES_STATUS = "Like_Games_Status";
+    /**
+     * 第一次启动标识符;
+     */
+    private static final String FIRST_START = "First_Start";
+
 
     /**
      * 保存登录Token;
@@ -83,6 +88,20 @@ public class SPreferences {
     }
 
     /**
+     * 保存第一次启动状态
+     */
+    public static void saveFirstStart(boolean flag) {
+        saveBoolean(FIRST_START, flag);
+    }
+
+    /**
+     * 获取第一次启动状态;
+     */
+    public static boolean getFirstStart() {
+        return getBoolean(FIRST_START, true);
+    }
+
+    /**
      * 保存喜欢的游戏状态;
      */
     public static void saveLikeGamesStatus(boolean flag) {
@@ -93,7 +112,7 @@ public class SPreferences {
      * 获取喜欢的游戏状态;
      */
     public static boolean getLikeGamesStatus() {
-        return getBoolean(LIKE_GAMES_STATUS);
+        return getBoolean(LIKE_GAMES_STATUS, false);
     }
 
     /**
@@ -277,8 +296,8 @@ public class SPreferences {
      * @param key
      * @return boolean
      */
-    private static boolean getBoolean(String key) {
-        return getSharedPreferences().getBoolean(key, false);
+    private static boolean getBoolean(String key, boolean b) {
+        return getSharedPreferences().getBoolean(key, b);
     }
 
     /**

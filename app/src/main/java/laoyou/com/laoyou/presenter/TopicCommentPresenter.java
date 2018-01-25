@@ -3,8 +3,6 @@ package laoyou.com.laoyou.presenter;
 import android.util.Log;
 import android.view.View;
 
-import com.tencent.qcloud.sdk.Interface;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,6 +20,7 @@ import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.TopicCommentListener;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import laoyou.com.laoyou.view.popup.CommentPhotoPopupWindow;
 import okhttp3.Request;

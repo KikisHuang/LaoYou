@@ -7,7 +7,6 @@ import com.tencent.TIMFriendGroup;
 import com.tencent.TIMFriendshipProxy;
 import com.tencent.TIMManager;
 import com.tencent.TIMUserProfile;
-import com.tencent.qcloud.presentation.event.FriendshipEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+
+import laoyou.com.laoyou.tencent.presentation.event.FriendshipEvent;
 
 /**
  * 好友列表缓存数据结构

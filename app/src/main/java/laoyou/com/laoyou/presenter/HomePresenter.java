@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.tencent.qcloud.sdk.Interface;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,20 +31,23 @@ import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.AppBarStateChangeListener;
 import laoyou.com.laoyou.listener.HomeListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
-import laoyou.com.laoyou.listener.SpringListener;
+import laoyou.com.laoyou.listener.ThumbnailListener;
 import laoyou.com.laoyou.listener.VersionListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.save.db.LouSQLite;
 import laoyou.com.laoyou.save.db.PhraseEntry;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
+import laoyou.com.laoyou.thread.ThumbnailAsyncTask;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.VersionUpUtils;
 import laoyou.com.laoyou.utils.homeViewPageUtils;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.save.db.dbUtils.CacheDb;
+import static laoyou.com.laoyou.thread.ThumbnailAsyncTask.ThumbNailInstance;
 import static laoyou.com.laoyou.utils.JsonUtils.StatusPaser;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
@@ -64,7 +65,7 @@ import static laoyou.com.laoyou.utils.SynUtils.stopPlay;
 /**
  * Created by lian on 2017/10/25.
  */
-public class HomePresenter extends AppBarStateChangeListener implements HttpResultListener, VersionListener {
+public class HomePresenter extends AppBarStateChangeListener implements HttpResultListener, VersionListener, ThumbnailListener {
     private static final String TAG = "HomePresenter";
     private HomeListener listener;
     private Handler handler;
@@ -86,8 +87,8 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     public int page = 0;
     private boolean RefreshFlag;
     private List<TopicTypeBean> Nblist;
-    public SpringListener springlistener;
     private List<ActiveBean> atvb;
+    private boolean WAIT = false;
 
     public HomePresenter(HomeListener listener, ViewPager mViewPager, LayoutInflater inflater, Context context, LinearLayout mLinearLayoutDot) {
         this.listener = listener;
@@ -178,13 +179,14 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
      * @param flag
      */
     public void getPeopleNearby(boolean flag) {
-
-        RefreshFlag = flag;
-        Map<String, String> map = getKeyMap();
-        map.put("page", String.valueOf(page));
-        map.put("pageSize", String.valueOf(page + Fields.SIZE));
-
-        httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETCARECAREBYPAGE);
+        if (!WAIT) {
+            WAIT = true;
+            RefreshFlag = flag;
+            Map<String, String> map = getKeyMap();
+            map.put("page", String.valueOf(page));
+            map.put("pageSize", String.valueOf(page + Fields.SIZE));
+            httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETCARECAREBYPAGE);
+        }
     }
 
     /**
@@ -266,23 +268,20 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
                     listener.BannerHide();
                 break;
             case Fields.REQUEST6:
-
                 JSONArray ar = getJsonAr(response);
                 if (RefreshFlag)
                     Nblist = new ArrayList<>();
-                StatusPaser(ar, Nblist);
-                if (ar.length() > 0){
-                    listener.RefreshRecyclerView(Nblist);
-                    CacheDb(Nblist);
+
+                if (!RefreshFlag && ar.length() <= 0)
+                    listener.onBottom();
+                else if (RefreshFlag && ar.length() <= 0)
+                    listener.onFailed("");
+                else {
+                    if (ThumbNailInstance() == null)
+                        new ThumbnailAsyncTask(this).execute(ar, Nblist);
                 }
-
-                else if (RefreshFlag) {
-//                    listener.onFailed(gets(R.string.nodata));
-                    listener.onBottom();
-                } else if (!RefreshFlag)
-                    listener.onBottom();
+                WAIT = false;
                 break;
-
             case Fields.REQUEST3:
                 RefreshLikeThme(true);
                 break;
@@ -391,15 +390,20 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     @Override
     public void onError(Request request, Exception e) {
         listener.onFailed(gets(R.string.networkerror));
+        WAIT = false;
     }
 
     @Override
     public void onParseError(Exception e) {
         Log.i(TAG, "解析异常 Error ===" + e);
+        WAIT = false;
+        listener.onFailed("");
     }
 
     @Override
     public void onFailed(String response, int code, int tag) {
+        if (Fields.REQUEST6 == tag)
+            WAIT = false;
         //未实名认证;
         /*if (tag == Fields.REQUEST3 && code == 0)
             listener.onCheckStatus(0);
@@ -435,7 +439,6 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
      * 登录判断;
      */
     public void IsLogin() {
-
         if (LoginStatusQuery()) {
             getPeopleNearby(true);
             getUseDetails();
@@ -504,11 +507,11 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
      *
      * @param flag
      */
-    private void RefreshLikeThme(boolean flag) {
+    public void RefreshLikeThme(boolean flag) {
         RefreshFlag = flag;
         Map<String, String> map = getKeyMap();
         map.put("page", String.valueOf(0));
-        map.put("pageSize", String.valueOf(page > 0 ? page : page + Fields.SIZE));
+        map.put("pageSize", String.valueOf(page > 0 ? page + Fields.SIZE : page + Fields.SIZE));
 
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST6, Interface.URL + Interface.GETCARECAREBYPAGE);
     }
@@ -569,5 +572,23 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
         Map<String, String> map = getParamsMap();
         map.put("phones", phones);
         httpUtils.OkHttpsGet(map, this, Fields.ACRESULET2, Interface.URL + Interface.SEARCHUSERBYPHONES);
+    }
+
+    @Override
+    public void onThumbnailResult(List<TopicTypeBean> list) {
+        if (list != null) {
+            if (list.size() > 0) {
+                listener.RefreshRecyclerView(list);
+                if (RefreshFlag)
+                    CacheDb(list);
+            } else if (list.size() <= 0 && RefreshFlag) {
+//          listener.onFailed(gets(R.string.nodata));
+                listener.onBottom();
+            }
+        } else
+            Log.e(TAG, "Thumbnail null");
+
+        if (ThumbNailInstance() != null)
+            ThumbNailInstance().CloseThumb();
     }
 }

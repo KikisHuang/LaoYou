@@ -18,7 +18,7 @@ public class dbUtils {
     /**
      * 本地数据库缓存;
      */
-    public static <T> void CacheDb(List<T> entities) {
+    public static synchronized  <T> void CacheDb(List<T> entities) {
         if (entities != null && entities.size() > 0) {
             if (entities.get(0) instanceof PageTopBannerBean)
                 CachePageTopBanner((List<PageTopBannerBean>) entities);

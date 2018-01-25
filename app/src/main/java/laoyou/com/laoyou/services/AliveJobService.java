@@ -10,17 +10,17 @@ import android.util.Log;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMManager;
 import com.tencent.TIMUserStatusListener;
-import com.tencent.qcloud.presentation.business.InitBusiness;
-import com.tencent.qcloud.presentation.business.LoginBusiness;
-import com.tencent.qcloud.presentation.event.FriendshipEvent;
-import com.tencent.qcloud.presentation.event.GroupEvent;
-import com.tencent.qcloud.presentation.event.MessageEvent;
-import com.tencent.qcloud.presentation.event.RefreshEvent;
-import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
 
 import laoyou.com.laoyou.activity.MainActivity;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.UserInfo;
+import laoyou.com.laoyou.tencent.presentation.business.InitBusiness;
+import laoyou.com.laoyou.tencent.presentation.business.LoginBusiness;
+import laoyou.com.laoyou.tencent.presentation.event.FriendshipEvent;
+import laoyou.com.laoyou.tencent.presentation.event.GroupEvent;
+import laoyou.com.laoyou.tencent.presentation.event.MessageEvent;
+import laoyou.com.laoyou.tencent.presentation.event.RefreshEvent;
+import laoyou.com.laoyou.tencent.service.TlsBusiness;
 import laoyou.com.laoyou.tencent.utils.Foreground;
 import laoyou.com.laoyou.tencent.utils.PushUtil;
 import laoyou.com.laoyou.utils.ActivityCollector;
@@ -53,9 +53,10 @@ public class AliveJobService extends JobService implements TIMCallBack, TIMUserS
 
             // 具体任务逻辑
             if (!ActivityCollector.isActivityExist(MainActivity.class)) {
-                if (SPreferences.getUserSig() != null && !SPreferences.getUserSig().isEmpty())
+                if (SPreferences.getUserSig() != null && !SPreferences.getUserSig().isEmpty()) {
                     IMInit();
-                Log.d(TAG, "APP被杀死，重启...");
+                    Log.d(TAG, "APP被杀死，重启...");
+                }
             }
             // 通知系统任务执行结束
             jobFinished((JobParameters) msg.obj, false);

@@ -14,7 +14,7 @@ import laoyou.com.laoyou.listener.CertificationListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
-import com.tencent.qcloud.sdk.Interface;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 

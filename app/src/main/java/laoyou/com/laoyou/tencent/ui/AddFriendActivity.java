@@ -13,17 +13,17 @@ import com.bumptech.glide.Glide;
 import com.tencent.TIMFriendResult;
 import com.tencent.TIMFriendStatus;
 import com.tencent.TIMValueCallBack;
-import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
-import com.tencent.qcloud.presentation.viewfeatures.FriendshipManageView;
-import com.tencent.qcloud.ui.LineControllerView;
-import com.tencent.qcloud.ui.ListPickerDialog;
-import com.tencent.qcloud.ui.NotifyDialog;
 
 import java.util.Collections;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
+import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.FriendshipManageView;
+import laoyou.com.laoyou.tencent.view.LineControllerView;
+import laoyou.com.laoyou.tencent.view.ListPickerDialog;
+import laoyou.com.laoyou.tencent.view.NotifyDialog;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 

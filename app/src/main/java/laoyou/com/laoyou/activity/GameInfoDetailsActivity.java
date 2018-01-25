@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.tencent.qcloud.sdk.Interface;
 import com.tencent.smtt.sdk.WebView;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -26,6 +25,7 @@ import laoyou.com.laoyou.listener.KeyboardChangeListener;
 import laoyou.com.laoyou.listener.OutSideListener;
 import laoyou.com.laoyou.presenter.OutSidePresenter;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;

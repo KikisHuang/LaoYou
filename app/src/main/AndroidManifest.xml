@@ -22,6 +22,16 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
 
+    <uses-permission android:name="oicq.wlogin_sdk.permission.WloginProvider.READ" />
+    <uses-permission android:name="oicq.wlogin_sdk.permission.WloginProvider.WRITE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />     <!-- 发送短信-->
+    <uses-permission android:name="android.permission.READ_SMS" />     <!-- 读取短信 -->
+    <uses-permission android:name="android.permission.WRITE_SMS" />    <!-- 写入消息 -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />  <!-- 接收消息 -->
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
@@ -57,11 +67,28 @@
         android:supportsRtl="true"
         android:theme="@style/BaseTheme"
         tools:replace="icon,label,theme">
+
+
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
+
+
+        </activity>
+        <!-- 测试页面 -->
+        <activity
+            android:name=".activity.TestActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <!-- 引导页面 -->
+        <activity
+            android:name=".activity.GuidePageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,14 +97,11 @@
             </intent-filter>
 
         </activity>
-        <!-- 测试页面 -->
+        <!-- 欢迎页面 -->
         <activity
-            android:name=".activity.TestActivity"
-            android:screenOrientation="portrait">
-
-
-
-        </activity>
+            android:name=".activity.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"></activity>
 
         <!-- 登录、注册选择页面 -->
         <activity
@@ -100,10 +124,7 @@
         <!-- 发布话题页面 -->
         <activity
             android:name=".activity.ReleaseTopicActivity"
-            android:screenOrientation="portrait">
-
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <!-- 发送验证码页面 -->
         <activity
             android:name=".activity.SendPhoneCodeActivity"
@@ -282,9 +303,6 @@
             android:name="com.amap.api.v2.apikey"
             android:value="72d27102f03668ccc0d4444f616279b4"></meta-data>
 
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="5a0be1698f4a9d7e1300001f"></meta-data>
 
         <!-- 微信回调-->
         <activity
@@ -369,8 +387,6 @@
             </intent-filter>
         </receiver>
 
-
-        <activity android:name=".tencent.ui.HomeActivity" />
         <activity
             android:name=".tencent.ui.ChatActivity"
             android:launchMode="singleTask"
@@ -430,5 +446,9 @@
         <service
             android:name=".services.AliveJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+
+        <meta-data android:name="com.tencent.rdm.uuid" android:value="e22e5573-563e-40db-b1bc-02b4993162d4" />
+
     </application>
 </manifest>

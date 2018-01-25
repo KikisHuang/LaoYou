@@ -28,9 +28,9 @@ public class MyJZVideoPlayerStandard extends JZVideoPlayerStandard {
     }
 
 
-        @Override
+    @Override
     public void onClick(View v) {
-            AnimaFinish();
+        AnimaFinish();
         int i = v.getId();
         if (i == cn.jzvd.R.id.fullscreen) {
             if (currentScreen == SCREEN_WINDOW_FULLSCREEN) {
@@ -87,9 +87,12 @@ public class MyJZVideoPlayerStandard extends JZVideoPlayerStandard {
 
     @Override
     public void onStateAutoComplete() {
-        AnimaFinish();
-        super.onStateAutoComplete();
+    /*    super.onStateAutoComplete();
+        AnimaFinish();*/
+        onClickUiToggle();
+        startVideo();
     }
+
 
     @Override
     public void onInfo(int what, int extra) {

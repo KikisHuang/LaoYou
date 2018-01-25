@@ -276,9 +276,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
             grade_tv.setText(StringIsNull(String.valueOf(cb.getAvgEvaluate())));
             caf_address_tv.setText(StringIsNull(cb.getAddress()));
             Glide.with(this).load(cb.getLogoUrl()).apply(getGlideOptions()).into(caf_logo_img);
-            if (StringIsNull(cb.getBackgroundUrl()).isEmpty())
-                Glide.with(this).load(R.drawable.test_background).apply(getGlideOptions()).into(background_img);
-            else
+            if (!StringIsNull(cb.getBackgroundUrl()).isEmpty())
                 Glide.with(this).load(cb.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
             EnvironmentInit(cb.getInternetBarImgs());
             cpu.setText(StringIsNull(cb.getConfigureCPU()));

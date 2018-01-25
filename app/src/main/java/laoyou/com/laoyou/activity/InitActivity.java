@@ -67,6 +67,7 @@ public abstract class InitActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+//        MyApplication.getRefWatcher().watch(this);
         // 结束Activity&从栈中移除该Activity
 /*        AtyContainer.getInstance().removeActivity(this);
         Runtime.getRuntime().gc();*/

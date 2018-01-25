@@ -20,8 +20,12 @@ public class RecorderUtil {
     private long timeInterval;
     private boolean isRecording;
 
-    public RecorderUtil(){
-        mFileName = FileUtil.getCacheFilePath("tempAudio");
+    public RecorderUtil() {
+        try {
+            mFileName = FileUtil.getCacheFilePath("hoop_tempAudio");
+        } catch (Exception e) {
+            Log.e(TAG, "Error === " + e);
+        }
     }
 
     /**
@@ -29,7 +33,7 @@ public class RecorderUtil {
      */
     public void startRecording() {
         if (mFileName == null) return;
-        if (isRecording){
+        if (isRecording) {
             mRecorder.release();
             mRecorder = null;
         }
@@ -43,7 +47,7 @@ public class RecorderUtil {
             mRecorder.prepare();
             mRecorder.start();
             isRecording = true;
-        } catch (Exception e){
+        } catch (Exception e) {
             Log.e(TAG, "prepare() failed");
         }
 
@@ -56,14 +60,14 @@ public class RecorderUtil {
     public void stopRecording() {
         if (mFileName == null) return;
         timeInterval = System.currentTimeMillis() - startTime;
-        try{
-            if (timeInterval>1000){
+        try {
+            if (timeInterval > 1000) {
                 mRecorder.stop();
             }
             mRecorder.release();
             mRecorder = null;
-            isRecording =false;
-        }catch (Exception e){
+            isRecording = false;
+        } catch (Exception e) {
             Log.e(TAG, "release() failed");
         }
 
@@ -75,9 +79,9 @@ public class RecorderUtil {
      */
     public byte[] getDate() {
         if (mFileName == null) return null;
-        try{
+        try {
             return readFile(new File(mFileName));
-        }catch (IOException e){
+        } catch (IOException e) {
             Log.e(TAG, "read file error" + e);
             return null;
         }
@@ -86,7 +90,7 @@ public class RecorderUtil {
     /**
      * 获取录音文件地址
      */
-    public String getFilePath(){
+    public String getFilePath() {
         return mFileName;
     }
 
@@ -95,7 +99,7 @@ public class RecorderUtil {
      * 获取录音时长,单位秒
      */
     public long getTimeInterval() {
-        return timeInterval/1000;
+        return timeInterval / 1000;
     }
 
 
@@ -121,7 +125,6 @@ public class RecorderUtil {
             f.close();
         }
     }
-
 
 
 }

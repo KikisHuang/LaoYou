@@ -10,7 +10,6 @@ import com.tencent.TIMMessage;
 import com.tencent.TIMTextElem;
 import com.tencent.TIMUserProfile;
 import com.tencent.TIMValueCallBack;
-import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,7 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.AddressBean;
 import laoyou.com.laoyou.listener.AddressBookListener;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
+import laoyou.com.laoyou.tencent.presentation.presenter.GroupManagerPresenter;
 import laoyou.com.laoyou.utils.FriendUtils;
 
 import static laoyou.com.laoyou.utils.SynUtils.gets;

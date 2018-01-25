@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".tencent.ui.GroupProfileActivity">
 
-    <com.tencent.qcloud.ui.TemplateTitle
+    <laoyou.com.laoyou.tencent.view.TemplateTitle
         android:id="@+id/chat_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,15 +40,16 @@
         android:textColor="@color/black"
         android:textSize="12sp" />
     </LinearLayout>
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/idText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:isBottom="false"
+        android:visibility="gone"
         app:name="@string/chat_setting_group_id" />
 
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/member"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,21 +57,21 @@
         app:isBottom="false"
         app:name="@string/chat_setting_group_member" />
 
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/nameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isBottom="false"
         app:name="@string/chat_setting_group_name" />
 
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/groupIntro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isBottom="false"
         app:name="@string/chat_setting_group_introduce" />
 
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/messageNotify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,7 +79,7 @@
         app:isBottom="false"
         app:name="@string/chat_setting_group_msg_alert" />
 
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/addOpt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

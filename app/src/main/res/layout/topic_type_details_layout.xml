@@ -18,8 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            app:elevation="0dp"
-            >
+            app:elevation="0dp">
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
@@ -72,20 +71,31 @@
                             android:textColor="@color/content3"
                             android:textSize="11sp" />
 
-
-                        <TextView
-                            android:id="@+id/attention_tv"
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:layout_gravity="right|center"
-                            android:layout_marginRight="15dp"
+                            android:layout_height="wrap_content"
                             android:background="@drawable/gray_corners2"
-                            android:drawableLeft="@mipmap/black_star"
-                            android:gravity="center"
+                            android:orientation="horizontal"
                             android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:text="关注"
-                            android:textColor="@color/black" />
+                            android:paddingRight="10dp">
+
+                            <ImageView
+                                android:id="@+id/attention_img"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="4dp"
+                                android:src="@mipmap/black_star" />
+
+                            <TextView
+                                android:id="@+id/attention_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:layout_gravity="right|center"
+                                android:gravity="center"
+                                android:text="关注"
+                                android:textColor="@color/black" />
+                        </LinearLayout>
 
                         <ImageView
                             android:id="@+id/issue_img"
@@ -140,7 +150,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:background="@color/white"
-                app:tabIndicatorColor="@color/black"
+                app:tabIndicatorColor="@color/dominant_ton"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/black0"
                 app:tabTextAppearance="@style/TabLayoutTitlesTextStyle1"

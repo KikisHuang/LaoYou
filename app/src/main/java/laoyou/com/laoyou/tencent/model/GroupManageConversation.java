@@ -6,12 +6,12 @@ import android.util.Log;
 
 import com.tencent.TIMCallBack;
 import com.tencent.TIMGroupPendencyItem;
-import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
 
 import java.util.Calendar;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.application.MyApplication;
+import laoyou.com.laoyou.tencent.presentation.presenter.GroupManagerPresenter;
 import laoyou.com.laoyou.tencent.ui.GroupManageMessageActivity;
 
 /**

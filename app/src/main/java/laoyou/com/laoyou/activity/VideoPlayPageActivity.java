@@ -1,8 +1,6 @@
 package laoyou.com.laoyou.activity;
 
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.bumptech.glide.Glide;
@@ -38,23 +36,26 @@ public class VideoPlayPageActivity extends InitActivity implements View.OnClickL
         coverPath = getIntent().getStringExtra("Video_coverPath");
         myJZVideoPlayerStandard = f(R.id.videoplayer);
         video_layout = f(R.id.video_layout);
-        FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
-        fp.gravity = Gravity.CENTER;
-        myJZVideoPlayerStandard.setLayoutParams(fp);
-        JZVideoPlayer.setMediaInterface(new JZMediaIjkplayer());
+
+        //切换Ijk的播放内核;
+         JZVideoPlayer.setMediaInterface(new JZMediaIjkplayer());
         VideoInit();
 
     }
 
     private void VideoInit() {
+        myJZVideoPlayerStandard.SAVE_PROGRESS = false;
 
         myJZVideoPlayerStandard.setUp(videoUrl
-                , JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "饺子快长大");
+                , JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "");
+
         Glide.with(this)
                 .load(coverPath)
                 .apply(getGlideOptions())
                 .into(myJZVideoPlayerStandard.thumbImageView);
+
         myJZVideoPlayerStandard.startVideo();
+//        myJZVideoPlayerStandard.startButton.performClick();
     }
 
     @Override
@@ -73,12 +74,15 @@ public class VideoPlayPageActivity extends InitActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (myJZVideoPlayerStandard != null) {
+            myJZVideoPlayerStandard.removeAllViews();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        myJZVideoPlayerStandard.onStateAutoComplete();
+//        myJZVideoPlayerStandard.onCloseVideo();
         JZVideoPlayer.releaseAllVideos();
         finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

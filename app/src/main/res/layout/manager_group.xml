@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.tencent.qcloud.ui.TemplateTitle
+    <laoyou.com.laoyou.tencent.view.TemplateTitle
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:canBack="true"
@@ -34,8 +34,6 @@
             android:text="@string/add_new_group" />
 
     </LinearLayout>
-
-
 
     <ListView
         android:id="@+id/group_list"

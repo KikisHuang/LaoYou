@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.tencent.TIMGroupPendencyItem;
-import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
-import com.tencent.qcloud.presentation.viewfeatures.GroupManageMessageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +12,8 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.adapters.GroupManageMessageAdapter;
 import laoyou.com.laoyou.tencent.model.GroupFuture;
+import laoyou.com.laoyou.tencent.presentation.presenter.GroupManagerPresenter;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.GroupManageMessageView;
 
 public class GroupManageMessageActivity extends Activity implements GroupManageMessageView {
 

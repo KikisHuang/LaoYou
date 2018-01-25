@@ -10,8 +10,6 @@ import android.widget.Toast;
 
 import com.huawei.android.pushagent.PushManager;
 import com.tencent.TIMCallBack;
-import com.tencent.qcloud.presentation.business.LoginBusiness;
-import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.List;
@@ -20,6 +18,8 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.model.UserInfo;
+import laoyou.com.laoyou.tencent.presentation.business.LoginBusiness;
+import laoyou.com.laoyou.tencent.service.TlsBusiness;
 
 public class DialogActivity extends Activity implements View.OnClickListener {
 

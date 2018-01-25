@@ -5,8 +5,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.tencent.qcloud.sdk.Interface;
-
 import org.json.JSONException;
 
 import java.util.Map;
@@ -18,6 +16,7 @@ import laoyou.com.laoyou.listener.LoginListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 

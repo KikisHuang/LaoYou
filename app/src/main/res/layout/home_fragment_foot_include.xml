@@ -5,15 +5,13 @@
     android:orientation="vertical"
     android:paddingBottom="20dp"
     android:paddingTop="20dp"
-    android:visibility="invisible">
+    android:visibility="gone">
 
     <LinearLayout
         android:id="@+id/recom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -99,5 +97,7 @@
         android:gravity="center"
         android:text="已经到底裤了，不能再下拉了..."
         android:textColor="@color/content3"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone"
+        />
 </LinearLayout>

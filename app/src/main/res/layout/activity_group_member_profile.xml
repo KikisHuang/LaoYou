@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/background"
     tools:context=".tencent.ui.GroupMemberProfileActivity">
-    <com.tencent.qcloud.ui.TemplateTitle
+    <laoyou.com.laoyou.tencent.view.TemplateTitle
         android:id="@+id/GroupMemTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +19,8 @@
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal">
-        <com.tencent.qcloud.ui.CircleImageView
+
+        <laoyou.com.laoyou.tencent.view.CircleImageView
             android:id="@+id/user_head"
             android:layout_width="45dp"
             android:layout_height="45dp"
@@ -45,19 +46,19 @@
         android:layout_marginBottom="20dp"
         android:background="@color/line" />
 
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/manager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:name="@string/group_member_manage"
         app:isSwitch="true" />
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/setQuiet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:name="@string/group_member_quiet"
         app:canNav="true"/>
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/groupCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

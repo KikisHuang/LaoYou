@@ -7,8 +7,6 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
-import com.tencent.qcloud.sdk.Interface;
-
 import org.json.JSONException;
 
 import java.util.List;
@@ -23,6 +21,7 @@ import laoyou.com.laoyou.listener.QueryListener;
 import laoyou.com.laoyou.thread.CheckThread;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 

@@ -18,8 +18,6 @@ import com.tencent.TIMConversationType;
 import com.tencent.TIMFriendResult;
 import com.tencent.TIMFriendStatus;
 import com.tencent.TIMValueCallBack;
-import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
-import com.tencent.qcloud.ui.NotifyDialog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +36,9 @@ import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 import laoyou.com.laoyou.presenter.HomePagePresenter;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
+import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
 import laoyou.com.laoyou.tencent.ui.ChatActivity;
+import laoyou.com.laoyou.tencent.view.NotifyDialog;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -458,12 +458,13 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
         handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img, more_img.getVisibility() == View.GONE ? null : more_img);
 
-        if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom) {
-                IsRefresh = false;
-                if (isMe)
-                    hp.getPersonaldynamic(null, false);
-                else
-                    hp.getPersonaldynamic(id, false);
+        if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom && (Fields.VPT == 0 || System.currentTimeMillis() - Fields.VPT >= 2000))
+        {
+            IsRefresh = false;
+            if (isMe)
+                hp.getPersonaldynamic(null, false);
+            else
+                hp.getPersonaldynamic(id, false);
         }
     }
 

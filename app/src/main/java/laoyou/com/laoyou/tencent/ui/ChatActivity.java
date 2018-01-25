@@ -22,11 +22,6 @@ import com.tencent.TIMConversationType;
 import com.tencent.TIMMessage;
 import com.tencent.TIMMessageDraft;
 import com.tencent.TIMMessageStatus;
-import com.tencent.qcloud.presentation.presenter.ChatPresenter;
-import com.tencent.qcloud.presentation.viewfeatures.ChatView;
-import com.tencent.qcloud.ui.ChatInput;
-import com.tencent.qcloud.ui.TemplateTitle;
-import com.tencent.qcloud.ui.VoiceSendingView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,9 +41,14 @@ import laoyou.com.laoyou.tencent.model.MessageFactory;
 import laoyou.com.laoyou.tencent.model.TextMessage;
 import laoyou.com.laoyou.tencent.model.VideoMessage;
 import laoyou.com.laoyou.tencent.model.VoiceMessage;
+import laoyou.com.laoyou.tencent.presentation.presenter.ChatPresenter;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.ChatView;
 import laoyou.com.laoyou.tencent.utils.FileUtil;
 import laoyou.com.laoyou.tencent.utils.MediaUtil;
 import laoyou.com.laoyou.tencent.utils.RecorderUtil;
+import laoyou.com.laoyou.tencent.view.ChatInput;
+import laoyou.com.laoyou.tencent.view.TemplateTitle;
+import laoyou.com.laoyou.tencent.view.VoiceSendingView;
 
 public class ChatActivity extends FragmentActivity implements ChatView {
 
@@ -127,8 +127,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
         switch (type) {
             case C2C:
-                title.setVisibility(View.GONE);
-                title.setMoreImg(R.drawable.btn_person);
+//                title.setVisibility(View.GONE);
+//                title.setMoreImg(R.drawable.btn_person);
                 if (FriendshipInfo.getInstance().isFriend(identify)) {
                     title.setMoreImgAction(new View.OnClickListener() {
                         @Override

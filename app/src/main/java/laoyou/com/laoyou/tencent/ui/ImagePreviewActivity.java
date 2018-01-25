@@ -12,11 +12,11 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import laoyou.com.laoyou.R;
-import com.tencent.qcloud.ui.TemplateTitle;
-
 import java.io.File;
 import java.io.IOException;
+
+import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.tencent.view.TemplateTitle;
 
 public class ImagePreviewActivity extends Activity {
 

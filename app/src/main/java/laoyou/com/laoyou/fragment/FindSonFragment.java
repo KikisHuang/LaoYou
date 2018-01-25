@@ -45,13 +45,23 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
     private RecyclerView recyclerView;
     private FindSonPresenter fp;
     private boolean isRefresh;
+    private static List<FindSonFragment> fragments = new ArrayList<>();
+    private int sex = 99;
 
     public static FindSonFragment setTag(int tag) {
         FindSonFragment f = new FindSonFragment();
+        fragments.add(f);
         Bundle args = new Bundle();
         args.putString("Tag", String.valueOf(tag));
         f.setArguments(args);
         return f;
+    }
+
+    public static List<FindSonFragment> getInstances() {
+        if (fragments != null && fragments.size() > 0)
+            return fragments;
+        else
+            return null;
     }
 
     @Override
@@ -101,7 +111,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
             case 1:
                 nearbyAdapter = new NearbyAdapter(getActivity(), list, this);
                 recyclerView.setAdapter(nearbyAdapter);
-                fp.getNearbyData(true);
+                fp.getNearbyData(true, sex);
                 break;
         }
 
@@ -123,9 +133,15 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
             case 1:
                 fp.page = init;
                 isRefresh = true;
-                fp.getNearbyData(true);
+                fp.getNearbyData(true, sex);
                 break;
         }
+    }
+
+    public void ScreenSexInfo(int s) {
+        sex = s;
+        isRefresh = true;
+        fp.getNearbyData(true, sex);
     }
 
     @Override
@@ -139,7 +155,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
             case 1:
                 fp.page = list.size();
                 isRefresh = false;
-                fp.getNearbyData(false);
+                fp.getNearbyData(false, sex);
                 break;
         }
     }

@@ -9,10 +9,6 @@ import android.widget.Toast;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMFriendAllowType;
 import com.tencent.TIMUserProfile;
-import com.tencent.qcloud.presentation.business.LoginBusiness;
-import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
-import com.tencent.qcloud.presentation.viewfeatures.FriendInfoView;
-import com.tencent.qcloud.ui.LineControllerView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +16,10 @@ import java.util.Map;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.dialog.ActionSheetDialog;
+import laoyou.com.laoyou.tencent.presentation.business.LoginBusiness;
+import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.FriendInfoView;
+import laoyou.com.laoyou.tencent.view.LineControllerView;
 import laoyou.com.laoyou.utils.Fields;
 
 import static laoyou.com.laoyou.activity.MainActivity.MainInstance;

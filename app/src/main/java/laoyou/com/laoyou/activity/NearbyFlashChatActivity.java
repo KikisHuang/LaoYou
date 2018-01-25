@@ -10,7 +10,6 @@ import android.widget.ListView;
 import com.liaoinstan.springview.widget.SpringView;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMConversationType;
-import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +21,7 @@ import laoyou.com.laoyou.listener.NearbyFlashChatListener;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.presenter.NearbyFlashChatPresenter;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
+import laoyou.com.laoyou.tencent.presentation.presenter.GroupManagerPresenter;
 import laoyou.com.laoyou.tencent.ui.ChatActivity;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.SpringUtils;

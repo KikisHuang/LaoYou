@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".tencent.ui.BlackListActivity">
-    <com.tencent.qcloud.ui.TemplateTitle
+    <laoyou.com.laoyou.tencent.view.TemplateTitle
         android:id="@+id/group_mem_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

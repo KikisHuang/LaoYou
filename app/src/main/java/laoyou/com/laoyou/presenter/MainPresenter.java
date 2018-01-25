@@ -3,13 +3,6 @@ package laoyou.com.laoyou.presenter;
 import android.util.Log;
 
 import com.tencent.TIMCallBack;
-import com.tencent.qcloud.presentation.business.InitBusiness;
-import com.tencent.qcloud.presentation.business.LoginBusiness;
-import com.tencent.qcloud.presentation.event.FriendshipEvent;
-import com.tencent.qcloud.presentation.event.GroupEvent;
-import com.tencent.qcloud.presentation.event.RefreshEvent;
-import com.tencent.qcloud.sdk.Interface;
-import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
 
 import org.json.JSONException;
 
@@ -21,8 +14,15 @@ import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.MainListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.UserInfo;
+import laoyou.com.laoyou.tencent.presentation.business.InitBusiness;
+import laoyou.com.laoyou.tencent.presentation.business.LoginBusiness;
+import laoyou.com.laoyou.tencent.presentation.event.FriendshipEvent;
+import laoyou.com.laoyou.tencent.presentation.event.GroupEvent;
+import laoyou.com.laoyou.tencent.presentation.event.RefreshEvent;
+import laoyou.com.laoyou.tencent.service.TlsBusiness;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 

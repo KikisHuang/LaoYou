@@ -9,12 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.tencent.qcloud.ui.CircleImageView;
 
 import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.ProfileSummary;
+import laoyou.com.laoyou.tencent.view.CircleImageView;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 

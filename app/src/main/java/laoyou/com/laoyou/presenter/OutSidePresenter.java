@@ -3,7 +3,6 @@ package laoyou.com.laoyou.presenter;
 
 import android.util.Log;
 
-import com.tencent.qcloud.sdk.Interface;
 import com.tencent.smtt.sdk.CacheManager;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -17,6 +16,7 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.OutSideListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import laoyou.com.laoyou.view.OutSideWebChromeClient;
 import laoyou.com.laoyou.view.OutSideWebViewClient;

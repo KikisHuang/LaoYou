@@ -14,13 +14,13 @@ import com.tencent.TIMCallBack;
 import com.tencent.TIMGroupPendencyGetType;
 import com.tencent.TIMGroupPendencyHandledStatus;
 import com.tencent.TIMGroupPendencyItem;
-import com.tencent.qcloud.ui.CircleImageView;
 
 import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.GroupFuture;
 import laoyou.com.laoyou.tencent.model.UserInfo;
+import laoyou.com.laoyou.tencent.view.CircleImageView;
 
 /**
  * 群管理消息adapter

@@ -12,7 +12,7 @@
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <com.tencent.qcloud.ui.TemplateTitle
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/imagePreviewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:text="@string/chat_image_preview_ori"/>
     </LinearLayout>
 </RelativeLayout>

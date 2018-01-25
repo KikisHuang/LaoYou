@@ -1,16 +1,24 @@
 package laoyou.com.laoyou.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.TemporaryBean;
 
 /**
  * Created by lian on 2017/10/25.
  */
 public class Fields {
     public static final String Catalina = "http://img5.duitang.com/uploads/item/201506/04/20150604122611_zMfPQ.jpeg";
-
+    public static List<TemporaryBean> temporary = new ArrayList<>();
 
     public static String KEY = "key";
-    public static final boolean DEBUG = false;
+    public static long VPT = 0;
+
+    public static final boolean DEBUG = true;
+    public static final int MAXWIDTH = 540;
+    public static final int MAXHEIGHT = 432;
 
     public static final String WECHATAPPID = "wx16258856fb255f4b";
     public static final String WECHATAPPSECRET = "b92df5eccddc26af53b6e02cc692087b";
@@ -46,6 +54,8 @@ public class Fields {
     public static final String TGS = "@TGS#";
 
     public static final String br = "<br />";
+
+    public static int[] welImgs = new int[]{R.drawable.wel_one, R.drawable.wel_two, R.drawable.wel_three};
 
     //刷新动画
     public static int[] refreshAnimSrcs = new int[]{R.drawable.loading1, R.drawable.loading2, R.drawable.loading3, R.drawable.loading4, R.drawable.loading5, R.drawable.loading6, R.drawable.loading7, R.drawable.loading8, R.drawable.loading9};

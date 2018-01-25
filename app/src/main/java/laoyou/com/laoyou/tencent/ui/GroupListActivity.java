@@ -8,8 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.tencent.TIMGroupCacheInfo;
-import com.tencent.qcloud.presentation.event.GroupEvent;
-import com.tencent.qcloud.ui.TemplateTitle;
 
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +19,8 @@ import laoyou.com.laoyou.tencent.adapters.ProfileSummaryAdapter;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.model.GroupProfile;
 import laoyou.com.laoyou.tencent.model.ProfileSummary;
+import laoyou.com.laoyou.tencent.presentation.event.GroupEvent;
+import laoyou.com.laoyou.tencent.view.TemplateTitle;
 
 public class GroupListActivity extends Activity implements Observer {
 

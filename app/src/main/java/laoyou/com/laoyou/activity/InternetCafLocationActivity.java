@@ -138,7 +138,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
         starBar.setIntegerMark(false);
         starBar.ClickOpen(false);
 
-        starBar.setStarMark(3.5f);
+        starBar.setStarMark(0f);
         //路线规划初始化;
         routeSearch = new RouteSearch(this);
         routeSearch.setRouteSearchListener(this);

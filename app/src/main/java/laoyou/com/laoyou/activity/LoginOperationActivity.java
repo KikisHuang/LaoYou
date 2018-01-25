@@ -118,7 +118,7 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
             if (MainInstance() != null)
                 MainInstance().IMInit();
             if (getHomeInstance() != null)
-                getHomeInstance().onRefresh();
+                getHomeInstance().onRefreshs();
             finish();
         }
     }
@@ -149,7 +149,7 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
         if (SettingInstance() != null)
             SettingInstance().mp.getUseDetails();
         if (getHomeInstance() != null)
-            getHomeInstance().onRefresh();
+            getHomeInstance().onRefreshs();
         finish();
     }
 
@@ -162,6 +162,7 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        instance = null;
         Cancle();
     }
 }

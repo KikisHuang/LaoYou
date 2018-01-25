@@ -20,12 +20,9 @@ import com.zhy.http.okhttp.cookie.CookieJarImpl;
 import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.bean.TemporaryBean;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.save.db.LouSQLite;
 import laoyou.com.laoyou.save.db.MyDbCallBack;
@@ -39,33 +36,43 @@ import okhttp3.OkHttpClient;
  */
 public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
-    private static Context context;
-    public static List<TemporaryBean> temporary = new ArrayList<>();
+    private static MyApplication context;
     public static String CHANNEL;
     //CrashHandler实例
     public static CrashHandler crashHandler;
 
+/*    private RefWatcher mRefWatcher;
+
+    public static RefWatcher getRefWatcher() {
+        return context.mRefWatcher;
+    }*/
+
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
+        context = this;
+//        mRefWatcher = Fields.DEBUG ? LeakCanary.install(this) : RefWatcher.DISABLED;
         DbInit();
         MultiDex.install(this);
-        Foreground.init(this);
         ErrorCrashInit();
         SPreferences.setContext(getApplicationContext());
         OkHttpInit();
-        QBX5Init();
         UmengInt();
+        Foreground.init(this);
         initTecentIM();
+        QBX5Init();
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base); MultiDex.install(this);
+    }
     /**
      * 本地数据库初始化;
      */
     private void DbInit() {
 //        LouSQLite.deleteDatabase(context);
-        LouSQLite.init(context, new MyDbCallBack());
+        LouSQLite.init(context.getApplicationContext(), new MyDbCallBack());
     }
 
     /**
@@ -154,6 +161,6 @@ public class MyApplication extends Application {
 
 
     public static Context getContext() {
-        return context;
+        return context.getApplicationContext();
     }
 }

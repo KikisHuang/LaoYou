@@ -1,12 +1,11 @@
 package laoyou.com.laoyou.utils;
 
 import com.tencent.TIMCallBack;
-import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
-import com.tencent.qcloud.sdk.Interface;
 
 import java.util.Map;
 
 import laoyou.com.laoyou.listener.HttpResultListener;
+import laoyou.com.laoyou.tencent.presentation.presenter.GroupManagerPresenter;
 
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;

@@ -13,8 +13,6 @@ import com.tencent.TIMFriendResult;
 import com.tencent.TIMFriendStatus;
 import com.tencent.TIMFriendshipManager;
 import com.tencent.TIMValueCallBack;
-import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
-import com.tencent.qcloud.ui.NotifyDialog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +25,8 @@ import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HomePageListener;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
+import laoyou.com.laoyou.tencent.view.NotifyDialog;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;

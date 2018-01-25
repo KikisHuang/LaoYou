@@ -16,13 +16,13 @@ import com.bumptech.glide.Glide;
 import com.tencent.TIMFriendResult;
 import com.tencent.TIMFutureFriendType;
 import com.tencent.TIMValueCallBack;
-import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
-import com.tencent.qcloud.ui.CircleImageView;
 
 import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.FriendFuture;
+import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
+import laoyou.com.laoyou.tencent.view.CircleImageView;
 
 import static laoyou.com.laoyou.tencent.ui.FriendshipManageMessageActivity.getFriendPresenter;
 import static laoyou.com.laoyou.utils.DateUtils.IsToday;

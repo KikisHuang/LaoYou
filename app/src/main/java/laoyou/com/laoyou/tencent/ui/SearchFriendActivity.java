@@ -9,15 +9,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
-import com.tencent.qcloud.presentation.viewfeatures.SearchListener;
-import com.tencent.qcloud.sdk.SearchBean;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.adapters.SearchFindAdapter;
+import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.SearchListener;
+import laoyou.com.laoyou.tencent.utils.SearchBean;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 

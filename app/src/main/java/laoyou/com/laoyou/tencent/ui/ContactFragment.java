@@ -15,8 +15,6 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.tencent.qcloud.ui.TemplateTitle;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -27,6 +25,7 @@ import laoyou.com.laoyou.tencent.adapters.ExpandGroupListAdapter;
 import laoyou.com.laoyou.tencent.model.FriendProfile;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
+import laoyou.com.laoyou.tencent.view.TemplateTitle;
 
 /**
  * 联系人界面

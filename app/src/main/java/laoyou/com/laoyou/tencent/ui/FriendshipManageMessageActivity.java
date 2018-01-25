@@ -12,8 +12,6 @@ import android.widget.ListView;
 import com.tencent.TIMFriendFutureItem;
 import com.tencent.TIMFutureFriendType;
 import com.tencent.TIMUserProfile;
-import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
-import com.tencent.qcloud.presentation.viewfeatures.FriendshipMessageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +19,8 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.adapters.FriendManageMessageAdapter;
 import laoyou.com.laoyou.tencent.model.FriendFuture;
+import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.FriendshipMessageView;
 
 public class FriendshipManageMessageActivity extends Activity implements FriendshipMessageView {
 

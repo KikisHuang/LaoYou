@@ -24,8 +24,6 @@ import com.amap.api.location.AMapLocationListener;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMManager;
 import com.tencent.TIMUserStatusListener;
-import com.tencent.qcloud.presentation.event.MessageEvent;
-import com.tencent.qcloud.ui.NotifyDialog;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -42,8 +40,10 @@ import laoyou.com.laoyou.listener.MainListener;
 import laoyou.com.laoyou.presenter.MainPresenter;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.services.JobSchedulerManager;
+import laoyou.com.laoyou.tencent.presentation.event.MessageEvent;
 import laoyou.com.laoyou.tencent.ui.ConversationFragment;
 import laoyou.com.laoyou.tencent.utils.PushUtil;
+import laoyou.com.laoyou.tencent.view.NotifyDialog;
 import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -81,6 +81,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     // JobService，执行系统任务
     private JobSchedulerManager mJobManager;
+    private ImageView msgUnread;
 
     @Override
     protected void click() {
@@ -115,6 +116,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         msg_ll = f(R.id.msg_ll);
         msg_img = f(R.id.msg_img);
         msg_tv = f(R.id.msg_tv);
+        msgUnread = f(R.id.tabUnread);
+
 
         my_ll = f(R.id.my_ll);
         my_tv = f(R.id.my_tv);
@@ -408,7 +411,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Fields.ACRESULET1 || resultCode == Fields.ACRESULET3) {
             if (getHomeInstance() != null)
-                getHomeInstance().onRefresh();
+                getHomeInstance().onRefreshs();
             if (SettingInstance() != null)
                 SettingInstance().SettingInstance().mp.getUseDetails();
         }
@@ -576,6 +579,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         Logger.setLogger(this, newLogger);
         Log.d(TAG, "imsdk env " + TIMManager.getInstance().getEnv());
+    }
+
+
+    /**
+     * 设置未读tab显示
+     */
+    public void setMsgUnread(boolean noUnread) {
+        msgUnread.setVisibility(noUnread ? View.GONE : View.VISIBLE);
     }
 
     /**

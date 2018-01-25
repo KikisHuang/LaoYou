@@ -4,8 +4,6 @@ import com.tencent.TIMGroupAssistant;
 import com.tencent.TIMGroupCacheInfo;
 import com.tencent.TIMGroupMemberRoleType;
 import com.tencent.TIMGroupReceiveMessageOpt;
-import com.tencent.qcloud.presentation.event.GroupEvent;
-import com.tencent.qcloud.presentation.event.RefreshEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +15,8 @@ import java.util.Observer;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.application.MyApplication;
+import laoyou.com.laoyou.tencent.presentation.event.GroupEvent;
+import laoyou.com.laoyou.tencent.presentation.event.RefreshEvent;
 
 /**
  * 群数据结构

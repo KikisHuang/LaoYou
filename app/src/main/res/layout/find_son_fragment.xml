@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp"
+            android:overScrollMode="never"
             android:scrollbars="none" />
 
     </com.liaoinstan.springview.widget.SpringView>

@@ -9,9 +9,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tencent.TIMValueCallBack;
-import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.tencent.presentation.presenter.GroupManagerPresenter;
+
 /**
  * 创建群页面
  */

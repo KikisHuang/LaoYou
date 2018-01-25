@@ -451,7 +451,7 @@
     <!-- 皇家蓝 -->
     <color name="turquoise">#40E0D0</color>
     <!-- 青绿色 -->
-    <color name="mediumseagreen">#4fe3c1</color>
+    <color name="mediumseagreen">#35c4fe</color>
     <!-- 中海蓝 -->
     <color name="limegreen">#32CD32</color>
     <!-- 橙绿色 -->
@@ -523,6 +523,8 @@
     <color name="btn_text_hover">#CCFFFFFF</color>
     <!--蒙版-->
     <color name="colorMask">#66000000</color>
+
+
 
 
 </resources>

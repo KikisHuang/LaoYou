@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/wel_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/wel_three" />
+
+    <Button
+        android:id="@+id/go_news_bt"
+        android:layout_width="230dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/white_corners5"
+        android:gravity="center"
+        android:text="开启新世界"
+        android:textColor="@color/dominant_ton"
+        android:textSize="18sp"
+        android:visibility="gone"
+        />
+
+</FrameLayout>

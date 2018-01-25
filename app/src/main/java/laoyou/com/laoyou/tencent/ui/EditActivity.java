@@ -10,9 +10,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.tencent.TIMCallBack;
-import com.tencent.qcloud.ui.TemplateTitle;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.tencent.view.TemplateTitle;
 
 /**
  * 修改文本页面

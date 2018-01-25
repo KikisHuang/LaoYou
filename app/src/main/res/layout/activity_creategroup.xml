@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
 
-    <com.tencent.qcloud.ui.TemplateTitle
+    <laoyou.com.laoyou.tencent.view.TemplateTitle
         android:id="@+id/create_group_actionbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

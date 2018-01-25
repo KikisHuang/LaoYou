@@ -14,10 +14,6 @@ import com.tencent.TIMGroupMemberInfo;
 import com.tencent.TIMGroupMemberResult;
 import com.tencent.TIMUserProfile;
 import com.tencent.TIMValueCallBack;
-import com.tencent.qcloud.presentation.presenter.FriendshipManagerPresenter;
-import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
-import com.tencent.qcloud.presentation.viewfeatures.FriendshipMessageView;
-import com.tencent.qcloud.ui.TemplateTitle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +24,10 @@ import laoyou.com.laoyou.tencent.adapters.ProfileSummaryAdapter;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.model.GroupMemberProfile;
 import laoyou.com.laoyou.tencent.model.ProfileSummary;
+import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
+import laoyou.com.laoyou.tencent.presentation.presenter.GroupManagerPresenter;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.FriendshipMessageView;
+import laoyou.com.laoyou.tencent.view.TemplateTitle;
 
 public class GroupMemberActivity extends Activity implements TIMValueCallBack<List<TIMGroupMemberInfo>>, FriendshipMessageView {
 

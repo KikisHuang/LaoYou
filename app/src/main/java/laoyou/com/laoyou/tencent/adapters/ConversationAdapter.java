@@ -9,10 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.tencent.qcloud.ui.CircleImageView;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.model.Conversation;
 import laoyou.com.laoyou.tencent.utils.TimeUtil;

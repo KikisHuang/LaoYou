@@ -2,30 +2,23 @@ package laoyou.com.laoyou.presenter;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.tencent.qcloud.sdk.Interface;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.bean.FlashTypeIconBean;
 import laoyou.com.laoyou.bean.MarkerBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.InternetCafLocationListener;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
-import static laoyou.com.laoyou.utils.SynUtils.ArrayIsNull;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**

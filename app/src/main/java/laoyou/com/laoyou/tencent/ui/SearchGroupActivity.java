@@ -10,8 +10,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.tencent.TIMGroupDetailInfo;
-import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
-import com.tencent.qcloud.presentation.viewfeatures.GroupInfoView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +18,8 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.tencent.adapters.ProfileSummaryAdapter;
 import laoyou.com.laoyou.tencent.model.GroupProfile;
 import laoyou.com.laoyou.tencent.model.ProfileSummary;
+import laoyou.com.laoyou.tencent.presentation.presenter.GroupManagerPresenter;
+import laoyou.com.laoyou.tencent.presentation.viewfeatures.GroupInfoView;
 
 public class SearchGroupActivity extends Activity implements GroupInfoView, View.OnKeyListener{
 

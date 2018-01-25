@@ -2,7 +2,6 @@ package laoyou.com.laoyou.activity;
 
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -64,7 +63,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
     private String imgurl;
     private static TopicTypeDetailsActivity activity;
     private boolean NoBackGroup = false;
-    private ImageView back_img;
+    private ImageView back_img, attention_img;
 
     public static TopicTypeDetailsActivity getTopicTypeInstance() {
         return activity;
@@ -102,6 +101,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
         toolbar = f(R.id.toolbar);
         titles_layout = f(R.id.titles_layout);
         attention_tv = f(R.id.attention_tv);
+        attention_img = f(R.id.attention_img);
         appbar_layout = f(R.id.appbar_layout);
         active_user_layout = f(R.id.active_user_layout);
         tablist = new ArrayList<>();
@@ -189,16 +189,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
     @Override
     public void IsFollowChat(boolean b) {
         attention_tv.setText(b ? gets(R.string.followed) : gets(R.string.unfollowed));
-        Drawable drawable;
-        if (b)
-            drawable = getResources().getDrawable(R.mipmap.yellow_star);
-
-        else
-            drawable = getResources().getDrawable(R.mipmap.black_star);
-
-        /// 这一步必须要做,否则不会显示.
-        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-        attention_tv.setCompoundDrawables(drawable, null, null, null);
+        Glide.with(this).load(b ? R.mipmap.yellow_star : R.mipmap.black_star).into(attention_img);
     }
 
     @Override

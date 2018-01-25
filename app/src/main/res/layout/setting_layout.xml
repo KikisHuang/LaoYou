@@ -5,42 +5,41 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".tencent.ui.SettingFragment">
+    tools:context=".activity.SettingActivity">
 
-    <com.tencent.qcloud.ui.TemplateTitle
+    <laoyou.com.laoyou.tencent.view.TemplateTitle
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:titleText="@string/home_setting_tab" />
 
 
     
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/friendConfirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:name="@string/setting_friend_confirm"
         app:content="@string/setting_friend_need_confirm"
         app:canNav="true"/>
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/messageNotify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:name="@string/setting_message_notify"
         app:canNav="true"/>
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/blackList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:name="@string/setting_black_list"
         app:canNav="true"/>
-    <com.tencent.qcloud.ui.LineControllerView
+    <laoyou.com.laoyou.tencent.view.LineControllerView
         android:id="@+id/change_pass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:name="@string/change_pass"
         app:isBottom="false"
         app:canNav="true"/>
-
 
 
     <TextView

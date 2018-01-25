@@ -8,7 +8,6 @@ import com.tencent.TIMFriendResult;
 import com.tencent.TIMFriendStatus;
 import com.tencent.TIMFriendshipManager;
 import com.tencent.TIMValueCallBack;
-import com.tencent.qcloud.sdk.Interface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,13 +24,16 @@ import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HomePageListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
+import laoyou.com.laoyou.listener.ThumbnailListener;
+import laoyou.com.laoyou.thread.ThumbnailAsyncTask;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
+import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
-import static laoyou.com.laoyou.utils.JsonUtils.StatusPaser;
+import static laoyou.com.laoyou.thread.ThumbnailAsyncTask.ThumbNailInstance;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
@@ -40,7 +42,7 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
 /**
  * Created by lian on 2017/12/7.
  */
-public class HomePagePresenter implements HttpResultListener {
+public class HomePagePresenter implements HttpResultListener, ThumbnailListener {
     private static final String TAG = "HomePagePresenter";
     private HomePageListener listener;
     public int page = 0;
@@ -202,9 +204,11 @@ public class HomePagePresenter implements HttpResultListener {
                 try {
                     JSONArray status = getJsonAr(response);
                     if (status.length() > 0) {
+
                         List<TopicTypeBean> Nblist = new ArrayList<>();
-                        StatusPaser(status, Nblist);
-                        listener.onStatusInfo(Nblist);
+                        if (ThumbNailInstance() == null)
+                            new ThumbnailAsyncTask(this).execute(status, Nblist);
+
                     } else
                         listener.onBottom();
 
@@ -282,5 +286,14 @@ public class HomePagePresenter implements HttpResultListener {
                 Cancle();
             }
         });
+    }
+
+    @Override
+    public void onThumbnailResult(List<TopicTypeBean> list) {
+        listener.onStatusInfo(list);
+
+        if (ThumbNailInstance() != null)
+            ThumbNailInstance().CloseThumb();
+
     }
 }

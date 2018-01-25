@@ -13,13 +13,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tencent.TIMConversationType;
-import com.tencent.qcloud.ui.CircleImageView;
 
 import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.Message;
+import laoyou.com.laoyou.tencent.view.CircleImageView;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
@@ -104,8 +104,10 @@ public class ChatAdapter extends ArrayAdapter<Message> {
                     if (data.getMessage().getSenderProfile() == null)
                         Glide.with(getContext()).load(R.drawable.head_other).apply(getGlideOptions()).into(viewHolder.leftAvatar);
 //                        viewHolder.leftAvatar.setImageResource(R.drawable.head_other);
-                    else
+                    else {
                         Glide.with(getContext()).load(data.getMessage().getSenderProfile().getFaceUrl()).apply(getGlideOptions()).into(viewHolder.leftAvatar);
+//                        Log.i(TAG, " Group Face === " + data.getMessage().getSenderProfile().getFaceUrl());
+                    }
 
                 }
 

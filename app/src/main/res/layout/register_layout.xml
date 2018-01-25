@@ -113,12 +113,12 @@
                         android:layout_height="match_parent"
 
                         android:layout_weight="1"
+                        android:background="@color/white"
                         android:gravity="bottom|left"
                         android:inputType="textPassword"
                         android:maxEms="11"
                         android:singleLine="true"
-                        android:textSize="25dp"
-                        android:background="@color/white" />
+                        android:textSize="25dp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -148,22 +148,25 @@
                     android:layout_gravity="center|left"
                     android:text="验证码"
                     android:textColor="@color/black"></TextView>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
-                <EditText
-                    android:id="@+id/code_ed"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="bottom|left"
-                    android:inputType="number"
-                    android:maxEms="11"
-                    android:singleLine="true"
-                    android:textSize="25dp"
-                    android:background="@color/white" />
+
+                    <EditText
+                        android:id="@+id/code_ed"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:gravity="bottom|left"
+                        android:inputType="number"
+                        android:maxEms="11"
+                        android:singleLine="true"
+                        android:textSize="25dp" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -189,11 +192,12 @@
 
             <ImageView
                 android:id="@+id/commit_img"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
                 android:layout_gravity="center|bottom"
                 android:layout_marginLeft="10dp"
                 android:src="@mipmap/right_icon_green" />
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -11,10 +11,10 @@ import android.widget.Toast;
 import com.tencent.TIMLogLevel;
 import com.tencent.TIMManager;
 import com.tencent.qalsdk.QALSDKManager;
-import com.tencent.qcloud.ui.LineControllerView;
-import com.tencent.qcloud.ui.ListPickerDialog;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.tencent.view.LineControllerView;
+import laoyou.com.laoyou.tencent.view.ListPickerDialog;
 import tencent.tls.platform.TLSHelper;
 
 public class AboutActivity extends FragmentActivity {
