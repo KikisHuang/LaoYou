@@ -22,6 +22,8 @@
     <laoyou.com.laoyou.view.CustomViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></laoyou.com.laoyou.view.CustomViewPager>
+        android:layout_height="match_parent"
+
+        ></laoyou.com.laoyou.view.CustomViewPager>
 
 </LinearLayout>

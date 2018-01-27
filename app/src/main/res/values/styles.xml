@@ -127,6 +127,12 @@
         <item name="android:layout_marginTop">2dp</item>
         <item name="android:layout_marginBottom">2dp</item>
     </style>
+    <style name="line_styles3">
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/gray12</item>
+        <item name="android:layout_marginBottom">2dp</item>
+    </style>
 
     <style name="AnimationLeftFade">
         <item name="android:windowEnterAnimation">@anim/in_lefttoright</item>

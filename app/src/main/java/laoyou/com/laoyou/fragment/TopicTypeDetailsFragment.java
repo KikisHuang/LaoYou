@@ -140,6 +140,8 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
         super.onPause();
         if (getTopicTypeInstance() != null)
             tp.removeAppBarLayoutStateChangeListener(getTopicTypeInstance().getAppBar());
+
+        tp.CloseAsynck();
     }
 
     @Override
@@ -186,23 +188,23 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
 
     @Override
     public void onShowDetailsInfo(List<TopicTypeBean> s) {
-        LSize = s.size();
-        if (s.size() < 10) {
-            springView.setEnable(false);
-            foot_tv.setVisibility(View.VISIBLE);
-        } else {
-            springView.setEnable(true);
-            foot_tv.setVisibility(View.INVISIBLE);
-        }
+            LSize = s.size();
+            if (s.size() < 10) {
+                springView.setEnable(false);
+                foot_tv.setVisibility(View.VISIBLE);
+            } else {
+                springView.setEnable(true);
+                foot_tv.setVisibility(View.INVISIBLE);
+            }
 
-        if (adapter == null) {
-            adapter = new TopicTypeDetailsAdapter(getActivity(), s, this);
-            mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(adapter);
+            if (adapter == null) {
+                adapter = new TopicTypeDetailsAdapter(getActivity(), s, this);
+                mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(adapter);
 
-            mHeaderAndFooterWrapper.addFootView(foot_layout);
-            recyclerView.setAdapter(mHeaderAndFooterWrapper);
-        } else
-            mHeaderAndFooterWrapper.notifyDataSetChanged();
+                mHeaderAndFooterWrapper.addFootView(foot_layout);
+                recyclerView.setAdapter(mHeaderAndFooterWrapper);
+            } else
+                mHeaderAndFooterWrapper.notifyDataSetChanged();
     }
 
     @Override

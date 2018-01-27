@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.adapter.TopicCircleAdapter;
+import laoyou.com.laoyou.adapter.TopicCircletempAdapter;
 import laoyou.com.laoyou.bean.TopicBean;
 import laoyou.com.laoyou.listener.MyNoticeListener;
 import laoyou.com.laoyou.presenter.MyNoticePresenter;
@@ -25,7 +25,7 @@ public class MyNoticeActivity extends InitActivity implements MyNoticeListener, 
     private ListView listView;
     private MyNoticePresenter mp;
     private List<TopicBean> list;
-    private TopicCircleAdapter adapter;
+    private TopicCircletempAdapter adapter;
 
 
     @Override
@@ -39,7 +39,7 @@ public class MyNoticeActivity extends InitActivity implements MyNoticeListener, 
         listView = f(R.id.listView);
         list = new ArrayList<>();
         mp = new MyNoticePresenter(this);
-        adapter = new TopicCircleAdapter(this, list);
+        adapter = new TopicCircletempAdapter(this, list);
         listView.setAdapter(adapter);
     }
 

@@ -26,16 +26,19 @@ public class ThumbnailAsyncTask extends AsyncTask<Object, Void, List<TopicTypeBe
     public void CloseThumb() {
         instance = null;
     }
+
     public ThumbnailAsyncTask(ThumbnailListener listener) {
         this.listener = listener;
         instance = this;
     }
 
-
     @Override
     protected List<TopicTypeBean> doInBackground(Object... params) {
         try {
-            return StatusPaser((JSONArray) params[0], (List<TopicTypeBean>) params[1]);
+            if (isCancelled()) {
+                return null;
+            }
+            return isCancelled() ? null : StatusPaser((JSONArray) params[0], (List<TopicTypeBean>) params[1]);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -44,6 +47,7 @@ public class ThumbnailAsyncTask extends AsyncTask<Object, Void, List<TopicTypeBe
 
     @Override
     protected void onPostExecute(List<TopicTypeBean> list) {
-        listener.onThumbnailResult(list);
+        if (!isCancelled() && list != null)
+            listener.onThumbnailResult(list);
     }
 }

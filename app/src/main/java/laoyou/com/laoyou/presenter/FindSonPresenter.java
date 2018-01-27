@@ -126,7 +126,9 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
                 map.put("sex", String.valueOf(sex));
 
             httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETNEARBYUSER);
-        }
+        }else
+            listener.onNotLatiLongTude();
+
     }
 
     /**

@@ -1,36 +1,32 @@
 package laoyou.com.laoyou.activity;
 
-import android.os.Environment;
-import android.util.Log;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-
-import java.io.File;
-import java.util.List;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.application.MyApplication;
-import laoyou.com.laoyou.bean.TopicTypeBean;
-import laoyou.com.laoyou.listener.ThumbnailListener;
+import laoyou.com.laoyou.utils.DeviceUtils;
 
 /**
  * Created by lian on 2017/11/4.
  */
-public class TestActivity extends InitActivity implements View.OnClickListener, ThumbnailListener {
+public class TestActivity extends InitActivity implements View.OnClickListener {
 
     private static final String TAG = "TestActivity";
-
-    private Button bt;
-
+    private ImageView img;
+    private Toolbar toolbar;
     @Override
     protected void click() {
-        bt.setOnClickListener(this);
+        img.setOnClickListener(this);
     }
 
     @Override
     protected void init() {
         setContentView(R.layout.test_layout);
-        bt = f(R.id.bt);
+        img = f(R.id.img);
+        toolbar = f(R.id.toolbar);
     }
 
     @Override
@@ -42,42 +38,12 @@ public class TestActivity extends InitActivity implements View.OnClickListener, 
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.bt:
-                String name = getCacheFilePath("tempAudio");
-                Log.e(TAG, "name ==" + name);
+            case R.id.img:
+                CoordinatorLayout.LayoutParams cp =  new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DeviceUtils.dip2px(this,50));
+                toolbar.setLayoutParams(cp);
+
                 break;
         }
     }
 
-    private static String pathDiv = "/";
-    private static File cacheDir = !isExternalStorageWritable() ? MyApplication.getContext().getFilesDir() : MyApplication.getContext().getExternalCacheDir();
-
-    /**
-     * 判断外部存储是否可用
-     */
-    public static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        Log.e(TAG, "ExternalStorage not mounted");
-        return false;
-    }
-
-    /**
-     * 获取缓存文件地址
-     */
-    public static String getCacheFilePath(String fileName) {
-        return cacheDir.getAbsolutePath() + pathDiv + fileName;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onThumbnailResult(List<TopicTypeBean> list) {
-
-    }
 }

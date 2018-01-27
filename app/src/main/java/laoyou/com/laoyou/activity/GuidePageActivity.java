@@ -50,6 +50,7 @@ public class GuidePageActivity extends Activity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         if (SPreferences.getFirstStart())
             goWel();
+
         setContentView(R.layout.guide_layout);
         skip_tv = (TextView) findViewById(R.id.skip_tv);
         skip_tv.setOnClickListener(this);

@@ -2,6 +2,7 @@ package laoyou.com.laoyou.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +27,17 @@ import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
  * Created by lian on 2017/11/15.
  */
 public class TopicTypeDetailsAdapter extends RecyclerView.Adapter<TopicTypeDetailsAdapter.MyViewHolder> {
+    private static final String TAG = "TopicTypeDetailsAdapter";
     private Context context;
     private List<TopicTypeBean> list;
     private RecyclerViewOnItemClickListener listener;
 
     public TopicTypeDetailsAdapter(Context context, List<TopicTypeBean> list, RecyclerViewOnItemClickListener listener) {
-        this.context = context.getApplicationContext();
+        try {
+            this.context = context.getApplicationContext();
+        } catch (Exception e) {
+            Log.i(TAG, "TopicTypeDetailsAdapter  Error ===" + e);
+        }
         this.listener = listener;
         this.list = list;
     }

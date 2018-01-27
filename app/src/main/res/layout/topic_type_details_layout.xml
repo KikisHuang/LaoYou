@@ -72,6 +72,7 @@
                             android:textSize="11sp" />
 
                         <LinearLayout
+                            android:id="@+id/attention_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/gray_corners2"
@@ -99,11 +100,11 @@
 
                         <ImageView
                             android:id="@+id/issue_img"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="5dp"
                             android:layout_gravity="center"
-                            android:layout_marginRight="5dp"
-                            android:src="@drawable/ic_launcher" />
+                            android:src="@mipmap/word_icon" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -150,7 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:background="@color/white"
-                app:tabIndicatorColor="@color/dominant_ton"
+                app:tabIndicatorColor="@color/back_text_color"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/black0"
                 app:tabTextAppearance="@style/TabLayoutTitlesTextStyle1"

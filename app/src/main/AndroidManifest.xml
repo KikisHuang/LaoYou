@@ -29,8 +29,7 @@
     <uses-permission android:name="android.permission.WRITE_SMS" />    <!-- 写入消息 -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" />  <!-- 接收消息 -->
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
@@ -42,6 +41,8 @@
     <!--用于写入缓存数据到扩展存储卡-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 
+    <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE"/>
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!--用于申请调用A-GPS模块-->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
@@ -51,8 +52,6 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
 
-    <!-- SDCard中创建与删除文件权限 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <!--打电话的权限-->
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -89,13 +88,11 @@
             android:name=".activity.GuidePageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <!-- 欢迎页面 -->
         <activity

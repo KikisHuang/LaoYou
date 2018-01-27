@@ -84,35 +84,35 @@
         layout="@layout/right_arrow_include"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"></include>
+        android:layout_marginTop="15dp"></include>
 
     <include
         android:id="@+id/comment_layout"
         layout="@layout/right_arrow_include"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"></include>
+        android:layout_marginTop="15dp"></include>
 
     <include
         android:id="@+id/heart_layout"
         layout="@layout/right_arrow_include"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"></include>
+        android:layout_marginTop="15dp"></include>
 
     <include
         android:id="@+id/topic_layout"
         layout="@layout/right_arrow_include"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"></include>
+        android:layout_marginTop="15dp"></include>
 
     <include
         android:id="@+id/flash_chat_layout"
         layout="@layout/right_arrow_include"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"></include>
+        android:layout_marginTop="15dp"></include>
 
     <include
         android:id="@+id/setting_layout"

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.tencent.TIMGroupReceiveMessageOpt;
 import com.tencent.TIMManager;
 import com.tencent.TIMOfflinePushListener;
@@ -41,17 +43,17 @@ public class MyApplication extends Application {
     //CrashHandler实例
     public static CrashHandler crashHandler;
 
-/*    private RefWatcher mRefWatcher;
+    private RefWatcher mRefWatcher;
 
     public static RefWatcher getRefWatcher() {
         return context.mRefWatcher;
-    }*/
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
-//        mRefWatcher = Fields.DEBUG ? LeakCanary.install(this) : RefWatcher.DISABLED;
+        mRefWatcher = Fields.DEBUG ? LeakCanary.install(this) : RefWatcher.DISABLED;
         DbInit();
         MultiDex.install(this);
         ErrorCrashInit();
@@ -79,9 +81,8 @@ public class MyApplication extends Application {
      * 全局异常捕获方法;
      */
     private void ErrorCrashInit() {
-
-//        crashHandler = CrashHandler.getInstance();
-//        crashHandler.init(getApplicationContext());
+        /*crashHandler = CrashHandler.getInstance();
+        crashHandler.init(getApplicationContext());*/
     }
 
     private void initTecentIM() {

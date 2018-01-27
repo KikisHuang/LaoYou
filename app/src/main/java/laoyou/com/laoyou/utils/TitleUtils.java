@@ -8,9 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.save.SPreferences;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goRegisterPage;
+import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
@@ -19,7 +19,9 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
 public class TitleUtils {
 
     // 处理标题栏颜色渐变
-    public static void handleTitleBarColorEvaluate(int height, int imageHeight, View title_layout, ImageView back_img, ImageView more_img) {
+    public static void handleTitleBarColorEvaluate(int height, View title_layout, ImageView back_img, ImageView more_img) {
+
+        int imageHeight = 100;
         //比例
         float fraction;
         if (height > 0) {
@@ -46,10 +48,11 @@ public class TitleUtils {
             title_layout.setBackgroundColor(Color.parseColor(gets(R.color.whiteff)));
         } else {
             //根据比例，生成一个按比例的颜色值
-            title_layout.setBackgroundColor(getNewColorByStartEndColor(SPreferences.context, fraction, R.color.transparent, R.color.white));
+//            title_layout.setBackgroundColor(getNewColorByStartEndColor(SPreferences.context, fraction, R.color.transparent, R.color.white));
+            title_layout.setBackgroundColor(getRouColors(R.color.transparent));
         }
 
-        if (fraction >= 0.8f) {
+        if (fraction >= 1f) {
             back_img.setImageResource(R.mipmap.return_icon);
             if (more_img != null)
                 more_img.setImageResource(R.mipmap.more_blue);

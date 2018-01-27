@@ -7,13 +7,13 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/pink_corners1"
         android:padding="3dp">
 
         <ImageView
             android:id="@+id/menu_icon"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@mipmap/setting_icon"
             />
     </FrameLayout>
 
@@ -24,13 +24,14 @@
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_weight="1"
+        android:text="相册"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/tag_img"
-        android:layout_width="17dp"
-        android:layout_height="17dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_gravity="center|right"
         android:src="@mipmap/right_icon" />
 </LinearLayout>

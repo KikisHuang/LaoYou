@@ -1,9 +1,17 @@
 package laoyou.com.laoyou.fragment;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.liaoinstan.springview.widget.SpringView;
 
@@ -201,6 +209,32 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
         isRefresh = true;
         fp.getHottestAndNewestRefresh();
     }
+
+
+    @Override
+    public void onNotLatiLongTude() {
+
+        LocationManager lm = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+        boolean ok = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (ok) {//开了定位服务
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // 没有权限，申请权限。
+                Log.i(TAG,"无定位权限");
+
+            } else {
+                // 有权限
+                Log.i(TAG,"有定位权限");
+            }
+
+        } else {
+            Toast.makeText(getActivity(), "系统检测到未开启GPS定位服务", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivityForResult(intent, 1315);
+        }
+    }
+
 
     @Override
     public void RcOnItemClick(int pos, List<String> list) {

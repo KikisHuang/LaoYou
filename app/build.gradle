@@ -45,7 +45,7 @@ android {
         ndk {
             //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
 //            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86","arm64-v8a","x86_64"
-            abiFilters  "armeabi", "armeabi-v7a"
+          abiFilters  "armeabi", "armeabi-v7a"
         }
     }
     packagingOptions {
@@ -131,11 +131,14 @@ dependencies {
     compile 'cn.jzvd:jiaozivideoplayer:6.2.3'
     compile 'tv.danmaku.ijk.media:ijkplayer-java:0.8.4'
     compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'
-/*    //# Other ABIs: optional
+
+/*  //# Other ABIs: optional
     compile 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.4'
     compile 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.4'
+
     compile 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.4'
     compile 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.4'*/
+
     //分包;
     compile 'com.android.support:multidex:1.0.1'
     //umeng;
@@ -148,8 +151,8 @@ dependencies {
     compile files('libs/umeng_social_shareboard.jar')
     compile files('libs/AMap3DMap_5.7.0_AMapNavi_5.6.0_AMapSearch_5.7.0_AMapLocation_3.7.0_20180109.jar')
     compile 'com.github.wseemann:FFmpegMediaMetadataRetriever:1.0.14'
-    /*debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-        releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'*/
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+        releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     compile files('libs/bugly_2.4.0_imsdk_release.jar')
     compile files('libs/gson-1.7.1.jar')
     compile files('libs/HwPush_SDK_V2705.jar')

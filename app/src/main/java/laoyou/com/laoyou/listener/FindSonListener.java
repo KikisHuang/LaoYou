@@ -18,4 +18,6 @@ public interface FindSonListener {
     void RefreshNewWonders(List<TopicTypeBean> toppic);
 
     void onRefresh();
+
+    void onNotLatiLongTude();
 }

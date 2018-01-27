@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView style="@style/line_styles2" />
+    <TextView style="@style/line_styles3" />
 
     <LinearLayout
         android:id="@+id/send_comment_layout"

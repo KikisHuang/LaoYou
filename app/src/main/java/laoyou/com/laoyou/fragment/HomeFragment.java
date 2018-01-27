@@ -74,7 +74,7 @@ import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 /**
  * Created by lian on 2017/4/22.
  */
-public class HomeFragment extends BaseFragment implements View.OnClickListener, HomeListener, SwipeRefreshLayout.OnRefreshListener, TIMCallBack, PositionAddListener, RecyclerViewOnItemClickListener{
+public class HomeFragment extends BaseFragment implements View.OnClickListener, HomeListener, SwipeRefreshLayout.OnRefreshListener, TIMCallBack, PositionAddListener, RecyclerViewOnItemClickListener {
     private static final String TAG = "HomeFragment";
 
     private WrapContentHeightViewPager mViewPager;
@@ -239,7 +239,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         //设置监听
         swiperefreshlayout.setOnRefreshListener(this);
         //设置向下拉多少出现刷新
-        swiperefreshlayout.setProgressViewEndTarget (true,500);
+        swiperefreshlayout.setProgressViewEndTarget(true, 500);
         //改变加载显示的颜色
         swiperefreshlayout.setColorSchemeColors(getRouColors(R.color.dominant_ton), getRouColors(R.color.dominant_ton));
     }
@@ -321,6 +321,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         super.onResume();
         if (!LoginStatusQuery())
             swiperefreshlayout.setEnabled(false);
+
+
         if (Nblist.size() > 0)
             hp.RefreshLikeThme(true);
         else
@@ -524,7 +526,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_HIDDEN, 500);
 
         show_hide_img.setEnabled(b);
-        swiperefreshlayout.setEnabled(!b);
+
+        if (LoginStatusQuery())
+            swiperefreshlayout.setEnabled(!b);
     }
 
     /**
@@ -690,8 +694,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
      */
     @Override
     public void LikeClick(String id) {
-        Show(getActivity(), "", true, null);
-        hp.LikeChatTheme(id);
+        if (LoginStatusQuery()) {
+            Show(getActivity(), "", true, null);
+            hp.LikeChatTheme(id);
+        } else {
+            ToastUtil.toast2_bottom(getActivity(), "请先登录！");
+            goLoginOperPage(getActivity());
+        }
     }
 
     /**

@@ -247,7 +247,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         height = location[1];
 
         imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 0);
-        handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img, null);
+        handleTitleBarColorEvaluate(height, title_layout, back_img, null);
 
         if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom) {
             ip.page = list.size();
@@ -278,6 +278,9 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
             Glide.with(this).load(cb.getLogoUrl()).apply(getGlideOptions()).into(caf_logo_img);
             if (!StringIsNull(cb.getBackgroundUrl()).isEmpty())
                 Glide.with(this).load(cb.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
+            else
+                Glide.with(this).load(Fields.Catalina).apply(getGlideOptions()).into(background_img);
+
             EnvironmentInit(cb.getInternetBarImgs());
             cpu.setText(StringIsNull(cb.getConfigureCPU()));
             caf_price_tv.setText(String.valueOf(cb.getHourlyPrice()));

@@ -212,4 +212,12 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
             ThumbNailInstance().CloseThumb();
 
     }
+
+    public void CloseAsynck() {
+        if(ThumbNailInstance()!=null){
+            ThumbNailInstance().cancel(true);
+            ThumbNailInstance().CloseThumb();
+        }
+
+    }
 }

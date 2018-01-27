@@ -456,7 +456,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
         imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 50);
 
-        handleTitleBarColorEvaluate(height, imageHeight, title_layout, back_img, more_img.getVisibility() == View.GONE ? null : more_img);
+        handleTitleBarColorEvaluate(height, title_layout, back_img, more_img.getVisibility() == View.GONE ? null : more_img);
 
         if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom && (Fields.VPT == 0 || System.currentTimeMillis() - Fields.VPT >= 2000))
         {

@@ -1,17 +1,20 @@
 package laoyou.com.laoyou.activity;
 
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 
 import com.liaoinstan.springview.widget.SpringView;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.TopicCircleAdapter;
 import laoyou.com.laoyou.bean.TopicBean;
+import laoyou.com.laoyou.listener.CustomListener;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.listener.TopicCircleListener;
 import laoyou.com.laoyou.presenter.TopicCirclePresenter;
@@ -35,10 +39,10 @@ import static laoyou.com.laoyou.utils.TitleUtils.setTitlesAndBack;
 /**
  * Created by lian on 2017/12/18.
  */
-public class TopicCircleActivity extends InitActivity implements TopicCircleListener, SpringListener, AdapterView.OnItemClickListener, View.OnClickListener {
+public class TopicCircleActivity extends InitActivity implements TopicCircleListener, SpringListener, View.OnClickListener, CustomListener {
 
     private static final String TAG = "TopicCircleActivity";
-    private ListView listView;
+    private RecyclerView listView;
     private TopicCirclePresenter tp;
     private FrameLayout head;
     private TopicCircleAdapter adapter;
@@ -46,29 +50,42 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
     private SpringView springView;
     private boolean IsRefresh;
     private ImageView issue_img, photo_img, camera_img;
+    private LinearLayoutManager mLayoutManager;
+    private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
 
     @Override
     protected void click() {
-        listView.setOnItemClickListener(this);
         issue_img.setOnClickListener(this);
         photo_img.setOnClickListener(this);
         camera_img.setOnClickListener(this);
+        head.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goMyNoticesPage(TopicCircleActivity.this);
+            }
+        });
     }
 
     @Override
     protected void init() {
         setContentView(R.layout.topic_circle_layout);
         listView = f(R.id.listView);
+        mLayoutManager = new LinearLayoutManager(this);
+        listView.setLayoutManager(mLayoutManager);
+
         springView = f(R.id.springView);
         issue_img = f(R.id.issue_img);
         photo_img = f(R.id.photo_img);
         camera_img = f(R.id.camera_img);
         SpringUtils.SpringViewInit(springView, this, this);
         head = (FrameLayout) getLayoutInflater().inflate(R.layout.topic_circle_head, null);
-        setTitlesAndBack(this, gets(R.string.discover), "");
+        setTitlesAndBack(this, gets(R.string.goback), "");
         tp = new TopicCirclePresenter(this);
         list = new ArrayList<>();
 
+        adapter = new TopicCircleAdapter(this, list, this);
+        mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(adapter);
+        listView.setAdapter(mHeaderAndFooterWrapper);
     }
 
     @Override
@@ -94,21 +111,20 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
         for (TopicBean tb : s) {
             list.add(tb);
         }
-        if (adapter == null) {
-            adapter = new TopicCircleAdapter(this, list);
-            listView.setAdapter(adapter);
-        } else
-            adapter.notifyDataSetChanged();
+        if (adapter != null)
+            mHeaderAndFooterWrapper.notifyDataSetChanged();
     }
 
     @Override
     public void onHeadViewShwoOfHide(boolean b) {
         IsRefresh = true;
         tp.getTopicDataList(true);
-        if (b)
-            if (listView.getHeaderViewsCount() == 0)
-                listView.addHeaderView(head);
-
+        if (b) {
+            LinearLayout.LayoutParams lps = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            head.setLayoutParams(lps);
+            mHeaderAndFooterWrapper.addHeaderView(head);
+            mHeaderAndFooterWrapper.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -126,7 +142,7 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
         tp.page += move;
         tp.getTopicDataList(false);
     }
-
+/*
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //判断是否有头部;
@@ -137,7 +153,7 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
         } else
             goTopicTypeDetailsPage(TopicCircleActivity.this, list.get(position - 1).getId(), list.get(position - 1).getName(), list.get(position - 1).getFollowCount(), list.get(position - 1).getChatThemeCount(), list.get(position - 1).getImgUrl());
 
-    }
+    }*/
 
     @Override
     public void onClick(View v) {
@@ -218,5 +234,11 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
                     break;
             }
         }
+    }
+
+    @Override
+    public <T> void onCustomResult(List<T> obj) {
+        List<String> params = (List<String>) obj;
+        goTopicTypeDetailsPage(TopicCircleActivity.this, params.get(0), params.get(1), params.get(2), params.get(3), params.get(4));
     }
 }

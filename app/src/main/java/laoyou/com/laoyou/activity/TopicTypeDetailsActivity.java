@@ -51,7 +51,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
     private List<String> tablist;
     private ViewPager viewPager;
     private TabPagerAdapter adapter;
-    private LinearLayout active_user_layout, titles_layout;
+    private LinearLayout active_user_layout, titles_layout,attention_layout;
     private static AppBarLayout appbar_layout;
     private Toolbar toolbar;
     private TextView attention_tv;
@@ -76,7 +76,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
 
     @Override
     protected void click() {
-        attention_tv.setOnClickListener(this);
+        attention_layout.setOnClickListener(this);
         issue_img.setOnClickListener(this);
     }
 
@@ -101,6 +101,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
         toolbar = f(R.id.toolbar);
         titles_layout = f(R.id.titles_layout);
         attention_tv = f(R.id.attention_tv);
+        attention_layout = f(R.id.attention_layout);
         attention_img = f(R.id.attention_img);
         appbar_layout = f(R.id.appbar_layout);
         active_user_layout = f(R.id.active_user_layout);
@@ -285,7 +286,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.attention_tv:
+            case R.id.attention_layout:
                 Show(TopicTypeDetailsActivity.this, "", true, null);
                 tp.AttentionTopic(id);
                 break;
@@ -334,4 +335,10 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activity = null;
+        appbar_layout = null;
+    }
 }

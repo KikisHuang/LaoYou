@@ -37,8 +37,8 @@
                     android:layout_weight="1">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:src="@mipmap/black_chat_icon" />
                 </FrameLayout>
@@ -50,8 +50,8 @@
                     android:layout_weight="1">
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_gravity="center"
                         android:src="@mipmap/black_call_icon" />
                 </FrameLayout>
@@ -63,8 +63,8 @@
                     android:layout_weight="1">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:src="@mipmap/black_location_icon" />
                 </FrameLayout>
