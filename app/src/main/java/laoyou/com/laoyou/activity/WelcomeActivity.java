@@ -9,15 +9,15 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.AnimationUtil;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.view.CustomViewPager;
 
 import static laoyou.com.laoyou.utils.AnimationUtil.showAndHiddenAnimation;
 import static laoyou.com.laoyou.utils.IntentUtils.goMainPage;
@@ -29,8 +29,9 @@ public class WelcomeActivity extends InitActivity {
 
     private static final String TAG = "WelcomeActivity";
 
-    private ViewPager viewPager;
+    private CustomViewPager viewPager;
     private List<View> imgs;
+    private PageAdapter adapter;
 
     @Override
     protected void click() {
@@ -50,20 +51,9 @@ public class WelcomeActivity extends InitActivity {
 
         for (int ins : Fields.welImgs) {
             FrameLayout layout = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.welcome_page_include, null);
-            ImageView im = (ImageView) layout.findViewById(R.id.wel_img);
-            Button bt = (Button) layout.findViewById(R.id.go_news_bt);
-            bt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    goMainPage(WelcomeActivity.this);
-                    finish();
-                }
-            });
-
-            Glide.with(this).load(ins).into(im);
             imgs.add(layout);
         }
-        PageAdapter adapter = new PageAdapter();
+        adapter = new PageAdapter();
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
 
@@ -74,7 +64,7 @@ public class WelcomeActivity extends InitActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 2)
+                if (position == 2 && imgs.get(position).findViewById(R.id.go_news_bt).getVisibility() == View.GONE)
                     showAndHiddenAnimation(imgs.get(position).findViewById(R.id.go_news_bt), null, AnimationUtil.AnimationState.STATE_SHOW, 500);
             }
 
@@ -85,7 +75,7 @@ public class WelcomeActivity extends InitActivity {
         });
     }
 
-    class PageAdapter extends PagerAdapter {
+    private class PageAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
@@ -100,6 +90,19 @@ public class WelcomeActivity extends InitActivity {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             View view = imgs.get(position);
+
+            ImageView im = (ImageView) view.findViewById(R.id.wel_img);
+            Button bt = (Button) view.findViewById(R.id.go_news_bt);
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goMainPage(WelcomeActivity.this);
+                    finish();
+                }
+            });
+//            Glide.with(MyApplication.getContext()).load(Fields.welImgs[position]).into(im);
+            im.setImageResource(Fields.welImgs[position]);
+
             container.addView(view);
             return imgs.get(position);
         }
@@ -110,4 +113,12 @@ public class WelcomeActivity extends InitActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        imgs = null;
+        viewPager = null;
+        adapter = null;
+        MyApplication.getRefWatcher().watch(this);
+    }
 }

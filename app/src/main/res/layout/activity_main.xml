@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"></FrameLayout>
 
-    <TextView style="@style/width_line_style2" />
+    <TextView style="@style/width_line_style3" />
 
     <include layout="@layout/main_bottom_menu"></include>
 

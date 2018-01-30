@@ -102,7 +102,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         clearNotification();
         setContentView(R.layout.activity_main);
         ActivityCollector.addActivity(this, getClass());
-
         mp = new MainPresenter(this);
         activity = this;
         home_ll = f(R.id.home_ll);
@@ -133,7 +132,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (SPreferences.getUserSig() != null && !SPreferences.getUserSig().isEmpty())
             IMInit();
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

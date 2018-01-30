@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.listener.CertificationListener;
 import laoyou.com.laoyou.presenter.CertificationPresenter;
 import laoyou.com.laoyou.utils.DeviceUtils;
@@ -138,15 +139,15 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
                 case Fields.ACRESULET1:
                     // 图片选择结果回调
                     FrontFile = new File(list.get(0).getCompressPath() != null || !list.get(0).getCompressPath().isEmpty() ? list.get(0).getCompressPath() : list.get(0).getPath());
-                    Glide.with(CertificationActivity.this).load(FrontFile).apply(getGlideOptions()).into(front_img);
+                    Glide.with(MyApplication.getContext()).load(FrontFile).apply(getGlideOptions()).into(front_img);
                     break;
                 case Fields.ACRESULET2:
                     TailFile = new File(list.get(0).getCompressPath() != null || !list.get(0).getCompressPath().isEmpty() ? list.get(0).getCompressPath() : list.get(0).getPath());
-                    Glide.with(CertificationActivity.this).load(TailFile).apply(getGlideOptions()).into(tail_img);
+                    Glide.with(MyApplication.getContext()).load(TailFile).apply(getGlideOptions()).into(tail_img);
                     break;
                 case Fields.ACRESULET3:
                     HandFile = new File(list.get(0).getCompressPath() != null || !list.get(0).getCompressPath().isEmpty() ? list.get(0).getCompressPath() : list.get(0).getPath());
-                    Glide.with(CertificationActivity.this).load(HandFile).apply(getGlideOptions()).into(hand_img);
+                    Glide.with(MyApplication.getContext()).load(HandFile).apply(getGlideOptions()).into(hand_img);
                     break;
             }
         }
@@ -173,15 +174,15 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
                         switch (result) {
                             case Fields.ACRESULET1:
                                 FrontFile = file;
-                                Glide.with(CertificationActivity.this).load(file).apply(getGlideOptions()).into(front_img);
+                                Glide.with(MyApplication.getContext()).load(file).apply(getGlideOptions()).into(front_img);
                                 break;
                             case Fields.ACRESULET2:
                                 TailFile = file;
-                                Glide.with(CertificationActivity.this).load(file).apply(getGlideOptions()).into(tail_img);
+                                Glide.with(MyApplication.getContext()).load(file).apply(getGlideOptions()).into(tail_img);
                                 break;
                             case Fields.ACRESULET3:
                                 HandFile = file;
-                                Glide.with(CertificationActivity.this).load(file).apply(getGlideOptions()).into(hand_img);
+                                Glide.with(MyApplication.getContext()).load(file).apply(getGlideOptions()).into(hand_img);
                                 break;
                         }
 

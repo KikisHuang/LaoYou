@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.MarkerBean;
 import laoyou.com.laoyou.dialog.ActionSheetDialog;
 import laoyou.com.laoyou.listener.InternetCafLocationListener;
@@ -497,7 +498,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
         grade_tv.setText(mb.getAvgEvaluate() + "分");
         address_tv.setText(gets(R.string.address) + "：" + mb.getAddress());
 
-        Glide.with(this).load(mb.getLogoUrl()).apply(getGlideOptions()).into(caf_logo_img);
+        Glide.with(MyApplication.getContext()).load(mb.getLogoUrl()).apply(getGlideOptions()).into(caf_logo_img);
     }
 
     /**

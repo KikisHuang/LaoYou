@@ -22,6 +22,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.TabPagerAdapter;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.ActiveUserBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.listener.AppBarStateChangeListener;
@@ -121,7 +122,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
         tp.getFollowChatType(id);
         tp.getActiveUserData(id);
         if (!imgurl.isEmpty()) {
-            Glide.with(this).load(imgurl).apply(getGlideOptions()).into(background_img);
+            Glide.with(MyApplication.getContext()).load(imgurl).apply(getGlideOptions()).into(background_img);
             NoBackGroup = false;
         } else {
             background_img.setVisibility(View.GONE);
@@ -190,7 +191,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
     @Override
     public void IsFollowChat(boolean b) {
         attention_tv.setText(b ? gets(R.string.followed) : gets(R.string.unfollowed));
-        Glide.with(this).load(b ? R.mipmap.yellow_star : R.mipmap.black_star).into(attention_img);
+        Glide.with(MyApplication.getContext()).load(b ? R.mipmap.yellow_star : R.mipmap.black_star).into(attention_img);
     }
 
     @Override
@@ -207,7 +208,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
                 lp.leftMargin = DeviceUtils.dip2px(this, 2);
                 ImageView im = new ImageView(this);
                 im.setLayoutParams(lp);
-                Glide.with(this).load(R.mipmap.gray_right).into(im);
+                Glide.with(MyApplication.getContext()).load(R.mipmap.gray_right).into(im);
                 active_user_layout.addView(im);
                 im.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -222,7 +223,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
 
                 CircleImageView im = new CircleImageView(this);
                 im.setLayoutParams(lp);
-                Glide.with(this).load(aub.get(i).getHeadImgUrl()).apply(getGlideOptions()).into(im);
+                Glide.with(MyApplication.getContext()).load(aub.get(i).getHeadImgUrl()).apply(getGlideOptions()).into(im);
                 active_user_layout.addView(im);
                 final int finalI = i;
                 im.setOnClickListener(new View.OnClickListener() {

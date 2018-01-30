@@ -14,6 +14,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.tencent.model.Conversation;
 import laoyou.com.laoyou.tencent.utils.TimeUtil;
 import laoyou.com.laoyou.view.group.GroupCircularImageView;
@@ -63,14 +64,12 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
         Log.i(TAG, " data.getAvatar() ====" + data.getAvatar());
         if (data.getAvatar() instanceof Integer)
-            Glide.with(getContext()).load(data.getAvatar()).apply(getGlideOptions()).into(viewHolder.avatar);
-//            viewHolder.avatar.setImageResource((Integer) data.getAvatar());
+            Glide.with(MyApplication.getContext()).load(data.getAvatar()).apply(getGlideOptions()).into(viewHolder.avatar);
         else if (data.getAvatar() instanceof String) {
             if (((String) data.getAvatar()).isEmpty())
-                Glide.with(getContext()).load(R.drawable.head_me).apply(getGlideOptions()).into(viewHolder.avatar);
-//                viewHolder.avatar.setImageResource();
+                Glide.with(MyApplication.getContext()).load(R.drawable.head_me).apply(getGlideOptions()).into(viewHolder.avatar);
             else
-                Glide.with(getContext()).load(data.getAvatar()).apply(getGlideOptions()).into(viewHolder.avatar);
+                Glide.with(MyApplication.getContext()).load(data.getAvatar()).apply(getGlideOptions()).into(viewHolder.avatar);
         }
 
         viewHolder.lastMessage.setText(data.getLastMessageSummary());

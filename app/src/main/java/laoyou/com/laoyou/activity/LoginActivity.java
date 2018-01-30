@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.listener.LoginListener;
 import laoyou.com.laoyou.presenter.LoginPresenter;
 import laoyou.com.laoyou.save.SPreferences;
@@ -99,13 +100,13 @@ public class LoginActivity extends InitActivity implements View.OnClickListener,
     @Override
     public void onClear() {
         ClickFlag = false;
-        Glide.with(LoginActivity.this).load(R.mipmap.close_icon).into(commit_img);
+        Glide.with(MyApplication.getContext()).load(R.mipmap.close_icon).into(commit_img);
     }
 
     @Override
     public void onCommit() {
         ClickFlag = true;
-        Glide.with(LoginActivity.this).load(R.mipmap.right_icon_green).into(commit_img);
+        Glide.with(MyApplication.getContext()).load(R.mipmap.right_icon_green).into(commit_img);
     }
 
     @Override

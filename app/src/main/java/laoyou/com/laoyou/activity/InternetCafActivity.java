@@ -27,6 +27,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.InternetCafAdapter;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.CafBean;
 import laoyou.com.laoyou.bean.CafCommentBean;
 import laoyou.com.laoyou.dialog.MyAlertDialog;
@@ -194,7 +195,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
             RoundAngleImageView im = new RoundAngleImageView(this);
 
             im.setLayoutParams(lp);
-            Glide.with(this).load(internetBarImgs.get(i).getImgUrl()).apply(getGlideOptions()).into(im);
+            Glide.with(MyApplication.getContext()).load(internetBarImgs.get(i).getImgUrl()).apply(getGlideOptions()).into(im);
 
             final int finalI = i;
             im.setOnClickListener(new View.OnClickListener() {
@@ -275,11 +276,11 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
             caf_name_tv.setText(StringIsNull(cb.getName()));
             grade_tv.setText(StringIsNull(String.valueOf(cb.getAvgEvaluate())));
             caf_address_tv.setText(StringIsNull(cb.getAddress()));
-            Glide.with(this).load(cb.getLogoUrl()).apply(getGlideOptions()).into(caf_logo_img);
+            Glide.with(MyApplication.getContext()).load(cb.getLogoUrl()).apply(getGlideOptions()).into(caf_logo_img);
             if (!StringIsNull(cb.getBackgroundUrl()).isEmpty())
-                Glide.with(this).load(cb.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
+                Glide.with(MyApplication.getContext()).load(cb.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
             else
-                Glide.with(this).load(Fields.Catalina).apply(getGlideOptions()).into(background_img);
+                Glide.with(MyApplication.getContext()).load(Fields.Catalina).apply(getGlideOptions()).into(background_img);
 
             EnvironmentInit(cb.getInternetBarImgs());
             cpu.setText(StringIsNull(cb.getConfigureCPU()));

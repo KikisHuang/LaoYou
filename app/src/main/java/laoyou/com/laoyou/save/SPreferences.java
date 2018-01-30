@@ -3,6 +3,8 @@ package laoyou.com.laoyou.save;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import laoyou.com.laoyou.application.MyApplication;
+
 
 /**
  * Created by on 2017/5/13
@@ -10,7 +12,6 @@ import android.content.SharedPreferences;
  */
 public class SPreferences {
 
-    public static Context context;
     /**
      * 用户登录token;
      */
@@ -354,16 +355,7 @@ public class SPreferences {
      * 通用SharedPreferences方法;
      */
     static SharedPreferences getSharedPreferences() {
-        return context.getSharedPreferences("WlGx", Context.MODE_PRIVATE);
-    }
-
-    /**
-     * 获取全局Context方法;
-     *
-     * @param context
-     */
-    public static void setContext(Context context) {
-        SPreferences.context = context.getApplicationContext();
+        return MyApplication.getContext().getSharedPreferences("Hoop", Context.MODE_PRIVATE);
     }
 
 

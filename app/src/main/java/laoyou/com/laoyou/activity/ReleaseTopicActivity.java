@@ -24,6 +24,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.PhotoGridAdapter;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.dialog.MyAlertDialog;
 import laoyou.com.laoyou.listener.EdittextListener;
 import laoyou.com.laoyou.listener.ReleaseTopicListener;
@@ -116,7 +117,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
                 issue_tv.setTextColor(getRouColors(R.color.blue_text));
                 photo_layout.setVisibility(View.GONE);
                 video_cover_layout.setVisibility(View.VISIBLE);
-                Glide.with(this).load(videoselectList.get(0).getPath()).apply(getGlideOptions()).into(video_img);
+                Glide.with(MyApplication.getContext()).load(videoselectList.get(0).getPath()).apply(getGlideOptions()).into(video_img);
             }
         }
         if (getIntent().getStringArrayListExtra("Release_type") != null) {
@@ -168,7 +169,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
                     if (contentNum <= 0)
                         issue_tv.setTextColor(getRouColors(R.color.content3));
                     videoselectList.remove(0);
-                    Glide.with(this).load(R.color.white).load(video_img);
+                    Glide.with(MyApplication.getContext()).load(R.color.white).load(video_img);
                     video_cover_layout.setVisibility(View.GONE);
                     video_layout.setVisibility(View.VISIBLE);
                     photo_layout.setVisibility(View.VISIBLE);
@@ -310,7 +311,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
                     video_cover_layout.setVisibility(View.VISIBLE);
                     // 图片选择结果回调
                     videoselectList = PictureSelector.obtainMultipleResult(data);
-                    Glide.with(this).load(videoselectList.get(0).getPath()).apply(getGlideOptions()).into(video_img);
+                    Glide.with(MyApplication.getContext()).load(videoselectList.get(0).getPath()).apply(getGlideOptions()).into(video_img);
                     Log.i(TAG, "onActivityResult videoselectList size === " + videoselectList.size());
                     break;
 

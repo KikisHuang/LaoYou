@@ -15,6 +15,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.dialog.ActionSheetDialog;
 import laoyou.com.laoyou.listener.OverInfoListener;
 import laoyou.com.laoyou.presenter.OverInfoPresenter;
@@ -181,8 +182,8 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
     @Override
     public void setHeadImgAndName(String imgPath, String name) {
         if (!imgPath.isEmpty() && !name.isEmpty()) {
-            Glide.with(OverInfoActivity.this).load(imgPath).apply(getGlideOptions()).into(head_img);
-            new getImageCacheAsyncTask(getApplicationContext(), this).execute(imgPath);
+            Glide.with(MyApplication.getContext()).load(imgPath).apply(getGlideOptions()).into(head_img);
+            new getImageCacheAsyncTask(this).execute(imgPath);
 
             nickname_ed.setText(name);
             nickname_ed.setSelection(name.length());
@@ -213,6 +214,6 @@ public class OverInfoActivity extends InitActivity implements View.OnClickListen
     @Override
     public void onCompressSucceed(File f) {
         headFile = f;
-        Glide.with(OverInfoActivity.this).load(f).apply(getGlideOptions()).into(head_img);
+        Glide.with(MyApplication.getContext()).load(f).apply(getGlideOptions()).into(head_img);
     }
 }

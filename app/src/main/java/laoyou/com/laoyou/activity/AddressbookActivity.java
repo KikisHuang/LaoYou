@@ -79,7 +79,7 @@ public class AddressbookActivity extends InitActivity implements AddressBookList
         listView.addHeaderView(view);
 
         list = new ArrayList<>();
-        adapter = new AddressBookAdapter(this, list,this);
+        adapter = new AddressBookAdapter(this, list, this);
         listView.setAdapter(adapter);
     }
 
@@ -150,5 +150,11 @@ public class AddressbookActivity extends InitActivity implements AddressBookList
                 startActivity(intents);
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activity = null;
     }
 }

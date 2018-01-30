@@ -32,8 +32,9 @@ public final class LouSQLite extends SQLiteOpenHelper {
         this.callBack = callBack;
     }
 
-    public static void init(@NonNull Context context, @NonNull ICallBack callBack) {
-        INSTANCE = new LouSQLite(context, callBack);
+    public synchronized static void init(@NonNull Context context, @NonNull ICallBack callBack) {
+        if (INSTANCE == null)
+            INSTANCE = new LouSQLite(context, callBack);
     }
 
 
@@ -49,6 +50,7 @@ public final class LouSQLite extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
             db.close();
+            Log.i(TAG,"db close ");
         }
     }
 
@@ -67,6 +69,7 @@ public final class LouSQLite extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
             db.close();
+            Log.i(TAG,"db close ");
         }
     }
 
@@ -82,6 +85,7 @@ public final class LouSQLite extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
             db.close();
+            Log.i(TAG,"db close ");
         }
     }
 
@@ -103,6 +107,7 @@ public final class LouSQLite extends SQLiteOpenHelper {
         } finally {
             cursor.close();
             db.close();
+            Log.i(TAG,"db close ");
         }
 
     }
@@ -132,6 +137,7 @@ public final class LouSQLite extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
             db.close();
+            Log.i(TAG,"db close ");
         }
     }
 

@@ -31,6 +31,7 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.model.UserInfo;
 import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
@@ -111,9 +112,9 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
             group_head_layout.setVisibility(View.VISIBLE);
             key = getIntent().getStringExtra("key");
             if (groupInfos.get(0) == null || groupInfos.get(0).getFaceUrl().isEmpty())
-                Glide.with(GroupProfileActivity.this).load(R.drawable.head_group).apply(getGlideOptions()).into(group_head);
+                Glide.with(MyApplication.getContext()).load(R.drawable.head_group).apply(getGlideOptions()).into(group_head);
             else
-                Glide.with(GroupProfileActivity.this).load(groupInfos.get(0).getFaceUrl()).apply(getGlideOptions()).into(group_head);
+                Glide.with(MyApplication.getContext()).load(groupInfos.get(0).getFaceUrl()).apply(getGlideOptions()).into(group_head);
 
             member.setContent(String.valueOf(info.getMemberNum()));
             member.setOnClickListener(this);
@@ -316,7 +317,7 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
                     Show(GroupProfileActivity.this, "提交中", true, null);
                     List<LocalMedia> list = PictureSelector.obtainMultipleResult(data);
                     GroupFile = new File(list.get(0).getCompressPath() == null || list.get(0).getCompressPath().isEmpty() ? list.get(0).getPath() : list.get(0).getCompressPath());
-                    Glide.with(GroupProfileActivity.this).load(GroupFile).apply(getGlideOptions()).into(group_head);
+                    Glide.with(MyApplication.getContext()).load(GroupFile).apply(getGlideOptions()).into(group_head);
                     UpGroupHead();
                     break;
             }

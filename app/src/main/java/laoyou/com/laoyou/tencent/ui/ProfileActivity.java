@@ -24,6 +24,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.activity.AddressbookActivity;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.tencent.model.FriendProfile;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.tencent.presentation.event.FriendshipEvent;
@@ -77,7 +78,7 @@ public class ProfileActivity extends FragmentActivity implements FriendshipManag
         if (profile.getAvatarUrl() == null || profile.getAvatarUrl().isEmpty())
             avatar.setImageResource(R.drawable.head_me);
         else
-            Glide.with(this).load(profile.getAvatarUrl()).apply(getGlideOptions()).into(avatar);
+            Glide.with(MyApplication.getContext()).load(profile.getAvatarUrl()).apply(getGlideOptions()).into(avatar);
 
         name.setText(profile.getName());
         LineControllerView id = (LineControllerView) findViewById(R.id.id);

@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.tencent.model.ProfileSummary;
 import laoyou.com.laoyou.tencent.view.CircleImageView;
 
@@ -60,7 +61,7 @@ public class ProfileSummaryAdapter extends ArrayAdapter<ProfileSummary> {
         if (data.getAvatarUrl() == null || data.getAvatarUrl().isEmpty())
             viewHolder.avatar.setImageResource(data.getAvatarRes());
         else
-            Glide.with(getContext()).load(data.getAvatarUrl()).apply(getGlideOptions()).into(viewHolder.avatar);
+            Glide.with(MyApplication.getContext()).load(data.getAvatarUrl()).apply(getGlideOptions()).into(viewHolder.avatar);
 
         viewHolder.name.setText(data.getName());
         return view;

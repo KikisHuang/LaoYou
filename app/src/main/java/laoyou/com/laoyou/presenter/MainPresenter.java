@@ -9,6 +9,7 @@ import org.json.JSONException;
 import java.util.List;
 import java.util.Map;
 
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.GameBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.MainListener;
@@ -94,9 +95,9 @@ public class MainPresenter implements HttpResultListener {
 
     public void IMinit(TIMCallBack call) {
         //初始化IMSDK
-        InitBusiness.start(SPreferences.context);
+        InitBusiness.start(MyApplication.getContext());
         //初始化TLS
-        TlsBusiness.init(SPreferences.context);
+        TlsBusiness.init(MyApplication.getContext());
         //设置刷新监听
         RefreshEvent.getInstance();
 

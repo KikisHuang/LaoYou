@@ -61,6 +61,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import laoyou.com.laoyou.activity.LoginOperationActivity;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
@@ -119,14 +120,14 @@ public class SynUtils {
      * 获取String通用方法;
      */
     public static String getRouString(int id) {
-        return SPreferences.context.getResources().getString(id);
+        return MyApplication.getContext().getResources().getString(id);
     }
 
     /**
      * 获取Layout通用方法;
      */
     public static XmlResourceParser getRouLayout(int id) {
-        return SPreferences.context.getResources().getLayout(id);
+        return MyApplication.getContext().getResources().getLayout(id);
     }
 
     /**
@@ -134,7 +135,7 @@ public class SynUtils {
      */
     public static int getRouColors(int id) {
 
-        return SPreferences.context.getResources().getColor(id);
+        return MyApplication.getContext().getResources().getColor(id);
     }
 
     /**
@@ -142,7 +143,7 @@ public class SynUtils {
      */
     public static Drawable getRouDrawable(int id) {
 
-        return SPreferences.context.getResources().getDrawable(id);
+        return MyApplication.getContext().getResources().getDrawable(id);
     }
 
     /**
@@ -939,7 +940,7 @@ public class SynUtils {
      * @return
      */
     public static String gets(int res) {
-        return SPreferences.context.getString(res);
+        return MyApplication.getContext().getString(res);
     }
 
     /**
@@ -1028,7 +1029,7 @@ public class SynUtils {
         //获取联系人信息的Uri
         Uri uri = ContactsContract.Contacts.CONTENT_URI;
         //获取ContentResolver
-        ContentResolver contentResolver = SPreferences.context.getContentResolver();
+        ContentResolver contentResolver = MyApplication.getContext().getContentResolver();
         //查询数据，返回Cursor
         Cursor cursor = contentResolver.query(uri, null, null, null, null);
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
@@ -1128,7 +1129,7 @@ public class SynUtils {
         editText.setFocusable(true);
         editText.setFocusableInTouchMode(true);
         editText.requestFocus();
-        InputMethodManager imm = (InputMethodManager) SPreferences.context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) MyApplication.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 

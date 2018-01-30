@@ -14,6 +14,7 @@ import laoyou.com.laoyou.activity.AddFriendActivity;
 import laoyou.com.laoyou.activity.AddLikeGameActivity;
 import laoyou.com.laoyou.activity.AddTopicTypeActivity;
 import laoyou.com.laoyou.activity.AddressbookActivity;
+import laoyou.com.laoyou.activity.AdvertisementActivity;
 import laoyou.com.laoyou.activity.CertificationActivity;
 import laoyou.com.laoyou.activity.ChangePassWordActivity;
 import laoyou.com.laoyou.activity.CreateFlashChatActivity;
@@ -51,7 +52,6 @@ import laoyou.com.laoyou.activity.TopicCommentDetailsActivity;
 import laoyou.com.laoyou.activity.TopicTypeDetailsActivity;
 import laoyou.com.laoyou.activity.VideoPlayPageActivity;
 import laoyou.com.laoyou.activity.WelcomeActivity;
-import laoyou.com.laoyou.activity.WifiActivity;
 import laoyou.com.laoyou.tencent.ui.BlackListActivity;
 import laoyou.com.laoyou.tencent.ui.MessageNotifySettingActivity;
 
@@ -70,6 +70,15 @@ public class IntentUtils {
      */
     public static void goWelcomePage(Context context) {
         Intent intent = new Intent(context, WelcomeActivity.class);
+        startPage(context, intent);
+    }
+    /**
+     * 广告页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goAdvertisementPage(Context context) {
+        Intent intent = new Intent(context, AdvertisementActivity.class);
         startPage(context, intent);
     }
 
@@ -404,16 +413,6 @@ public class IntentUtils {
     public static void goOutSidePage(Context context, String url) {
         Intent intent = new Intent(context, OutSideActivity.class);
         intent.putExtra("outside_url", url);
-        startPage(context, intent);
-    }
-
-    /**
-     * 获取Wifi页面;
-     *
-     * @param context 上下文;
-     */
-    public static void goWifiPage(Context context) {
-        Intent intent = new Intent(context, WifiActivity.class);
         startPage(context, intent);
     }
 

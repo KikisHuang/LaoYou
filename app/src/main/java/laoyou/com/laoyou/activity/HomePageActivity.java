@@ -26,6 +26,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.HomePageAdapter;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.AttentionGameBean;
 import laoyou.com.laoyou.bean.PhotoBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
@@ -259,7 +260,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
             RoundAngleImageView im = new RoundAngleImageView(this);
             im.setScaleType(ImageView.ScaleType.CENTER_CROP);
             im.setLayoutParams(lp);
-            Glide.with(this).load(ll.get(i).getUrl()).apply(getGlideOptions()).into(im);
+            Glide.with(MyApplication.getContext()).load(ll.get(i).getUrl()).apply(getGlideOptions()).into(im);
             photo_layout.addView(im);
 
             im.setOnClickListener(new View.OnClickListener() {
@@ -295,12 +296,12 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
         identify = ub.getCloudTencentAccount();
         HeadImgUrl = ub.getHeadImgUrl();
-        Glide.with(HomePageActivity.this).load(ub.getHeadImgUrl()).into(head_img);
+        Glide.with(MyApplication.getContext()).load(ub.getHeadImgUrl()).into(head_img);
 //        Picasso.with(getApplicationContext()).load(ub.getHeadImgUrl()).into(head_img);
         nickname_tv.setText(ub.getName());
 
 //        Picasso.with(getApplicationContext()).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).into(background_img);
-        Glide.with(this).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
+        Glide.with(MyApplication.getContext()).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
         signature_tv.setText(IsNull(ub.getAutograph()) ? gets(R.string.default_signature) : ub.getAutograph());
         page_view_tv.setText(IsNull(ub.getBrowseNumber()) ? String.valueOf(0) : ub.getBrowseNumber());
         address_tv.setText(IsNull(ub.getAddress()) ? "" : ub.getAutograph());
@@ -349,7 +350,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
             CircleImageView civ = new CircleImageView(this);
             civ.setLayoutParams(lp);
             lp.rightMargin = DeviceUtils.dip2px(this, 2);
-            Glide.with(this).load(ab.getImgUrl()).apply(getGlideOptions()).into(civ);
+            Glide.with(MyApplication.getContext()).load(ab.getImgUrl()).apply(getGlideOptions()).into(civ);
             civ.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -27,6 +27,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.ProvinceBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.dialog.ActionSheetDialog;
@@ -175,9 +176,9 @@ public class MyHomePageActivity extends InitActivity implements ZoomInScrollView
 
     @Override
     public void onShowUserInfo(UserInfoBean ub) {
-        Glide.with(MyHomePageActivity.this).load(ub.getHeadImgUrl()).apply(getGlideOptions()).into(head_img);
+        Glide.with(MyApplication.getContext()).load(ub.getHeadImgUrl()).apply(getGlideOptions()).into(head_img);
 
-        Glide.with(MyHomePageActivity.this).load(ub.getBackgroundUrl() != null && !ub.getBackgroundUrl().isEmpty() ? ub.getBackgroundUrl() : Fields.Catalina).apply(getGlideOptions()).into(background_img);
+        Glide.with(MyApplication.getContext()).load(ub.getBackgroundUrl() != null && !ub.getBackgroundUrl().isEmpty() ? ub.getBackgroundUrl() : Fields.Catalina).apply(getGlideOptions()).into(background_img);
 
         nickname_ed.setText(ub.getName());
         sex = ub.getSex();
@@ -262,10 +263,10 @@ public class MyHomePageActivity extends InitActivity implements ZoomInScrollView
     public void onComPressSucceed(File f) {
         if (isHead) {
             headFile = f;
-            Glide.with(MyHomePageActivity.this).load(f).apply(getGlideOptions()).into(head_img);
+            Glide.with(MyApplication.getContext()).load(f).apply(getGlideOptions()).into(head_img);
         } else {
             backFile = f;
-            Glide.with(MyHomePageActivity.this).load(f).apply(getGlideOptions()).into(background_img);
+            Glide.with(MyApplication.getContext()).load(f).apply(getGlideOptions()).into(background_img);
         }
     }
 

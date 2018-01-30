@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.umeng.socialize.UMShareAPI;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.listener.LoginOperationListener;
 import laoyou.com.laoyou.presenter.LoginOperationPresenter;
 import laoyou.com.laoyou.save.SPreferences;
@@ -37,9 +38,8 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
     private ImageView wechat_img;
     private LinearLayout login_layout;
     private TextView register_layout;
-    private static LoginOperationActivity instance;
     private TextView forget_pass;
-    private UMShareAPI mShareAPI;
+//    private UMShareAPI mShareAPI;
     private RippleView login_bt;
     private EditText pass_ed, phone_ed;
 
@@ -55,7 +55,6 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
     @Override
     protected void init() {
         setContentView(R.layout.login_operation_layout);
-        instance = this;
         wechat_img = f(R.id.wechat_img);
         phone_ed = f(R.id.phone_ed);
         pass_ed = f(R.id.pass_ed);
@@ -63,8 +62,7 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
         register_layout = f(R.id.register_layout);
         login_bt = f(R.id.login_bt);
         forget_pass = f(R.id.forget_pass);
-        mShareAPI = UMShareAPI.get(this);
-
+//        mShareAPI = UMShareAPI.get(this);
         lp = new LoginOperationPresenter(this);
 
     }
@@ -74,24 +72,13 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
         lp.Presenter();
     }
 
-    /**
-     * 获取实力方法;
-     *
-     * @return
-     */
-    public static synchronized LoginOperationActivity getInstance() {
-        if (instance == null)
-            instance = new LoginOperationActivity();
-
-        return instance;
-    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.wechat_img:
-                Show(LoginOperationActivity.this, "登录中", true, null);
-                lp.getWeChatInfo(LoginOperationActivity.this, mShareAPI);
+//                Show(LoginOperationActivity.this, "登录中", true, null);
+//                lp.getWeChatInfo(LoginOperationActivity.this, mShareAPI);
                 break;
             case R.id.login_layout:
 //                goLoginPage(this);
@@ -162,7 +149,10 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        instance = null;
         Cancle();
+        lp.clear();
+        lp = null;
+
+        MyApplication.getRefWatcher().watch(this);
     }
 }

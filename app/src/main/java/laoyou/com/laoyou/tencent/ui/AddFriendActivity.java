@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
 import laoyou.com.laoyou.tencent.presentation.viewfeatures.FriendshipManageView;
@@ -50,9 +51,9 @@ public class AddFriendActivity extends FragmentActivity implements View.OnClickL
         id = getIntent().getStringExtra("id");
         tvName.setText(getIntent().getStringExtra("name"));
         if (getIntent().getStringExtra("head_img") == null || getIntent().getStringExtra("head_img").isEmpty())
-            avatar.setImageResource(R.drawable.head_me);
+            Glide.with(MyApplication.getContext()).load(R.drawable.head_me).apply(getGlideOptions()).into(avatar);
         else
-            Glide.with(this).load(getIntent().getStringExtra("head_img")).apply(getGlideOptions()).into(avatar);
+            Glide.with(MyApplication.getContext()).load(getIntent().getStringExtra("head_img")).apply(getGlideOptions()).into(avatar);
 
         idField.setContent(id);
         groupField = (LineControllerView) findViewById(R.id.group);

@@ -12,6 +12,7 @@ import com.tencent.TIMManager;
 import com.tencent.TIMUserStatusListener;
 
 import laoyou.com.laoyou.activity.MainActivity;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.UserInfo;
 import laoyou.com.laoyou.tencent.presentation.business.InitBusiness;
@@ -24,7 +25,6 @@ import laoyou.com.laoyou.tencent.service.TlsBusiness;
 import laoyou.com.laoyou.tencent.utils.Foreground;
 import laoyou.com.laoyou.tencent.utils.PushUtil;
 import laoyou.com.laoyou.utils.ActivityCollector;
-import laoyou.com.laoyou.utils.Fields;
 
 import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 
@@ -71,9 +71,9 @@ public class AliveJobService extends JobService implements TIMCallBack, TIMUserS
 
     private void IMInit() {
         //初始化IMSDK
-        InitBusiness.start(SPreferences.context);
+        InitBusiness.start(MyApplication.getContext());
         //初始化TLS
-        TlsBusiness.init(SPreferences.context);
+        TlsBusiness.init(MyApplication.getContext());
         //设置刷新监听
         RefreshEvent.getInstance();
 
@@ -93,8 +93,7 @@ public class AliveJobService extends JobService implements TIMCallBack, TIMUserS
 
     @Override
     public boolean onStartJob(JobParameters params) {
-        if (Fields.DEBUG)
-            Log.d(TAG, "KeepAliveService----->JobService服务被启动...");
+//            Log.d(TAG, "KeepAliveService----->JobService服务被启动...");
         mKeepAliveService = this;
         // 返回false，系统假设这个方法返回时任务已经执行完毕；
         // 返回true，系统假定这个任务正要被执行
@@ -106,8 +105,7 @@ public class AliveJobService extends JobService implements TIMCallBack, TIMUserS
     @Override
     public boolean onStopJob(JobParameters params) {
         mHandler.removeMessages(MESSAGE_ID_TASK);
-        if (Fields.DEBUG)
-            Log.d(TAG, "KeepAliveService----->JobService服务被关闭");
+//            Log.d(TAG, "KeepAliveService----->JobService服务被关闭");
         return false;
     }
 
@@ -127,7 +125,7 @@ public class AliveJobService extends JobService implements TIMCallBack, TIMUserS
 
     @Override
     public void onForceOffline() {
-        LogOut(SPreferences.context, false);
+        LogOut(MyApplication.getContext(), false);
         Log.d(TAG, "被踢掉线了...");
     }
 

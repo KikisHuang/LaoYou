@@ -37,6 +37,7 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.GridAdapter;
 import laoyou.com.laoyou.adapter.TopicCommentAdapter;
 import laoyou.com.laoyou.adapter.TopicPhotoAdapter;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.ChatMessages;
 import laoyou.com.laoyou.bean.LikeListBean;
 import laoyou.com.laoyou.bean.TopicCommentBean;
@@ -296,7 +297,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         tp.GetLikeUserByPage(id);
         like_layout.setEnabled(true);
         Cancle();
-        Glide.with(this).load(b ? R.mipmap.like_heart : R.mipmap.unlike_heart).into(like_icon);
+        Glide.with(MyApplication.getContext()).load(b ? R.mipmap.like_heart : R.mipmap.unlike_heart).into(like_icon);
     }
 
     /**
@@ -309,7 +310,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     public void onThemeDetails(final TopicCommentBean tcb) {
 
         invitationId = tcb.getMcUser().getId();
-        Glide.with(this).load(tcb.getMcUser().getHeadImgUrl()).apply(getGlideOptions()).into(user_head_img);
+        Glide.with(MyApplication.getContext()).load(tcb.getMcUser().getHeadImgUrl()).apply(getGlideOptions()).into(user_head_img);
         user_name.setText(tcb.getMcUser().getName());
         type_name.setText(tcb.getMcChatType().getName());
         time_tv.setText(getMyDate(tcb.getCreateTime()));
@@ -363,13 +364,13 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
                 if (fileIsExists(tcb.getVideos()))
                     coverPath = saveImage(null, tcb.getVideos());
                 else {
-                    Bitmap bitmap = createVideoThumbnail(tcb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
+                    Bitmap bitmap = createVideoThumbnail(tcb.getVideos(), DeviceUtils.getWindowWidth(MyApplication.getContext()), (int) (DeviceUtils.getWindowWidth(MyApplication.getContext()) * 0.8 / 1));
                     coverPath = saveImage(bitmap, tcb.getVideos());
                 }
                 FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 lp.topMargin = DeviceUtils.dip2px(this, 2);
                 video_cover_img.setLayoutParams(lp);
-                Glide.with(this).load(coverPath).apply(getGlideOptions()).into(video_cover_img);
+                Glide.with(MyApplication.getContext()).load(coverPath).apply(getGlideOptions()).into(video_cover_img);
                 video_layout.setVisibility(View.VISIBLE);
 
                 video_cover_img.setOnClickListener(new View.OnClickListener() {

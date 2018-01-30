@@ -12,6 +12,7 @@ import com.tencent.TIMFriendResult;
 import com.tencent.TIMValueCallBack;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
 import laoyou.com.laoyou.tencent.view.CircleImageView;
 
@@ -28,7 +29,7 @@ public class FriendshipHandleActivity extends Activity implements View.OnClickLi
         setContentView(R.layout.activity_friendship_handle);
         avatar = (CircleImageView) findViewById(R.id.avatar);
         id = getIntent().getStringExtra("id");
-        Glide.with(this).load( getIntent().getStringExtra("face_url)")).apply(getGlideOptions()).into(avatar);
+        Glide.with(MyApplication.getContext()).load( getIntent().getStringExtra("face_url)")).apply(getGlideOptions()).into(avatar);
         TextView tvName = (TextView) findViewById(R.id.name);
         tvName.setText(id);
         String word = getIntent().getStringExtra("word");

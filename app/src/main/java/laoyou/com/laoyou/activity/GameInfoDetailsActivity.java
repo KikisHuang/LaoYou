@@ -21,6 +21,7 @@ import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.utils.Log;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.listener.KeyboardChangeListener;
 import laoyou.com.laoyou.listener.OutSideListener;
 import laoyou.com.laoyou.presenter.OutSidePresenter;
@@ -154,7 +155,7 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
 
     @Override
     public void onLikeStatus(boolean b) {
-        Glide.with(this).load(b ? R.mipmap.like_heart : R.mipmap.heart_black_icon).into(like_icon);
+        Glide.with(MyApplication.getContext()).load(b ? R.mipmap.like_heart : R.mipmap.heart_black_icon).into(like_icon);
     }
 
     @Override

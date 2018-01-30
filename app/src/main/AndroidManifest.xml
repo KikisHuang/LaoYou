@@ -29,7 +29,7 @@
     <uses-permission android:name="android.permission.WRITE_SMS" />    <!-- 写入消息 -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" />  <!-- 接收消息 -->
 
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
@@ -41,7 +41,7 @@
     <!--用于写入缓存数据到扩展存储卡-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 
-    <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!--用于申请调用A-GPS模块-->
@@ -74,7 +74,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
 
-
         </activity>
         <!-- 测试页面 -->
         <activity
@@ -85,20 +84,32 @@
 
         <!-- 引导页面 -->
         <activity
-            android:name=".activity.GuidePageActivity"
+            android:name=".activity.GuideActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <!-- 启动广告页面 -->
+        <activity
+            android:name=".activity.AdvertisementActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent">
+        </activity>
+
         <!-- 欢迎页面 -->
         <activity
             android:name=".activity.WelcomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Transparent"></activity>
+            android:theme="@style/Transparent">
+
+        </activity>
 
         <!-- 登录、注册选择页面 -->
         <activity
@@ -144,10 +155,6 @@
             android:screenOrientation="portrait">
 
         </activity>
-        <!-- wifi页面 -->
-        <activity
-            android:name=".activity.WifiActivity"
-            android:screenOrientation="portrait"></activity>
         <!-- 密码查询页面 -->
         <activity
             android:name=".activity.QueryActivity"
@@ -445,7 +452,9 @@
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
 
-        <meta-data android:name="com.tencent.rdm.uuid" android:value="e22e5573-563e-40db-b1bc-02b4993162d4" />
+        <meta-data
+            android:name="com.tencent.rdm.uuid"
+            android:value="e22e5573-563e-40db-b1bc-02b4993162d4" />
 
     </application>
 </manifest>

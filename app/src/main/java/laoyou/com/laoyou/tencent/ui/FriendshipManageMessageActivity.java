@@ -139,4 +139,10 @@ public class FriendshipManageMessageActivity extends Activity implements Friends
         }
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter = null;
+    }
 }

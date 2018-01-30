@@ -3,6 +3,7 @@ package laoyou.com.laoyou.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 
 import java.util.List;
 
@@ -53,6 +54,13 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
                 return CommentFragment.setTag(position, flag);
         }
     }
+
+    @Override
+    public int getItemPosition(Object object) {
+        // TODO Auto-generated method stub
+        return PagerAdapter.POSITION_NONE;
+    }
+
 
     @Override
     public int getCount() {

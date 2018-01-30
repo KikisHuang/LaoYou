@@ -22,14 +22,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.ToastUtil;
 import okhttp3.Call;
 
 import static laoyou.com.laoyou.bean.ServerCode.getCodeStatusMsg;
 import static laoyou.com.laoyou.utils.IntentUtils.goMainPage;
-import static laoyou.com.laoyou.utils.IntentUtils.goWelcomePage;
 import static laoyou.com.laoyou.utils.JsonUtils.getCode;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.SynUtils.StringIsNull;
@@ -38,7 +37,7 @@ import static laoyou.com.laoyou.utils.SynUtils.StringIsNull;
 /**
  * Created by lian on 2018/1/23.
  */
-public class GuidePageActivity extends Activity implements View.OnClickListener {
+public class AdvertisementActivity extends Activity implements View.OnClickListener {
     private TextView skip_tv;
     private ImageView welcome_img;
     private Handler handler;
@@ -48,16 +47,12 @@ public class GuidePageActivity extends Activity implements View.OnClickListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (SPreferences.getFirstStart())
-            goWel();
-
-        setContentView(R.layout.guide_layout);
+        setContentView(R.layout.advertisement_layout);
         skip_tv = (TextView) findViewById(R.id.skip_tv);
         skip_tv.setOnClickListener(this);
         welcome_img = (ImageView) findViewById(R.id.welcome_img);
         Hand();
         getData();
-
     }
 
     private void getData() {
@@ -69,7 +64,7 @@ public class GuidePageActivity extends Activity implements View.OnClickListener 
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        ToastUtil.toast2_bottom(GuidePageActivity.this, "网络不顺畅...");
+                        ToastUtil.toast2_bottom(AdvertisementActivity.this, "网络不顺畅...");
                     }
 
                     @Override
@@ -101,7 +96,7 @@ public class GuidePageActivity extends Activity implements View.OnClickListener 
                                     goMain();
 
                             } else {
-                                ToastUtil.toast2_bottom(GuidePageActivity.this, getCodeStatusMsg(code));
+                                ToastUtil.toast2_bottom(AdvertisementActivity.this, getCodeStatusMsg(code));
                                 goMain();
                             }
 
@@ -153,9 +148,6 @@ public class GuidePageActivity extends Activity implements View.OnClickListener 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        OkHttpUtils.getInstance().cancelTag(this);
-
         if (handler != null) {
             welcome_img.setImageBitmap(null);
             handler.removeCallbacksAndMessages(null);
@@ -165,16 +157,11 @@ public class GuidePageActivity extends Activity implements View.OnClickListener 
                 tm = null;
             }
         }
-        System.gc();
+        MyApplication.getRefWatcher().watch(this);
     }
 
     private void goMain() {
         goMainPage(this);
-        finish();
-    }
-
-    private void goWel() {
-        goWelcomePage(this);
         finish();
     }
 

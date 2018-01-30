@@ -1,8 +1,6 @@
 package laoyou.com.laoyou.fragment;
 
 import android.os.SystemClock;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,11 +26,11 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.HomeStatusAdapter;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.ActiveBean;
 import laoyou.com.laoyou.bean.AddressBookBean;
 import laoyou.com.laoyou.bean.PageTopBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
-import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.dialog.MyAlertDialog;
 import laoyou.com.laoyou.listener.HomeListener;
 import laoyou.com.laoyou.listener.PositionAddListener;
@@ -85,23 +83,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private ImageView banner_img, show_hide_img;
     private FrameLayout page_layout, banner_layout;
     private static HomeFragment homeFragment;
-    private UserInfoBean info;
 
     private PageTopBean pb = null;
 
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
 
-    private AppBarLayout appbar_layout;
 
     private LinearLayout dynamic_layout, query_pass_layout, wifi_layout, nearby_wb_layout, player_community_layout, topic_circle_layout;
 
-    private CoordinatorLayout coordinatorlayout;
 
     private HomeStatusAdapter adapter;
     private TextView flash_more_tv, recom_nick_name, foot_tv;
     private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
     private LinearLayout foot_layout, flash_title_layout, foot_recom_layout, recom_layout;
+    private FrameLayout head_layout;
     private String groupId = "";
     private TIMCallBack back;
     private HorizontalScrollView dynamic_scroll;
@@ -127,6 +123,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         flash_more_tv.setOnClickListener(this);
 
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -138,7 +135,16 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         hp.page = totalItemCount - 1;
                         hp.getPeopleNearby(false);
                     }
+
+
+
                 }
+
+                int firstVisiblePosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
+                if (firstVisiblePosition == 0 && show_hide_img.getVisibility() == View.VISIBLE)
+                    showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_HIDDEN, 500);
+                if (firstVisiblePosition > 0 && show_hide_img.getVisibility() != View.VISIBLE)
+                    showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_SHOW, 500);
 
             }
         });
@@ -165,18 +171,27 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     protected void init() {
 
+
         homeFragment = this;
         back = this;
         Nblist = new ArrayList<>();
-        banner_img = f(R.id.banner_img);
-        page_layout = f(R.id.page_layout);
-        flash_title_layout = f(R.id.flash_title_layout);
-        dynamic_scroll = f(R.id.dynamic_scroll);
+
+        show_hide_img = f(R.id.show_hide_img);
+        recyclerView = f(R.id.recyclerView);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
         swiperefreshlayout = f(R.id.swiperefreshlayout);
         RefreshInit();
-        banner_layout = f(R.id.banner_layout);
-
         foot_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.home_fragment_foot_include, null);
+        head_layout = (FrameLayout) LayoutInflater.from(getActivity()).inflate(R.layout.home_head_include, null);
+
+        banner_img = (ImageView) head_layout.findViewById(R.id.banner_img);
+        page_layout = (FrameLayout) head_layout.findViewById(R.id.page_layout);
+        flash_title_layout = (LinearLayout) head_layout.findViewById(R.id.flash_title_layout);
+        dynamic_scroll = (HorizontalScrollView) head_layout.findViewById(R.id.dynamic_scroll);
+        banner_layout = (FrameLayout) head_layout.findViewById(R.id.banner_layout);
+
+
         foot_layout.setVisibility(View.GONE);
 
         recom_nick_name = (TextView) foot_layout.findViewById(R.id.recom_nick_name);
@@ -187,25 +202,24 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DeviceUtils.getWindowWidth(getActivity()) * 2 / 5);
         banner_layout.setLayoutParams(lp);
 
-        mViewPager = f(R.id.vp_main);
-        mLinearLayoutDot = f(R.id.ll_main_dot);
+        mViewPager = (WrapContentHeightViewPager) head_layout.findViewById(R.id.vp_main);
+        mLinearLayoutDot = (LinearLayout) head_layout.findViewById(R.id.ll_main_dot);
 
-        coordinatorlayout = f(R.id.coordinatorlayout);
-        topic_circle_layout = f(R.id.topic_circle_layout);
+//        coordinatorlayout = f(R.id.coordinatorlayout);
+        topic_circle_layout = (LinearLayout) head_layout.findViewById(R.id.topic_circle_layout);
 
-        flash_more_tv = f(R.id.flash_more_tv);
-        nearby_wb_layout = f(R.id.nearby_wb_layout);
+        flash_more_tv = (TextView) head_layout.findViewById(R.id.flash_more_tv);
+        nearby_wb_layout = (LinearLayout) head_layout.findViewById(R.id.nearby_wb_layout);
 
         polistener = this;
 
-        appbar_layout = f(R.id.appbar_layout);
+//        appbar_layout = f(R.id.appbar_layout);
 
-        show_hide_img = f(R.id.show_hide_img);
 
-        dynamic_layout = f(R.id.dynamic_layout);
-        query_pass_layout = f(R.id.query_pass_layout);
-        wifi_layout = f(R.id.wifi_layout);
-        player_community_layout = f(R.id.player_community_layout);
+        dynamic_layout = (LinearLayout) head_layout.findViewById(R.id.dynamic_layout);
+        query_pass_layout = (LinearLayout) head_layout.findViewById(R.id.query_pass_layout);
+        wifi_layout = (LinearLayout) head_layout.findViewById(R.id.wifi_layout);
+        player_community_layout = (LinearLayout) head_layout.findViewById(R.id.player_community_layout);
 
         FrameLayout.LayoutParams lp1 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp1.gravity = Gravity.CENTER | Gravity.LEFT;
@@ -215,9 +229,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         scroller.setScrollDuration(1500);
         scroller.initViewPagerScroll(mViewPager);//这个是设置切换过渡时间为2秒
 
-        recyclerView = f(R.id.recyclerView);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(mLayoutManager);
+
         //设置ViewPager切换效果，即实现画廊效果
 //        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mViewPager.setPageMargin(0);
@@ -229,6 +241,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         LinearLayout.LayoutParams lps = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         foot_layout.setLayoutParams(lps);
+
+        mHeaderAndFooterWrapper.addHeaderView(head_layout);
         mHeaderAndFooterWrapper.addFootView(foot_layout);
 
         recyclerView.setAdapter(mHeaderAndFooterWrapper);
@@ -239,7 +253,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         //设置监听
         swiperefreshlayout.setOnRefreshListener(this);
         //设置向下拉多少出现刷新
-        swiperefreshlayout.setProgressViewEndTarget(true, 500);
+        swiperefreshlayout.setProgressViewEndTarget(true, 200);
         //改变加载显示的颜色
         swiperefreshlayout.setColorSchemeColors(getRouColors(R.color.dominant_ton), getRouColors(R.color.dominant_ton));
     }
@@ -278,7 +292,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
             headLayout.setLayoutParams(lp);
 
-            Glide.with(getActivity()).load(atv.getFaceUrl() == null || atv.getFaceUrl().isEmpty() ? Fields.Catalina : atv.getFaceUrl()).apply(getGlideOptions()).into(im);
+            Glide.with(MyApplication.getContext()).load(atv.getFaceUrl() == null || atv.getFaceUrl().isEmpty() ? Fields.Catalina : atv.getFaceUrl()).apply(getGlideOptions()).into(im);
 
             im.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -328,7 +342,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         else
             hp.IsLogin();
 
-        hp.setAppBarLayoutStateChangeListener(appbar_layout);
         Log.i(TAG, "onResume");
         try {
             polistener = this;
@@ -340,7 +353,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void onPause() {
-        hp.removeAppBarLayoutStateChangeListener(appbar_layout);
         super.onPause();
         Log.i(TAG, "onPause");
         try {
@@ -361,7 +373,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     break;
                 case R.id.dynamic_layout:
                     goFlashChatPage(getActivity());
-//                    Indevelopment(getActivity());
                     break;
                 case R.id.query_pass_layout:
                     goQueryPassPage(getActivity());
@@ -376,11 +387,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     goGameInformationPage(getActivity());
                     break;
                 case R.id.show_hide_img:
-                    //必须先停止recyclerView的滑动，不然跳到顶部后无法跳回来；
+                    //必须先停止recyclerView的滑动(CoordinatorLayout 时才需要执行此操作),不然跳到顶部后无法跳回来；
                     forceStopRecyclerViewScroll();
                     mLayoutManager.scrollToPositionWithOffset(0, 0);
                     mLayoutManager.setStackFromEnd(true);
-                    appbar_layout.setExpanded(true);
                     break;
                 case R.id.topic_circle_layout:
                     goTopicCirclePage(getActivity());
@@ -425,7 +435,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onOneImg(PageTopBean ptb) {
         banner_img.setVisibility(View.VISIBLE);
-        Glide.with(getActivity()).load(ptb.getImgUrl()).apply(getGlideOptions()).into(banner_img);
+        Glide.with(MyApplication.getContext()).load(ptb.getImgUrl()).apply(getGlideOptions()).into(banner_img);
         this.pb = ptb;
     }
 
@@ -468,12 +478,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
      */
     @Override
     public void onForbidSlide() {
-        coordinatorlayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -499,12 +504,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         recom_layout.setVisibility(View.GONE);
         foot_tv.setVisibility(View.GONE);
 
-        coordinatorlayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -513,22 +512,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         });
 
         swiperefreshlayout.setRefreshing(false);
-    }
-
-    /**
-     * 滑动关闭回调;
-     */
-    @Override
-    public void onEnable(boolean b) {
-        if (b)
-            showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_SHOW, 500);
-        else if (show_hide_img.getVisibility() == View.VISIBLE)
-            showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_HIDDEN, 500);
-
-        show_hide_img.setEnabled(b);
-
-        if (LoginStatusQuery())
-            swiperefreshlayout.setEnabled(!b);
     }
 
     /**
@@ -664,7 +647,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     goLoginOperPage(getActivity());
                 }
                 headLayout.setLayoutParams(lp);
-                Glide.with(getActivity()).load(abb.getHeadImgUrl() == null || abb.getHeadImgUrl().isEmpty() ? Fields.Catalina : abb.getHeadImgUrl()).apply(getGlideOptions()).into(im);
+                Glide.with(MyApplication.getContext()).load(abb.getHeadImgUrl() == null || abb.getHeadImgUrl().isEmpty() ? Fields.Catalina : abb.getHeadImgUrl()).apply(getGlideOptions()).into(im);
 
                 foot_recom_layout.addView(headLayout);
             }
@@ -783,4 +766,5 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         if (!groupId.isEmpty())
             ChatActivity.navToChat(getActivity(), groupId, TIMConversationType.Group);
     }
+
 }

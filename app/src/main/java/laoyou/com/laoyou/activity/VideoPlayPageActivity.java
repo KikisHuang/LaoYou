@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.utils.jiaozi.JZMediaIjkplayer;
 import laoyou.com.laoyou.utils.jiaozi.MyJZVideoPlayerStandard;
 
@@ -49,7 +50,7 @@ public class VideoPlayPageActivity extends InitActivity implements View.OnClickL
         myJZVideoPlayerStandard.setUp(videoUrl
                 , JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "");
 
-        Glide.with(this)
+        Glide.with(MyApplication.getContext())
                 .load(coverPath)
                 .apply(getGlideOptions())
                 .into(myJZVideoPlayerStandard.thumbImageView);

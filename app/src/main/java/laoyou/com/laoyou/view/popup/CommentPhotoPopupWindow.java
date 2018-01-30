@@ -11,8 +11,8 @@ import android.widget.PopupWindow;
 import com.bumptech.glide.Glide;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.listener.TopicCommentListener;
-import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.DeviceUtils;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
@@ -32,7 +32,7 @@ public class CommentPhotoPopupWindow {
     private TopicCommentListener listener;
 
     public CommentPhotoPopupWindow(TopicCommentListener listener) {
-        this.mContext = SPreferences.context;
+        this.mContext = MyApplication.getContext();
         this.listener = listener;
     }
 

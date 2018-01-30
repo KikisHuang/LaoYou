@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
@@ -28,12 +29,11 @@ public class homeViewPageUtils {
      * ViewPager底部小圆点初始化;
      *
      * @param size              数据长度;
-     * @param context           上下文;
      * @param mImageViewDotList 底部圆点数据集合;
      * @param mLinearLayoutDot  底部圆点布局;
      * @param dotPosition       圆点起始的位置;
      */
-    public static void setDot(int size, Context context, List<ImageView> mImageViewDotList, LinearLayout mLinearLayoutDot, int dotPosition) {
+    public static void setDot(int size, List<ImageView> mImageViewDotList, LinearLayout mLinearLayoutDot, int dotPosition) {
         mLinearLayoutDot.removeAllViews();
         mImageViewDotList.clear();
         //  设置LinearLayout的子控件的宽高，这里单位是像素。
@@ -41,7 +41,7 @@ public class homeViewPageUtils {
         params.rightMargin = 20;
         //  for循环创建images.length个ImageView（小圆点）
         for (int i = 0; i < size; i++) {
-            ImageView imageViewDot = new ImageView(context);
+            ImageView imageViewDot = new ImageView(MyApplication.getContext());
             imageViewDot.setLayoutParams(params);
             //  设置小圆点的背景为暗红图片
             imageViewDot.setBackgroundResource(R.drawable.dot_corners_false);
@@ -61,14 +61,14 @@ public class homeViewPageUtils {
      * @param mImageViewList 返回的结果集;
      * @return
      */
-    public static List<PageTopBannerBean> getTopImg(final List<PageTopBannerBean> images, final Context context, List<PageTopBannerBean> mImageViewList, LayoutInflater inflater) {
+    public static List<PageTopBannerBean> getTopImg(final List<PageTopBannerBean> images, List<PageTopBannerBean> mImageViewList, LayoutInflater inflater) {
 
         for (int i = 0; i < images.size() + 2; i++) {
             PageTopBannerBean pb = new PageTopBannerBean();
             View view = inflater.inflate(R.layout.top_img_item, null);
             ImageView imageView = (ImageView) view.findViewById(R.id.top_img);
 
-            int w = (int) (DeviceUtils.getWindowWidth(context) * 3 / 4);
+            int w = (int) (DeviceUtils.getWindowWidth(MyApplication.getContext()) * 3 / 4);
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(w, (int) (w * 1.5 / 3));
             imageView.setLayoutParams(lp);
 
@@ -77,7 +77,7 @@ public class homeViewPageUtils {
 
             if (i == 0) {   //判断当i=0为该处的ImageView设置最后一张图片作为背景
 
-                Glide.with(context).load(images.get(images.size() - 1).getImgUrl()).apply(getGlideOptions()).into(imageView);
+                Glide.with(MyApplication.getContext()).load(images.get(images.size() - 1).getImgUrl()).apply(getGlideOptions()).into(imageView);
 
                 pb.setType(images.get(images.size() - 1).getType());
                 pb.setId(images.get(images.size() - 1).getId());
@@ -89,7 +89,7 @@ public class homeViewPageUtils {
                 mImageViewList.add(pb);
             } else if (i == images.size() + 1) {   //判断当i=images.length+1时为该处的ImageView设置第一张图片作为背景
 //                imageView = setImg(context);
-                Glide.with(context).load(images.get(0).getImgUrl()).apply(getGlideOptions()).into(imageView);
+                Glide.with(MyApplication.getContext()).load(images.get(0).getImgUrl()).apply(getGlideOptions()).into(imageView);
 
                 pb.setType(images.get(0).getType());
                 pb.setId(images.get(0).getId());
@@ -101,7 +101,7 @@ public class homeViewPageUtils {
                 mImageViewList.add(pb);
             } else {  //其他情况则为ImageView设置images[i-1]的图片作为背景
 //                imageView = setImg(context);
-                Glide.with(context).load(images.get(i - 1).getImgUrl()).apply(getGlideOptions()).into(imageView);
+                Glide.with(MyApplication.getContext()).load(images.get(i - 1).getImgUrl()).apply(getGlideOptions()).into(imageView);
 
                 pb.setType(images.get(i - 1).getType());
                 pb.setId(images.get(i - 1).getId());

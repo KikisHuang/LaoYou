@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.bumptech.glide.Glide;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.utils.Fields;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goFlashChatGambitPage;
@@ -55,10 +56,10 @@ public class FlashChatBasicsActivity extends InitActivity implements View.OnClic
             @Override
             public void afterTextChanged(Editable s) {
                 if (wordNum.length() >= 1) {
-                    Glide.with(FlashChatBasicsActivity.this.getApplicationContext()).load(R.mipmap.next_icon).into(next_img);
+                    Glide.with(MyApplication.getContext()).load(R.mipmap.next_icon).into(next_img);
                     clear_name.setVisibility(View.VISIBLE);
                 } else {
-                    Glide.with(FlashChatBasicsActivity.this.getApplicationContext()).load(R.mipmap.next_icon_gray).into(next_img);
+                    Glide.with(MyApplication.getContext()).load(R.mipmap.next_icon_gray).into(next_img);
                     clear_name.setVisibility(View.GONE);
                 }
 

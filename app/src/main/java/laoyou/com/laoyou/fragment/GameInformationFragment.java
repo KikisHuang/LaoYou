@@ -2,7 +2,9 @@ package laoyou.com.laoyou.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.GameInformationAdapter;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.GameInfoBean;
 import laoyou.com.laoyou.bean.GameTypeBean;
 import laoyou.com.laoyou.listener.GameInformationListener;
@@ -124,4 +127,28 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
     }
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbindDrawables(view);
+        MyApplication.getRefWatcher().watch(this);
+    }
+
+    /**
+     * 清除fragment中的view，防止内存溢出;
+     *
+     * @param view
+     */
+    private void unbindDrawables(View view) {
+        Log.i(TAG, "unbindDrawables");
+        if (view.getBackground() != null) {
+            view.getBackground().setCallback(null);
+        }
+        if (view instanceof ViewGroup && !(view instanceof AdapterView)) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                unbindDrawables(((ViewGroup) view).getChildAt(i));
+            }
+            ((ViewGroup) view).removeAllViews();
+        }
+    }
 }

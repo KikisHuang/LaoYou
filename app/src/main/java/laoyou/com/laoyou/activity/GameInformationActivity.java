@@ -32,6 +32,7 @@ public class GameInformationActivity extends InitActivity implements GameInforma
     private GameInformationPresenter gp;
     private TabPagerAdapter adapter;
 
+
     @Override
     protected void click() {
 
@@ -50,6 +51,7 @@ public class GameInformationActivity extends InitActivity implements GameInforma
         tablist = new ArrayList<>();
         mTab.setTabMode(TabLayout.MODE_SCROLLABLE);
         gp = new GameInformationPresenter(this);
+        viewPager.setOffscreenPageLimit(1);
 
     }
 
@@ -83,6 +85,7 @@ public class GameInformationActivity extends InitActivity implements GameInforma
 
 
     private void setPager() {
+
         adapter = new TabPagerAdapter(getSupportFragmentManager(), tablist);
         viewPager.setAdapter(adapter);
         mTab.setupWithViewPager(viewPager);
@@ -101,5 +104,14 @@ public class GameInformationActivity extends InitActivity implements GameInforma
             }
         });
         viewPager.setCurrentItem(0);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        adapter = null;
+        viewPager = null;
+        mTab = null;
     }
 }

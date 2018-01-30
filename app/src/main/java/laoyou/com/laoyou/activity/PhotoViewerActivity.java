@@ -14,6 +14,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.PhotoPagerAdapter;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.BigPhotoViewPager;
 
@@ -48,7 +49,7 @@ public class PhotoViewerActivity extends InitActivity {
      * @param url
      */
     public void SavePhoto(String url) {
-        Glide.with(this.getApplicationContext()).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
+        Glide.with(MyApplication.getContext()).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(final Bitmap resource, Transition<? super Bitmap> transition) {
                 if (saveImageToGallery(getApplicationContext(), resource))

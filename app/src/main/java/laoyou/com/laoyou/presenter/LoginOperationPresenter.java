@@ -2,15 +2,11 @@ package laoyou.com.laoyou.presenter;
 
 import android.util.Log;
 
-import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-
 import org.json.JSONException;
 
 import java.util.Map;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.activity.LoginOperationActivity;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.LoginOperationListener;
@@ -29,7 +25,6 @@ import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.SynUtils.validPhoneNumber;
-import static laoyou.com.laoyou.utils.tpartyLoginUtils.getUMAuthListener;
 
 /**
  * Created by lian on 2017/10/25.
@@ -37,7 +32,7 @@ import static laoyou.com.laoyou.utils.tpartyLoginUtils.getUMAuthListener;
 public class LoginOperationPresenter implements HttpResultListener {
     private static final String TAG = "LoginOperationPresenter";
     private LoginOperationListener listener;
-    private SHARE_MEDIA platform;
+//  private SHARE_MEDIA platform;
     private String faceUrl = "";
     private String name = "";
 
@@ -119,11 +114,11 @@ public class LoginOperationPresenter implements HttpResultListener {
         listener.onFailed(response);
     }
 
-    public void getWeChatInfo(LoginOperationActivity ac, UMShareAPI mShareAPI) {
+/*    public void getWeChatInfo(LoginOperationActivity ac, UMShareAPI mShareAPI) {
         platform = SHARE_MEDIA.WEIXIN;
         mShareAPI.isInstall(ac, platform);
         mShareAPI.doOauthVerify(ac, platform, getUMAuthListener(listener, Interface.URL + Interface.WECHATLogin));
-    }
+    }*/
 
     /**
      * 微信登录;
@@ -157,5 +152,9 @@ public class LoginOperationPresenter implements HttpResultListener {
         else if (pass.isEmpty())
             listener.onFailed(gets(R.string.passnullmsg));
 
+    }
+
+    public void clear() {
+        listener = null;
     }
 }

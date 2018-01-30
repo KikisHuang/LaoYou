@@ -36,7 +36,7 @@ public class ExpandGroupListAdapter extends BaseExpandableListAdapter {
     }
 
     public ExpandGroupListAdapter(Context context, List<String> groups, Map<String, List<FriendProfile>> members, boolean selectable){
-        mContext = context;
+        mContext = context.getApplicationContext();
         this.groups = groups;
         mMembers = members;
         this.selectable = selectable;

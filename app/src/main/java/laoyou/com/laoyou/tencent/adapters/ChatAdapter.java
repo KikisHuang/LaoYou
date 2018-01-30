@@ -17,6 +17,7 @@ import com.tencent.TIMConversationType;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.Message;
 import laoyou.com.laoyou.tencent.view.CircleImageView;
@@ -47,7 +48,7 @@ public class ChatAdapter extends ArrayAdapter<Message> {
      * @param type
      */
     public ChatAdapter(Context context, int resource, List<Message> objects, TIMConversationType type) {
-        super(context, resource, objects);
+        super(context.getApplicationContext(), resource, objects);
         resourceId = resource;
         this.type = type;
         C2CImg = SPreferences.getTemporaryImg() != null ? SPreferences.getTemporaryImg() : "";
@@ -81,11 +82,11 @@ public class ChatAdapter extends ArrayAdapter<Message> {
             data.showMessage(viewHolder, getContext());
             if (data.isSelf()) {
                 if (SPreferences.getUserHeadImg() == null || SPreferences.getUserHeadImg().equals("")) {
-                    Glide.with(getContext()).load(R.drawable.head_me).apply(getGlideOptions()).into(viewHolder.rightAvatar);
+                    Glide.with(MyApplication.getContext()).load(R.drawable.head_me).apply(getGlideOptions()).into(viewHolder.rightAvatar);
 //                    viewHolder.rightAvatar.setImageResource(R.drawable.head_me);
                     Log.i(TAG, "SenderProfile 为空");
                 } else {
-                    Glide.with(getContext()).load(SPreferences.getUserHeadImg()).apply(getGlideOptions()).into(viewHolder.rightAvatar);
+                    Glide.with(MyApplication.getContext()).load(SPreferences.getUserHeadImg()).apply(getGlideOptions()).into(viewHolder.rightAvatar);
                 }
                 viewHolder.rightAvatar.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -96,16 +97,16 @@ public class ChatAdapter extends ArrayAdapter<Message> {
             } else {
                 if (type == TIMConversationType.C2C) {
                     if (!C2CImg.isEmpty())
-                        Glide.with(getContext()).load(C2CImg).apply(getGlideOptions()).into(viewHolder.leftAvatar);
+                        Glide.with(MyApplication.getContext()).load(C2CImg).apply(getGlideOptions()).into(viewHolder.leftAvatar);
                     else
-                        Glide.with(getContext()).load(R.drawable.head_other).apply(getGlideOptions()).into(viewHolder.leftAvatar);
+                        Glide.with(MyApplication.getContext()).load(R.drawable.head_other).apply(getGlideOptions()).into(viewHolder.leftAvatar);
 //                        viewHolder.leftAvatar.setImageResource(R.drawable.head_other);
                 } else {
                     if (data.getMessage().getSenderProfile() == null)
-                        Glide.with(getContext()).load(R.drawable.head_other).apply(getGlideOptions()).into(viewHolder.leftAvatar);
+                        Glide.with(MyApplication.getContext()).load(R.drawable.head_other).apply(getGlideOptions()).into(viewHolder.leftAvatar);
 //                        viewHolder.leftAvatar.setImageResource(R.drawable.head_other);
                     else {
-                        Glide.with(getContext()).load(data.getMessage().getSenderProfile().getFaceUrl()).apply(getGlideOptions()).into(viewHolder.leftAvatar);
+                        Glide.with(MyApplication.getContext()).load(data.getMessage().getSenderProfile().getFaceUrl()).apply(getGlideOptions()).into(viewHolder.leftAvatar);
 //                        Log.i(TAG, " Group Face === " + data.getMessage().getSenderProfile().getFaceUrl());
                     }
 

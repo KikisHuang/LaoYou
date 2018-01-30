@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.dialog.ActionSheetDialog;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -64,7 +65,7 @@ public class PhotoViewerFragment extends BaseFragment {
 
         try {
             onLong();
-            Glide.with(getActivity().getApplicationContext()).load(url).into(imageView);
+            Glide.with(MyApplication.getContext()).load(url).into(imageView);
         } catch (Exception e) {
             Log.e(TAG, "Error === " + e);
         }

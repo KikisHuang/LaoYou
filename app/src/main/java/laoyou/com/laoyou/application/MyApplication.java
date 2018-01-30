@@ -5,6 +5,10 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tencent.TIMGroupReceiveMessageOpt;
@@ -22,10 +26,10 @@ import com.zhy.http.okhttp.cookie.CookieJarImpl;
 import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
+import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.save.db.LouSQLite;
 import laoyou.com.laoyou.save.db.MyDbCallBack;
 import laoyou.com.laoyou.tencent.utils.Foreground;
@@ -54,15 +58,23 @@ public class MyApplication extends Application {
         super.onCreate();
         context = this;
         mRefWatcher = Fields.DEBUG ? LeakCanary.install(this) : RefWatcher.DISABLED;
+
         DbInit();
         MultiDex.install(this);
         ErrorCrashInit();
-        SPreferences.setContext(getApplicationContext());
         OkHttpInit();
         UmengInt();
         Foreground.init(this);
         initTecentIM();
         QBX5Init();
+        GlideInit();
+    }
+
+    private void GlideInit() {
+        GlideBuilder builder =  new GlideBuilder();
+        Glide glide = builder.build(context);
+        glide.getRegistry().replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory());
+        Glide.init(glide);
     }
 
     @Override

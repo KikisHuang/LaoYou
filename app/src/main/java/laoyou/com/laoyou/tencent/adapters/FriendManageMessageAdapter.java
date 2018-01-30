@@ -20,6 +20,7 @@ import com.tencent.TIMValueCallBack;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.tencent.model.FriendFuture;
 import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
 import laoyou.com.laoyou.tencent.view.CircleImageView;
@@ -84,7 +85,7 @@ public class FriendManageMessageAdapter extends ArrayAdapter<FriendFuture> {
         if (data.getFaceUrl() == null || data.getFaceUrl().equals(""))
             viewHolder.avatar.setImageResource(R.drawable.head_other);
         else
-            Glide.with(getContext()).load(data.getFaceUrl()).apply(getGlideOptions()).into(viewHolder.avatar);
+            Glide.with(MyApplication.getContext()).load(data.getFaceUrl()).apply(getGlideOptions()).into(viewHolder.avatar);
 
         if (IsToday(timedate(data.getAddTime())))
             viewHolder.add_time.setText(timedateHHMM(String.valueOf(data.getAddTime())));

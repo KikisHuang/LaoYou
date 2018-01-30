@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.save.SPreferences;
 
@@ -155,7 +156,7 @@ public class JsonUtils {
                     if (fileIsExists(ttb.getVideos()))
                         ttb.setVideoCover(saveImage(null, ttb.getVideos()));
                     else {
-                        Bitmap bitmap = createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
+                        Bitmap bitmap = createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(MyApplication.getContext()), (int) (DeviceUtils.getWindowWidth(MyApplication.getContext()) * 0.8 / 1));
                         ttb.setVideoCover(saveImage(bitmap, ttb.getVideos()));
                     }
                 }
@@ -212,7 +213,7 @@ public class JsonUtils {
                     if (fileIsExists(ttb.getVideos()))
                         ttb.setVideoCover(saveImage(null, ttb.getVideos()));
                     else {
-                        Bitmap bitmap = createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(SPreferences.context), (int) (DeviceUtils.getWindowWidth(SPreferences.context) * 0.8 / 1));
+                        Bitmap bitmap = createVideoThumbnail(ttb.getVideos(), DeviceUtils.getWindowWidth(MyApplication.getContext()), (int) (DeviceUtils.getWindowWidth(MyApplication.getContext()) * 0.8 / 1));
                         ttb.setVideoCover(saveImage(bitmap, ttb.getVideos()));
                     }
                 }

@@ -27,7 +27,6 @@ public interface HomeListener {
 
     void RefreshRecyclerView(List<TopicTypeBean> nblist);
 
-    void onEnable(boolean b);
 
     void onDownload(String jsonSring);
 

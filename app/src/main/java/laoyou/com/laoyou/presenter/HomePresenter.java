@@ -3,7 +3,6 @@ package laoyou.com.laoyou.presenter;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +27,6 @@ import laoyou.com.laoyou.bean.AddressBookBean;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
-import laoyou.com.laoyou.listener.AppBarStateChangeListener;
 import laoyou.com.laoyou.listener.HomeListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.ThumbnailListener;
@@ -65,7 +63,7 @@ import static laoyou.com.laoyou.utils.SynUtils.stopPlay;
 /**
  * Created by lian on 2017/10/25.
  */
-public class HomePresenter extends AppBarStateChangeListener implements HttpResultListener, VersionListener, ThumbnailListener {
+public class HomePresenter implements HttpResultListener, VersionListener, ThumbnailListener {
     private static final String TAG = "HomePresenter";
     private HomeListener listener;
     private Handler handler;
@@ -322,8 +320,8 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     private void initPageData() {
         mImageViewList.clear();
         mImageViewDotList.clear();
-        mImageViewList = homeViewPageUtils.getTopImg(toplist, context, mImageViewList, inflater);
-        homeViewPageUtils.setDot(toplist.size(), context, mImageViewDotList, mLinearLayoutDot, dotPosition);
+        mImageViewList = homeViewPageUtils.getTopImg(toplist, mImageViewList, inflater);
+        homeViewPageUtils.setDot(toplist.size(), mImageViewDotList, mLinearLayoutDot, dotPosition);
     }
 
     /**
@@ -453,54 +451,6 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     public void BannerHideOfShow() {
         httpUtils.OkHttpsGet(null, this, Fields.REQUEST5, Interface.URL + Interface.GETSETTING);
     }
-/*
-    @Override
-    public void IsonRefresh(int init) {
-        page = 0;
-        getPeopleNearby(true);
-    }
-
-    @Override
-    public void IsonLoadmore(int move) {
-        page += move;
-        getPeopleNearby(false);
-    }*/
-
-    /**
-     * AppBarLayout状态事件监听,设置SpringView的enable，防止滑动事件冲突;
-     *
-     * @param appbar_layout
-     */
-    public void setAppBarLayoutStateChangeListener(AppBarLayout appbar_layout) {
-        appbar_layout.addOnOffsetChangedListener(this);
-    }
-
-    /**
-     * 移除监听;
-     *
-     * @param appbar_layout
-     */
-    public void removeAppBarLayoutStateChangeListener(AppBarLayout appbar_layout) {
-        appbar_layout.removeOnOffsetChangedListener(this);
-    }
-
-    @Override
-    public void onStateChanged(AppBarLayout appBarLayout, State state, int i) {
-        switch (state) {
-            //展开状态;
-            case EXPANDED:
-                listener.onEnable(false);
-                break;
-            //折叠状态;
-            case COLLAPSED:
-                listener.onEnable(true);
-                break;
-            //中间状态;
-            default:
-                listener.onEnable(false);
-                break;
-        }
-    }
 
     /**
      * 点赞页面刷新;
@@ -519,7 +469,7 @@ public class HomePresenter extends AppBarStateChangeListener implements HttpResu
     @Override
     public void onVersionUp() {
         Map<String, String> m = getKeyMap();
-        m.put("version", String.valueOf(getVersionCode(context)));
+        m.put("version", String.valueOf(getVersionCode(MyApplication.getContext())));
         m.put("channelCode", MyApplication.CHANNEL);
         httpUtils.OkHttpsGet(m, this, Fields.REQUEST4, Interface.URL + Interface.GETDOWNLOADPATH);
     }
