@@ -50,10 +50,10 @@ public class MyNoticePresenter implements HttpResultListener {
                 List<TopicBean> ar = GsonUtil.jsonToList(getJsonSring(response), TopicBean.class);
                 if (ar.size() > 0)
                     listener.onTopicTypeList(ar);
-                else if (!isMore)
+               /* else if (!isMore)
                     listener.onFailedsMsg(gets(R.string.nomore));
                 else
-                    listener.onFailedsMsg(gets(R.string.nodata));
+                    listener.onFailedsMsg(gets(R.string.nodata));*/
 
                 break;
         }

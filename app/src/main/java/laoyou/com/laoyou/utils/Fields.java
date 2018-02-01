@@ -1,5 +1,7 @@
 package laoyou.com.laoyou.utils;
 
+import android.view.ViewGroup;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,9 @@ public class Fields {
     public static final String VIDEOTYPE = "video/mp4";
     public static final String IMAGETYPE = "image/jpeg";
 
+    public static final int MATCH = ViewGroup.LayoutParams.MATCH_PARENT;
+    public static final int WRAP = ViewGroup.LayoutParams.WRAP_CONTENT;
+
     public static final int C2CCHAT = 2821;
 
     public static final int REQUEST1 = 348851;
@@ -48,6 +53,7 @@ public class Fields {
 
     public static final int IsBottom = (1 << 0);
     public static final int IsTop = (1 << 1);
+
 
 
     public static final String OFFICIAL = "official-";

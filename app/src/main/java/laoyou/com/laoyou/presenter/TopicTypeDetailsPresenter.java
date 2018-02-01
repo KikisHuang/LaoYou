@@ -71,10 +71,11 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
                     list.clear();
 
                 JSONArray ar = getJsonAr(response);
-                if (ar.length() <= 0 && !isRefresh)
-                    listener.onFailedsMsg(gets(R.string.nomore));
-                else if (ar.length() <= 0 && isRefresh)
-                    listener.onFailedsMsg(gets(R.string.nodata));
+                if (ar.length() <= 0 && !isRefresh) {
+//                    listener.onFailedsMsg(gets(R.string.nomore));
+                }
+               /* else if (ar.length() <= 0 && isRefresh)
+                    listener.onFailedsMsg(gets(R.string.nodata));*/
                 else if (ThumbNailInstance() == null)
                     new ThumbnailAsyncTask(this).execute(ar, list);
 
@@ -214,7 +215,7 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
     }
 
     public void CloseAsynck() {
-        if(ThumbNailInstance()!=null){
+        if (ThumbNailInstance() != null) {
             ThumbNailInstance().cancel(true);
             ThumbNailInstance().CloseThumb();
         }

@@ -45,7 +45,7 @@ public class FlashChatGambitActivity extends InitActivity implements FlashChatGa
         titles_layout.setBackgroundResource(R.color.background_color);
         list = new ArrayList<>();
         //使用不规则的网格布局
-        mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);//3列，纵向排列
+        mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);//3列，纵向排列
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new FlashChatGambitAdapter(this, list, this);
         recyclerView.setAdapter(adapter);

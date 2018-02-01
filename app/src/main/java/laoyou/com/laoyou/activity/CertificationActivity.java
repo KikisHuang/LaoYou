@@ -1,7 +1,6 @@
 package laoyou.com.laoyou.activity;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -23,14 +22,13 @@ import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.RippleView;
-import top.zibin.luban.Luban;
-import top.zibin.luban.OnCompressListener;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.DeviceUtils.getIMEI;
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IPUtils.isWifi;
 import static laoyou.com.laoyou.utils.PhotoUtils.getMULTIPLEPhotoTag;
+import static laoyou.com.laoyou.utils.SynUtils.getLayout;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.setTitles;
 
@@ -52,7 +50,6 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
     private File TailFile = null;
     private File HandFile = null;
     private String IP = "";
-    private static CertificationActivity activity;
 
     @Override
     protected void click() {
@@ -67,7 +64,6 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
         setContentView(R.layout.certification_layout);
         setTitles(CertificationActivity.this);
         cp = new CertificationPresenter(this);
-        activity = this;
         front_id_layout = f(R.id.front_id_layout);
         Tail_id_layout = f(R.id.Tail_id_layout);
         hand_id_layout = f(R.id.hand_id_layout);
@@ -93,14 +89,11 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
         ImgInit();
     }
 
-    public static CertificationActivity getCertifiInstance() {
-        return activity;
-    }
 
     private void ImgInit() {
         int w = DeviceUtils.getWindowWidth(this) / 2;
 
-        FrameLayout.LayoutParams fl = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (w / 1.6));
+        FrameLayout.LayoutParams fl = (FrameLayout.LayoutParams) getLayout(1,ViewGroup.LayoutParams.MATCH_PARENT, (int) (w / 1.6));
         front_img.setLayoutParams(fl);
         tail_img.setLayoutParams(fl);
         hand_img.setLayoutParams(fl);
@@ -152,10 +145,12 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
             }
         }
     }
+/*
+    */
 
     /**
      * 压缩
-     */
+     *//*
     private void Compress(List<String> list, final int result) {
         Luban.with(this)
                 .load(list)                                   // 传人要压缩的图片列表
@@ -194,8 +189,7 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
                         ToastUtil.toast2_bottom(CertificationActivity.this, "照片获取异常！！！");
                     }
                 }).launch();    //启动压缩
-    }
-
+    }*/
     @Override
     public void onCheckFailed(String ms) {
         ToastUtil.toast2_bottom(CertificationActivity.this, ms);
@@ -221,5 +215,11 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
     @Override
     public void setIP(String ip) {
         IP = ip;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        MyApplication.getRefWatcher().watch(this);
     }
 }

@@ -29,6 +29,7 @@ import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
+import static laoyou.com.laoyou.tencent.utils.Constant.getGroupErrorTxt;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.setTitlesAndBack;
 
@@ -116,7 +117,7 @@ public class NearbyFlashChatActivity extends InitActivity implements SpringListe
             if (!identify.isEmpty())
                 ChatActivity.navToChat(NearbyFlashChatActivity.this, identify, TIMConversationType.Group);
         } else
-            ToastUtil.toast2_bottom(this, s);
+            ToastUtil.toast2_bottom(this, getGroupErrorTxt(i));
     }
 
     @Override

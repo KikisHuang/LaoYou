@@ -210,6 +210,7 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
     protected void onDestroy() {
         super.onDestroy();
         hp.CloseQueryThread();
+        hp.RemoveHand();
     }
 
     @Override

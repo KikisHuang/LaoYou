@@ -5,5 +5,5 @@ package laoyou.com.laoyou.listener;
  */
 public interface FlashChatMemberListener {
     void onCreateSucceed();
-    void onCreateFailed();
+    void onCreateFailed(int code);
 }

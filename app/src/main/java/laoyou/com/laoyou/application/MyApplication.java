@@ -9,8 +9,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 import com.tencent.TIMGroupReceiveMessageOpt;
 import com.tencent.TIMManager;
 import com.tencent.TIMOfflinePushListener;
@@ -46,18 +44,18 @@ public class MyApplication extends Application {
     public static String CHANNEL;
     //CrashHandler实例
     public static CrashHandler crashHandler;
+/*
+   private RefWatcher mRefWatcher;
 
-    private RefWatcher mRefWatcher;
-
-    public static RefWatcher getRefWatcher() {
+   public static RefWatcher getRefWatcher() {
         return context.mRefWatcher;
-    }
+    }*/
 
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
-        mRefWatcher = Fields.DEBUG ? LeakCanary.install(this) : RefWatcher.DISABLED;
+//        mRefWatcher = Fields.DEBUG ? LeakCanary.install(this) : RefWatcher.DISABLED;
 
         DbInit();
         MultiDex.install(this);
@@ -71,7 +69,7 @@ public class MyApplication extends Application {
     }
 
     private void GlideInit() {
-        GlideBuilder builder =  new GlideBuilder();
+        GlideBuilder builder = new GlideBuilder();
         Glide glide = builder.build(context);
         glide.getRegistry().replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory());
         Glide.init(glide);
@@ -79,8 +77,10 @@ public class MyApplication extends Application {
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base); MultiDex.install(this);
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
+
     /**
      * 本地数据库初始化;
      */

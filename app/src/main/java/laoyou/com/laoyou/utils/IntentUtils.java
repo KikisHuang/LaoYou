@@ -558,7 +558,10 @@ public class IntentUtils {
         Intent intent = new Intent(context, HomePageActivity.class);
         intent.putExtra("Page_Home_id", id);
         intent.putExtra("Page_Home_Tencent_Flag", isTencent + "");
-        startPage(context, intent);
+//        startPage(context, intent);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+
     }
 
     /**
@@ -588,6 +591,7 @@ public class IntentUtils {
         intent.putExtra("Page_CommentDetails_name", name);
         intent.putExtra("Page_CommentDetails_content", content);
         startPage(context, intent);
+
     }
 
     /**

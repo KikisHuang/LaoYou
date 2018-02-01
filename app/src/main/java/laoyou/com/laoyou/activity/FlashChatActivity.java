@@ -29,6 +29,7 @@ import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
+import static laoyou.com.laoyou.tencent.utils.Constant.getGroupErrorTxt;
 import static laoyou.com.laoyou.utils.IntentUtils.goCreateFlashChatPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goNearbyFlashChatPage;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -150,7 +151,7 @@ public class FlashChatActivity extends InitActivity implements FlashChatListener
             if (!identify.isEmpty())
                 ChatActivity.navToChat(FlashChatActivity.this, identify, TIMConversationType.Group);
         } else
-            ToastUtil.toast2_bottom(this, s);
+            ToastUtil.toast2_bottom(this, getGroupErrorTxt(i));
     }
 
     @Override

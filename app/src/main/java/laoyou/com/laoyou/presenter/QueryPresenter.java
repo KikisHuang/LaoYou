@@ -150,7 +150,14 @@ public class QueryPresenter implements HttpResultListener {
     public void CloseQueryThread() {
         if (ThreadInstance() != null)
             ThreadInstance().ClearThread();
+        animation = null;
         Fields.CHECKFLAG = false;
+    }
+    public void RemoveHand(){
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+            handler = null;
+        }
     }
 
     /**

@@ -13,17 +13,15 @@ import com.tencent.TIMValueCallBack;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.FlashChatMemberListener;
-import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
-import okhttp3.Request;
 
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * Created by lian on 2017/12/4.
  */
-public class FlashChatMemberPresenter implements HttpResultListener {
+public class FlashChatMemberPresenter  {
     private FlashChatMemberListener listener;
     private static final String TAG = "FlashChatMemberPresenter";
 
@@ -45,7 +43,8 @@ public class FlashChatMemberPresenter implements HttpResultListener {
         TIMGroupManager.getInstance().createGroup(param, new TIMValueCallBack<String>() {
             @Override
             public void onError(int code, String desc) {
-                listener.onCreateFailed();
+                listener.onCreateFailed(code);
+
                 Log.d(TAG, "create group failed. code: " + code + " errmsg: " + desc);
             }
 
@@ -89,24 +88,4 @@ public class FlashChatMemberPresenter implements HttpResultListener {
         });
     }
 
-    @Override
-    public void onSucceed(String response, int tag) {
-
-
-    }
-
-    @Override
-    public void onError(Request request, Exception e) {
-
-    }
-
-    @Override
-    public void onParseError(Exception e) {
-
-    }
-
-    @Override
-    public void onFailed(String response, int code, int tag) {
-
-    }
 }

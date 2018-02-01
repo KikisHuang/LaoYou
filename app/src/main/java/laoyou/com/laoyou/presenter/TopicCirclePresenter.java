@@ -74,10 +74,10 @@ public class TopicCirclePresenter implements HttpResultListener {
 
                 if (list.size() > 0)
                     listener.onTopicTypeList(list);
-                else if (isRefresh)
+          /*      else if (isRefresh)
                     listener.onFailedMsg(gets(R.string.nodata));
                 else if (!isRefresh)
-                    listener.onFailedMsg(gets(R.string.nomore));
+                    listener.onFailedMsg(gets(R.string.nomore));*/
                 break;
 
             case Fields.REQUEST2:

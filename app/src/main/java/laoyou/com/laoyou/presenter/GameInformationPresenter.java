@@ -71,8 +71,8 @@ public class GameInformationPresenter implements HttpResultListener {
                 List<GameTypeBean> list = GsonUtil.jsonToList(getJsonSring(response), GameTypeBean.class);
                 if (list.size() > 0)
                     listener.onGameTypeInforMation(list);
-                else
-                    listener.onFailedMsg(gets(R.string.nodata));
+               /* else
+                    listener.onFailedMsg(gets(R.string.nodata));*/
                 break;
             case Fields.REQUEST2:
 
@@ -83,10 +83,10 @@ public class GameInformationPresenter implements HttpResultListener {
 
                 if (li.size() > 0)
                     listener.onGameInfor(li);
-                else if (InfoRefresh)
+             /*   else if (InfoRefresh)
                     listener.onFailedMsg(gets(R.string.nodata));
                 else
-                    listener.onFailedMsg(gets(R.string.The_bottom));
+                    listener.onFailedMsg(gets(R.string.The_bottom));*/
                 break;
         }
     }

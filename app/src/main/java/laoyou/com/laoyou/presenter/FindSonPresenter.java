@@ -66,10 +66,10 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
                             }
                         }
                         listener.RefreshNearby(ar);
-                    } else if (RefreshFlag)
+                    } /*else if (RefreshFlag)
                         listener.onFailedMsg(gets(R.string.nodata));
                     else if (!RefreshFlag)
-                        listener.onFailedMsg(gets(R.string.nomore));
+                        listener.onFailedMsg(gets(R.string.nomore));*/
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -80,8 +80,9 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
                 JSONArray ar = getJsonAr(response);
                 List<TopicTypeBean> toppic = new ArrayList<>();
 
-                if (!RefreshFlag && ar.length() <= 0)
-                    listener.onFailedMsg(gets(R.string.nomore));
+                if (!RefreshFlag && ar.length() <= 0){
+//                    listener.onFailedMsg(gets(R.string.nomore));
+                }
                 else if (ThumbNailInstance() == null)
                     new ThumbnailAsyncTask(this).execute(ar, toppic);
 
@@ -172,8 +173,8 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
     public void onThumbnailResult(List<TopicTypeBean> list) {
         if (list.size() > 0)
             listener.RefreshNewWonders(list);
-        else if (RefreshFlag)
-            listener.onFailedMsg(gets(R.string.nodata));
+      /*  else if (RefreshFlag)
+            listener.onFailedMsg(gets(R.string.nodata));*/
 
         if (ThumbNailInstance() != null)
             ThumbNailInstance().CloseThumb();

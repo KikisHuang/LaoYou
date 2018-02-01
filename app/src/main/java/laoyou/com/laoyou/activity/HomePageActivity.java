@@ -60,6 +60,7 @@ import static laoyou.com.laoyou.utils.IntentUtils.goVideoPlayerPage;
 import static laoyou.com.laoyou.utils.SynUtils.IsListViewTopOfBottom;
 import static laoyou.com.laoyou.utils.SynUtils.IsMe;
 import static laoyou.com.laoyou.utils.SynUtils.IsNull;
+import static laoyou.com.laoyou.utils.SynUtils.getLayout;
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.handleTitleBarColorEvaluate;
@@ -255,7 +256,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         photo_layout.removeAllViews();
         for (int i = 0; i < ll.size(); i++) {
             int w = DeviceUtils.getWindowWidth(this) * 1 / 4;
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(w, w);
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) getLayout(0, w, w);
             lp.rightMargin = DeviceUtils.dip2px(this, 3);
             RoundAngleImageView im = new RoundAngleImageView(this);
             im.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -296,7 +297,10 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
         identify = ub.getCloudTencentAccount();
         HeadImgUrl = ub.getHeadImgUrl();
-        Glide.with(MyApplication.getContext()).load(ub.getHeadImgUrl()).into(head_img);
+        if (IsNull(ub.getHeadImgUrl()))
+            Glide.with(MyApplication.getContext()).load(R.mipmap.test_icon).into(head_img);
+        else
+            Glide.with(MyApplication.getContext()).load(ub.getHeadImgUrl()).into(head_img);
 //        Picasso.with(getApplicationContext()).load(ub.getHeadImgUrl()).into(head_img);
         nickname_tv.setText(ub.getName());
 
@@ -346,7 +350,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         game_list_layout.removeAllViews();
         for (AttentionGameBean ab : ll) {
             int w = DeviceUtils.getWindowWidth(this) * 1 / 10;
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(w, w);
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) getLayout(0, w, w);
             CircleImageView civ = new CircleImageView(this);
             civ.setLayoutParams(lp);
             lp.rightMargin = DeviceUtils.dip2px(this, 2);
@@ -459,8 +463,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
         handleTitleBarColorEvaluate(height, title_layout, back_img, more_img.getVisibility() == View.GONE ? null : more_img);
 
-        if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom && (Fields.VPT == 0 || System.currentTimeMillis() - Fields.VPT >= 2000))
-        {
+        if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom && (Fields.VPT == 0 || System.currentTimeMillis() - Fields.VPT >= 2000)) {
             IsRefresh = false;
             if (isMe)
                 hp.getPersonaldynamic(null, false);

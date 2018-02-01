@@ -35,7 +35,8 @@ public class CheckThread extends Thread {
                 bundle.putInt("time", time);
                 message.setData(bundle);
 
-                handler.sendMessage(message);
+                if (handler != null)
+                    handler.sendMessage(message);
 
                 if (time <= 0)
                     time = 3;

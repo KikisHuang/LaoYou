@@ -33,8 +33,6 @@ public class LoginOperationPresenter implements HttpResultListener {
     private static final String TAG = "LoginOperationPresenter";
     private LoginOperationListener listener;
 //  private SHARE_MEDIA platform;
-    private String faceUrl = "";
-    private String name = "";
 
     public LoginOperationPresenter(LoginOperationListener listener) {
         this.listener = listener;
@@ -62,8 +60,8 @@ public class LoginOperationPresenter implements HttpResultListener {
             case Fields.REQUEST2:
                 UserInfoBean ub = GsonUtil.GsonToBean(getJsonSring(response), UserInfoBean.class);
                 SPreferences.saveUserId(ub.getId());
-                faceUrl = ub.getHeadImgUrl();
-                name = ub.getName();
+                SPreferences.saveUserHeadImg(ub.getHeadImgUrl());
+                SPreferences.saveUserName(ub.getName());
 
                 if (ub.getCloudTencentAccount() != null && !ub.getCloudTencentAccount().isEmpty()) {
                     Log.i(TAG, "详情获得的id ===" + ub.getCloudTencentAccount());

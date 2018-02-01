@@ -87,6 +87,7 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
     private List<TopicTypeBean> Nblist;
     private List<ActiveBean> atvb;
     private boolean WAIT = false;
+    private PageTopBannerAdapter adapter;
 
     public HomePresenter(HomeListener listener, ViewPager mViewPager, LayoutInflater inflater, Context context, LinearLayout mLinearLayoutDot) {
         this.listener = listener;
@@ -273,7 +274,7 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
                 if (!RefreshFlag && ar.length() <= 0)
                     listener.onBottom();
                 else if (RefreshFlag && ar.length() <= 0)
-                    listener.onFailed("");
+                    listener.onBottom();
                 else {
                     if (ThumbNailInstance() == null)
                         new ThumbnailAsyncTask(this).execute(ar, Nblist);
@@ -331,9 +332,15 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
         /**
          *top;
          */
-        PageTopBannerAdapter adapter = new PageTopBannerAdapter(mImageViewList, 0, listener);
 
-        mViewPager.setAdapter(adapter);
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+        else{
+            adapter = new PageTopBannerAdapter(mImageViewList, 0, listener);
+            mViewPager.setAdapter(adapter);
+        }
+
+
         mViewPager.setCurrentItem(currentPosition);
         mViewPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -356,9 +363,9 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
-
             @Override
             public void onPageSelected(int position) {
+
                 if (position == 0) {    //判断当切换到第0个页面时把currentPosition设置为images.length,即倒数第二个位置，小圆点位置为length-1
                     currentPosition = toplist.size();
                     dotPosition = toplist.size() - 1;
@@ -373,14 +380,15 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
                 mImageViewDotList.get(prePosition).setBackgroundResource(R.drawable.dot_corners_false);
                 mImageViewDotList.get(dotPosition).setBackgroundResource(R.drawable.dot_corners_true);
                 prePosition = dotPosition;
+
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
                 //当state为SCROLL_STATE_IDLE即没有滑动的状态时切换页面
-                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                if (state == ViewPager.SCROLL_STATE_IDLE)
                     mViewPager.setCurrentItem(currentPosition, false);
-                }
+
             }
         });
     }

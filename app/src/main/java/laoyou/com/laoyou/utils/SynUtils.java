@@ -37,7 +37,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -1153,5 +1156,26 @@ public class SynUtils {
             }
         }
         return 99;
+    }
+
+
+    /**
+     * @param f 0、LinearLayout  1、FrameLayout  2、RelativeLayout
+     * @param w
+     * @param h
+     * @return
+     */
+
+    public static Object getLayout(int f, int w, int h) {
+
+        switch (f) {
+            case 0:
+                return new LinearLayout.LayoutParams(w, h);
+            case 1:
+                return new FrameLayout.LayoutParams(w, h);
+            case 2:
+                return new RelativeLayout.LayoutParams(w, h);
+        }
+        return null;
     }
 }

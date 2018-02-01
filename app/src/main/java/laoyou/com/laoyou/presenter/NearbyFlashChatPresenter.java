@@ -1,7 +1,10 @@
 package laoyou.com.laoyou.presenter;
 
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +16,11 @@ import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.NearbyFlashChatListener;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.utils.Fields;
-import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
@@ -56,14 +58,15 @@ public class NearbyFlashChatPresenter implements HttpResultListener {
         switch (tag) {
             case Fields.REQUEST1:
                 List<GroupBean> list = new ArrayList<>();
-                GroupBean gb = GsonUtil.GsonToBean(getJsonSring(response), GroupBean.class);
-                list.add(gb);
-                if (list.size() > 0) {
+                JSONObject ar = getJsonOb(response);
+                if (ar.length() > 0) {
+                    GroupBean gb = new Gson().fromJson(String.valueOf(ar), GroupBean.class);
+                    list.add(gb);
                     next = gb.getNext();
                     listener.onSucceed(list);
-                } else if (!refresh) {
+                } /*else if (!refresh) {
                     listener.onFailedMsg(gets(R.string.The_bottom));
-                }
+                }*/
 
                 break;
         }

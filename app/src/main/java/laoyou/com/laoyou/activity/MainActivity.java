@@ -534,6 +534,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 SPreferences.saveUserToken("");
                 Toast.makeText(this, getString(R.string.login_error_timeout), Toast.LENGTH_SHORT).show();
                 break;
+
             default:
                 Log.i(TAG, "Error Code ==" + i);
                 SPreferences.saveUserToken("");

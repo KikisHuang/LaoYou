@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import laoyou.com.laoyou.application.MyApplication;
-
 /**
  * Created by lian on 2017/6/6.
  * 自定义初始化方法Activity;
@@ -69,10 +67,8 @@ public abstract class InitActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MyApplication.getRefWatcher().watch(this);
+//        MyApplication.getRefWatcher().watch(this);
         // 结束Activity&从栈中移除该Activity
-/*        AtyContainer.getInstance().removeActivity(this);
-        Runtime.getRuntime().gc();*/
     }
 
     @Override

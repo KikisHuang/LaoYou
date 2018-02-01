@@ -66,6 +66,7 @@ import static laoyou.com.laoyou.utils.IntentUtils.goTopicCommentDetailsPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goVideoPlayerPage;
 import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
+import static laoyou.com.laoyou.utils.SynUtils.getLayout;
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 
 
@@ -137,14 +138,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     }
 
 
-
                 }
-
-                int firstVisiblePosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
-                if (firstVisiblePosition == 0 && show_hide_img.getVisibility() == View.VISIBLE)
-                    showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_HIDDEN, 500);
-                if (firstVisiblePosition > 0 && show_hide_img.getVisibility() != View.VISIBLE)
-                    showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_SHOW, 500);
+                if (Nblist.size() > 0) {
+                    int firstVisiblePosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
+                    if (firstVisiblePosition == 0 && show_hide_img.getVisibility() == View.VISIBLE)
+                        showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_HIDDEN, 500);
+                    if (firstVisiblePosition > 1 && show_hide_img.getVisibility() != View.VISIBLE)
+                        showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_SHOW, 500);
+                }
 
             }
         });
@@ -184,6 +185,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         RefreshInit();
         foot_layout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.home_fragment_foot_include, null);
         head_layout = (FrameLayout) LayoutInflater.from(getActivity()).inflate(R.layout.home_head_include, null);
+        head_layout.setLayoutParams((ViewGroup.LayoutParams) getLayout(0, Fields.MATCH, Fields.WRAP));
 
         banner_img = (ImageView) head_layout.findViewById(R.id.banner_img);
         page_layout = (FrameLayout) head_layout.findViewById(R.id.page_layout);
@@ -199,8 +201,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         recom_layout = (LinearLayout) foot_layout.findViewById(R.id.recom_layout);
         foot_recom_layout = (LinearLayout) foot_layout.findViewById(R.id.Foot_recom_layout);
 
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DeviceUtils.getWindowWidth(getActivity()) * 2 / 5);
-        banner_layout.setLayoutParams(lp);
+        banner_layout.setLayoutParams((ViewGroup.LayoutParams) getLayout(0, Fields.MATCH, DeviceUtils.getWindowWidth(getActivity()) * 2 / 5));
 
         mViewPager = (WrapContentHeightViewPager) head_layout.findViewById(R.id.vp_main);
         mLinearLayoutDot = (LinearLayout) head_layout.findViewById(R.id.ll_main_dot);
@@ -221,7 +222,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         wifi_layout = (LinearLayout) head_layout.findViewById(R.id.wifi_layout);
         player_community_layout = (LinearLayout) head_layout.findViewById(R.id.player_community_layout);
 
-        FrameLayout.LayoutParams lp1 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams lp1 = (FrameLayout.LayoutParams) getLayout(1, Fields.WRAP, Fields.WRAP);
         lp1.gravity = Gravity.CENTER | Gravity.LEFT;
         mViewPager.setLayoutParams(lp1);
         mViewPager.setClipChildren(false);
@@ -230,17 +231,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         scroller.initViewPagerScroll(mViewPager);//这个是设置切换过渡时间为2秒
 
 
-        //设置ViewPager切换效果，即实现画廊效果
-//        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mViewPager.setPageMargin(0);
         hp = new HomePresenter(this, mViewPager, getActivity().getLayoutInflater(), getActivity().getApplicationContext(), mLinearLayoutDot);
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(2);
 
         adapter = new HomeStatusAdapter(getActivity(), Nblist, this);
         mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(adapter);
 
-        LinearLayout.LayoutParams lps = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        foot_layout.setLayoutParams(lps);
+        foot_layout.setLayoutParams((ViewGroup.LayoutParams) getLayout(0, Fields.MATCH, Fields.WRAP));
 
         mHeaderAndFooterWrapper.addHeaderView(head_layout);
         mHeaderAndFooterWrapper.addFootView(foot_layout);
@@ -280,7 +278,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         for (final ActiveBean atv : ab) {
             LinearLayout headLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.home_flash_layout_include, null);
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DeviceUtils.getWindowWidth(getActivity()) * 1 / 3, ViewGroup.LayoutParams.MATCH_PARENT);
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) getLayout(0, DeviceUtils.getWindowWidth(getActivity()) * 1 / 3, Fields.MATCH);
 
             lp.rightMargin = DeviceUtils.dip2px(getActivity(), 10);
             ImageView im = (ImageView) headLayout.findViewById(R.id.head_img);
@@ -391,6 +389,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     forceStopRecyclerViewScroll();
                     mLayoutManager.scrollToPositionWithOffset(0, 0);
                     mLayoutManager.setStackFromEnd(true);
+                    showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_HIDDEN, 500);
+
                     break;
                 case R.id.topic_circle_layout:
                     goTopicCirclePage(getActivity());
@@ -479,12 +479,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onForbidSlide() {
 
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+    /*    recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
-        });
+        });*/
     }
 
     /**
@@ -504,12 +504,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         recom_layout.setVisibility(View.GONE);
         foot_tv.setVisibility(View.GONE);
 
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
 
         swiperefreshlayout.setRefreshing(false);
     }
@@ -555,6 +549,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     public void onBottom() {
         foot_layout.setVisibility(View.VISIBLE);
         foot_tv.setVisibility(View.VISIBLE);
+
+        swiperefreshlayout.setRefreshing(false);
 
         Log.i(TAG, "recomeSize ==" + recomeSize);
         if (recomeSize > 0)
@@ -622,7 +618,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             }
             for (final AddressBookBean abb : add) {
                 LinearLayout headLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.home_flash_layout_include, null);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DeviceUtils.getWindowWidth(getActivity()) * 1 / 3, ViewGroup.LayoutParams.MATCH_PARENT);
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) getLayout(0, DeviceUtils.getWindowWidth(getActivity()) * 1 / 3, ViewGroup.LayoutParams.MATCH_PARENT);
                 lp.rightMargin = DeviceUtils.dip2px(getActivity(), 10);
                 ImageView im = (ImageView) headLayout.findViewById(R.id.head_img);
                 ImageView addicon = (ImageView) headLayout.findViewById(R.id.add_img);

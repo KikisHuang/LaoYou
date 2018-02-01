@@ -141,7 +141,9 @@ public class AddLikeGameActivity extends InitActivity implements AddLikeGameList
                 if (list.size() > 0) {
                     Show(AddLikeGameActivity.this, "提交中", true, null);
                     ap.ChangeLikeGameList(list);
-                }
+                } else
+                    finish();
+
                 break;
         }
     }
@@ -156,9 +158,9 @@ public class AddLikeGameActivity extends InitActivity implements AddLikeGameList
 
 
         if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom) {
-                isRefresh = false;
-                ap.page += 10;
-                ap.getGameListData();
+            isRefresh = false;
+            ap.page += 10;
+            ap.getGameListData();
         }
     }
 }

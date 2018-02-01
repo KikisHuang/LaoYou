@@ -1,6 +1,5 @@
 package laoyou.com.laoyou.adapter;
 
-import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,6 @@ import java.util.List;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.listener.HomeListener;
 
-import static laoyou.com.laoyou.utils.IntentUtils.goOutSidePage;
-
 /**
  * Created by kk on 2016/7/26.
  */
@@ -20,6 +17,7 @@ public class PageTopBannerAdapter extends PagerAdapter {
     private List<PageTopBannerBean> list;
     private int tag;
     private HomeListener listener;
+
     public PageTopBannerAdapter(List<PageTopBannerBean> list, int tag, HomeListener listener) {
         this.list = list;
         this.tag = tag;

@@ -50,7 +50,7 @@ public final class LouSQLite extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
             db.close();
-            Log.i(TAG,"db close ");
+
         }
     }
 
@@ -69,7 +69,7 @@ public final class LouSQLite extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
             db.close();
-            Log.i(TAG,"db close ");
+
         }
     }
 
@@ -85,7 +85,7 @@ public final class LouSQLite extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
             db.close();
-            Log.i(TAG,"db close ");
+
         }
     }
 
@@ -107,7 +107,7 @@ public final class LouSQLite extends SQLiteOpenHelper {
         } finally {
             cursor.close();
             db.close();
-            Log.i(TAG,"db close ");
+
         }
 
     }
@@ -137,7 +137,7 @@ public final class LouSQLite extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
             db.close();
-            Log.i(TAG,"db close ");
+
         }
     }
 

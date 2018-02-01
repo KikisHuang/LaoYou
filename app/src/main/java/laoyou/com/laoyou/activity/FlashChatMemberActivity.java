@@ -15,7 +15,7 @@ import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.ScrollPicker.ScrollPickerView;
 import laoyou.com.laoyou.view.ScrollPicker.StringScrollPicker;
 
-import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
+import static laoyou.com.laoyou.tencent.utils.Constant.getGroupErrorTxt;
 import static laoyou.com.laoyou.utils.TitleUtils.setTitlesAndBack;
 
 /**
@@ -52,7 +52,7 @@ public class FlashChatMemberActivity extends InitActivity implements View.OnClic
         setContentView(R.layout.flash_chat_member_layout);
         setTitlesAndBack(this,"","");
         titles_layout = f(R.id.titles_layout);
-        titles_layout.setBackgroundResource(getRouColors(R.color.background_color));
+        titles_layout.setBackgroundResource(R.color.background_color);
 
         list = new ArrayList<>();
         picker_horizontal = f(R.id.picker_horizontal);
@@ -90,7 +90,7 @@ public class FlashChatMemberActivity extends InitActivity implements View.OnClic
     }
 
     @Override
-    public void onCreateFailed() {
-        ToastUtil.toast2_bottom(this, "创建群组失败");
+    public void onCreateFailed(int code) {
+        ToastUtil.toast2_bottom(this, getGroupErrorTxt(code));
     }
 }

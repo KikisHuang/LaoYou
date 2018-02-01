@@ -25,6 +25,7 @@ import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.view.NineGridlayout;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+import static laoyou.com.laoyou.utils.SynUtils.getLayout;
 
 /**
  * Created by lian on 2017/11/15.
@@ -103,7 +104,7 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
             int w = (int) (DeviceUtils.getWindowWidth(context) * 1 / 1.8);
             int h = (int) (w * 0.8 / 1);
 
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(w, h);
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) getLayout(1,w,h);
             holder.video_img.setLayoutParams(lp);
             holder.video_layouts.setVisibility(View.VISIBLE);
             Glide.with(context).load(list.get(position).getVideoCover()).apply(getGlideOptions()).into(holder.video_img);
@@ -369,7 +370,7 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
             }
             for (AddressBookBean abb : add) {
                 LinearLayout headLayout = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.home_flash_layout_include, null);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(DeviceUtils.getWindowWidth(context) * 1 / 3, ViewGroup.LayoutParams.MATCH_PARENT);
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) getLayout(0,DeviceUtils.getWindowWidth(context) * 1 / 3, ViewGroup.LayoutParams.MATCH_PARENT);
                 lp.rightMargin = DeviceUtils.dip2px(context, 10);
                 ImageView im = (ImageView) headLayout.findViewById(R.id.head_img);
                 ImageView add = (ImageView) headLayout.findViewById(R.id.add_img);

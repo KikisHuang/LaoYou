@@ -6,7 +6,6 @@ import org.json.JSONException;
 import java.util.List;
 import java.util.Map;
 
-import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.CommentBean;
 import laoyou.com.laoyou.bean.HeartBean;
 import laoyou.com.laoyou.listener.HeartValueAndCommentListener;
@@ -19,7 +18,6 @@ import okhttp3.Request;
 
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
-import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * Created by lian on 2017/12/23.
@@ -48,10 +46,10 @@ public class HeartValueAndCommentPresenter implements HttpResultListener {
 
                 if (comments.size() > 0)
                     listener.onCommentData(comments);
-                else if (IsRefresh)
+               /* else if (IsRefresh)
                     listener.onFailedsMsg(gets(R.string.nodata));
                 else if (!IsRefresh)
-                    listener.onFailedsMsg(gets(R.string.nomore));
+                    listener.onFailedsMsg(gets(R.string.nomore));*/
 
                 break;
         }

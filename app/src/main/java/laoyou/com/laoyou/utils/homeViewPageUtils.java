@@ -1,6 +1,5 @@
 package laoyou.com.laoyou.utils;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +15,7 @@ import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+import static laoyou.com.laoyou.utils.SynUtils.getLayout;
 
 
 /**
@@ -37,7 +37,7 @@ public class homeViewPageUtils {
         mLinearLayoutDot.removeAllViews();
         mImageViewDotList.clear();
         //  设置LinearLayout的子控件的宽高，这里单位是像素。
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(15, 15);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayout(0,15, 15);
         params.rightMargin = 20;
         //  for循环创建images.length个ImageView（小圆点）
         for (int i = 0; i < size; i++) {
@@ -57,7 +57,6 @@ public class homeViewPageUtils {
      * ViewPager中图片初始化,根据flag判断需要显示的图片样式;
      *
      * @param images         图片数据源;
-     * @param context        上下文;
      * @param mImageViewList 返回的结果集;
      * @return
      */
@@ -69,7 +68,7 @@ public class homeViewPageUtils {
             ImageView imageView = (ImageView) view.findViewById(R.id.top_img);
 
             int w = (int) (DeviceUtils.getWindowWidth(MyApplication.getContext()) * 3 / 4);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(w, (int) (w * 1.5 / 3));
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) getLayout(2,w, (int) (w * 1.5 / 3));
             imageView.setLayoutParams(lp);
 
             if (imageView != null)

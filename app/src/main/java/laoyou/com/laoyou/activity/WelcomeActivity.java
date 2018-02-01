@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.AnimationUtil;
 import laoyou.com.laoyou.utils.Fields;
@@ -119,6 +118,5 @@ public class WelcomeActivity extends InitActivity {
         imgs = null;
         viewPager = null;
         adapter = null;
-        MyApplication.getRefWatcher().watch(this);
     }
 }

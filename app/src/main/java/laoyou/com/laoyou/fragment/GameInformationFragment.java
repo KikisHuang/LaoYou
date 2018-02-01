@@ -14,7 +14,6 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.GameInformationAdapter;
-import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.GameInfoBean;
 import laoyou.com.laoyou.bean.GameTypeBean;
 import laoyou.com.laoyou.listener.GameInformationListener;
@@ -131,7 +130,6 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
     public void onDestroy() {
         super.onDestroy();
         unbindDrawables(view);
-        MyApplication.getRefWatcher().watch(this);
     }
 
     /**

@@ -22,7 +22,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.ToastUtil;
 import okhttp3.Call;
@@ -157,7 +156,6 @@ public class AdvertisementActivity extends Activity implements View.OnClickListe
                 tm = null;
             }
         }
-        MyApplication.getRefWatcher().watch(this);
     }
 
     private void goMain() {

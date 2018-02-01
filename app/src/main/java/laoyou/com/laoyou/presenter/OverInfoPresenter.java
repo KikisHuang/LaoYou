@@ -108,6 +108,9 @@ public class OverInfoPresenter implements HttpResultListener, OnCompressListener
 
                 UserInfoBean ub = GsonUtil.GsonToBean(getJsonSring(response), UserInfoBean.class);
                 SPreferences.saveUserId(ub.getId());
+                SPreferences.saveUserHeadImg(ub.getHeadImgUrl());
+                SPreferences.saveUserName(ub.getName());
+
                 if (ub.getCloudTencentAccount() != null && !ub.getCloudTencentAccount().isEmpty()) {
                     SPreferences.saveIdentifier(ub.getCloudTencentAccount());
                     getImUserSig(ub.getCloudTencentAccount(), this);
@@ -117,7 +120,7 @@ public class OverInfoPresenter implements HttpResultListener, OnCompressListener
                 break;
             case Fields.REQUEST4:
                 Log.i(TAG, "user sig ===" + response);
-                SPreferences.saveUserSig(response);
+                SPreferences.saveUserSig(getJsonSring(response));
                 listener.onImSucceed();
                 break;
         }

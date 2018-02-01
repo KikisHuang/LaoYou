@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.umeng.socialize.UMShareAPI;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.listener.LoginOperationListener;
 import laoyou.com.laoyou.presenter.LoginOperationPresenter;
 import laoyou.com.laoyou.save.SPreferences;
@@ -153,6 +152,5 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
         lp.clear();
         lp = null;
 
-        MyApplication.getRefWatcher().watch(this);
     }
 }

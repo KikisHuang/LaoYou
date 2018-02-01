@@ -22,6 +22,7 @@ import laoyou.com.laoyou.utils.OverallViewHolder;
 import laoyou.com.laoyou.view.NineGridlayout;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+import static laoyou.com.laoyou.utils.SynUtils.getLayout;
 
 /**
  * Created by lian on 2017/11/18.
@@ -187,7 +188,7 @@ public class HomePageAdapter extends BaseAdapter {
             int w = (int) (DeviceUtils.getWindowWidth(mContext) * 1 / 1.8);
             int h = (int) (w * 0.8 / 1);
 
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(w, h);
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) getLayout(1,w,h);
             video_img.setLayoutParams(lp);
             video_layouts.setVisibility(View.VISIBLE);
             Glide.with(mContext).load(list.get(position).getVideoCover()).apply(getGlideOptions()).into(video_img);
