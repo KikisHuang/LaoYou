@@ -206,15 +206,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         mViewPager = (WrapContentHeightViewPager) head_layout.findViewById(R.id.vp_main);
         mLinearLayoutDot = (LinearLayout) head_layout.findViewById(R.id.ll_main_dot);
 
-//        coordinatorlayout = f(R.id.coordinatorlayout);
         topic_circle_layout = (LinearLayout) head_layout.findViewById(R.id.topic_circle_layout);
 
         flash_more_tv = (TextView) head_layout.findViewById(R.id.flash_more_tv);
         nearby_wb_layout = (LinearLayout) head_layout.findViewById(R.id.nearby_wb_layout);
 
         polistener = this;
-
-//        appbar_layout = f(R.id.appbar_layout);
 
 
         dynamic_layout = (LinearLayout) head_layout.findViewById(R.id.dynamic_layout);

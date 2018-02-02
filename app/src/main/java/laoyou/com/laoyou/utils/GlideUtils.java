@@ -10,10 +10,8 @@ public class GlideUtils {
      * 获得Glide Options ;
      */
     public static RequestOptions getGlideOptions() {
-
         RequestOptions options = new RequestOptions();
         options.centerCrop();
-
         return options;
     }
 }

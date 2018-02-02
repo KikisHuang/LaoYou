@@ -316,7 +316,7 @@ public class IntentUtils {
 
         Intent intent = new Intent(context, SendPhoneCodeActivity.class);
 //        startPage(context, intent);
-        ((Activity) context).startActivityForResult(intent, Fields.ACRESULET2);
+        ((Activity) context).startActivityForResult(intent, Fields.ACRESULET4);
     }
 
     /**

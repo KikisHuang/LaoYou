@@ -13,16 +13,14 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/background_img"
                 android:layout_width="match_parent"
                 android:layout_height="330dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/white_corners2"
-                 />
+                android:src="@drawable/white_corners2" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -36,161 +34,178 @@
                 android:layout_width="match_parent"
                 android:layout_height="175dp"
                 android:layout_gravity="bottom">
+
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="10dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="10dp"
                     app:cardElevation="1dp"
-                    app:cardUseCompatPadding="true"
-                    >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="130dp"
-                    android:padding="10dp"
-                    >
+                    app:cardUseCompatPadding="true">
 
-                    <TextView
-                        android:id="@+id/grade_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/blue_grade"
-                        android:textSize="23sp" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp"
+                        android:padding="10dp">
 
-                    <TextView
-                        android:id="@+id/caf_name_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:ellipsize="end"
-                        android:maxEms="20"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/grade_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:textColor="@color/blue_grade"
+                            android:textSize="23sp" />
 
-                    <TextView
-                        android:id="@+id/caf_address_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/caf_name_tv"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:maxLines="3"
-                        android:textColor="@color/content5"
-                        android:textSize="12sp"
+                        <TextView
+                            android:id="@+id/caf_name_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:ellipsize="end"
+                            android:maxEms="20"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="18sp" />
 
-                        />
+                        <TextView
+                            android:id="@+id/caf_address_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/caf_name_tv"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="10dp"
+                            android:ellipsize="end"
+                            android:maxLines="3"
+                            android:textColor="@color/content5"
+                            android:textSize="12sp"
 
-                </RelativeLayout>
+                            />
+
+                    </RelativeLayout>
                 </android.support.v7.widget.CardView>
+
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/caf_logo_img"
                     android:layout_width="85dp"
                     android:layout_height="85dp"
-                    android:scaleType="centerCrop"
                     android:layout_gravity="center|top"
+                    android:elevation="2dp"
+                    android:scaleType="centerCrop"
                     app:civ_border_color="@color/whitetr"
                     app:civ_border_overlay="false"
-                    app:civ_border_width="3dp"
-                    android:elevation="2dp"
-                     />
+                    app:civ_border_width="3dp" />
             </FrameLayout>
 
         </FrameLayout>
 
 
-    <!-- 卡片以下布局 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="网吧环境"
-            android:textColor="@color/black0"
-            android:textSize="16sp" />
-
-        <HorizontalScrollView
+        <!-- 卡片以下布局 -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            android:scrollbars="none">
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <LinearLayout
-                android:id="@+id/caf_photo_layout"
+                android:id="@+id/environment_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp">
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="网吧环境"
+                    android:textColor="@color/black0"
+                    android:textSize="16sp" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/caf_photo_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/config_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="基础信息"
+                    android:textColor="@color/black0"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/caf_price_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/blue_grade"
+                        android:textSize="35sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="元/小时"
+                        android:textColor="@color/blue_grade"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/config_top_layout"
+                    layout="@layout/caf_configuration_include"></include>
+
+                <include
+                    android:id="@+id/config_mid_layout"
+                    layout="@layout/caf_configuration_include"></include>
+
+                <include
+                    android:id="@+id/config_bottom_layout"
+                    layout="@layout/caf_configuration_include"></include>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="每个区域配置不一样，以最高配置区域为准"
+                    android:textColor="@color/content3"
+                    android:textSize="9sp" />
 
             </LinearLayout>
 
-        </HorizontalScrollView>
+            <TextView style="@style/width_line_style10_2" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="基础信息"
-            android:textColor="@color/black0"
-            android:textSize="16sp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/caf_price_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/blue_grade"
-                android:textSize="35sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="元/小时"
-                android:textColor="@color/blue_grade"
-                android:textSize="14sp" />
 
         </LinearLayout>
-
-        <include
-            android:id="@+id/config_top_layout"
-            layout="@layout/caf_configuration_include"></include>
-
-        <include
-            android:id="@+id/config_mid_layout"
-            layout="@layout/caf_configuration_include"></include>
-
-        <include
-            android:id="@+id/config_bottom_layout"
-            layout="@layout/caf_configuration_include"></include>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="每个区域配置不一样，以最高配置区域为准"
-            android:textColor="@color/content3"
-            android:textSize="9sp" />
-
-        <TextView style="@style/width_line_style10_2" />
-
-
     </LinearLayout>
-</LinearLayout></LinearLayout>
+</LinearLayout>

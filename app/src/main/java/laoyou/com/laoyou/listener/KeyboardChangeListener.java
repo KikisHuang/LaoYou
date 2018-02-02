@@ -21,6 +21,7 @@ public class KeyboardChangeListener implements ViewTreeObserver.OnGlobalLayoutLi
     private int mPreHeight;
     private KeyBoardListener mKeyBoardListen;
 
+
     public interface KeyBoardListener {
         /**
          * call back

@@ -44,8 +44,7 @@ public class MyApplication extends Application {
     public static String CHANNEL;
     //CrashHandler实例
     public static CrashHandler crashHandler;
-/*
-   private RefWatcher mRefWatcher;
+  /* private RefWatcher mRefWatcher;
 
    public static RefWatcher getRefWatcher() {
         return context.mRefWatcher;

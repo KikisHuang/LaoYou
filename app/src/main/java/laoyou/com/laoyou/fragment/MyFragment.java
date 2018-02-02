@@ -20,6 +20,7 @@ import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyCommentPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyPhotoPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goSettingPage;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 
 /**
@@ -163,6 +164,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
     @Override
     public void ongetDetails(UserInfoBean ub) {
         user_name_tv.setText(ub.getName());
+        signature_tv.setText(ub.getAutograph()!=null&&!ub.getAutograph().isEmpty()?ub.getAutograph():gets(R.string.default_signature));
         sex = ub.getSex();
         SPreferences.saveUserId(ub.getId());
 

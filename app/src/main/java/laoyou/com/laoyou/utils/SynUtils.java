@@ -264,9 +264,9 @@ public class SynUtils {
      */
     private static Typeface typeface;
 
-    public static Typeface getTypeface(Context context) {
+    public static Typeface getTypeface() {
         if (typeface == null) {
-            typeface = Typeface.createFromAsset(context.getAssets(), "fonts/Agency_FB_Bold.ttf");
+            typeface = Typeface.createFromAsset(MyApplication.getContext().getAssets(), "fonts/Agency_FB_Bold.ttf");
         }
         return typeface;
     }

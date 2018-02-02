@@ -98,6 +98,8 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
         mImageViewDotList = new ArrayList<>();
         this.inflater = inflater;
         this.context = context;
+        adapter = new PageTopBannerAdapter(mImageViewList, 0, listener);
+        mViewPager.setAdapter(adapter);
     }
 
     public void Presenter() {
@@ -319,10 +321,13 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
      * 数据、圆点初始化;
      */
     private void initPageData() {
+
         mImageViewList.clear();
         mImageViewDotList.clear();
+
         mImageViewList = homeViewPageUtils.getTopImg(toplist, mImageViewList, inflater);
         homeViewPageUtils.setDot(toplist.size(), mImageViewDotList, mLinearLayoutDot, dotPosition);
+
     }
 
     /**
@@ -335,11 +340,6 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
 
         if (adapter != null)
             adapter.notifyDataSetChanged();
-        else{
-            adapter = new PageTopBannerAdapter(mImageViewList, 0, listener);
-            mViewPager.setAdapter(adapter);
-        }
-
 
         mViewPager.setCurrentItem(currentPosition);
         mViewPager.setOnTouchListener(new View.OnTouchListener() {
@@ -363,6 +363,7 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
+
             @Override
             public void onPageSelected(int position) {
 
@@ -529,7 +530,7 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
     private void searchUserByPhones(String phones) {
         Map<String, String> map = getParamsMap();
         map.put("phones", phones);
-        httpUtils.OkHttpsGet(map, this, Fields.ACRESULET2, Interface.URL + Interface.SEARCHUSERBYPHONES);
+        httpUtils.OkHttpsPost(map, this, Fields.ACRESULET2, Interface.URL + Interface.SEARCHUSERBYPHONES, null, null);
     }
 
     @Override

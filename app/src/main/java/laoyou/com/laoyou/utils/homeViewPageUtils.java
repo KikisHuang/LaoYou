@@ -6,15 +6,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
-
 import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.PageTopBannerBean;
 
-import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.SynUtils.getLayout;
 
 
@@ -37,7 +34,7 @@ public class homeViewPageUtils {
         mLinearLayoutDot.removeAllViews();
         mImageViewDotList.clear();
         //  设置LinearLayout的子控件的宽高，这里单位是像素。
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayout(0,15, 15);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayout(0, 15, 15);
         params.rightMargin = 20;
         //  for循环创建images.length个ImageView（小圆点）
         for (int i = 0; i < size; i++) {
@@ -68,7 +65,7 @@ public class homeViewPageUtils {
             ImageView imageView = (ImageView) view.findViewById(R.id.top_img);
 
             int w = (int) (DeviceUtils.getWindowWidth(MyApplication.getContext()) * 3 / 4);
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) getLayout(2,w, (int) (w * 1.5 / 3));
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) getLayout(2, w, (int) (w * 1.5 / 3));
             imageView.setLayoutParams(lp);
 
             if (imageView != null)
@@ -76,11 +73,12 @@ public class homeViewPageUtils {
 
             if (i == 0) {   //判断当i=0为该处的ImageView设置最后一张图片作为背景
 
-                Glide.with(MyApplication.getContext()).load(images.get(images.size() - 1).getImgUrl()).apply(getGlideOptions()).into(imageView);
+//                Glide.with(MyApplication.getContext()).load(images.get(images.size() - 1).getImgUrl()).apply(getGlideOptions()).into(imageView);
 
                 pb.setType(images.get(images.size() - 1).getType());
                 pb.setId(images.get(images.size() - 1).getId());
                 pb.setView(view);
+                pb.setImgUrl(images.get(images.size() - 1).getImgUrl());
                 pb.setUid(images.get(images.size() - 1).getUid());
                 pb.setHttpUrl(images.get(images.size() - 1).getHttpUrl());
                 pb.setValue(images.get(images.size() - 1).getValue());
@@ -88,11 +86,12 @@ public class homeViewPageUtils {
                 mImageViewList.add(pb);
             } else if (i == images.size() + 1) {   //判断当i=images.length+1时为该处的ImageView设置第一张图片作为背景
 //                imageView = setImg(context);
-                Glide.with(MyApplication.getContext()).load(images.get(0).getImgUrl()).apply(getGlideOptions()).into(imageView);
+//                Glide.with(MyApplication.getContext()).load(images.get(0).getImgUrl()).apply(getGlideOptions()).into(imageView);
 
                 pb.setType(images.get(0).getType());
                 pb.setId(images.get(0).getId());
                 pb.setView(view);
+                pb.setImgUrl(images.get(0).getImgUrl());
                 pb.setUid(images.get(0).getUid());
                 pb.setHttpUrl(images.get(0).getHttpUrl());
                 pb.setValue(images.get(0).getValue());
@@ -100,12 +99,13 @@ public class homeViewPageUtils {
                 mImageViewList.add(pb);
             } else {  //其他情况则为ImageView设置images[i-1]的图片作为背景
 //                imageView = setImg(context);
-                Glide.with(MyApplication.getContext()).load(images.get(i - 1).getImgUrl()).apply(getGlideOptions()).into(imageView);
+//                Glide.with(MyApplication.getContext()).load(images.get(i - 1).getImgUrl()).apply(getGlideOptions()).into(imageView);
 
                 pb.setType(images.get(i - 1).getType());
                 pb.setId(images.get(i - 1).getId());
                 pb.setView(view);
                 pb.setUid(images.get(i - 1).getUid());
+                pb.setImgUrl(images.get(i - 1).getImgUrl());
                 pb.setHttpUrl(images.get(i - 1).getHttpUrl());
                 pb.setValue(images.get(i - 1).getValue());
 

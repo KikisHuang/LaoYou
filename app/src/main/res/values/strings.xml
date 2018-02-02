@@ -373,6 +373,7 @@
     <string name="Frenesi">热恋</string>
     <string name="secrecy">保密</string>
     <string name="change_succeed">修改成功</string>
+    <string name="change_pass_succe">修改密码成功</string>
     <string name="compress_error">压缩异常</string>
     <string name="in_certification">认证审核中</string>
     <string name="refuse_certification">被拒绝</string>
@@ -450,7 +451,6 @@
     <string name="share_succ">分享成功</string>
     <string name="share_fail">分享失败</string>
     <string name="owner">全部</string>
-
 
 
 </resources>

@@ -49,6 +49,7 @@ import static laoyou.com.laoyou.utils.IntentUtils.goLocationPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goPhotoViewerPage;
 import static laoyou.com.laoyou.utils.SynUtils.IsListViewTopOfBottom;
 import static laoyou.com.laoyou.utils.SynUtils.StringIsNull;
+import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 import static laoyou.com.laoyou.utils.SynUtils.getTypeface;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.SynUtils.showSoftInputFromWindow;
@@ -86,12 +87,13 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     private double longitude = 0;
     private List<String> Barlist = new ArrayList<>();
     private FrameLayout comment_fragment_layout, call_fragment_layout, loacation_fragment_layout;
-    private LinearLayout send_comment_layout, menu_layout;
+    private LinearLayout send_comment_layout, menu_layout, config_info_layout, environment_layout;
     private CircleImageView photo_img;
     private EditText comment_ed;
     private TextView send_comment_tv, foot_tv;
 
     private List<CafCommentBean> list;
+    private KeyboardChangeListener keyboard;
 
     @Override
     protected void click() {
@@ -101,7 +103,8 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         call_fragment_layout.setOnClickListener(this);
         loacation_fragment_layout.setOnClickListener(this);
         caf_photo_layout.setOnClickListener(this);
-        new KeyboardChangeListener(this).setKeyBoardListener(this);
+        keyboard = new KeyboardChangeListener(this);
+        keyboard.setKeyBoardListener(this);
         send_comment_tv.setOnClickListener(this);
     }
 
@@ -116,6 +119,8 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         call_fragment_layout = f(R.id.call_fragment_layout);
         comment_fragment_layout = f(R.id.comment_fragment_layout);
         menu_layout = f(R.id.menu_layout);
+        config_info_layout = f(R.id.config_info_layout);
+        environment_layout = f(R.id.environment_layout);
 
         send_comment_layout = f(R.id.send_comment_layout);
         photo_img = f(R.id.photo_img);
@@ -134,12 +139,11 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         listView.addHeaderView(head_layout);
         listView.addFooterView(foot_layout);
 
-
         adapter = new InternetCafAdapter(this, list);
         listView.setAdapter(adapter);
 
-        grade_tv.setTypeface(getTypeface(this));
-        caf_price_tv.setTypeface(getTypeface(this));
+        grade_tv.setTypeface(getTypeface());
+        caf_price_tv.setTypeface(getTypeface());
     }
 
     /**
@@ -187,12 +191,15 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
      */
     private void EnvironmentInit(final List<CafBean.InternetBarImgsBean> internetBarImgs) {
 
+        if (internetBarImgs == null || internetBarImgs.size() <= 0)
+            environment_layout.setVisibility(View.GONE);
+
         for (int i = 0; i < internetBarImgs.size(); i++) {
-            int w = DeviceUtils.getWindowWidth(this) * 1 / 3;
+            int w = DeviceUtils.getWindowWidth(MyApplication.getContext()) * 1 / 3;
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(w, w * 3 / 4);
 
-            lp.rightMargin = DeviceUtils.dip2px(this, 10);
-            RoundAngleImageView im = new RoundAngleImageView(this);
+            lp.rightMargin = DeviceUtils.dip2px(MyApplication.getContext(), 10);
+            RoundAngleImageView im = new RoundAngleImageView(MyApplication.getContext());
 
             im.setLayoutParams(lp);
             Glide.with(MyApplication.getContext()).load(internetBarImgs.get(i).getImgUrl()).apply(getGlideOptions()).into(im);
@@ -220,15 +227,16 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
         topt.setText(gets(R.string.graphics_card));
 
         TextView mido = (TextView) config_mid_layout.findViewById(R.id.config_name_tv);
-        mouse = (TextView) config_mid_layout.findViewById(R.id.config_name_tv);
+        mouse = (TextView) config_mid_layout.findViewById(R.id.config_content_tv);
         TextView midt = (TextView) config_mid_layout.findViewById(R.id.config_name1_tv);
-        key = (TextView) config_mid_layout.findViewById(R.id.config_name1_tv);
+        key = (TextView) config_mid_layout.findViewById(R.id.config_content1_tv);
 
         mido.setText(gets(R.string.mouse));
         midt.setText(gets(R.string.keyboard));
 
         TextView boto = (TextView) config_bottom_layout.findViewById(R.id.config_name_tv);
-        play = (TextView) config_bottom_layout.findViewById(R.id.config_name_tv);
+        play = (TextView) config_bottom_layout.findViewById(R.id.config_content_tv);
+
         config_bottom_layout.findViewById(R.id.config_name1_tv).setVisibility(View.GONE);
         config_bottom_layout.findViewById(R.id.config_content1_tv).setVisibility(View.GONE);
         boto.setText(gets(R.string.display));
@@ -242,18 +250,24 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+
         int location[] = new int[2];
 
         head_layout.getLocationInWindow(location);
         height = location[1];
 
-        imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 0);
+//        imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 0);
         handleTitleBarColorEvaluate(height, title_layout, back_img, null);
 
         if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom) {
             ip.page = list.size();
             ip.getCatComment(false);
+        } else if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsTop) {
+            back_img.setImageResource(R.mipmap.return_icon_white);
+            title_layout.setBackgroundColor(getRouColors(R.color.transparent));
         }
+
     }
 
     @Override
@@ -268,7 +282,9 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     }
 
     @Override
-    public void onInternetCafDetails(CafBean cb) {
+    public void onInternetCafDetails(final CafBean cb) {
+
+        //内存泄露;
         if (cb != null) {
             for (CafBean.InternetBarImgsBean ibi : cb.getInternetBarImgs()) {
                 Barlist.add(ibi.getImgUrl());
@@ -276,13 +292,16 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
             caf_name_tv.setText(StringIsNull(cb.getName()));
             grade_tv.setText(StringIsNull(String.valueOf(cb.getAvgEvaluate())));
             caf_address_tv.setText(StringIsNull(cb.getAddress()));
+
             Glide.with(MyApplication.getContext()).load(cb.getLogoUrl()).apply(getGlideOptions()).into(caf_logo_img);
+
             if (!StringIsNull(cb.getBackgroundUrl()).isEmpty())
                 Glide.with(MyApplication.getContext()).load(cb.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
             else
                 Glide.with(MyApplication.getContext()).load(Fields.Catalina).apply(getGlideOptions()).into(background_img);
 
             EnvironmentInit(cb.getInternetBarImgs());
+
             cpu.setText(StringIsNull(cb.getConfigureCPU()));
             caf_price_tv.setText(String.valueOf(cb.getHourlyPrice()));
             card.setText(StringIsNull(cb.getConfigureGraphicsCard()));
@@ -437,5 +456,11 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position != 0)
             goHomePage(this, list.get(position).getId(), false);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Glide.with(MyApplication.getContext()).clear(head_layout);
     }
 }

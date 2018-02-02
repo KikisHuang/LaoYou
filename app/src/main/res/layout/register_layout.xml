@@ -164,7 +164,6 @@
                         android:inputType="number"
                         android:maxEms="11"
                         android:singleLine="true"
-                        android:text="412"
                         android:textSize="18dp" />
 
                     <TextView

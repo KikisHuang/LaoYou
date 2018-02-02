@@ -66,7 +66,7 @@ public class SendPhoneCodeActivity extends InitActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Fields.ACRESULET2) {
-            setResult(Fields.ACRESULET2);
+            setResult(Fields.ACRESULET4);
             finish();
         }
     }

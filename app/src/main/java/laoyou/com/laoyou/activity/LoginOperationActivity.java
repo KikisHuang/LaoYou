@@ -38,7 +38,7 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
     private LinearLayout login_layout;
     private TextView register_layout;
     private TextView forget_pass;
-//    private UMShareAPI mShareAPI;
+    //  private UMShareAPI mShareAPI;
     private RippleView login_bt;
     private EditText pass_ed, phone_ed;
 
@@ -107,6 +107,9 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
                 getHomeInstance().onRefreshs();
             finish();
         }
+        if (resultCode == Fields.ACRESULET4 && requestCode == Fields.ACRESULET4)
+            ToastUtil.toast2_bottom(LoginOperationActivity.this, gets(R.string.change_pass_succe));
+
     }
 
     @Override

@@ -320,7 +320,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
                 if (isFirst) {
                     Log.i(TAG, "第一次 定位回调 ");
                     mLocalLatlng = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
-                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLocalLatlng, 14));
+                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLocalLatlng, 13));
                     if (IsList)
                         ip.getInternetCafData(amapLocation.getLatitude(), amapLocation.getLongitude());
                     else {
