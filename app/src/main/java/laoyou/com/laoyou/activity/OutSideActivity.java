@@ -13,6 +13,7 @@ import com.tencent.smtt.sdk.WebView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.OutSideListener;
 import laoyou.com.laoyou.presenter.OutSidePresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
@@ -37,6 +38,7 @@ public class OutSideActivity extends InitActivity implements OutSideListener {
     @Override
     protected void init() {
         setContentView(R.layout.outside_activity_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitles(this);
         webView = f(R.id.webView);
         pg = f(R.id.progressBar);
@@ -64,6 +66,7 @@ public class OutSideActivity extends InitActivity implements OutSideListener {
     protected void onDestroy() {
         super.onDestroy();
         Cancle();
+        ActivityCollector.removeActivity(this);
         op.destroyWebView(webView);
         deleteDatabase("webview.db");
         deleteDatabase("webviewCache.db");

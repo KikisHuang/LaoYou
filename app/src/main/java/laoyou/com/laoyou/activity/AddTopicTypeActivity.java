@@ -22,6 +22,7 @@ import laoyou.com.laoyou.listener.AddTopicTypeListener;
 import laoyou.com.laoyou.listener.EditChangedListener;
 import laoyou.com.laoyou.listener.EdittextListener;
 import laoyou.com.laoyou.presenter.AddTopicTypePresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
@@ -56,6 +57,7 @@ public class AddTopicTypeActivity extends InitActivity implements EdittextListen
     @Override
     protected void init() {
         setContentView(R.layout.add_topic_type_layout);
+        ActivityCollector.addActivity(this, getClass());
         list = new ArrayList<>();
         ap = new AddTopicTypePresenter(this);
         topic_type_name_ed = f(R.id.topic_type_name_ed);
@@ -165,5 +167,11 @@ public class AddTopicTypeActivity extends InitActivity implements EdittextListen
             return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

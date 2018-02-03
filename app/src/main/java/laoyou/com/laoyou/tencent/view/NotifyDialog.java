@@ -16,10 +16,10 @@ import laoyou.com.laoyou.R;
  */
 public class NotifyDialog extends DialogFragment {
 
-    String tag = "notifyDialog";
+    private  String tag = "notifyDialog";
     private String title;
-    DialogInterface.OnClickListener okListener;
-    DialogInterface.OnClickListener cancelListener;
+    private DialogInterface.OnClickListener okListener;
+    private DialogInterface.OnClickListener cancelListener;
 
     public void show(String title, FragmentManager fm, DialogInterface.OnClickListener listener1, DialogInterface.OnClickListener listener2){
         this.title = title;

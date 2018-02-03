@@ -11,6 +11,7 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.FlashChatMemberListener;
 import laoyou.com.laoyou.presenter.FlashChatMemberPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.ScrollPicker.ScrollPickerView;
 import laoyou.com.laoyou.view.ScrollPicker.StringScrollPicker;
@@ -50,6 +51,7 @@ public class FlashChatMemberActivity extends InitActivity implements View.OnClic
     protected void init() {
 
         setContentView(R.layout.flash_chat_member_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitlesAndBack(this,"","");
         titles_layout = f(R.id.titles_layout);
         titles_layout.setBackgroundResource(R.color.background_color);
@@ -92,5 +94,11 @@ public class FlashChatMemberActivity extends InitActivity implements View.OnClic
     @Override
     public void onCreateFailed(int code) {
         ToastUtil.toast2_bottom(this, getGroupErrorTxt(code));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

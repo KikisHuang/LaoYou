@@ -195,4 +195,5 @@ public class MyAlertDialog {
         setLayout();
         dialog.show();
     }
+
 }

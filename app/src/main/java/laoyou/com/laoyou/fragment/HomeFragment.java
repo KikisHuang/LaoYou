@@ -330,12 +330,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         super.onResume();
         if (!LoginStatusQuery())
             swiperefreshlayout.setEnabled(false);
-
-
-        if (Nblist.size() > 0)
-            hp.RefreshLikeThme(true);
         else
-            hp.IsLogin();
+            hp.RefreshLikeThme(true);
 
         Log.i(TAG, "onResume");
         try {
@@ -442,8 +438,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onLogout() {
         LogOut(getActivity(), true);
+        Nblist.clear();
+        mHeaderAndFooterWrapper.notifyDataSetChanged();
         ToastUtil.toast2_bottom(getActivity(), "已退出登录");
-        hp.Presenter();
+        hp.IsLogin();
     }
 
     /**
@@ -472,16 +470,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     /**
      * 屏蔽滑动方法回调;
+     *
+     * @param b
      */
     @Override
-    public void onForbidSlide() {
+    public void onForbidSlide(final boolean b) {
 
-    /*    recyclerView.setOnTouchListener(new View.OnTouchListener() {
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                return true;
+                return !b;
             }
-        });*/
+        });
     }
 
     /**

@@ -128,7 +128,6 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         switch (type) {
             case C2C:
 //                title.setVisibility(View.GONE);
-//                title.setMoreImg(R.drawable.btn_person);
                 if (FriendshipInfo.getInstance().isFriend(identify)) {
                     title.setMoreImgAction(new View.OnClickListener() {
                         @Override

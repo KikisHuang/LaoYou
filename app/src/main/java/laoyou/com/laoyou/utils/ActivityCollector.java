@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import laoyou.com.laoyou.activity.MainActivity;
+
 /**
  * Created by lian on 2018/1/9.
  * Activity管理类;
@@ -51,6 +53,7 @@ public class ActivityCollector {
         return res;
     }
 
+
     /**
      * 获得指定activity实例
      *
@@ -85,6 +88,27 @@ public class ActivityCollector {
             }
         }
         activities.clear();
+    }
+
+
+    /**
+     * 关闭除了MainActivity以外所有的Activity;
+     *
+     * @return
+     */
+    public static void CloseAllActivity() {
+        if (activities != null && activities.size() > 0) {
+            Set<Map.Entry<Class<?>, Activity>> sets = activities.entrySet();
+            for (Map.Entry<Class<?>, Activity> s : sets) {
+                if (s.getValue() instanceof MainActivity) {
+
+                } else {
+                    if (!s.getValue().isFinishing()) {
+                        s.getValue().finish();
+                    }
+                }
+            }
+        }
     }
 
 }

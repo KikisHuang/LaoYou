@@ -59,6 +59,7 @@ import static laoyou.com.laoyou.utils.SynUtils.getVersionCode;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.SynUtils.startPlay;
 import static laoyou.com.laoyou.utils.SynUtils.stopPlay;
+import static laoyou.com.laoyou.utils.SynUtils.stringFilter;
 
 /**
  * Created by lian on 2017/10/25.
@@ -106,7 +107,7 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
         handInit();
         getLocalityData();
         BannerHideOfShow();
-//        IsLogin();
+        IsLogin();
         getActiveGroup();
 //        getPeopleNearby(true);
     }
@@ -450,8 +451,9 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
             getPeopleNearby(true);
             getUseDetails();
             getAddressBook();
-        } else
-            listener.onForbidSlide();
+        }
+
+        listener.onForbidSlide(LoginStatusQuery());
     }
 
     /**
@@ -507,13 +509,14 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
         try {
             List<Map<String, Object>> list = GetAllContact();
             for (int i = 0; i < list.size(); i++) {
-                phone.add(String.valueOf(list.get(i).get("mobile")).replace("-", "").replace(" ", ""));
+                phone.add(stringFilter(String.valueOf(list.get(i).get("mobile"))));
                 Log.i(TAG, "得到的通讯录号码 ===" + phone.get(i));
             }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
         if (phone.size() > 0) {
+
             String phones = "";
             for (int i = 0; i < phone.size(); i++) {
                 if (i == phone.size() - 1)

@@ -18,6 +18,7 @@ import laoyou.com.laoyou.bean.GameBean;
 import laoyou.com.laoyou.listener.LikeGameListener;
 import laoyou.com.laoyou.listener.LikeListener;
 import laoyou.com.laoyou.presenter.LikeGamePresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 
@@ -51,6 +52,7 @@ public class LikeGameActivity extends InitActivity implements LikeListener, View
     @Override
     protected void init() {
         setContentView(R.layout.like_game_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitlesAndBack(this, gets(R.string.goback), "");
         listView = f(R.id.listView);
         foot_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.foot_include, null);
@@ -160,5 +162,11 @@ public class LikeGameActivity extends InitActivity implements LikeListener, View
             lp.page += 20;
             lp.getMyLikeGameDataList(id);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.listener.ChangePassListener;
 import laoyou.com.laoyou.presenter.ChangePassPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
@@ -29,6 +30,7 @@ public class ChangePassWordActivity extends InitActivity implements View.OnClick
     @Override
     protected void init() {
         setContentView(R.layout.change_pass_word_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitles(this);
         new_pass_ed = f(R.id.new_pass_ed);
         old_pass_ed = f(R.id.old_pass_ed);
@@ -70,5 +72,11 @@ public class ChangePassWordActivity extends InitActivity implements View.OnClick
     @Override
     public void onFailed(String msg) {
         ToastUtil.toast2_bottom(ChangePassWordActivity.this, msg);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

@@ -9,6 +9,7 @@ import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.application.MyApplication;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.jiaozi.JZMediaIjkplayer;
 import laoyou.com.laoyou.utils.jiaozi.MyJZVideoPlayerStandard;
 
@@ -33,6 +34,7 @@ public class VideoPlayPageActivity extends InitActivity implements View.OnClickL
     @Override
     protected void init() {
         setContentView(R.layout.video_play_layout);
+        ActivityCollector.addActivity(this, getClass());
         videoUrl = getIntent().getStringExtra("Video_url");
         coverPath = getIntent().getStringExtra("Video_coverPath");
         myJZVideoPlayerStandard = f(R.id.videoplayer);
@@ -75,6 +77,7 @@ public class VideoPlayPageActivity extends InitActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
         if (myJZVideoPlayerStandard != null) {
             myJZVideoPlayerStandard.removeAllViews();
         }

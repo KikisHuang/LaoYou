@@ -29,6 +29,7 @@ import laoyou.com.laoyou.dialog.MyAlertDialog;
 import laoyou.com.laoyou.listener.EdittextListener;
 import laoyou.com.laoyou.listener.ReleaseTopicListener;
 import laoyou.com.laoyou.presenter.ReleaseTopicPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -79,6 +80,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
     @Override
     protected void init() {
         setContentView(R.layout.release_topic_layout);
+        ActivityCollector.addActivity(this, getClass());
         cancel_tv = f(R.id.cancel_tv);
         issue_tv = f(R.id.issue_tv);
         topic_type_tv = f(R.id.topic_type_tv);
@@ -273,6 +275,7 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
 //        PictureFileUtils.deleteCacheDirFile(this);
     }
 

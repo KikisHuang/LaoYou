@@ -15,6 +15,7 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.PhotoPagerAdapter;
 import laoyou.com.laoyou.application.MyApplication;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.BigPhotoViewPager;
 
@@ -64,12 +65,14 @@ public class PhotoViewerActivity extends InitActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
         instance = null;
     }
 
     @Override
     protected void init() {
         setContentView(R.layout.photo_viewer_layout);
+        ActivityCollector.addActivity(this, getClass());
         instance = this;
         viewPager = f(R.id.viewpager);
         page_tv = f(R.id.page_tv);

@@ -26,6 +26,7 @@ import laoyou.com.laoyou.listener.KeyboardChangeListener;
 import laoyou.com.laoyou.listener.OutSideListener;
 import laoyou.com.laoyou.presenter.OutSidePresenter;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.ToastUtil;
 
@@ -66,6 +67,7 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
     @Override
     protected void init() {
         setContentView(R.layout.game_info_details_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitles(this);
         webView = f(R.id.webView);
         pg = f(R.id.progressBar);
@@ -223,5 +225,11 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
     @Override
     public void onCancel(SHARE_MEDIA share_media) {
         Log.i(TAG, "取消分享");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

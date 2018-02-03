@@ -13,6 +13,7 @@ import laoyou.com.laoyou.adapter.FlashChatGambitAdapter;
 import laoyou.com.laoyou.bean.FlashTypeIconBean;
 import laoyou.com.laoyou.listener.FlashChatGambitListener;
 import laoyou.com.laoyou.presenter.FlashChatGambitPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goFlashChatMemberPage;
@@ -39,6 +40,7 @@ public class FlashChatGambitActivity extends InitActivity implements FlashChatGa
     @Override
     protected void init() {
         setContentView(R.layout.flash_chat_gambit_layout);
+        ActivityCollector.addActivity(this, getClass());
         recyclerView = f(R.id.recyclerView);
         setTitlesAndBack(this, "", "");
         titles_layout = f(R.id.titles_layout);
@@ -81,5 +83,11 @@ public class FlashChatGambitActivity extends InitActivity implements FlashChatGa
             setResult(RESULT_OK);
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

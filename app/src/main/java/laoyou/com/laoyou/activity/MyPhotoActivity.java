@@ -19,6 +19,7 @@ import laoyou.com.laoyou.adapter.MyPhotoAdapter;
 import laoyou.com.laoyou.bean.PhotoBean;
 import laoyou.com.laoyou.listener.MyPhotoListener;
 import laoyou.com.laoyou.presenter.MyPhotoPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
@@ -63,6 +64,7 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
     @Override
     protected void init() {
         setContentView(R.layout.my_photo_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitlesAndBack(this, gets(R.string.goback), "");
         Photo_IsMe = getIntent().getBooleanExtra("Photo_IsMe", false);
         id = getIntent().getStringExtra("Photo_id");
@@ -188,5 +190,6 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

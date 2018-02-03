@@ -19,6 +19,7 @@ import laoyou.com.laoyou.bean.PageTopBannerBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.QueryListener;
 import laoyou.com.laoyou.presenter.QueryPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 
@@ -60,7 +61,7 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
     @Override
     protected void init() {
         setContentView(R.layout.query_layout);
-
+        ActivityCollector.addActivity(this, getClass());
         listview = f(R.id.listView);
         head = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.front_include, null);
         query_of_login_tv = (TextView) head.findViewById(R.id.query_of_login_tv);
@@ -209,6 +210,7 @@ public class QueryActivity extends InitActivity implements View.OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
         hp.CloseQueryThread();
         hp.RemoveHand();
     }

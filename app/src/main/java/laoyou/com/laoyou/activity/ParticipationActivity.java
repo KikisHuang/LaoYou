@@ -16,6 +16,7 @@ import laoyou.com.laoyou.adapter.UserListAdapter;
 import laoyou.com.laoyou.bean.LikeListBean;
 import laoyou.com.laoyou.listener.ParticipationListener;
 import laoyou.com.laoyou.presenter.ParticipationPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
@@ -45,6 +46,7 @@ public class ParticipationActivity extends InitActivity implements Participation
     @Override
     protected void init() {
         setContentView(R.layout.participation_layout);
+        ActivityCollector.addActivity(this, getClass());
         listView = f(R.id.listView);
 
         foot_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.no_more_include, null);
@@ -124,5 +126,11 @@ public class ParticipationActivity extends InitActivity implements Participation
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

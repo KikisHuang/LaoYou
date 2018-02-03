@@ -26,6 +26,7 @@ import laoyou.com.laoyou.listener.CustomListener;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.listener.TopicCircleListener;
 import laoyou.com.laoyou.presenter.TopicCirclePresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -69,6 +70,7 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
     @Override
     protected void init() {
         setContentView(R.layout.topic_circle_layout);
+        ActivityCollector.addActivity(this, getClass());
         listView = f(R.id.listView);
         mLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(mLayoutManager);
@@ -240,5 +242,11 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
     public <T> void onCustomResult(List<T> obj) {
         List<String> params = (List<String>) obj;
         goTopicTypeDetailsPage(TopicCircleActivity.this, params.get(0), params.get(1), params.get(2), params.get(3), params.get(4));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

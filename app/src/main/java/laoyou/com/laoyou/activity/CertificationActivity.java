@@ -18,6 +18,7 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.listener.CertificationListener;
 import laoyou.com.laoyou.presenter.CertificationPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -62,6 +63,7 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
     @Override
     protected void init() {
         setContentView(R.layout.certification_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitles(CertificationActivity.this);
         cp = new CertificationPresenter(this);
         front_id_layout = f(R.id.front_id_layout);
@@ -220,6 +222,7 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
 //        MyApplication.getRefWatcher().watch(this);
     }
 }

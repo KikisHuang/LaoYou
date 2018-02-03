@@ -12,6 +12,7 @@ import laoyou.com.laoyou.adapter.TopicCircletempAdapter;
 import laoyou.com.laoyou.bean.TopicBean;
 import laoyou.com.laoyou.listener.MyNoticeListener;
 import laoyou.com.laoyou.presenter.MyNoticePresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goTopicTypeDetailsPage;
@@ -36,6 +37,7 @@ public class MyNoticeActivity extends InitActivity implements MyNoticeListener, 
     @Override
     protected void init() {
         setContentView(R.layout.my_notice_layout);
+        ActivityCollector.addActivity(this, getClass());
         listView = f(R.id.listView);
         list = new ArrayList<>();
         mp = new MyNoticePresenter(this);
@@ -70,5 +72,11 @@ public class MyNoticeActivity extends InitActivity implements MyNoticeListener, 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         goTopicTypeDetailsPage(MyNoticeActivity.this, list.get(position).getId(), list.get(position).getName(), list.get(position).getFollowCount(), list.get(position).getChatThemeCount(), list.get(position).getImgUrl());
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

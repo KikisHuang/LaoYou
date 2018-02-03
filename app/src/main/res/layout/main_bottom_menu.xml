@@ -61,7 +61,6 @@
                 android:layout_gravity="top|right"
                 android:layout_marginTop="1dp"
                 android:layout_marginRight="14dp"
-                android:layout_toRightOf="@id/tabIndicator"
                 android:src="@drawable/point1"
                 android:visibility="gone"
                 />

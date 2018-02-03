@@ -50,6 +50,7 @@ import laoyou.com.laoyou.overlay.DrivingRouteOverlay;
 import laoyou.com.laoyou.overlay.RideRouteOverlay;
 import laoyou.com.laoyou.overlay.WalkRouteOverlay;
 import laoyou.com.laoyou.presenter.InternetCafLocationPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.StarBar;
 
@@ -107,6 +108,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
     @Override
     protected void init() {
         setContentView(R.layout.location_layout);
+        ActivityCollector.addActivity(this, getClass());
         ViewInit();
         ListOfGps();
         setImgTitles(this);
@@ -229,6 +231,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         mapView.onDestroy();
 

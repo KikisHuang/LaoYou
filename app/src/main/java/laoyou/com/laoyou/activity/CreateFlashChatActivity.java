@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 
@@ -26,6 +27,7 @@ public class CreateFlashChatActivity extends InitActivity implements View.OnClic
     @Override
     protected void init() {
         setContentView(R.layout.create_flash_chat_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitlesAndBack(this, gets(R.string.goback), "");
         next_img = f(R.id.next_img);
     }
@@ -51,5 +53,11 @@ public class CreateFlashChatActivity extends InitActivity implements View.OnClic
             ToastUtil.toast2_bottom(this, "创建成功！");
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

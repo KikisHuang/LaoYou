@@ -46,6 +46,7 @@ import laoyou.com.laoyou.listener.KeyboardChangeListener;
 import laoyou.com.laoyou.listener.TopicCommentListener;
 import laoyou.com.laoyou.presenter.TopicCommentPresenter;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.ChildLiistView;
@@ -127,6 +128,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     @Override
     protected void init() {
         setContentView(R.layout.topic_details_comment_layout);
+        ActivityCollector.addActivity(this, getClass());
         setImgTitles(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
@@ -527,6 +529,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
         tp.ClosePopupWindow();
     }
 
@@ -614,5 +617,4 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         listView.setLayoutParams(params);
 
     }
-
 }

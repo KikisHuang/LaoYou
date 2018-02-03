@@ -16,6 +16,7 @@ import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.OthersListener;
 import laoyou.com.laoyou.presenter.OthersPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.view.ObservableScrollView;
@@ -53,6 +54,7 @@ public class OthersDetailsPageActivity extends InitActivity implements OthersLis
     @Override
     protected void init() {
         setContentView(R.layout.other_details_page_layout);
+        ActivityCollector.addActivity(this, getClass());
         setImgTitles(this);
         private_layout = f(R.id.private_layout);
         background_img = f(R.id.background_img);
@@ -137,5 +139,11 @@ public class OthersDetailsPageActivity extends InitActivity implements OthersLis
             back_img.setImageResource(R.mipmap.return_icon);
         } else
             title_layout.setBackgroundColor(Color.argb((int) 255, 255, 255, 255));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

@@ -62,6 +62,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import laoyou.com.laoyou.activity.LoginOperationActivity;
 import laoyou.com.laoyou.application.MyApplication;
@@ -1177,5 +1178,17 @@ public class SynUtils {
                 return new RelativeLayout.LayoutParams(w, h);
         }
         return null;
+    }
+
+    public static String stringFilter(String str)throws PatternSyntaxException {
+
+        String regEx = "[/\\#@&^%;',()_+!.:*?<>|\"\n\t]";
+
+        Pattern p = Pattern.compile(regEx);
+
+        Matcher m = p.matcher(str);
+
+        return m.replaceAll("");
+
     }
 }

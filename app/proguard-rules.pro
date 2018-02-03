@@ -513,7 +513,7 @@
 }
 
 # for DexGuard only
-#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
 ####PictureSelector####
 
@@ -720,6 +720,10 @@ public static final int *;
   **[] $VALUES;
   public *;
 }
+####Picasso####
+-dontwarn com.squareup.okhttp.**
+####Picasso####
+
 ####Glide####
 
 

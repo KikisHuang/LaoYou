@@ -36,6 +36,7 @@ import laoyou.com.laoyou.listener.KeyboardChangeListener;
 import laoyou.com.laoyou.listener.RequestPermissionType;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.presenter.InternetCafPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -111,6 +112,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     @Override
     protected void init() {
         setContentView(R.layout.internet_cat_layout);
+        ActivityCollector.addActivity(this, getClass());
         setImgTitles(this);
         //第一次进入不弹出软键盘;
 //        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN |WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN| WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -461,6 +463,6 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Glide.with(MyApplication.getContext()).clear(head_layout);
+        ActivityCollector.removeActivity(this);
     }
 }

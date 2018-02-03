@@ -18,6 +18,7 @@ import laoyou.com.laoyou.listener.AddressBookListener;
 import laoyou.com.laoyou.presenter.AddressbookPresenter;
 import laoyou.com.laoyou.tencent.ui.FriendshipManageMessageActivity;
 import laoyou.com.laoyou.tencent.ui.SearchFriendActivity;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.SideBar;
 import laoyou.com.laoyou.utils.ToastUtil;
 
@@ -66,6 +67,7 @@ public class AddressbookActivity extends InitActivity implements AddressBookList
     @Override
     protected void init() {
         setContentView(R.layout.address_book_layout);
+        ActivityCollector.addActivity(this, getClass());
         list = new ArrayList<>();
         ap = new AddressbookPresenter(this);
         activity = this;
@@ -156,5 +158,6 @@ public class AddressbookActivity extends InitActivity implements AddressBookList
     protected void onDestroy() {
         super.onDestroy();
         activity = null;
+        ActivityCollector.removeActivity(this);
     }
 }

@@ -23,6 +23,7 @@ import laoyou.com.laoyou.listener.AddressBookListener;
 import laoyou.com.laoyou.listener.EditChangedListener;
 import laoyou.com.laoyou.listener.EdittextListener;
 import laoyou.com.laoyou.presenter.AddressbookPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.AnimationUtil;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.HorizontalListView;
@@ -78,6 +79,7 @@ public class MyCreateGroupActivity extends InitActivity implements AddressBookLi
     @Override
     protected void init() {
         setContentView(R.layout.create_group_layout);
+        ActivityCollector.addActivity(this, getClass());
         ap = new AddressbookPresenter(this);
         listView = f(R.id.listView);
         sratch_listView = f(R.id.sratch_listView);
@@ -285,5 +287,11 @@ public class MyCreateGroupActivity extends InitActivity implements AddressBookLi
     @Override
     public void onContentChange(String s) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

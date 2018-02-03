@@ -40,6 +40,7 @@ import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
 import laoyou.com.laoyou.tencent.ui.ChatActivity;
 import laoyou.com.laoyou.tencent.view.NotifyDialog;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -113,6 +114,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     protected void init() {
         setContentView(R.layout.home_page_layout);
         setImgTitles(this);
+        ActivityCollector.addActivity(this, getClass());
    /*     id = getIntent().getStringExtra("Page_Home_id");
         isTencent = Boolean.parseBoolean(getIntent().getStringExtra("Page_Home_Tencent_Flag"));
         Log.i(TAG, " isTencent ===" + isTencent);
@@ -577,6 +579,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 
     @Override

@@ -13,6 +13,7 @@ import laoyou.com.laoyou.bean.GameInfoBean;
 import laoyou.com.laoyou.bean.GameTypeBean;
 import laoyou.com.laoyou.listener.GameInformationListener;
 import laoyou.com.laoyou.presenter.GameInformationPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.view.CustomViewPager;
 
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -41,6 +42,7 @@ public class GameInformationActivity extends InitActivity implements GameInforma
     @Override
     protected void init() {
         setContentView(R.layout.game_information_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitlesAndBack(this, "", "");
         TextView title = (TextView) findViewById(R.id.title_tv);
         title.setText(gets(R.string.game_information));
@@ -110,6 +112,7 @@ public class GameInformationActivity extends InitActivity implements GameInforma
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
         adapter = null;
         viewPager = null;
         mTab = null;

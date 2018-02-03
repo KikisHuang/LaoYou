@@ -33,6 +33,7 @@ import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.dialog.ActionSheetDialog;
 import laoyou.com.laoyou.listener.MyHomePageListener;
 import laoyou.com.laoyou.presenter.MyHomePagePresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -107,6 +108,7 @@ public class MyHomePageActivity extends InitActivity implements ZoomInScrollView
     @Override
     protected void init() {
         setContentView(R.layout.my_home_page_layout);
+        ActivityCollector.addActivity(this, getClass());
         setImgTitles(this);
         title_layout = f(R.id.title_layout);
         background_img = f(R.id.background_img);
@@ -543,5 +545,9 @@ public class MyHomePageActivity extends InitActivity implements ZoomInScrollView
             mp.CheckID();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
+    }
 }

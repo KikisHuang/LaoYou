@@ -25,6 +25,7 @@ import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.presenter.FlashChatPresenter;
 import laoyou.com.laoyou.tencent.presentation.presenter.GroupManagerPresenter;
 import laoyou.com.laoyou.tencent.ui.ChatActivity;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -69,6 +70,7 @@ public class FlashChatActivity extends InitActivity implements FlashChatListener
     @Override
     protected void init() {
         setContentView(R.layout.flash_chat_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitlesAndBack(this, gets(R.string.discover), "");
         list = new ArrayList<>();
         listView = f(R.id.listView);
@@ -159,5 +161,11 @@ public class FlashChatActivity extends InitActivity implements FlashChatListener
         Log.i(TAG, getString(R.string.apply_for_success));
         if (!identify.isEmpty())
             ChatActivity.navToChat(FlashChatActivity.this, identify, TIMConversationType.Group);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

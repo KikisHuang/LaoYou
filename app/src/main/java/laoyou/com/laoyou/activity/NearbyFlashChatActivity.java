@@ -23,6 +23,7 @@ import laoyou.com.laoyou.presenter.NearbyFlashChatPresenter;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.presentation.presenter.GroupManagerPresenter;
 import laoyou.com.laoyou.tencent.ui.ChatActivity;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -62,6 +63,7 @@ public class NearbyFlashChatActivity extends InitActivity implements SpringListe
     @Override
     protected void init() {
         setContentView(R.layout.nearby_lash_chat_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitlesAndBack(this, gets(R.string.goback), "");
         listView = f(R.id.listView);
         list = new ArrayList<>();
@@ -135,5 +137,11 @@ public class NearbyFlashChatActivity extends InitActivity implements SpringListe
         }
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

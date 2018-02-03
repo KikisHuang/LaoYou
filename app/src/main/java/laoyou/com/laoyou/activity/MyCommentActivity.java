@@ -9,6 +9,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.TabPagerAdapter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.view.CustomViewPager;
 
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -34,6 +35,7 @@ public class MyCommentActivity extends InitActivity {
     @Override
     protected void init() {
         setContentView(R.layout.comment_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitlesAndBack(this, gets(R.string.goback), "");
         flag = Integer.parseInt(getIntent().getStringExtra("Comment_of_HeartValue"));
 
@@ -87,5 +89,11 @@ public class MyCommentActivity extends InitActivity {
     @Override
     protected void initData() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

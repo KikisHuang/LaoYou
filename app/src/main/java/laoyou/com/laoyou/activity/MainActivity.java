@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -43,7 +42,6 @@ import laoyou.com.laoyou.services.JobSchedulerManager;
 import laoyou.com.laoyou.tencent.presentation.event.MessageEvent;
 import laoyou.com.laoyou.tencent.ui.ConversationFragment;
 import laoyou.com.laoyou.tencent.utils.PushUtil;
-import laoyou.com.laoyou.tencent.view.NotifyDialog;
 import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
@@ -52,9 +50,9 @@ import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
 import static laoyou.com.laoyou.fragment.MyFragment.SettingInstance;
 import static laoyou.com.laoyou.save.SPreferences.getSkipFlag;
 import static laoyou.com.laoyou.save.SPreferences.saveSkipFlag;
+import static laoyou.com.laoyou.utils.ActivityCollector.CloseAllActivity;
 import static laoyou.com.laoyou.utils.IntentUtils.goAddLikeGamePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginOperPage;
-import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 
@@ -132,10 +130,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (SPreferences.getUserSig() != null && !SPreferences.getUserSig().isEmpty())
             IMInit();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
+        ActivityCollector.removeAllActivity();
     }
 
     public void IMInit() {
@@ -144,41 +144,53 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         rejectInit();
     }
 
+
     private void rejectInit() {
         //互踢下线逻辑
         TIMManager.getInstance().setUserStatusListener(new TIMUserStatusListener() {
             @Override
             public void onForceOffline() {
-               /* Log.d(TAG, "receive force offline message");
-                Intent intent = new Intent(MainActivity.this, DialogActivity.class);
-                startActivity(intent);*/
+                CloseAllActivity();
+
                 new MyAlertDialog(MainActivity.this).builder().setCancelable(false).setTitle("提示").setMsg(getString(R.string.kick_logout)).setNegativeButton("取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        LogOut(MainActivity.this, true);
                         if (MainInstance() != null)
                             MainInstance().onInitFragment();
+                        if (getHomeInstance() != null)
+                            getHomeInstance().onLogout();
                     }
                 }).setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LogOut(MainActivity.this, true);
                         if (MainInstance() != null)
                             MainInstance().onInitFragment();
+                        if (getHomeInstance() != null)
+                            getHomeInstance().onLogout();
                     }
                 }).show();
+
             }
 
             @Override
             public void onUserSigExpired() {
                 //票据过期，需要重新登录
-                new NotifyDialog().show(getString(R.string.tls_expire), getSupportFragmentManager(), new DialogInterface.OnClickListener() {
+               /* new NotifyDialog().show(getString(R.string.tls_expire), getSupportFragmentManager(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         LogOut(MainActivity.this, true);
                     }
-                });
+                });*/
+
+                new MyAlertDialog(MainActivity.this).builder().setCancelable(false).setTitle("提示").setMsg(getString(R.string.tls_expire)).setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (MainInstance() != null)
+                            MainInstance().onInitFragment();
+                        if (getHomeInstance() != null)
+                            getHomeInstance().onLogout();
+                    }
+                }).show();
             }
         });
     }

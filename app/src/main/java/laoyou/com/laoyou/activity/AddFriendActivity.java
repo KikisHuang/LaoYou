@@ -27,6 +27,7 @@ import laoyou.com.laoyou.listener.HomePageListener;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
 import laoyou.com.laoyou.tencent.view.NotifyDialog;
+import laoyou.com.laoyou.utils.ActivityCollector;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
@@ -52,6 +53,7 @@ public class AddFriendActivity extends InitActivity implements View.OnClickListe
     @Override
     protected void init() {
         setContentView(R.layout.add_friend_layout);
+        ActivityCollector.addActivity(this, getClass());
         setImgTitles(this);
         identify = getIntent().getStringExtra("apply_for_id");
         send_apply_for = f(R.id.send_apply_for);
@@ -212,5 +214,11 @@ public class AddFriendActivity extends InitActivity implements View.OnClickListe
     @Override
     public void onDelFriend(TIMFriendStatus status) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

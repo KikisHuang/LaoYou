@@ -16,6 +16,7 @@ import laoyou.com.laoyou.adapter.AddLikeGameAdapter;
 import laoyou.com.laoyou.bean.GameBean;
 import laoyou.com.laoyou.listener.AddLikeGameListener;
 import laoyou.com.laoyou.presenter.AddLikeGamePresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 import laoyou.com.laoyou.view.RippleView;
@@ -61,6 +62,7 @@ public class AddLikeGameActivity extends InitActivity implements AddLikeGameList
     @Override
     protected void init() {
         setContentView(R.layout.add_like_game_layout);
+        ActivityCollector.addActivity(this, getClass());
         listView = f(R.id.listView);
         commit_bt = f(R.id.commit_bt);
         foot_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.foot_include, null);
@@ -162,5 +164,11 @@ public class AddLikeGameActivity extends InitActivity implements AddLikeGameList
             ap.page += 10;
             ap.getGameListData();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

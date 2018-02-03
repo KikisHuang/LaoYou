@@ -28,6 +28,7 @@ import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.listener.AppBarStateChangeListener;
 import laoyou.com.laoyou.listener.TopicTypeDetailsListener;
 import laoyou.com.laoyou.presenter.TopicTypeDetailsPresenter;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 
@@ -84,6 +85,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
     @Override
     protected void init() {
         setContentView(R.layout.topic_type_details_layout);
+        ActivityCollector.addActivity(this, getClass());
         id = getIntent().getStringExtra("Topic_Type_id");
         activity = this;
         name = getIntent().getStringExtra("Topic_Type_name");
@@ -339,6 +341,7 @@ public class TopicTypeDetailsActivity extends InitActivity implements TopicTypeD
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
         activity = null;
         appbar_layout = null;
     }

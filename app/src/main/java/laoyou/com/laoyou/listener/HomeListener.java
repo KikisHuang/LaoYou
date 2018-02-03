@@ -23,7 +23,7 @@ public interface HomeListener {
 
     void BannerShow();
 
-    void onForbidSlide();
+    void onForbidSlide(boolean b);
 
     void RefreshRecyclerView(List<TopicTypeBean> nblist);
 

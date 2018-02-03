@@ -22,6 +22,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.ToastUtil;
 import okhttp3.Call;
@@ -47,6 +48,7 @@ public class AdvertisementActivity extends Activity implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.advertisement_layout);
+        ActivityCollector.addActivity(this, getClass());
         skip_tv = (TextView) findViewById(R.id.skip_tv);
         skip_tv.setOnClickListener(this);
         welcome_img = (ImageView) findViewById(R.id.welcome_img);
@@ -147,6 +149,8 @@ public class AdvertisementActivity extends Activity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
+
         if (handler != null) {
             welcome_img.setImageBitmap(null);
             handler.removeCallbacksAndMessages(null);

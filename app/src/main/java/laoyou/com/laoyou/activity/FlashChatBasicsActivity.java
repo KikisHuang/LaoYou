@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.application.MyApplication;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goFlashChatGambitPage;
@@ -71,6 +72,7 @@ public class FlashChatBasicsActivity extends InitActivity implements View.OnClic
     @Override
     protected void init() {
         setContentView(R.layout.flash_chat_basics_layout);
+        ActivityCollector.addActivity(this, getClass());
         setTitlesAndBack(this, gets(R.string.goback), "");
         titles_layout = f(R.id.titles_layout);
         titles_layout.setBackgroundResource(R.color.background_color);
@@ -106,5 +108,11 @@ public class FlashChatBasicsActivity extends InitActivity implements View.OnClic
             setResult(RESULT_OK);
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

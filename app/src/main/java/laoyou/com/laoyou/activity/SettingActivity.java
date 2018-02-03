@@ -20,6 +20,7 @@ import laoyou.com.laoyou.tencent.presentation.business.LoginBusiness;
 import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
 import laoyou.com.laoyou.tencent.presentation.viewfeatures.FriendInfoView;
 import laoyou.com.laoyou.tencent.view.LineControllerView;
+import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 
 import static laoyou.com.laoyou.activity.MainActivity.MainInstance;
@@ -29,7 +30,6 @@ import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
 import static laoyou.com.laoyou.utils.IntentUtils.goBlackListPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goChangePassPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goMessageNotifySettingPage;
-import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 
 /**
  * Created by lian on 2017/12/1.
@@ -59,6 +59,7 @@ public class SettingActivity extends InitActivity implements View.OnClickListene
     @Override
     protected void init() {
         setContentView(R.layout.setting_layout);
+        ActivityCollector.addActivity(this, getClass());
         back = this;
         friendshipManagerPresenter = new FriendshipManagerPresenter(this);
         friendshipManagerPresenter.getMyProfile();
@@ -96,12 +97,12 @@ public class SettingActivity extends InitActivity implements View.OnClickListene
 
                     @Override
                     public void onSuccess() {
-
                         Cancle();
                         Toast.makeText(SettingActivity.this, getResources().getString(R.string.setting_logout_succeed), Toast.LENGTH_SHORT).show();
-                        LogOut(SettingActivity.this, true);
                         if (MainInstance() != null)
                             MainInstance().onInitFragment();
+                        if(getHomeInstance()!=null)
+                            getHomeInstance().onLogout();
 
                         finish();
                     }
@@ -177,5 +178,11 @@ public class SettingActivity extends InitActivity implements View.OnClickListene
     @Override
     public void onSuccess() {
         friendConfirm.setContent(stringList[Which - 1]);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }
