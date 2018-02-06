@@ -98,6 +98,7 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
     private String id;
     private boolean IsList;
     private CardView bottom_banner_card;
+    private ImageView return_icon;
 
     @Override
     protected void click() {
@@ -108,6 +109,8 @@ public class InternetCafLocationActivity extends InitActivity implements AMap.On
     @Override
     protected void init() {
         setContentView(R.layout.location_layout);
+        return_icon = f(R.id.back_img);
+        return_icon.setImageResource(R.mipmap.return_icon);
         ActivityCollector.addActivity(this, getClass());
         ViewInit();
         ListOfGps();

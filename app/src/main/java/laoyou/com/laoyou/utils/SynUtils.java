@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewPager;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -1176,6 +1177,9 @@ public class SynUtils {
                 return new FrameLayout.LayoutParams(w, h);
             case 2:
                 return new RelativeLayout.LayoutParams(w, h);
+            case 3:
+                return new CoordinatorLayout.LayoutParams(w, h);
+
         }
         return null;
     }

@@ -27,6 +27,7 @@ import laoyou.com.laoyou.listener.FindSonListener;
 import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.presenter.FindSonPresenter;
+import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
@@ -87,9 +88,6 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
     public void onResume() {
         super.onResume();
         if (tag == 0) {
-            LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-            int totalItemCount = layoutManager.getItemCount();
-            fp.page = totalItemCount;
             isRefresh = true;
             fp.getHottestAndNewestRefresh();
         }
@@ -134,12 +132,10 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
     public void IsonRefresh(int init) {
         switch (tag) {
             case 0:
-                fp.page = init;
                 isRefresh = true;
                 fp.getNewIncident(true);
                 break;
             case 1:
-                fp.page = init;
                 isRefresh = true;
                 fp.getNearbyData(true, sex);
                 break;
@@ -156,12 +152,10 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
     public void IsonLoadmore(int move) {
         switch (tag) {
             case 0:
-                fp.page = topics.size();
                 isRefresh = false;
                 fp.getNewIncident(false);
                 break;
             case 1:
-                fp.page = list.size();
                 isRefresh = false;
                 fp.getNearbyData(false, sex);
                 break;
@@ -184,7 +178,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
             list.clear();
 
         for (NearbyBean nb : nblist) {
-            if (nb.getCloud_tencent_account() != null && !nb.getCloud_tencent_account().isEmpty())
+            if (nb.getCloud_tencent_account() != null && !nb.getCloud_tencent_account().isEmpty() && !nb.getId().equals(SPreferences.getUserId()))
                 list.add(nb);
         }
         nearbyAdapter.notifyDataSetChanged();
@@ -217,11 +211,11 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 // 没有权限，申请权限。
-                Log.i(TAG,"无定位权限");
+                Log.i(TAG, "无定位权限");
 
             } else {
                 // 有权限
-                Log.i(TAG,"有定位权限");
+                Log.i(TAG, "有定位权限");
             }
 
         } else {

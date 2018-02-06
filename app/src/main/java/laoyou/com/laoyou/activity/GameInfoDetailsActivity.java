@@ -54,7 +54,6 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
     private String id = "";
     private ImageView like_icon;
 
-
     @Override
     protected void click() {
         new KeyboardChangeListener(this).setKeyBoardListener(this);
@@ -231,5 +230,8 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
+        op.destroyWebView(webView);
+        deleteDatabase("webview.db");
+        deleteDatabase("webviewCache.db");
     }
 }

@@ -9,14 +9,14 @@
         android:id="@+id/springView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <!--circle_angle_white-->
             <ListView
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
                 android:divider="@null"
-                android:background="@drawable/circle_angle_white"
+                android:background="@color/white"
                 android:scrollbars="none"></ListView>
 
     </com.liaoinstan.springview.widget.SpringView>

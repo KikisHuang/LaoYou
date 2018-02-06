@@ -3,6 +3,7 @@ package laoyou.com.laoyou.activity;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -19,7 +20,7 @@ import laoyou.com.laoyou.presenter.OthersPresenter;
 import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
-import laoyou.com.laoyou.view.ObservableScrollView;
+import laoyou.com.laoyou.view.ZoomInScrollView;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 import static laoyou.com.laoyou.utils.IntentUtils.goLikeGamePage;
@@ -31,24 +32,25 @@ import static laoyou.com.laoyou.utils.TitleUtils.setImgTitles;
 /**
  * Created by lian on 2017/12/26.
  */
-public class OthersDetailsPageActivity extends InitActivity implements OthersListener, View.OnClickListener, ObservableScrollView.ScrollViewListener {
+public class OthersDetailsPageActivity extends InitActivity implements OthersListener, View.OnClickListener, ZoomInScrollView.OnScrollListener {
     private static final String TAG = "OthersDetailsPageActivity";
     private LinearLayout private_layout;
     private ImageView background_img, back_img;
     private CircleImageView head_img;
     private TextView sex_tv, region_tv, attestation_state_tv, like_game_tv;
     private EditText nickname_ed, signature_ed;
-    private ObservableScrollView scrollView;
+    private ZoomInScrollView scrollView;
     private String id;
     private OthersPresenter op;
     private String TencentId;
     private RelativeLayout title_layout;
     private int imageHeight;
+    private FrameLayout head_layout;
 
     @Override
     protected void click() {
         like_game_tv.setOnClickListener(this);
-        scrollView.setScrollViewListener(this);
+        scrollView.setOnScrollListener(this);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class OthersDetailsPageActivity extends InitActivity implements OthersLis
         scrollView = f(R.id.scrollView);
         back_img = f(R.id.back_img);
         title_layout = f(R.id.title_layout);
-
+        head_layout = f(R.id.head_layout);
         sex_tv = f(R.id.sex_tv);
         region_tv = f(R.id.region_tv);
         attestation_state_tv = f(R.id.attestation_state_tv);
@@ -72,6 +74,7 @@ public class OthersDetailsPageActivity extends InitActivity implements OthersLis
         id = getIntent().getStringExtra("Others_id");
         op = new OthersPresenter(this);
         imageHeight = DeviceUtils.dip2px(this, 360);
+        scrollView.setHeaderView(head_layout);
     }
 
     @Override
@@ -126,7 +129,13 @@ public class OthersDetailsPageActivity extends InitActivity implements OthersLis
     }
 
     @Override
-    public void onScrollChanged(ObservableScrollView scrollView, int x, int y, int oldx, int oldy) {
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
+    }
+
+    @Override
+    public void onScroll(int x, int y, int oldx, int oldy) {
 
         if (y <= 0) {
             title_layout.setBackgroundColor(Color.argb((int) 0, 227, 29, 26));//AGB由相关工具获得，或者美工提供
@@ -139,11 +148,5 @@ public class OthersDetailsPageActivity extends InitActivity implements OthersLis
             back_img.setImageResource(R.mipmap.return_icon);
         } else
             title_layout.setBackgroundColor(Color.argb((int) 255, 255, 255, 255));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ActivityCollector.removeActivity(this);
     }
 }

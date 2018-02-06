@@ -109,7 +109,7 @@ public class OutSidePresenter implements HttpResultListener {
     }
 
     private void webinit(WebView webView) {
-//        webView.setInitialScale(50);//这里一定要设置，数值可以根据各人的需求而定，我这里设置的是50%的缩放
+//      webView.setInitialScale(50);//这里一定要设置，数值可以根据各人的需求而定，我这里设置的是50%的缩放
 
         WebSettings webSettings = webView.getSettings();
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -147,7 +147,7 @@ public class OutSidePresenter implements HttpResultListener {
             webView.clearCache(true);
             webView.loadUrl("about:blank"); // clearView() should be changed to loadUrl("about:blank"), since clearView() is deprecated now
             webView.freeMemory();
-//            webView.pauseTimers();
+//          webView.pauseTimers();
             webView.removeAllViews();
             webView.destroy();
             webView = null; // Note that mWebView.destroy() and mWebView = null do the exact same thing

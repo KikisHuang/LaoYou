@@ -84,15 +84,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private ImageView banner_img, show_hide_img;
     private FrameLayout page_layout, banner_layout;
     private static HomeFragment homeFragment;
-
     private PageTopBean pb = null;
-
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
 
-
     private LinearLayout dynamic_layout, query_pass_layout, wifi_layout, nearby_wb_layout, player_community_layout, topic_circle_layout;
-
 
     private HomeStatusAdapter adapter;
     private TextView flash_more_tv, recom_nick_name, foot_tv;
@@ -136,8 +132,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         hp.page = totalItemCount - 1;
                         hp.getPeopleNearby(false);
                     }
-
-
                 }
                 if (Nblist.size() > 0) {
                     int firstVisiblePosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();

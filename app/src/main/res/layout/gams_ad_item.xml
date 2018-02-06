@@ -62,7 +62,7 @@
                 android:layout_marginTop="3dp"
                 android:text="高清还原，最激情的街机社区"
                 android:textColor="@color/content6"
-                android:textSize="13sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/number_tv"
@@ -72,17 +72,20 @@
                 android:layout_marginTop="3dp"
                 android:text="83万人在玩"
                 android:textColor="@color/content6"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                android:visibility="gone"
+                />
         </LinearLayout>
 
         <Button
             android:id="@+id/come_in_bt"
-            android:layout_width="60dp"
-            android:layout_height="30dp"
+            android:layout_width="55dp"
+            android:layout_height="26dp"
             android:layout_gravity="center"
             android:layout_marginRight="5dp"
             android:background="@drawable/blue_corners2"
             android:text="进入"
+            android:textSize="12sp"
             android:textColor="@color/white" />
     </LinearLayout>
 

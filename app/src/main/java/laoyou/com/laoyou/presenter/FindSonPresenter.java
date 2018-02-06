@@ -38,7 +38,7 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
     private static final String TAG = "FindSonPresenter";
     private FindSonListener listener;
     private boolean RefreshFlag;
-    public int page = 0;
+    private int page = 0;
 
     public FindSonPresenter(FindSonListener listener) {
         this.listener = listener;
@@ -51,6 +51,7 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
                 try {
                     List<NearbyBean> ar = GsonUtil.jsonToList(getJsonSring(response), NearbyBean.class);
                     if (ar.size() > 0) {
+                        page = ar.size();
                         for (NearbyBean nbb : ar) {
                             if (nbb.getCloud_tencent_account() != null && !nbb.getCloud_tencent_account().isEmpty()) {
                                 if (nbb.getGameImgs() != null && !nbb.getGameImgs().isEmpty()) {
@@ -80,10 +81,9 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
                 JSONArray ar = getJsonAr(response);
                 List<TopicTypeBean> toppic = new ArrayList<>();
 
-                if (!RefreshFlag && ar.length() <= 0){
+                if (!RefreshFlag && ar.length() <= 0) {
 //                    listener.onFailedMsg(gets(R.string.nomore));
-                }
-                else if (ThumbNailInstance() == null)
+                } else if (ThumbNailInstance() == null)
                     new ThumbnailAsyncTask(this).execute(ar, toppic);
 
                 break;
@@ -118,6 +118,9 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
          */
         if (SPreferences.getLatitud() != null && Double.parseDouble(SPreferences.getLatitud()) > 0) {
             RefreshFlag = flag;
+            if (RefreshFlag)
+                page = 0;
+
             Map<String, String> map = getParamsMap();
             map.put("page", String.valueOf(page));
             map.put("pageSize", String.valueOf(page + Fields.SIZE));
@@ -127,7 +130,7 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
                 map.put("sex", String.valueOf(sex));
 
             httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETNEARBYUSER);
-        }else
+        } else
             listener.onNotLatiLongTude();
 
     }

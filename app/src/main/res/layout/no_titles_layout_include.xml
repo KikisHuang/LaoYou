@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
-        android:src="@mipmap/return_icon" />
+        android:src="@mipmap/return_icon_white" />
 
 
     <ImageView

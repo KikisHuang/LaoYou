@@ -97,6 +97,8 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     private boolean isTencent;
     private TextView status_tv, photo_tv;
     private FrameLayout top_background_head;
+    private HomePageListener listener;
+
 
     @Override
     protected void click() {
@@ -113,13 +115,14 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     @Override
     protected void init() {
         setContentView(R.layout.home_page_layout);
+        listener = this;
         setImgTitles(this);
         ActivityCollector.addActivity(this, getClass());
    /*     id = getIntent().getStringExtra("Page_Home_id");
         isTencent = Boolean.parseBoolean(getIntent().getStringExtra("Page_Home_Tencent_Flag"));
         Log.i(TAG, " isTencent ===" + isTencent);
         isMe = id.isEmpty() ? true : IsMe(id);*/
-        hp = new HomePagePresenter(this);
+        hp = new HomePagePresenter(listener);
 
         bottom_menu_layout = f(R.id.bottom_menu_layout);
 
@@ -134,7 +137,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         list = new ArrayList<>();
 
         head_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.home_page_head_layout, null);
-//        head_layout = getHeaderImage();
+
         foot_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.foot_include, null);
         HeadViewInit();
 
@@ -155,24 +158,6 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     }
 
     private void HeadViewInit() {
-      /*  status_tv = f(R.id.status_tv);
-        photo_tv = f(R.id.photo_tv);
-
-        background_img = f(R.id.background_img);
-        head_img = f(R.id.head_img);
-        nickname_tv = f(R.id.nickname_tv);
-        signature_tv = f(R.id.signature_tv);
-        page_view_tv = f(R.id.page_view_tv);
-        cardiac_value_tv = f(R.id.cardiac_value_tv);
-        authentication_tv = f(R.id.authentication_tv);
-        detailsOfcompile_tv = f(R.id.detailsOfcompile_tv);
-        like_game_layout = f(R.id.like_game_layout);
-
-        address_tv = f(R.id.address_tv);
-        photo_layout = f(R.id.photo_layout);
-        game_list_layout = f(R.id.game_list_layout);*/
-
-
         status_tv = (TextView) head_layout.findViewById(R.id.status_tv);
         photo_tv = (TextView) head_layout.findViewById(R.id.photo_tv);
 
@@ -210,7 +195,6 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
             listView.post(new Runnable() {
                 @Override
                 public void run() {
-
                     listView.setSelection(0);
                     back_img.setImageResource(R.mipmap.return_icon_white);
                     title_layout.setBackgroundColor(getRouColors(R.color.transparent));
@@ -219,7 +203,6 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
                 }
             });
-
         }
 
         id = getIntent().getStringExtra("Page_Home_id");
@@ -299,14 +282,14 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
         identify = ub.getCloudTencentAccount();
         HeadImgUrl = ub.getHeadImgUrl();
+
         if (IsNull(ub.getHeadImgUrl()))
-            Glide.with(MyApplication.getContext()).load(R.mipmap.test_icon).into(head_img);
+            Glide.with(MyApplication.getContext()).load(R.mipmap.test_icon).apply(getGlideOptions()).into(head_img);
         else
-            Glide.with(MyApplication.getContext()).load(ub.getHeadImgUrl()).into(head_img);
-//        Picasso.with(getApplicationContext()).load(ub.getHeadImgUrl()).into(head_img);
+            Glide.with(MyApplication.getContext()).load(ub.getHeadImgUrl()).apply(getGlideOptions()).into(head_img);
+
         nickname_tv.setText(ub.getName());
 
-//        Picasso.with(getApplicationContext()).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).into(background_img);
         Glide.with(MyApplication.getContext()).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
         signature_tv.setText(IsNull(ub.getAutograph()) ? gets(R.string.default_signature) : ub.getAutograph());
         page_view_tv.setText(IsNull(ub.getBrowseNumber()) ? String.valueOf(0) : ub.getBrowseNumber());
@@ -395,7 +378,6 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         for (TopicTypeBean ttb : nblist) {
             list.add(ttb);
         }
-
         adapter.notifyDataSetChanged();
     }
 
@@ -466,11 +448,15 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         handleTitleBarColorEvaluate(height, title_layout, back_img, more_img.getVisibility() == View.GONE ? null : more_img);
 
         if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom && (Fields.VPT == 0 || System.currentTimeMillis() - Fields.VPT >= 2000)) {
+            Log.i(TAG, " IsListViewTopOfBottom");
             IsRefresh = false;
             if (isMe)
                 hp.getPersonaldynamic(null, false);
             else
                 hp.getPersonaldynamic(id, false);
+        } else if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsTop) {
+            title_layout.setBackgroundColor(getRouColors(R.color.transparent));//AGB由相关工具获得，或者美工提供
+            back_img.setImageResource(R.mipmap.return_icon_white);
         }
     }
 
@@ -579,6 +565,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        listener = null;
         ActivityCollector.removeActivity(this);
     }
 

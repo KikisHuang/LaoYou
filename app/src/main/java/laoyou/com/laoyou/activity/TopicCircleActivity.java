@@ -1,6 +1,7 @@
 package laoyou.com.laoyou.activity;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -9,7 +10,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.liaoinstan.springview.widget.SpringView;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -23,24 +23,24 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.TopicCircleAdapter;
 import laoyou.com.laoyou.bean.TopicBean;
 import laoyou.com.laoyou.listener.CustomListener;
-import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.listener.TopicCircleListener;
 import laoyou.com.laoyou.presenter.TopicCirclePresenter;
 import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
-import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
+import static laoyou.com.laoyou.fragment.HomeFragment.isVisBottom;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyNoticesPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goReleaseTopicPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goTopicTypeDetailsPage;
+import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 import static laoyou.com.laoyou.utils.TitleUtils.setTitlesAndBack;
 
 /**
  * Created by lian on 2017/12/18.
  */
-public class TopicCircleActivity extends InitActivity implements TopicCircleListener, SpringListener, View.OnClickListener, CustomListener {
+public class TopicCircleActivity extends InitActivity implements TopicCircleListener, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, CustomListener {
 
     private static final String TAG = "TopicCircleActivity";
     private RecyclerView listView;
@@ -48,11 +48,13 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
     private FrameLayout head;
     private TopicCircleAdapter adapter;
     private List<TopicBean> list;
-    private SpringView springView;
+    //    private SpringView springView;
     private boolean IsRefresh;
     private ImageView issue_img, photo_img, camera_img;
     private LinearLayoutManager mLayoutManager;
     private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
+    private SwipeRefreshLayout swiperefreshlayout;
+
 
     @Override
     protected void click() {
@@ -65,6 +67,21 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
                 goMyNoticesPage(TopicCircleActivity.this);
             }
         });
+        listView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (isVisBottom(recyclerView) && (Fields.VPT == 0 || System.currentTimeMillis() - Fields.VPT >= 2000) && list.size() > 9) {
+                        Fields.VPT = System.currentTimeMillis();
+                        IsRefresh = false;
+                        tp.page = list.size();
+                        tp.getTopicDataList(false);
+                    }
+                }
+
+            }
+        });
     }
 
     @Override
@@ -75,11 +92,12 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
         mLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(mLayoutManager);
 
-        springView = f(R.id.springView);
+        swiperefreshlayout = f(R.id.swiperefreshlayout);
+        RefreshInit();
         issue_img = f(R.id.issue_img);
         photo_img = f(R.id.photo_img);
         camera_img = f(R.id.camera_img);
-        SpringUtils.SpringViewInit(springView, this, this);
+//        SpringUtils.SpringViewInit(springView, this, this);
         head = (FrameLayout) getLayoutInflater().inflate(R.layout.topic_circle_head, null);
         setTitlesAndBack(this, gets(R.string.goback), "");
         tp = new TopicCirclePresenter(this);
@@ -97,6 +115,7 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
 
     @Override
     public void onFailedMsg(String msg) {
+        swiperefreshlayout.setRefreshing(false);
         ToastUtil.toast2_bottom(this, msg);
     }
 
@@ -115,6 +134,8 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
         }
         if (adapter != null)
             mHeaderAndFooterWrapper.notifyDataSetChanged();
+
+        swiperefreshlayout.setRefreshing(false);
     }
 
     @Override
@@ -129,20 +150,13 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
         }
     }
 
-    @Override
-    public void IsonRefresh(int init) {
-        IsRefresh = true;
-//        tp.getMyFollowChatType();
-        tp.page = init;
-        tp.getTopicDataList(true);
-    }
-
-    @Override
-    public void IsonLoadmore(int move) {
-//        tp.getMyFollowChatType();
-        IsRefresh = false;
-        tp.page += move;
-        tp.getTopicDataList(false);
+    private void RefreshInit() {
+        //设置监听
+        swiperefreshlayout.setOnRefreshListener(this);
+        //设置向下拉多少出现刷新
+        swiperefreshlayout.setProgressViewEndTarget(true, 200);
+        //改变加载显示的颜色
+        swiperefreshlayout.setColorSchemeColors(getRouColors(R.color.dominant_ton), getRouColors(R.color.dominant_ton));
     }
 /*
     @Override
@@ -248,5 +262,12 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
+    }
+
+    @Override
+    public void onRefresh() {
+        IsRefresh = true;
+        tp.page = 0;
+        tp.getTopicDataList(true);
     }
 }

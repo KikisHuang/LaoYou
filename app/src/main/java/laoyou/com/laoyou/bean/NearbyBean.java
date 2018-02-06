@@ -17,7 +17,7 @@ public class NearbyBean {
      * head_img_url : http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/15149577824502a9d65.jpg
      */
 
-    private int distance;
+    private long distance;
     private String gameImgs;
     private int sex;
     private String name;
@@ -35,11 +35,11 @@ public class NearbyBean {
         this.imgsList = imgsList;
     }
 
-    public int getDistance() {
+    public long getDistance() {
         return distance;
     }
 
-    public void setDistance(int distance) {
+    public void setDistance(long distance) {
         this.distance = distance;
     }
 

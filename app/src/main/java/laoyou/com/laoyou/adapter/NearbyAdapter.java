@@ -44,7 +44,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.name_tv.setText(list.get(position).getName());
         holder.content_tv.setText(list.get(position).getAutograph());
 
@@ -85,13 +85,15 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
             holder.tags_three.setVisibility(View.GONE);
         }
 
-
         Glide.with(context).load(list.get(position).getHead_img_url()).apply(getGlideOptions()).into(holder.user_head_img);
 
         if (list.get(position).getDistance() > 1000)
-            holder.distance_tv.setText(getDistanceKM(list.get(position).getDistance() / 1000));
+            holder.distance_tv.setText(getDistanceKM(list.get(position).getDistance()));
+        else if (list.get(position).getDistance() > 1 && list.get(position).getDistance() < 100)
+            holder.distance_tv.setText(String.valueOf(list.get(position).getDistance()) + "m");
         else
-            holder.distance_tv.setText(list.get(position).getDistance() + "m");
+            holder.distance_tv.setText(String.valueOf(list.get(position).getDistance() * 0.001) + "km");
+
 
         holder.item_layout.setOnClickListener(new View.OnClickListener() {
             @Override

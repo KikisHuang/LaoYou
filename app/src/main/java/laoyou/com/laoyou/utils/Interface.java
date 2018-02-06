@@ -5,7 +5,11 @@ package laoyou.com.laoyou.utils;
  */
 public class Interface {
 
-    public static final String URL = "http://spib.mozu123.com:8889/mcServicePlatform_InternetBar/";
+    public static final String DOMAIN = "http://spib.mozu123.com:8889";
+    public static final String SUFFIX = "/mcServicePlatform_InternetBar/";
+
+    public static final String URL = DOMAIN + SUFFIX;
+
 //  public static final String URL = "http://192.168.1.200:8888/mcServicePlatform_InternetBar/";
 
     public static final String ERRORURL = "http://14.23.169.42:8788/BencServlet/ErrorServlet";
@@ -306,7 +310,7 @@ public class Interface {
     /**
      * 游戏资讯HTML;
      */
-    public static final String NEWSDETAILS = "http://192.168.1.200/IB_news/newsDetails.html?";
+    public static final String NEWSDETAILS = DOMAIN + "/IB_news/newsDetails.html?";
     /**
      * 发表评论接口;
      */
