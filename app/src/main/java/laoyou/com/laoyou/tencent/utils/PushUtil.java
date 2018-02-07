@@ -25,7 +25,6 @@ import laoyou.com.laoyou.tencent.presentation.event.MessageEvent;
 
 /**
  * 在线消息通知展示
- *
  */
 public class PushUtil implements Observer {
 
@@ -63,6 +62,7 @@ public class PushUtil implements Observer {
         NotificationManager mNotificationManager = (NotificationManager) MyApplication.getContext().getSystemService(MyApplication.getContext().NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyApplication.getContext());
         Intent notificationIntent = new Intent(MyApplication.getContext(), MainActivity.class);
+        notificationIntent.putExtra("type", 0 + "");
         SPreferences.saveSkipFlag(2);
         PendingIntent intent = PendingIntent.getActivity(MyApplication.getContext(), 0,
                 notificationIntent, 0);

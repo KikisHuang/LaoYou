@@ -300,7 +300,7 @@ public class InternetCafActivity extends InitActivity implements AbsListView.OnS
             if (!StringIsNull(cb.getBackgroundUrl()).isEmpty())
                 Glide.with(MyApplication.getContext()).load(cb.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
             else
-                Glide.with(MyApplication.getContext()).load(Fields.Catalina).apply(getGlideOptions()).into(background_img);
+                Glide.with(MyApplication.getContext()).load(Fields.RandomBackGGround()).apply(getGlideOptions()).into(background_img);
 
             EnvironmentInit(cb.getInternetBarImgs());
 

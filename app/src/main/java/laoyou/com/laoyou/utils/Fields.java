@@ -4,6 +4,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.TemporaryBean;
@@ -12,7 +13,7 @@ import laoyou.com.laoyou.bean.TemporaryBean;
  * Created by lian on 2017/10/25.
  */
 public class Fields {
-    public static final String Catalina = "http://img5.duitang.com/uploads/item/201506/04/20150604122611_zMfPQ.jpeg";
+
     public static List<TemporaryBean> temporary = new ArrayList<>();
 
     public static String KEY = "key";
@@ -55,7 +56,6 @@ public class Fields {
     public static final int IsTop = (1 << 1);
 
 
-
     public static final String OFFICIAL = "official-";
     public static final String TGS = "@TGS#";
 
@@ -91,6 +91,12 @@ public class Fields {
         return ADMINISTRATIVEAREA[i];
     }
 
+    private static final int[] DefaultBackGround = {R.drawable.random_backgroup1, R.drawable.random_backgroup2, R.drawable.random_backgroup3};
+
+    public static int RandomBackGGround() {
+        Random ra = new Random();
+        return DefaultBackGround[ra.nextInt(DefaultBackGround.length)];
+    }
 
     /**
      * Glide transformations 方法;

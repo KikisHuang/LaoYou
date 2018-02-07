@@ -122,7 +122,7 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        goGameInfoDetailsPage(getActivity(), list.get(position).getId());
+        goGameInfoDetailsPage(getActivity(), list.get(position).getId(),list.get(position).getLogo());
     }
 
 

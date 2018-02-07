@@ -102,7 +102,7 @@
         <activity
             android:name=".activity.AdvertisementActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Transparent">
+            >
         </activity>
 
         <!-- 欢迎页面 -->

@@ -72,6 +72,7 @@ public class IntentUtils {
         Intent intent = new Intent(context, WelcomeActivity.class);
         startPage(context, intent);
     }
+
     /**
      * 广告页面;
      *
@@ -86,11 +87,17 @@ public class IntentUtils {
      * 主页面;
      *
      * @param context 上下文;
+     * @param type    跳转类型 （0主页 ，1广告）;
+     * @param advUrl
      */
-    public static void goMainPage(Context context) {
+    public static void goMainPage(Context context, int type, String advUrl) {
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("type", String.valueOf(type));
+        if (!advUrl.isEmpty())
+            intent.putExtra("advUrl", advUrl);
         startPage(context, intent);
     }
+
     /**
      * 登录页面;
      *
@@ -372,13 +379,13 @@ public class IntentUtils {
 
     /**
      * 游戏资讯详情页面;
-     *
-     * @param context 上下文;
+     *  @param context 上下文;
      * @param id
      */
-    public static void goGameInfoDetailsPage(Context context, String id) {
+    public static void goGameInfoDetailsPage(Context context, String id, String coverpath) {
         Intent intent = new Intent(context, GameInfoDetailsActivity.class);
         intent.putExtra("game_info_id", id);
+        intent.putExtra("game_info_cover", coverpath);
         startPage(context, intent);
     }
 

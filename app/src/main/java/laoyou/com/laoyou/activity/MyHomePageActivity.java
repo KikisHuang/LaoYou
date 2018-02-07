@@ -180,7 +180,7 @@ public class MyHomePageActivity extends InitActivity implements ZoomInScrollView
     public void onShowUserInfo(UserInfoBean ub) {
         Glide.with(MyApplication.getContext()).load(ub.getHeadImgUrl()).apply(getGlideOptions()).into(head_img);
 
-        Glide.with(MyApplication.getContext()).load(ub.getBackgroundUrl() != null && !ub.getBackgroundUrl().isEmpty() ? ub.getBackgroundUrl() : Fields.Catalina).apply(getGlideOptions()).into(background_img);
+        Glide.with(MyApplication.getContext()).load(ub.getBackgroundUrl() != null && !ub.getBackgroundUrl().isEmpty() ? ub.getBackgroundUrl() : Fields.RandomBackGGround()).apply(getGlideOptions()).into(background_img);
 
         nickname_ed.setText(ub.getName());
         sex = ub.getSex();

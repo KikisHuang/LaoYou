@@ -56,7 +56,7 @@ public class CertificationPresenter implements HttpResultListener {
         Map<String, String> map = getKeyMap();
         map.put("name", name);
         map.put("idcard", id);
-        map.put("deviceName", android.os.Build.MODEL);
+        map.put("deviceName", android.os.Build.BRAND + "  " + android.os.Build.MODEL);
 
         String address = SPreferences.getAddress();
         String Longitude = SPreferences.getLongitude();

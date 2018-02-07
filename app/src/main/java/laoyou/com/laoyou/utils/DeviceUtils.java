@@ -15,6 +15,8 @@ import java.io.FileInputStream;
 import java.text.DecimalFormat;
 import java.util.UUID;
 
+import laoyou.com.laoyou.application.MyApplication;
+
 import static laoyou.com.laoyou.save.SPreferences.getUserUUID;
 import static laoyou.com.laoyou.save.SPreferences.saveUserUUID;
 
@@ -232,8 +234,8 @@ public class DeviceUtils {
      *
      * @return
      */
-    public static synchronized String getIMEI(Context context) {
-        TelephonyManager TelephonyMgr = (TelephonyManager) context.getSystemService(context.TELEPHONY_SERVICE);
+    public static synchronized String getIMEI() {
+        TelephonyManager TelephonyMgr = (TelephonyManager) MyApplication.getContext().getSystemService(MyApplication.getContext().TELEPHONY_SERVICE);
         String ID = TelephonyMgr.getDeviceId();
         if (ID == null || ID.isEmpty())
             ID = getUUID();

@@ -2,7 +2,6 @@ package laoyou.com.laoyou.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +18,7 @@ import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.AddressBookBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
-import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.DeviceUtils;
-import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.view.NineGridlayout;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
@@ -359,7 +356,7 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
 
         }
     }
-
+/*
     private void ReComData(MyViewHolder holder) {
         if (add != null && add.size() > 0) {
             if (SPreferences.getMyNickName() != null)
@@ -382,5 +379,5 @@ public class HomeStatusAdapter extends RecyclerView.Adapter<HomeStatusAdapter.My
                 holder.foot_recom_layout.addView(headLayout);
             }
         }
-    }
+    }*/
 }

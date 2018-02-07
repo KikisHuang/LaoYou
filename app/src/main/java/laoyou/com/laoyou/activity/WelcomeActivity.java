@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.presenter.WelComePresenter;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.AnimationUtil;
 import laoyou.com.laoyou.utils.Fields;
@@ -43,6 +44,7 @@ public class WelcomeActivity extends InitActivity {
         imgs = new ArrayList<>();
         viewPager = f(R.id.viewPager);
         SPreferences.saveFirstStart(false);
+        new WelComePresenter();
     }
 
     @Override
@@ -95,7 +97,7 @@ public class WelcomeActivity extends InitActivity {
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goMainPage(WelcomeActivity.this);
+                    goMainPage(WelcomeActivity.this, 0, "");
                     finish();
                 }
             });

@@ -290,7 +290,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
         nickname_tv.setText(ub.getName());
 
-        Glide.with(MyApplication.getContext()).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
+        Glide.with(MyApplication.getContext()).load(IsNull(ub.getBackgroundUrl()) ? Fields.RandomBackGGround() : ub.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
         signature_tv.setText(IsNull(ub.getAutograph()) ? gets(R.string.default_signature) : ub.getAutograph());
         page_view_tv.setText(IsNull(ub.getBrowseNumber()) ? String.valueOf(0) : ub.getBrowseNumber());
         address_tv.setText(IsNull(ub.getAddress()) ? "" : ub.getAutograph());

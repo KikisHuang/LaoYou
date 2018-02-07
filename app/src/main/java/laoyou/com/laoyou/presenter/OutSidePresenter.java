@@ -2,6 +2,7 @@ package laoyou.com.laoyou.presenter;
 
 
 import android.util.Log;
+import android.view.ViewGroup;
 
 import com.tencent.smtt.sdk.CacheManager;
 import com.tencent.smtt.sdk.WebSettings;
@@ -10,12 +11,16 @@ import com.tencent.smtt.sdk.WebView;
 import org.json.JSONException;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.CafCommentBean;
+import laoyou.com.laoyou.bean.GamesAdvBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.OutSideListener;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import laoyou.com.laoyou.view.OutSideWebChromeClient;
@@ -25,6 +30,8 @@ import okhttp3.Request;
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
+import static laoyou.com.laoyou.utils.JsonUtils.getParamsMap;
+import static laoyou.com.laoyou.utils.SynUtils.getLayout;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 
@@ -34,6 +41,7 @@ import static laoyou.com.laoyou.utils.SynUtils.gets;
 public class OutSidePresenter implements HttpResultListener {
     private static final String TAG = "OutSidePresenter";
     private OutSideListener listener;
+    public int page = 0;
 
     public OutSidePresenter(OutSideListener listener) {
         this.listener = listener;
@@ -68,6 +76,15 @@ public class OutSidePresenter implements HttpResultListener {
                 }
 
                 break;
+
+            case Fields.REQUEST4:
+                GamesAdvBean av = GsonUtil.GsonToBean(getJsonSring(response), GamesAdvBean.class);
+                listener.onShowAdv(av);
+                break;
+            case Fields.REQUEST5:
+                List<CafCommentBean> list = GsonUtil.jsonToList(getJsonSring(response), CafCommentBean.class);
+                listener.onCommentData(list);
+                break;
         }
         Cancle();
     }
@@ -91,21 +108,18 @@ public class OutSidePresenter implements HttpResultListener {
     }
 
     public void Presetner(WebView webView, String url) {
-//        if(Build.VERSION.SDK_INT<18)
+
+        Log.i(TAG, " url ===" + url);
+
         webView.loadUrl(url);
-        /*else
-        webView.evaluateJavascript(url, new ValueCallback<String>() {
-            @Override
-            public void onReceiveValue(String s) {
-
-            }
-        });*/
-
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         webView.setWebViewClient(new OutSideWebViewClient());
         webView.setWebChromeClient(new OutSideWebChromeClient(listener));
         webinit(webView);
 
+     /*   int h = (int) (webView.getContentHeight() * webView.getScale() - webView.getHeight());
+        com.umeng.socialize.utils.Log.e(TAG, "webheight =====" + h);*/
+        webView.setLayoutParams((ViewGroup.LayoutParams) getLayout(0, Fields.MATCH, Fields.WRAP));
     }
 
     private void webinit(WebView webView) {
@@ -117,7 +131,6 @@ public class OutSidePresenter implements HttpResultListener {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setDomStorageEnabled(true);
-
         //不显示webview缩放按钮
         webSettings.setDisplayZoomControls(false);
 
@@ -131,6 +144,11 @@ public class OutSidePresenter implements HttpResultListener {
 
     }
 
+    /**
+     * 清除WebView资源，及清除缓存；
+     *
+     * @param webView
+     */
     public void destroyWebView(WebView webView) {
         File file = CacheManager.getCacheFileBaseDir();
 
@@ -141,18 +159,16 @@ public class OutSidePresenter implements HttpResultListener {
             file.delete();
 
         }
-
         if (webView != null) {
             webView.clearHistory();
             webView.clearCache(true);
-            webView.loadUrl("about:blank"); // clearView() should be changed to loadUrl("about:blank"), since clearView() is deprecated now
+            webView.loadUrl("about:blank");
             webView.freeMemory();
 //          webView.pauseTimers();
             webView.removeAllViews();
             webView.destroy();
-            webView = null; // Note that mWebView.destroy() and mWebView = null do the exact same thing
+            webView = null;
         }
-
     }
 
     public void SendComment(String content, String id) {
@@ -172,5 +188,20 @@ public class OutSidePresenter implements HttpResultListener {
         Map<String, String> map = getKeyMap();
         map.put("id", id);
         httpUtils.OkHttpsGet(map, this, Fields.REQUEST3, Interface.URL + Interface.LIKENEWS);
+    }
+
+    public void getAdvData() {
+
+        Map<String, String> map = getParamsMap();
+        map.put("showPosition", String.valueOf(100));
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST4, Interface.URL + Interface.GETRANDOMBANNER);
+    }
+
+    public void getCommentData(String id) {
+        Map<String, String> map = getParamsMap();
+        map.put("id", id);
+        map.put("page", String.valueOf(page));
+        map.put("pageSize", String.valueOf(page + Fields.SIZE));
+        httpUtils.OkHttpsGet(map, this, Fields.REQUEST5, Interface.URL + Interface.GETGAMESCOMMENT);
     }
 }

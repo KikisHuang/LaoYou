@@ -12,37 +12,30 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.listener.AdvertisementListener;
+import laoyou.com.laoyou.presenter.AdvertisementPresenter;
 import laoyou.com.laoyou.utils.ActivityCollector;
-import laoyou.com.laoyou.utils.Interface;
-import laoyou.com.laoyou.utils.ToastUtil;
-import okhttp3.Call;
 
-import static laoyou.com.laoyou.bean.ServerCode.getCodeStatusMsg;
 import static laoyou.com.laoyou.utils.IntentUtils.goMainPage;
-import static laoyou.com.laoyou.utils.JsonUtils.getCode;
-import static laoyou.com.laoyou.utils.JsonUtils.getJsonOb;
 import static laoyou.com.laoyou.utils.SynUtils.StringIsNull;
 
 
 /**
  * Created by lian on 2018/1/23.
  */
-public class AdvertisementActivity extends Activity implements View.OnClickListener {
+public class AdvertisementActivity extends Activity implements View.OnClickListener, AdvertisementListener {
     private TextView skip_tv;
     private ImageView welcome_img;
     private Handler handler;
     private int time = 5;
     private Timer tm;
+    private String advUrl = "";
+    private AdvertisementPresenter attp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,60 +46,11 @@ public class AdvertisementActivity extends Activity implements View.OnClickListe
         skip_tv.setOnClickListener(this);
         welcome_img = (ImageView) findViewById(R.id.welcome_img);
         Hand();
-        getData();
+        attp = new AdvertisementPresenter(this);
     }
 
-    private void getData() {
-        OkHttpUtils
-                .get()
-                .url(Interface.URL + Interface.GETSETTING)
-                .tag(this)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        ToastUtil.toast2_bottom(AdvertisementActivity.this, "网络不顺畅...");
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        try {
-                            int code = getCode(response);
-                            if (code == 1) {
-                                JSONObject ob = getJsonOb(response);
-                                String imgurl = ob.optString("welcomeImgUrl");
-
-                                if (!StringIsNull(imgurl).isEmpty()) {
-                                    Glide.with(getApplicationContext()).load(imgurl).into(welcome_img);
-                                    Glide.with(getApplicationContext()).asBitmap().load(imgurl).into(new SimpleTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(final Bitmap resource, Transition<? super Bitmap> transition) {
-                                            handler.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Message message = new Message();
-                                                    message.what = 99;
-//                                                message.obj = resource;
-                                                    handler.sendMessage(message);
-                                                }
-                                            });
-                                        }
-                                    });
-
-                                } else
-                                    goMain();
-
-                            } else {
-                                ToastUtil.toast2_bottom(AdvertisementActivity.this, getCodeStatusMsg(code));
-                                goMain();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
+    private void setAdvClickListener() {
+        welcome_img.setOnClickListener(this);
     }
 
     private void Hand() {
@@ -121,7 +65,7 @@ public class AdvertisementActivity extends Activity implements View.OnClickListe
                         break;
                     case 1:
                         skip_tv.setText("跳过 " + time + "s");
-                        goMain();
+                        goMain(0);
                         break;
                     default:
                         skip_tv.setText("跳过 " + time + "s");
@@ -162,8 +106,8 @@ public class AdvertisementActivity extends Activity implements View.OnClickListe
         }
     }
 
-    private void goMain() {
-        goMainPage(this);
+    private void goMain(int type) {
+        goMainPage(this, type, advUrl);
         finish();
     }
 
@@ -172,8 +116,42 @@ public class AdvertisementActivity extends Activity implements View.OnClickListe
 
         switch (v.getId()) {
             case R.id.skip_tv:
-                goMain();
+                goMain(0);
+                break;
+            case R.id.welcome_img:
+                goMain(1);
+                welcome_img.setEnabled(false);
                 break;
         }
+    }
+
+    @Override
+    public void onSucceed(String welcomeImgUrl, String welcomeHTTPUrl) {
+        advUrl = welcomeHTTPUrl;
+        if (!StringIsNull(welcomeImgUrl).isEmpty()) {
+            if (!StringIsNull(advUrl).isEmpty())
+                setAdvClickListener();
+            Glide.with(getApplicationContext()).load(welcomeImgUrl).into(welcome_img);
+            Glide.with(getApplicationContext()).asBitmap().load(welcomeImgUrl).into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(final Bitmap resource, Transition<? super Bitmap> transition) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Message message = new Message();
+                            message.what = 99;
+                            handler.sendMessage(message);
+                        }
+                    });
+                }
+            });
+
+        } else
+            goMain(0);
+    }
+
+    @Override
+    public void onFailedMsg(String msg) {
+        goMain(0);
     }
 }

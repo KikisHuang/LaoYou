@@ -110,7 +110,7 @@ public class CertificationActivity extends InitActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.commit_bt:
                 Show(CertificationActivity.this, "提交中", true, null);
-                cp.CommitCheck(name_ed.getText().toString(), id_ed.getText().toString(), FrontFile, TailFile, HandFile, IP, getIMEI(CertificationActivity.this));
+                cp.CommitCheck(name_ed.getText().toString(), id_ed.getText().toString(), FrontFile, TailFile, HandFile, IP, getIMEI());
 
                 break;
             case R.id.front_id_layout:

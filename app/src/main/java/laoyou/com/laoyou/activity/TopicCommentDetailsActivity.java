@@ -299,7 +299,7 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         tp.GetLikeUserByPage(id);
         like_layout.setEnabled(true);
         Cancle();
-        Glide.with(MyApplication.getContext()).load(b ? R.mipmap.like_heart : R.mipmap.unlike_heart).into(like_icon);
+        Glide.with(MyApplication.getContext()).load(b ? R.mipmap.on_like_icon : R.mipmap.off_like_icon).into(like_icon);
     }
 
     /**

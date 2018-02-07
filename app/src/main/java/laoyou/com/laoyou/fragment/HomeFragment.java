@@ -125,7 +125,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (isVisBottom(recyclerView) && (Fields.VPT == 0 || System.currentTimeMillis() - Fields.VPT >= 2000)) {
+                    if (recyclerView.canScrollVertically(-1) && (Fields.VPT == 0 || System.currentTimeMillis() - Fields.VPT >= 2000)) {
                         Fields.VPT = System.currentTimeMillis();
                         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                         int totalItemCount = layoutManager.getItemCount();
@@ -134,10 +134,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     }
                 }
                 if (Nblist.size() > 0) {
-                    int firstVisiblePosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
-                    if (firstVisiblePosition == 0 && show_hide_img.getVisibility() == View.VISIBLE)
+                    if (!recyclerView.canScrollVertically(-1) && show_hide_img.getVisibility() == View.VISIBLE)
                         showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_HIDDEN, 500);
-                    if (firstVisiblePosition > 1 && show_hide_img.getVisibility() != View.VISIBLE)
+                    else if (recyclerView.canScrollVertically(-1) && show_hide_img.getVisibility() != View.VISIBLE)
                         showAndHiddenAnimation(show_hide_img, null, AnimationUtil.AnimationState.STATE_SHOW, 500);
                 }
 
@@ -146,7 +145,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     }
 
-    public static boolean isVisBottom(RecyclerView recyclerView) {
+/*    public static boolean isVisBottom(RecyclerView recyclerView) {
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         //屏幕中最后一个可见子项的position
         int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
@@ -161,7 +160,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         } else {
             return false;
         }
-    }
+    }*/
 
     @Override
     protected void init() {
@@ -281,7 +280,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
             headLayout.setLayoutParams(lp);
 
-            Glide.with(MyApplication.getContext()).load(atv.getFaceUrl() == null || atv.getFaceUrl().isEmpty() ? Fields.Catalina : atv.getFaceUrl()).apply(getGlideOptions()).into(im);
+            Glide.with(MyApplication.getContext()).load(atv.getFaceUrl() == null || atv.getFaceUrl().isEmpty() ? R.mipmap.test_icon : atv.getFaceUrl()).apply(getGlideOptions()).into(im);
 
             im.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -634,7 +633,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     goLoginOperPage(getActivity());
                 }
                 headLayout.setLayoutParams(lp);
-                Glide.with(MyApplication.getContext()).load(abb.getHeadImgUrl() == null || abb.getHeadImgUrl().isEmpty() ? Fields.Catalina : abb.getHeadImgUrl()).apply(getGlideOptions()).into(im);
+                Glide.with(MyApplication.getContext()).load(abb.getHeadImgUrl() == null || abb.getHeadImgUrl().isEmpty() ? R.mipmap.test_icon : abb.getHeadImgUrl()).apply(getGlideOptions()).into(im);
 
                 foot_recom_layout.addView(headLayout);
             }

@@ -53,6 +53,8 @@ import static laoyou.com.laoyou.save.SPreferences.saveSkipFlag;
 import static laoyou.com.laoyou.utils.ActivityCollector.CloseAllActivity;
 import static laoyou.com.laoyou.utils.IntentUtils.goAddLikeGamePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginOperPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goOutSidePage;
+import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
 
@@ -80,6 +82,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     // JobService，执行系统任务
     private JobSchedulerManager mJobManager;
     private ImageView msgUnread;
+    private int type = -1;
 
     @Override
     protected void click() {
@@ -99,6 +102,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void init() {
         clearNotification();
         setContentView(R.layout.activity_main);
+        Typejudgment();
         ActivityCollector.addActivity(this, getClass());
         mp = new MainPresenter(this);
         activity = this;
@@ -119,16 +123,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         my_ll = f(R.id.my_ll);
         my_tv = f(R.id.my_tv);
         my_img = f(R.id.my_img);
-        mp.Presenter();
+    }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // 2. 启动系统任务
-            mJobManager = JobSchedulerManager.getJobSchedulerInstance(this);
-            mJobManager.startJobScheduler();
-        }
+    private void Typejudgment() {
+        type = Integer.parseInt(getIntent().getStringExtra("type"));
+        if (type == 1)
+            goOutSidePage(this, getIntent().getStringExtra("advUrl"));
 
-        if (SPreferences.getUserSig() != null && !SPreferences.getUserSig().isEmpty())
-            IMInit();
+        Log.i(TAG, "Main type ===" + type);
     }
 
     @Override
@@ -354,7 +356,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void initData() {
+        mp.Presenter();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // 2. 启动系统任务
+            mJobManager = JobSchedulerManager.getJobSchedulerInstance(this);
+            mJobManager.startJobScheduler();
+        }
 
+        if (SPreferences.getUserSig() != null && !SPreferences.getUserSig().isEmpty())
+            IMInit();
     }
 
     @Override
@@ -437,13 +447,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             SPreferences.saveLikeGamesStatus(true);
             mp.CheckLikeGames();
         }
-
         if (getSkipFlag() == 2) {
             ft = fm.beginTransaction();
             setSelected(msg_ll);
             Msg();
             saveSkipFlag(1);
         }
+
     }
 
     @Override
@@ -471,8 +481,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                     mp.UpLoadLocation(amapLocation.getLatitude(), amapLocation.getLongitude(), amapLocation.getAddress());
 
-//                    if (getHomeInstance() != null)
-//                        getHomeInstance().onRefresh();
                 }
 
             } else {
@@ -517,6 +525,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (i) {
             case 6208:
                 //离线状态下被其他终端踢下线
+                LogOut(MainActivity.this, false);
              /*   NotifyDialog dialog = new NotifyDialog();
                 dialog.show(getString(R.string.kick_logout), getSupportFragmentManager(), new DialogInterface.OnClickListener() {
                     @Override

@@ -44,7 +44,6 @@ public class MainPresenter implements HttpResultListener {
     public void Presenter() {
         listener.onCheckePermission();
         listener.onInitFragment();
-
     }
 
     public void CheckLikeGames() {

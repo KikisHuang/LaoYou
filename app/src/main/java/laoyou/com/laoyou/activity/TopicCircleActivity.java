@@ -29,7 +29,6 @@ import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.ToastUtil;
 
-import static laoyou.com.laoyou.fragment.HomeFragment.isVisBottom;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyNoticesPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goReleaseTopicPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goTopicTypeDetailsPage;
@@ -72,7 +71,7 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (isVisBottom(recyclerView) && (Fields.VPT == 0 || System.currentTimeMillis() - Fields.VPT >= 2000) && list.size() > 9) {
+                    if (recyclerView.canScrollVertically(-1) && (Fields.VPT == 0 || System.currentTimeMillis() - Fields.VPT >= 2000) && list.size() > 9) {
                         Fields.VPT = System.currentTimeMillis();
                         IsRefresh = false;
                         tp.page = list.size();
@@ -158,18 +157,6 @@ public class TopicCircleActivity extends InitActivity implements TopicCircleList
         //改变加载显示的颜色
         swiperefreshlayout.setColorSchemeColors(getRouColors(R.color.dominant_ton), getRouColors(R.color.dominant_ton));
     }
-/*
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //判断是否有头部;
-        if (listView.getHeaderViewsCount() == 0)
-            goTopicTypeDetailsPage(TopicCircleActivity.this, list.get(position).getId(), list.get(position).getName(), list.get(position).getFollowCount(), list.get(position).getChatThemeCount(), list.get(position).getImgUrl());
-        else if (position == 0) {
-            goMyNoticesPage(this);
-        } else
-            goTopicTypeDetailsPage(TopicCircleActivity.this, list.get(position - 1).getId(), list.get(position - 1).getName(), list.get(position - 1).getFollowCount(), list.get(position - 1).getChatThemeCount(), list.get(position - 1).getImgUrl());
-
-    }*/
 
     @Override
     public void onClick(View v) {

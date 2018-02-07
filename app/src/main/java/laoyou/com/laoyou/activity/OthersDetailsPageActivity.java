@@ -102,7 +102,7 @@ public class OthersDetailsPageActivity extends InitActivity implements OthersLis
         nickname_ed.setText(ub.getName());
         sex_tv.setText(ub.getSex() == 1 ? gets(R.string.man) : gets(R.string.woman));
 
-        Glide.with(MyApplication.getContext()).load(IsNull(ub.getBackgroundUrl()) ? Fields.Catalina : ub.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
+        Glide.with(MyApplication.getContext()).load(IsNull(ub.getBackgroundUrl()) ? Fields.RandomBackGGround() : ub.getBackgroundUrl()).apply(getGlideOptions()).into(background_img);
         signature_ed.setText(IsNull(ub.getAutograph()) ? gets(R.string.default_signature) : ub.getAutograph());
         region_tv.setText(IsNull(ub.getAddress()) ? "" : ub.getAddress());
         if (!IsNull(ub.getIdcard())) {

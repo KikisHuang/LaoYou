@@ -335,5 +335,17 @@ public class Interface {
      * 获取图标;
      */
     public static final String GETICON = "icon/getIcon.app";
+    /**
+     * 登记安装信息 双平台通用;
+     */
+    public static final String INSTALL = "common/install.app";
+    /**
+     * 获取游戏资讯里面的广告图;
+     */
+    public static final String GETRANDOMBANNER = "banner/getRandomBanner.app";
+    /**
+     * 获取游戏资讯里面的评论;
+     */
+    public static final String GETGAMESCOMMENT = "news/select/getComment.app";
 
 }

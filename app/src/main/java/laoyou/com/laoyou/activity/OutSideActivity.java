@@ -10,7 +10,11 @@ import android.widget.ProgressBar;
 
 import com.tencent.smtt.sdk.WebView;
 
+import java.util.List;
+
 import laoyou.com.laoyou.R;
+import laoyou.com.laoyou.bean.CafCommentBean;
+import laoyou.com.laoyou.bean.GamesAdvBean;
 import laoyou.com.laoyou.listener.OutSideListener;
 import laoyou.com.laoyou.presenter.OutSidePresenter;
 import laoyou.com.laoyou.utils.ActivityCollector;
@@ -119,6 +123,16 @@ public class OutSideActivity extends InitActivity implements OutSideListener {
 
     @Override
     public void onLikeStatus(boolean b) {
+
+    }
+
+    @Override
+    public void onShowAdv(GamesAdvBean adv) {
+
+    }
+
+    @Override
+    public void onCommentData(List<CafCommentBean> data) {
 
     }
 }
