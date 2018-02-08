@@ -102,6 +102,7 @@ public class ConversationFragment extends Fragment implements ConversationView, 
             listView = (ListView) view.findViewById(R.id.list);
             add_find_img = (CircleImageView) view.findViewById(R.id.add_find_img);
             address_img = (CircleImageView) view.findViewById(R.id.address_img);
+
             friendship = this;
             FriendInfo = this;
             fragment = this;
@@ -213,6 +214,7 @@ public class ConversationFragment extends Fragment implements ConversationView, 
         conversationList.add(conversation);
 
         Collections.sort(conversationList);
+
         refresh();
         List<String> groupId = new ArrayList<>();
         for (Conversation con : conversationList) {
@@ -221,7 +223,6 @@ public class ConversationFragment extends Fragment implements ConversationView, 
         }
         if (groupId.size() > 0)
             presenter.getGroupDetails(groupId);
-
 
     }
 
@@ -277,9 +278,18 @@ public class ConversationFragment extends Fragment implements ConversationView, 
                 conversationList.remove(i);
         }
         Collections.sort(conversationList);
+        if (conversationList != null) {
+            for (int i = 0; i < conversationList.size(); i++) {
+                if (conversationList.get(i).getIdentify() != null && conversationList.get(i).getIdentify().equals("96ecd7900a6341f6aecde21cd5efb7"))
+                    Collections.swap(conversationList, i, 0);
+            }
+        }
+
         adapter.notifyDataSetChanged();
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).setMsgUnread(getTotalUnreadNum() == 0);
+
+
     }
 
 

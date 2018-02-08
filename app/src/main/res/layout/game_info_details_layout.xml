@@ -31,15 +31,14 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <!--    <ProgressBar
+        <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:progressDrawable="@drawable/pg"
             android:visibility="invisible"
-
-            />-->
+            />
 
     <!--    <com.tencent.smtt.sdk.WebView
             android:id="@+id/webView"
@@ -47,14 +46,21 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scrollbars="none"></com.tencent.smtt.sdk.WebView>-->
-    <ListView
-        android:id="@+id/listView"
+    <com.liaoinstan.springview.widget.SpringView
+        android:id="@+id/springView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:divider="@null"
-        android:overScrollMode="never"
-        android:scrollbars="none"></ListView>
+        >
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:divider="@null"
+            android:overScrollMode="never"
+            android:scrollbars="none"></ListView>
+    </com.liaoinstan.springview.widget.SpringView>
 
     <FrameLayout
         android:layout_width="match_parent"

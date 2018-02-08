@@ -141,8 +141,6 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         foot_layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.foot_include, null);
         HeadViewInit();
 
-        detailsOfcompile_tv.setText(isMe ? gets(R.string.compile_info) : gets(R.string.view_details));
-
         foot_tv = (TextView) foot_layout.findViewById(R.id.foot_tv);
         foot_tv.setVisibility(View.GONE);
 
@@ -211,7 +209,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
         Log.i(TAG, " isTencent ===" + isTencent);
         isMe = id.isEmpty() ? true : IsMe(id);
-
+        detailsOfcompile_tv.setText(isMe ? gets(R.string.compile_info) : gets(R.string.view_details));
         if (isMe) {
             hp.getMyDetails();
             IsRefresh = true;

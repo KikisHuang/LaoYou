@@ -23,4 +23,6 @@ public interface OutSideListener {
     void onShowAdv(GamesAdvBean adv);
 
     void onCommentData(List<CafCommentBean> data);
+
+    void GoHomePage(String id);
 }

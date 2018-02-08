@@ -58,19 +58,19 @@ public class OutSidePresenter implements HttpResultListener {
             case Fields.REQUEST2:
                 //date1表示已点赞，0表示未点赞
                 int data = Integer.parseInt(getJsonSring(response));
-                if (data == 0)
+                if (data == 1)
                     listener.onLikeStatus(true);
-                else if (data == 1)
+                else if (data == 0)
                     listener.onLikeStatus(false);
 
                 break;
             case Fields.REQUEST3:
                 //成功code是1,date1表示点赞成功，0表示取消点赞
                 int c = Integer.parseInt(getJsonSring(response));
-                if (c == 0) {
+                if (c == 1) {
                     listener.onLikeStatus(true);
                     listener.onFailedMsg(gets(R.string.like_succ));
-                } else if (c == 1) {
+                } else if (c == 0) {
                     listener.onLikeStatus(false);
                     listener.onFailedMsg(gets(R.string.cancel_succ));
                 }
@@ -130,6 +130,7 @@ public class OutSidePresenter implements HttpResultListener {
 
         webSettings.setJavaScriptEnabled(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+
         webSettings.setDomStorageEnabled(true);
         //不显示webview缩放按钮
         webSettings.setDisplayZoomControls(false);

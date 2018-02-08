@@ -12,7 +12,7 @@
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <laoyou.com.laoyou.tencent.view.LineControllerView
+    <laoyou.com.laoyou.tencent.view.TemplateTitle
         android:id="@+id/imagePreviewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

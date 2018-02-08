@@ -1,26 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".tencent.ui.ApplyGroupActivity">
+
     <laoyou.com.laoyou.tencent.view.TemplateTitle
         android:id="@+id/apply_group_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        app:titleText="@string/chat_setting_add"
-        app:canBack="true" />
+        app:canBack="true"
+        app:titleText="@string/chat_setting_add" />
+
     <TextView
         android:id="@+id/description"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/input"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/content4" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/btnSend"
         android:layout_width="match_parent"
@@ -29,9 +49,9 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/bg_positive_btn"
-        android:textColor="@color/text_btn"
-        android:textSize="18sp"
         android:clickable="true"
         android:gravity="center"
-        android:text="发送"/>
+        android:text="发送"
+        android:textColor="@color/text_btn"
+        android:textSize="18sp" />
 </LinearLayout>

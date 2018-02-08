@@ -8,9 +8,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.liaoinstan.springview.widget.SpringView;
 import com.tencent.smtt.sdk.WebView;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -29,16 +31,19 @@ import laoyou.com.laoyou.bean.CafCommentBean;
 import laoyou.com.laoyou.bean.GamesAdvBean;
 import laoyou.com.laoyou.listener.KeyboardChangeListener;
 import laoyou.com.laoyou.listener.OutSideListener;
+import laoyou.com.laoyou.listener.SpringListener;
 import laoyou.com.laoyou.presenter.OutSidePresenter;
 import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.ActivityCollector;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.Interface;
+import laoyou.com.laoyou.utils.SpringUtils;
 import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Show;
 import static laoyou.com.laoyou.utils.Fields.RandomBackGGround;
+import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goOutSidePage;
 import static laoyou.com.laoyou.utils.SynUtils.getLayout;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
@@ -48,14 +53,14 @@ import static laoyou.com.laoyou.utils.TitleUtils.setTitles;
 /**
  * Created by lian on 2018/1/5.
  */
-public class GameInfoDetailsActivity extends InitActivity implements OutSideListener, UMShareListener, KeyboardChangeListener.KeyBoardListener, View.OnClickListener {
+public class GameInfoDetailsActivity extends InitActivity implements OutSideListener, SpringListener, UMShareListener, KeyboardChangeListener.KeyBoardListener, View.OnClickListener {
 
     private static final String TAG = "GameInfoDetailsActivity";
 
     private String url = "";
     private WebView webView;
     private OutSidePresenter op;
-    //private ProgressBar pg;
+    private ProgressBar pg;
     private FrameLayout add_like_layout, comment_layout, share_layout;
     private ImageView photo_img;
     private EditText comment_ed;
@@ -72,6 +77,8 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
     private List<GamesAdvBean> advlist;
     private String advUrl = "";
     private String CoverUrl = "";
+    private SpringView springView;
+    private boolean isRefresh = true;
 
     @Override
     protected void click() {
@@ -81,6 +88,8 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
         add_like_layout.setOnClickListener(this);
         share_layout.setOnClickListener(this);
         adv_img.setOnClickListener(this);
+        wx_layout.setOnClickListener(this);
+        wxcircle_layout.setOnClickListener(this);
     }
 
     @Override
@@ -98,12 +107,12 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
         head_img.setLayoutParams((ViewGroup.LayoutParams) getLayout(0, Fields.MATCH, DeviceUtils.getWindowWidth(this) * 4 / 5));
 
         adv_img.setLayoutParams((ViewGroup.LayoutParams) getLayout(1, Fields.MATCH, DeviceUtils.getWindowWidth(this) * 1 / 2));
-
+        springView = f(R.id.springView);
         listView = f(R.id.listView);
         list = new ArrayList<>();
         advlist = new ArrayList<>();
-
-//      pg = f(R.id.progressBar);
+        SpringUtils.SpringViewInit(springView, GameInfoDetailsActivity.this, this);
+        pg = f(R.id.progressBar);
         add_like_layout = f(R.id.add_like_layout);
         comment_layout = f(R.id.comment_layout);
         share_layout = f(R.id.share_layout);
@@ -126,16 +135,17 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
     @Override
     protected void initData() {
 
-        Glide.with(MyApplication.getContext()).load(CoverUrl.isEmpty() ? RandomBackGGround() : CoverUrl).into(head_img);
+        Glide.with(MyApplication.getContext()).load(CoverUrl == null || CoverUrl.isEmpty() ? RandomBackGGround() : CoverUrl).into(head_img);
 
-        adapter = new GamesCommentAdapter(this, list);
+        adapter = new GamesCommentAdapter(this, list, this);
         listView.setAdapter(adapter);
 
         try {
 //          Show(this, "加载中", true, null);
             op.Presetner(webView, url);
-            op.getAdvData();
             op.getCommentData(id);
+            op.getAdvData();
+
 //          synCookies(this, url);
         } catch (Exception e) {
             Log.e(TAG, "异常信息 =====" + e);
@@ -160,28 +170,28 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
     }*/
     @Override
     public void onCancleProgress() {
-//        pg.setVisibility(View.INVISIBLE);
-//        pg.setProgress(0);
+        pg.setVisibility(View.INVISIBLE);
+        pg.setProgress(0);
     }
 
     @Override
     public void onShowProgress(int pro) {
-//        pg.setVisibility(View.VISIBLE);
-//        pg.setProgress(pro);
+        pg.setVisibility(View.VISIBLE);
+        pg.setProgress(pro);
     }
 
     @Override
     public void onCommentSucced() {
-     /*   webView.reload();
+     /*
         webView.post(new Runnable() {
             @Override
             public void run() {
                 webView.loadUrl("javascript:loadComments()");
             }
         });*/
-
         op.getCommentData(id);
         ToastUtil.toast2_bottom(this, gets(R.string.send_success));
+        webView.reload();
     }
 
     @Override
@@ -209,13 +219,17 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
 
     @Override
     public void onCommentData(List<CafCommentBean> data) {
-
-        list.clear();
-
+        if (isRefresh)
+            list.clear();
         for (CafCommentBean cfb : data) {
             list.add(cfb);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void GoHomePage(String id) {
+        goHomePage(this, id, false);
     }
 
     @Override
@@ -239,35 +253,52 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
                 op.LikeNews(id);
                 break;
             case R.id.share_layout:
-                JsShare();
+                UmShare(0);
                 break;
 
             case R.id.adv_img:
-                goOutSidePage(this, url);
+                goOutSidePage(this, advUrl);
                 break;
             case R.id.wx_layout:
-
+                UmShare(1);
                 break;
             case R.id.wxcircle_layout:
-
+                UmShare(2);
                 break;
 
         }
     }
 
-    public void JsShare() {
+    /**
+     * params type (0 all 1 wechat 2 weixin circle)
+     */
+    public void UmShare(int type) {
 
         UMWeb web = new UMWeb(Interface.NEWSDETAILS + "id=" + id);
         web.setTitle(gets(R.string.game_information));//标题
         web.setThumb(new UMImage(this, R.mipmap.logo_icon));  //缩略图
         web.setDescription(gets(R.string.game_information));//描述
-
-        new ShareAction(this)
-                .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+        if (type == 0) {
+            new ShareAction(this)
+                    .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
 //              .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN_FAVORITE)
-                .withMedia(web)
-                .setCallback(this)
-                .open();
+                    .withMedia(web)
+                    .setCallback(this)
+                    .open();
+        } else if (type == 1) {
+            new ShareAction(GameInfoDetailsActivity.this)
+                    .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
+                    .withMedia(web)
+                    .setCallback(this)//回调监听器
+                    .share();
+        } else {
+            new ShareAction(GameInfoDetailsActivity.this)
+                    .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)//传入平台
+                    .withMedia(web)
+                    .setCallback(this)//回调监听器
+                    .share();
+        }
+
     }
 
     @Override
@@ -306,5 +337,19 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
         op.destroyWebView(webView);
         deleteDatabase("webview.db");
         deleteDatabase("webviewCache.db");
+    }
+
+    @Override
+    public void IsonRefresh(int init) {
+        isRefresh = true;
+        op.page = 0;
+        op.getCommentData(id);
+}
+
+    @Override
+    public void IsonLoadmore(int move) {
+        op.page = list.size();
+        isRefresh = false;
+        op.getCommentData(id);
     }
 }

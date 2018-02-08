@@ -48,8 +48,11 @@ public class OutSideActivity extends InitActivity implements OutSideListener {
         pg = f(R.id.progressBar);
         op = new OutSidePresenter(this);
         url = getIntent().getStringExtra("outside_url");
+        if (url.indexOf("http") != -1) {
+        } else
+            url = "http://" + url;
+
         Log.i(TAG, "OutSide Url ===" + url);
-//        url = "https://www.baidu.com";
     }
 
     @Override
@@ -101,7 +104,7 @@ public class OutSideActivity extends InitActivity implements OutSideListener {
 
     @Override
     public void onCancleProgress() {
-        pg.setVisibility(View.INVISIBLE);
+        pg.setVisibility(View.GONE);
         pg.setProgress(0);
     }
 
@@ -133,6 +136,11 @@ public class OutSideActivity extends InitActivity implements OutSideListener {
 
     @Override
     public void onCommentData(List<CafCommentBean> data) {
+
+    }
+
+    @Override
+    public void GoHomePage(String id) {
 
     }
 }

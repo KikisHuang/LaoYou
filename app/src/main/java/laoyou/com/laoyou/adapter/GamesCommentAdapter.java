@@ -14,6 +14,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.CafCommentBean;
+import laoyou.com.laoyou.listener.OutSideListener;
 import laoyou.com.laoyou.utils.OverallViewHolder;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
@@ -24,10 +25,12 @@ import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
 public class GamesCommentAdapter extends BaseAdapter {
     private List<CafCommentBean> list = null;
     private Context mContext;
+    private OutSideListener listener;
 
-    public GamesCommentAdapter(Context mContext, List<CafCommentBean> list) {
+    public GamesCommentAdapter(Context mContext, List<CafCommentBean> list, OutSideListener listener) {
         this.mContext = mContext.getApplicationContext();
         this.list = list;
+        this.listener = listener;
     }
 
     public int getCount() {
@@ -47,7 +50,7 @@ public class GamesCommentAdapter extends BaseAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.game_comment_item, null);
 
         ImageView head_img = OverallViewHolder.ViewHolder.get(view, R.id.head_img);
-//        ImageView preview_img = OverallViewHolder.ViewHolder.get(view, R.id.preview_img);
+//      ImageView preview_img = OverallViewHolder.ViewHolder.get(view, R.id.preview_img);
         TextView nickname_tv = OverallViewHolder.ViewHolder.get(view, R.id.nickname_tv);
         TextView content_tv = OverallViewHolder.ViewHolder.get(view, R.id.content_tv);
         TextView time_tv = OverallViewHolder.ViewHolder.get(view, R.id.time_tv);
@@ -58,6 +61,13 @@ public class GamesCommentAdapter extends BaseAdapter {
         time_tv.setText(list.get(position).getCreateTime());
         Glide.with(mContext).load(list.get(position).getMcUserByUserId().getHeadImgUrl()).apply(getGlideOptions()).into(head_img);
 
+        head_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                listener.GoHomePage(list.get(position).getMcUserByUserId().getId());
+            }
+        });
 
        /* if (list.get(position).getChatThemeImgs() != null)
             Glide.with(mContext).load(list.get(position).getChatThemeImgs().get(0)).into(preview_img);
