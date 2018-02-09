@@ -20,6 +20,7 @@ import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyCommentPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goMyPhotoPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goSettingPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goShareMyQrCodePage;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 
@@ -53,6 +54,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
         flash_chat_layout.setOnClickListener(this);
         setting_layout.setOnClickListener(this);
         head_layout.setOnClickListener(this);
+        qr_code_img.setOnClickListener(this);
 
     }
 
@@ -152,11 +154,14 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
             case R.id.setting_layout:
                 goSettingPage(getActivity());
                 break;
+            case R.id.qr_code_img:
+                    goShareMyQrCodePage(getActivity(),headImgUrl);
+                break;
             case R.id.head_layout:
                 if (sex != 99 && user_name_tv.getText().toString().length() > 0)
 //                    goOverInfoPage(getActivity(), headImgUrl, user_name_tv.getText().toString(), "", sex);
 //                    goMyHomePage(getActivity());
-                    goHomePage(getActivity(), SPreferences.getUserId(),false);
+                    goHomePage(getActivity(), SPreferences.getUserId(), false);
                 break;
         }
     }
@@ -164,7 +169,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
     @Override
     public void ongetDetails(UserInfoBean ub) {
         user_name_tv.setText(ub.getName());
-        signature_tv.setText(ub.getAutograph()!=null&&!ub.getAutograph().isEmpty()?ub.getAutograph():gets(R.string.default_signature));
+        signature_tv.setText(ub.getAutograph() != null && !ub.getAutograph().isEmpty() ? ub.getAutograph() : gets(R.string.default_signature));
         sex = ub.getSex();
         SPreferences.saveUserId(ub.getId());
 

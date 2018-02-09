@@ -40,16 +40,17 @@
         <TextView
             android:id="@+id/skip_tv"
             android:layout_width="55dp"
-            android:layout_height="24dp"
+            android:layout_height="26dp"
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="15dp"
             android:layout_marginRight="15dp"
             android:background="@drawable/black_corners"
             android:gravity="center"
             android:text="跳过5s"
-            android:textColor="#abb8d8"
-            android:textSize="11sp"
-            android:visibility="gone" />
+            android:textColor="@color/whitefb"
+            android:textSize="12sp"
+            android:visibility="gone"
+             />
 
     </FrameLayout>
 </FrameLayout>

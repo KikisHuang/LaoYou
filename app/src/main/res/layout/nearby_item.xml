@@ -88,7 +88,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/tags_one"
                     android:layout_width="12dp"
                     android:layout_height="match_parent"
@@ -99,7 +99,7 @@
                     android:visibility="gone" />
 
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/tags_two"
                     android:layout_width="12dp"
                     android:layout_height="match_parent"
@@ -110,7 +110,7 @@
                     android:textSize="10dp"
                     android:visibility="gone" />
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/tags_three"
                     android:layout_width="16dp"
                     android:layout_height="match_parent"

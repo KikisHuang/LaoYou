@@ -1184,7 +1184,7 @@ public class SynUtils {
         return null;
     }
 
-    public static String stringFilter(String str)throws PatternSyntaxException {
+    public static String stringFilter(String str) throws PatternSyntaxException {
 
         String regEx = "[/\\#@&^%;',()_+!.:*?<>|\"\n\t]";
 

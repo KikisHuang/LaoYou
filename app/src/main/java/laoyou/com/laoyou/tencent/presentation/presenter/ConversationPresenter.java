@@ -26,7 +26,7 @@ import laoyou.com.laoyou.tencent.presentation.viewfeatures.GroupInfoView;
 /**
  * 会话界面逻辑
  */
-public class ConversationPresenter implements Observer,TIMValueCallBack<List<TIMGroupDetailInfo>> {
+public class ConversationPresenter implements Observer, TIMValueCallBack<List<TIMGroupDetailInfo>> {
 
     private static final String TAG = "ConversationPresenter";
     private ConversationView view;
@@ -78,6 +78,7 @@ public class ConversationPresenter implements Observer,TIMValueCallBack<List<TIM
 
 
     public void getConversation() {
+        Log.i(TAG, "初始化消息界面");
         List<TIMConversation> list = TIMManager.getInstance().getConversionList();
         List<TIMConversation> result = new ArrayList<>();
         for (TIMConversation conversation : list) {

@@ -504,16 +504,7 @@
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
 
-#glide
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.AppGlideModule
--keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
-  **[] $VALUES;
-  public *;
-}
 
-# for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
 ####PictureSelector####
 
@@ -716,15 +707,19 @@ public static final int *;
 
 ####Glide####
 -keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.AppGlideModule
 -keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
   **[] $VALUES;
   public *;
 }
+####Glide####
+# for DexGuard only
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 ####Picasso####
 -dontwarn com.squareup.okhttp.**
 ####Picasso####
 
-####Glide####
+
 
 
 #避免混淆泛型 如果混淆报错建议关掉

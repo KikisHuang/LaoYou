@@ -74,7 +74,7 @@ public class OutSidePresenter implements HttpResultListener {
                     listener.onLikeStatus(false);
                     listener.onFailedMsg(gets(R.string.cancel_succ));
                 }
-
+                listener.onWebRefresh();
                 break;
 
             case Fields.REQUEST4:

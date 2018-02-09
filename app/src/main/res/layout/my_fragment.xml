@@ -38,7 +38,7 @@
                 android:layout_marginTop="10dp"
                 android:maxEms="14"
                 android:singleLine="true"
-                android:text="大家好，我是陈晓燕，我是一个白痴"
+                android:text=""
                 android:textColor="@color/content3"
                 android:textSize="14sp" />
 
@@ -46,8 +46,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_head_img"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="87dp"
+            android:layout_height="87dp"
             android:layout_gravity="right|center"
             android:layout_marginRight="20dp"
             app:civ_border_color="@color/frame"

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -55,8 +56,11 @@ import laoyou.com.laoyou.tencent.presentation.viewfeatures.FriendshipMessageView
 import laoyou.com.laoyou.tencent.presentation.viewfeatures.GroupInfoView;
 import laoyou.com.laoyou.tencent.presentation.viewfeatures.GroupManageMessageView;
 import laoyou.com.laoyou.tencent.utils.PushUtil;
+import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.ToastUtil;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goAddressBookPage;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * 会话列表界面
@@ -148,10 +152,12 @@ public class ConversationFragment extends Fragment implements ConversationView, 
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "ConversationFragment onResume");
+        presenter.getConversation();
         refresh();
         PushUtil.getInstance().reset();
-    }
 
+    }
 
     /**
      * 初始化界面或刷新界面
@@ -241,6 +247,7 @@ public class ConversationFragment extends Fragment implements ConversationView, 
      */
     @Override
     public void removeConversation(String identify) {
+
         Iterator<Conversation> iterator = conversationList.iterator();
         while (iterator.hasNext()) {
             Conversation conversation = iterator.next();
@@ -280,8 +287,11 @@ public class ConversationFragment extends Fragment implements ConversationView, 
         Collections.sort(conversationList);
         if (conversationList != null) {
             for (int i = 0; i < conversationList.size(); i++) {
-                if (conversationList.get(i).getIdentify() != null && conversationList.get(i).getIdentify().equals("96ecd7900a6341f6aecde21cd5efb7"))
-                    Collections.swap(conversationList, i, 0);
+                if (conversationList.get(i).getIdentify() != null && conversationList.get(i).getIdentify().equals(Fields.SYSTEM_SERVICE_ID)) {
+                    Conversation con = conversationList.get(i);
+                    conversationList.remove(i);
+                    conversationList.addFirst(con);
+                }
             }
         }
 
@@ -375,10 +385,13 @@ public class ConversationFragment extends Fragment implements ConversationView, 
         switch (item.getItemId()) {
             case 1:
                 if (conversation != null) {
-                    if (presenter.delConversation(conversation.getType(), conversation.getIdentify())) {
-                        conversationList.remove(conversation);
-                        adapter.notifyDataSetChanged();
-                    }
+                    if (!conversation.getIdentify().equals(Fields.SYSTEM_SERVICE_ID)) {
+                        if (presenter.delConversation(conversation.getType(), conversation.getIdentify())) {
+                            conversationList.remove(conversation);
+                            adapter.notifyDataSetChanged();
+                        }
+                    } else
+                        ToastUtil.toast2_bottom(getActivity(), gets(R.string.cannot_del_service_chat));
                 }
                 break;
             default:

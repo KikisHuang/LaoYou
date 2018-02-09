@@ -1,6 +1,5 @@
 package laoyou.com.laoyou.presenter;
 
-
 import android.util.Log;
 
 import org.json.JSONException;
@@ -8,12 +7,9 @@ import org.json.JSONException;
 import java.util.Map;
 
 import laoyou.com.laoyou.R;
-import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
-import laoyou.com.laoyou.listener.OthersListener;
-import laoyou.com.laoyou.tencent.model.FriendshipInfo;
+import laoyou.com.laoyou.listener.ShareMyQrCodeListener;
 import laoyou.com.laoyou.utils.Fields;
-import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
@@ -23,36 +19,31 @@ import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
- * Created by lian on 2017/12/26.
+ * Created by lian on 2018/2/9.
  */
-public class OthersPresenter implements HttpResultListener {
+public class ShareMyQrCodePresenter implements HttpResultListener {
+    private static final String TAG = "ShareMyQrCodePresenter";
+    private ShareMyQrCodeListener listener;
 
-    private static final String TAG = "OthersPresenter";
-    private OthersListener listener;
 
-    public OthersPresenter(OthersListener listener) {
+    public ShareMyQrCodePresenter(ShareMyQrCodeListener listener) {
         this.listener = listener;
+        getMyQrCode();
     }
 
-    /**
-     * 获取关注的游戏  userId String 字符串用户id(为空则取key对应的用户的id)
-     */
-    public void getOthersDataList(String id, boolean isTencent) {
+    private void getMyQrCode() {
         Map<String, String> map = getKeyMap();
-        if (isTencent)
-            map.put("cloudTencentAccount", id);
-        else
-            map.put("userId", id);
-
-        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.GETOTHERSDETAILS);
+        httpUtils.OkHttpsPost(map, this, Fields.REQUEST1, Interface.URL + Interface.GETUSERCARDQCURL, null, null);
     }
 
     @Override
     public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-                UserInfoBean ub = GsonUtil.GsonToBean(getJsonSring(response), UserInfoBean.class);
-                listener.onShowUserInfo(ub);
+                listener.ShowMyQrCode(getJsonSring(response));
+                break;
+            case Fields.REQUEST2:
+                listener.onShareQrCodeUrl(getJsonSring(response));
                 break;
         }
     }
@@ -72,7 +63,9 @@ public class OthersPresenter implements HttpResultListener {
         listener.onFailedMsg(response);
     }
 
-    public void FindsWhether(String id) {
-        listener.onIsFinds(FriendshipInfo.getInstance().isFriend(id));
+    public void ShareMyQrCode() {
+        Map<String, String> map = getKeyMap();
+        httpUtils.OkHttpsPost(map, this, Fields.REQUEST2, Interface.URL + Interface.GETUSERCARDSHAREIMAGEURL, null, null);
+
     }
 }

@@ -23,6 +23,8 @@ public class Fields {
     public static final int MAXWIDTH = 540;
     public static final int MAXHEIGHT = 432;
 
+    public static final String SYSTEM_SERVICE_ID = "f8603819a675402bb8cf4f2829ac08";
+
     public static final String WECHATAPPID = "wx16258856fb255f4b";
     public static final String WECHATAPPSECRET = "b92df5eccddc26af53b6e02cc692087b";
     public static final String PACKAGE_NAME = "laoyou.com.laoyou";

@@ -91,9 +91,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private LinearLayout dynamic_layout, query_pass_layout, wifi_layout, nearby_wb_layout, player_community_layout, topic_circle_layout;
 
     private HomeStatusAdapter adapter;
-    private TextView flash_more_tv, recom_nick_name, foot_tv;
+    private TextView flash_more_tv, recom_nick_name;
     private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
-    private LinearLayout foot_layout, flash_title_layout, foot_recom_layout, recom_layout;
+    private LinearLayout foot_layout, flash_title_layout, foot_recom_layout, recom_layout, foot_tv;
     private FrameLayout head_layout;
     private String groupId = "";
     private TIMCallBack back;
@@ -124,7 +124,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && LoginStatusQuery()) {
                     if (recyclerView.canScrollVertically(-1) && (Fields.VPT == 0 || System.currentTimeMillis() - Fields.VPT >= 2000)) {
                         Fields.VPT = System.currentTimeMillis();
                         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
@@ -190,7 +190,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         foot_layout.setVisibility(View.GONE);
 
         recom_nick_name = (TextView) foot_layout.findViewById(R.id.recom_nick_name);
-        foot_tv = (TextView) foot_layout.findViewById(R.id.foot_tv);
+        foot_tv = (LinearLayout) foot_layout.findViewById(R.id.foot_bottom_layout);
         recom_layout = (LinearLayout) foot_layout.findViewById(R.id.recom_layout);
         foot_recom_layout = (LinearLayout) foot_layout.findViewById(R.id.Foot_recom_layout);
 
@@ -205,7 +205,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         nearby_wb_layout = (LinearLayout) head_layout.findViewById(R.id.nearby_wb_layout);
 
         polistener = this;
-
 
         dynamic_layout = (LinearLayout) head_layout.findViewById(R.id.dynamic_layout);
         query_pass_layout = (LinearLayout) head_layout.findViewById(R.id.query_pass_layout);
@@ -227,12 +226,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         adapter = new HomeStatusAdapter(getActivity(), Nblist, this);
         mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(adapter);
-
-        foot_layout.setLayoutParams((ViewGroup.LayoutParams) getLayout(0, Fields.MATCH, Fields.WRAP));
-
+        foot_layout.setLayoutParams((ViewGroup.LayoutParams) getLayout(0, Fields.MATCH, 0));
         mHeaderAndFooterWrapper.addHeaderView(head_layout);
         mHeaderAndFooterWrapper.addFootView(foot_layout);
-
         recyclerView.setAdapter(mHeaderAndFooterWrapper);
 
     }
@@ -321,10 +317,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onResume() {
         super.onResume();
-        if (!LoginStatusQuery())
+        if (!LoginStatusQuery()) {
             swiperefreshlayout.setEnabled(false);
-        else
+//            onForbidSlide(LoginStatusQuery());
+        } else {
             hp.RefreshLikeThme(true);
+//            onForbidSlide(LoginStatusQuery());
+        }
 
         Log.i(TAG, "onResume");
         try {
@@ -494,7 +493,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         recom_layout.setVisibility(View.GONE);
         foot_tv.setVisibility(View.GONE);
 
-
         swiperefreshlayout.setRefreshing(false);
     }
 
@@ -540,6 +538,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         foot_layout.setVisibility(View.VISIBLE);
         foot_tv.setVisibility(View.VISIBLE);
 
+        if (foot_layout.getLayoutParams().height != Fields.WRAP)
+            foot_layout.getLayoutParams().height = Fields.WRAP;
+
         swiperefreshlayout.setRefreshing(false);
 
         Log.i(TAG, "recomeSize ==" + recomeSize);
@@ -555,7 +556,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onRefresh() {
         hp.page = 0;
-        hp.getPeopleNearby(true);
+        if (LoginStatusQuery())
+            hp.getPeopleNearby(true);
     }
 
     /**

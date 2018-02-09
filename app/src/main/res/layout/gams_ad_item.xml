@@ -16,8 +16,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="猜你喜欢"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
         android:textColor="@color/content6"
-        android:textSize="16sp"
+        android:textSize="12sp"
         android:visibility="gone"
         />
 

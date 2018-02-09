@@ -25,4 +25,6 @@ public interface OutSideListener {
     void onCommentData(List<CafCommentBean> data);
 
     void GoHomePage(String id);
+
+    void onWebRefresh();
 }

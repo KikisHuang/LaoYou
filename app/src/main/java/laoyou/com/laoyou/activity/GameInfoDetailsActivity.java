@@ -191,7 +191,7 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
         });*/
         op.getCommentData(id);
         ToastUtil.toast2_bottom(this, gets(R.string.send_success));
-        webView.reload();
+
     }
 
     @Override
@@ -230,6 +230,11 @@ public class GameInfoDetailsActivity extends InitActivity implements OutSideList
     @Override
     public void GoHomePage(String id) {
         goHomePage(this, id, false);
+    }
+
+    @Override
+    public void onWebRefresh() {
+//        webView.reload();
     }
 
     @Override

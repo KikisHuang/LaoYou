@@ -15,7 +15,7 @@ public class VersionUpUtils {
      */
     public static void VersionCheck(int news, VersionListener listener) {
         int old = SynUtils.getVersionCode(MyApplication.getContext());
-        if (news == old)
+        if (news > old)
             listener.onVersionUp();
         else
             listener.onVersionMatching();

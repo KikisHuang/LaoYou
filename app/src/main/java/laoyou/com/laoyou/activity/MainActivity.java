@@ -50,6 +50,7 @@ import static laoyou.com.laoyou.fragment.HomeFragment.getHomeInstance;
 import static laoyou.com.laoyou.fragment.MyFragment.SettingInstance;
 import static laoyou.com.laoyou.save.SPreferences.getSkipFlag;
 import static laoyou.com.laoyou.save.SPreferences.saveSkipFlag;
+import static laoyou.com.laoyou.tencent.ui.ConversationFragment.ConversationInstance;
 import static laoyou.com.laoyou.utils.ActivityCollector.CloseAllActivity;
 import static laoyou.com.laoyou.utils.IntentUtils.goAddLikeGamePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginOperPage;
@@ -356,7 +357,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void initData() {
-        mp.Presenter();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // 2. 启动系统任务
             mJobManager = JobSchedulerManager.getJobSchedulerInstance(this);
@@ -365,6 +365,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         if (SPreferences.getUserSig() != null && !SPreferences.getUserSig().isEmpty())
             IMInit();
+
+        mp.Presenter();
     }
 
     @Override
@@ -566,6 +568,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onSuccess() {
+        if (SPreferences.getUserId() != null && !SPreferences.getUserId().equals(Fields.SYSTEM_SERVICE_ID))
+            mp.CheckServiceFriend();
+
+        if (ConversationInstance().presenter != null)
+            ConversationInstance().presenter.getConversation();
 
         Log.i(TAG, "登录成功");
         //初始化程序后台后消息推送
@@ -599,6 +606,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         Logger.setLogger(this, newLogger);
         Log.d(TAG, "imsdk env " + TIMManager.getInstance().getEnv());
+
     }
 
 

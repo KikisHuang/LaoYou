@@ -72,6 +72,10 @@ public class SPreferences {
      * 第一次启动标识符;
      */
     private static final String FIRST_START = "First_Start";
+    /**
+     * 系统客服腾讯云Id;
+     */
+    private static final String SYSTEM_SERVICE_ID = "Service_Id";
 
 
     /**

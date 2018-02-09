@@ -92,7 +92,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.MyViewHold
         else if (list.get(position).getDistance() > 1 && list.get(position).getDistance() < 100)
             holder.distance_tv.setText(String.valueOf(list.get(position).getDistance()) + "m");
         else
-            holder.distance_tv.setText(String.valueOf(list.get(position).getDistance() * 0.001) + "km");
+            holder.distance_tv.setText(String.valueOf((int) (list.get(position).getDistance() * 0.001)) + "km");
 
 
         holder.item_layout.setOnClickListener(new View.OnClickListener() {

@@ -498,7 +498,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
                 break;
             case R.id.more_img:
-                if (!identify.isEmpty())
+                if (!identify.isEmpty() && !identify.equals(Fields.SYSTEM_SERVICE_ID))
                     ShowDialog();
                 break;
         }
@@ -508,6 +508,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
      * 更多操作弹窗;
      */
     private void ShowDialog() {
+
         new ActionSheetDialog(this).builder().addSheetItem(gets(R.string.pull_the_black_friend), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
             @Override
             public void onClick(int which) {

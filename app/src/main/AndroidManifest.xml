@@ -165,6 +165,10 @@
         <activity
             android:name=".activity.MyHomePageActivity"
             android:screenOrientation="portrait"></activity>
+        <!-- 分享我的二维码页面 -->
+        <activity
+            android:name=".activity.ShareMyQrCodeActivity"
+            android:screenOrientation="portrait"></activity>
         <!-- 他人主页详情资料页面 -->
         <activity
             android:name=".activity.OthersDetailsPageActivity"

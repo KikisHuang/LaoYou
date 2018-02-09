@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:paddingBottom="20dp"
     android:paddingTop="20dp"
-    android:visibility="gone">
+    >
 
     <LinearLayout
         android:id="@+id/recom_layout"
@@ -47,6 +47,15 @@
 
         </HorizontalScrollView>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/foot_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
         <TextView
             android:id="@+id/recom_nick_name"
             android:layout_width="match_parent"
@@ -87,17 +96,15 @@
             android:text="玩的开心"
             android:textColor="@color/content3"
             android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="已经到底裤了，不能再下拉了..."
+            android:textColor="@color/content3"
+            android:textSize="12sp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/foot_tv"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="已经到底裤了，不能再下拉了..."
-        android:textColor="@color/content3"
-        android:textSize="12sp"
-        android:visibility="gone"
-        />
 </LinearLayout>

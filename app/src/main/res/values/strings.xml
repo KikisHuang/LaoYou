@@ -396,6 +396,7 @@
     <string name="nodata">没有数据</string>
     <string name="nomore">已经没有更多了</string>
     <string name="game_information">游戏资讯</string>
+    <string name="business_card">个人名片</string>
     <string name="cpu">CPU</string>
     <string name="graphics_card">显卡</string>
     <string name="mouse">鼠标</string>
@@ -451,6 +452,8 @@
     <string name="share_succ">分享成功</string>
     <string name="share_fail">分享失败</string>
     <string name="owner">全部</string>
+    <string name="service_introduction">欢迎来到网圈，很高兴遇见你，在这里希望你遇到和你志同道合的朋友哦^^</string>
+    <string name="cannot_del_service_chat">不删网圈客服会话</string>
 
 
 </resources>

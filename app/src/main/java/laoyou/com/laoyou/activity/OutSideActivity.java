@@ -143,4 +143,9 @@ public class OutSideActivity extends InitActivity implements OutSideListener {
     public void GoHomePage(String id) {
 
     }
+
+    @Override
+    public void onWebRefresh() {
+
+    }
 }

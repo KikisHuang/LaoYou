@@ -47,6 +47,7 @@ import laoyou.com.laoyou.activity.RegisterActivity;
 import laoyou.com.laoyou.activity.ReleaseTopicActivity;
 import laoyou.com.laoyou.activity.SendPhoneCodeActivity;
 import laoyou.com.laoyou.activity.SettingActivity;
+import laoyou.com.laoyou.activity.ShareMyQrCodeActivity;
 import laoyou.com.laoyou.activity.TopicCircleActivity;
 import laoyou.com.laoyou.activity.TopicCommentDetailsActivity;
 import laoyou.com.laoyou.activity.TopicTypeDetailsActivity;
@@ -348,6 +349,17 @@ public class IntentUtils {
     }
 
     /**
+     * 我的二维码页面;
+     *
+     * @param context 上下文;
+     */
+    public static void goShareMyQrCodePage(Context context,String headicon) {
+        Intent intent = new Intent(context, ShareMyQrCodeActivity.class);
+        intent.putExtra("my_head_id", headicon);
+        startPage(context, intent);
+    }
+
+    /**
      * 消息提醒设置页面;
      *
      * @param context 上下文;
@@ -379,7 +391,8 @@ public class IntentUtils {
 
     /**
      * 游戏资讯详情页面;
-     *  @param context 上下文;
+     *
+     * @param context 上下文;
      * @param id
      */
     public static void goGameInfoDetailsPage(Context context, String id, String coverpath) {

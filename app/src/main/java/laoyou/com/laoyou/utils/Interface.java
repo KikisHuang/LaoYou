@@ -347,5 +347,13 @@ public class Interface {
      * 获取游戏资讯里面的评论;
      */
     public static final String GETGAMESCOMMENT = "news/select/getComment.app";
+    /**
+     * 获取个人名片 分享页的图片路径;
+     */
+    public static final String GETUSERCARDSHAREIMAGEURL = "share/getUserCardShareImageUrl.app";
+    /**
+     * 获取分享二维码的路径;
+     */
+    public static final String GETUSERCARDQCURL = "share/getUserCardQCUrl.app";
 
 }

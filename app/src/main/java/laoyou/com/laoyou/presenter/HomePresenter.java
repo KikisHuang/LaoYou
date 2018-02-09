@@ -109,7 +109,7 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
         BannerHideOfShow();
         IsLogin();
         getActiveGroup();
-//        getPeopleNearby(true);
+//      getPeopleNearby(true);
     }
 
     /**
@@ -452,8 +452,6 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
             getUseDetails();
             getAddressBook();
         }
-
-        listener.onForbidSlide(LoginStatusQuery());
     }
 
     /**
@@ -483,6 +481,7 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
         m.put("version", String.valueOf(getVersionCode(MyApplication.getContext())));
         m.put("channelCode", MyApplication.CHANNEL);
         httpUtils.OkHttpsGet(m, this, Fields.REQUEST4, Interface.URL + Interface.GETDOWNLOADPATH);
+//      httpUtils.OkHttpsGet(m, this, Fields.REQUEST4, "http://fns.mozu123.com:8080/mcFnsInterface/" + Interface.GETDOWNLOADPATH);
     }
 
     @Override
@@ -553,4 +552,5 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
         if (ThumbNailInstance() != null)
             ThumbNailInstance().CloseThumb();
     }
+
 }

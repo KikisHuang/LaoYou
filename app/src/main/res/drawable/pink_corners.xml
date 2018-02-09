@@ -3,6 +3,6 @@
 
     <solid android:color="@color/sex_woman" />
 
-    <corners android:radius="2dp" />
+    <corners android:radius="1dp" />
 
 </shape>

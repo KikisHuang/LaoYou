@@ -85,7 +85,7 @@ public class MyApplication extends Application {
      * 本地数据库初始化;
      */
     private void DbInit() {
-//        LouSQLite.deleteDatabase(context);
+//      LouSQLite.deleteDatabase(context);
         LouSQLite.init(context.getApplicationContext(), new MyDbCallBack());
     }
 
@@ -93,8 +93,8 @@ public class MyApplication extends Application {
      * 全局异常捕获方法;
      */
     private void ErrorCrashInit() {
-        /*crashHandler = CrashHandler.getInstance();
-        crashHandler.init(getApplicationContext());*/
+        crashHandler = CrashHandler.getInstance();
+        crashHandler.init(getApplicationContext());
     }
 
     private void initTecentIM() {

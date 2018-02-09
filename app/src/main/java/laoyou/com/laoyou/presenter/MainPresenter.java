@@ -2,18 +2,31 @@ package laoyou.com.laoyou.presenter;
 
 import android.util.Log;
 
+import com.tencent.TIMAddFriendRequest;
 import com.tencent.TIMCallBack;
+import com.tencent.TIMConversation;
+import com.tencent.TIMConversationType;
+import com.tencent.TIMFriendResult;
+import com.tencent.TIMFriendStatus;
+import com.tencent.TIMFriendshipManager;
+import com.tencent.TIMManager;
+import com.tencent.TIMMessage;
+import com.tencent.TIMTextElem;
+import com.tencent.TIMValueCallBack;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.application.MyApplication;
 import laoyou.com.laoyou.bean.GameBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.MainListener;
 import laoyou.com.laoyou.save.SPreferences;
+import laoyou.com.laoyou.tencent.model.FriendshipInfo;
 import laoyou.com.laoyou.tencent.model.UserInfo;
 import laoyou.com.laoyou.tencent.presentation.business.InitBusiness;
 import laoyou.com.laoyou.tencent.presentation.business.LoginBusiness;
@@ -29,6 +42,7 @@ import okhttp3.Request;
 
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
+import static laoyou.com.laoyou.utils.SynUtils.gets;
 
 /**
  * Created by lian on 2017/10/25.
@@ -112,5 +126,86 @@ public class MainPresenter implements HttpResultListener {
         GroupEvent.getInstance().init();
 
         LoginBusiness.loginIm(UserInfo.getInstance().getId(), UserInfo.getInstance().getUserSig(), call);
+    }
+
+
+    public void CheckServiceFriend() {
+        if (FriendshipInfo.getInstance().isFriend(Fields.SYSTEM_SERVICE_ID))
+            Log.i(TAG, "系统客服已添加...");
+        else {
+            Log.i(TAG, "系统客服未添加，现在开始加入好友列表");
+            addFriend(Fields.SYSTEM_SERVICE_ID, "", "", "");
+        }
+    }
+
+    /**
+     * 添加好友
+     *
+     * @param id      添加对象Identify
+     * @param remark  备注名
+     * @param group   分组
+     * @param message 附加消息
+     */
+    public void addFriend(final String id, String remark, String group, String message) {
+        List<TIMAddFriendRequest> reqList = new ArrayList<>();
+        TIMAddFriendRequest req = new TIMAddFriendRequest();
+        req.setAddWording(message);
+        req.setIdentifier(id);
+        req.setRemark(remark);
+        req.setFriendGroup(group);
+        reqList.add(req);
+        TIMFriendshipManager.getInstance().addFriend(reqList, new TIMValueCallBack<List<TIMFriendResult>>() {
+
+            @Override
+            public void onError(int arg0, String arg1) {
+                Log.e(TAG, "onError code" + arg0 + " msg " + arg1);
+            }
+
+            @Override
+            public void onSuccess(List<TIMFriendResult> arg0) {
+                for (TIMFriendResult item : arg0) {
+                    if (item.getIdentifer().equals(id)) {
+                        if (item.getStatus().equals(TIMFriendStatus.TIM_FRIEND_STATUS_SUCC)) {
+                            Log.i(TAG, "系统客服添加成功");
+                            SendMsg();
+                        }
+                        break;
+                    }
+                }
+            }
+
+        });
+    }
+
+    private void SendMsg() {
+        //构造一条消息
+        TIMMessage msg = new TIMMessage();
+        //添加文本内容
+        TIMTextElem elem = new TIMTextElem();
+        elem.setText(gets(R.string.service_introduction));
+
+        //将elem添加到消息
+        if (msg.addElement(elem) != 0) {
+            Log.d(TAG, "addElement failed");
+            return;
+        }
+        TIMConversation conversation = TIMManager.getInstance().getConversation(
+                TIMConversationType.C2C,      //会话类型：群组
+                Fields.SYSTEM_SERVICE_ID);
+        //发送消息
+        conversation.sendMessage(msg, new TIMValueCallBack<TIMMessage>() {//发送消息回调
+            @Override
+            public void onError(int code, String desc) {//发送消息失败
+                //错误码code和错误描述desc，可用于定位请求失败原因
+                //错误码code含义请参见错误码表
+                Log.d(TAG, "添加导语发送失败 错误码 code: " + code + " errmsg: " + desc);
+            }
+
+            @Override
+            public void onSuccess(TIMMessage msg) {//发送消息成功
+                Log.e(TAG, "添加导语发送成功");
+            }
+        });
+
     }
 }
