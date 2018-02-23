@@ -38,4 +38,5 @@ public interface HomePageListener {
 
     void onDelFriend(TIMFriendStatus status);
 
+    void ondeleteStatus(String id);
 }

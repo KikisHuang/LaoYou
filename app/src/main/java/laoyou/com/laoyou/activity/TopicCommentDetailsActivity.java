@@ -286,7 +286,8 @@ public class TopicCommentDetailsActivity extends InitActivity implements View.On
         IsPhoto = false;
         menu_layout.setVisibility(View.VISIBLE);
         send_comment_layout.setVisibility(View.GONE);
-
+        name = "";
+        userId = "";
         isRefresh = true;
 //      tp.getTopicDetails(id);
         tp.getComment(id, 0);

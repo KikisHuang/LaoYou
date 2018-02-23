@@ -16,6 +16,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.TopicTypeBean;
+import laoyou.com.laoyou.listener.HomePageListener;
 import laoyou.com.laoyou.listener.RecyclerViewOnItemClickListener;
 import laoyou.com.laoyou.utils.DeviceUtils;
 import laoyou.com.laoyou.utils.OverallViewHolder;
@@ -31,11 +32,15 @@ public class HomePageAdapter extends BaseAdapter {
     private List<TopicTypeBean> list = null;
     private Context mContext;
     private RecyclerViewOnItemClickListener listener;
+    private HomePageListener hlistener;
+    private boolean isMe;
 
-    public HomePageAdapter(Context mContext, List<TopicTypeBean> list, RecyclerViewOnItemClickListener listener) {
+    public HomePageAdapter(Context mContext, List<TopicTypeBean> list, RecyclerViewOnItemClickListener listener, HomePageListener hlistener, boolean isMe) {
         this.mContext = mContext.getApplicationContext();
         this.list = list;
         this.listener = listener;
+        this.hlistener = hlistener;
+        this.isMe = isMe;
     }
 
     public int getCount() {
@@ -77,8 +82,10 @@ public class HomePageAdapter extends BaseAdapter {
         ImageView video_img = OverallViewHolder.ViewHolder.get(view, R.id.video_img);
         FrameLayout video_layouts = OverallViewHolder.ViewHolder.get(view, R.id.video_layouts);
 
-//            content_img = (ImageView) OverallViewHolder.ViewHolder.get(view,R.id.content_img);
+//      content_img = (ImageView) OverallViewHolder.ViewHolder.get(view,R.id.content_img);
         ImageView more_tv = OverallViewHolder.ViewHolder.get(view, R.id.more_tv);
+        ImageView more_down_img = OverallViewHolder.ViewHolder.get(view, R.id.more_down_img);
+
         LinearLayout topic_layout = OverallViewHolder.ViewHolder.get(view, R.id.topic_layout);
         LinearLayout reply_layout1 = OverallViewHolder.ViewHolder.get(view, R.id.reply_layout1);
         LinearLayout reply_layout2 = OverallViewHolder.ViewHolder.get(view, R.id.reply_layout2);
@@ -101,6 +108,19 @@ public class HomePageAdapter extends BaseAdapter {
         Glide.with(mContext).load(list.get(position).isLikeFlag() ? R.mipmap.on_like_icon : R.mipmap.off_like_icon).into(like_img);
 
         more_tv.setVisibility(View.GONE);
+        if (isMe)
+            more_down_img.setVisibility(View.VISIBLE);
+        else if (more_down_img.getVisibility() == View.VISIBLE)
+            more_down_img.setVisibility(View.GONE);
+
+        more_down_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hlistener.ondeleteStatus(list.get(position).getId());
+
+            }
+        });
+
         view_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,7 +191,7 @@ public class HomePageAdapter extends BaseAdapter {
             }
         });
 
-        topic_layout.setVisibility(View.GONE);
+        topic_layout.setVisibility(View.INVISIBLE);
 
         nickname_tv.setText(list.get(position).getUserName());
         Glide.with(mContext).load(list.get(position).getHeadImgUrl()).apply(getGlideOptions()).into(head_img);
@@ -188,7 +208,7 @@ public class HomePageAdapter extends BaseAdapter {
             int w = (int) (DeviceUtils.getWindowWidth(mContext) * 1 / 1.8);
             int h = (int) (w * 0.8 / 1);
 
-            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) getLayout(1,w,h);
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) getLayout(1, w, h);
             video_img.setLayoutParams(lp);
             video_layouts.setVisibility(View.VISIBLE);
             Glide.with(mContext).load(list.get(position).getVideoCover()).apply(getGlideOptions()).into(video_img);

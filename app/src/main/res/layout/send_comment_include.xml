@@ -26,7 +26,7 @@
             android:layout_marginRight="7dp"
             android:src="@mipmap/photo_gray_icon" />
 
-        <EditText
+        <laoyou.com.laoyou.view.ContainsEmojiEditText
             android:id="@+id/comment_ed"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

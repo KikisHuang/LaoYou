@@ -83,7 +83,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:src="@mipmap/logo_icon" />
+                android:src="@mipmap/app_logo_icon" />
 
             <TextView
                 android:layout_width="wrap_content"

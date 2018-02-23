@@ -83,7 +83,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
     private TextView nickname_tv, signature_tv, page_view_tv, cardiac_value_tv, detailsOfcompile_tv, address_tv, authentication_tv;
     private FrameLayout add_layout, chat_layout, heart_layout;
     private HomePagePresenter hp;
-    private int imageHeight;
+//    private int imageHeight;
     private int height;
     private String id = "";
     private boolean isMe;
@@ -144,7 +144,10 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
         foot_tv = (TextView) foot_layout.findViewById(R.id.foot_tv);
         foot_tv.setVisibility(View.GONE);
 
-        adapter = new HomePageAdapter(this, list, this);
+        id = getIntent().getStringExtra("Page_Home_id");
+        isMe = id.isEmpty() ? true : IsMe(id);
+
+        adapter = new HomePageAdapter(this, list, this, this, isMe);
         listView.setZoomRatio(ParallaxScollListView.ZOOM_X2);
         listView.setParallaxImageView(background_img);
 
@@ -203,7 +206,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
             });
         }
 
-        id = getIntent().getStringExtra("Page_Home_id");
+//        id = getIntent().getStringExtra("Page_Home_id");
 
         isTencent = Boolean.parseBoolean(getIntent().getStringExtra("Page_Home_Tencent_Flag"));
 
@@ -440,8 +443,7 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
 
         head_layout.getLocationInWindow(location);
         height = location[1];
-
-        imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 50);
+//      imageHeight = head_layout.getHeight() - DeviceUtils.dip2px(this, 50);
 
         handleTitleBarColorEvaluate(height, title_layout, back_img, more_img.getVisibility() == View.GONE ? null : more_img);
 
@@ -558,6 +560,19 @@ public class HomePageActivity extends InitActivity implements HomePageListener, 
                 Toast.makeText(this, getResources().getString(R.string.profile_del_fail), Toast.LENGTH_SHORT).show();
                 break;
         }
+
+    }
+
+    @Override
+    public void ondeleteStatus(final String id) {
+        new ActionSheetDialog(this).builder().addSheetItem(gets(R.string.delete), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+            @Override
+            public void onClick(int which) {
+                Show(HomePageActivity.this, "提交中", true, null);
+                hp.DelChatTheme(id);
+            }
+        }).show();
+
 
     }
 

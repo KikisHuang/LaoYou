@@ -44,7 +44,7 @@ android {
         ndk {
             //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
 //            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86","arm64-v8a","x86_64"
-          abiFilters  "armeabi", "armeabi-v7a"
+             abiFilters  "armeabi", "armeabi-v7a"
         }
     }
     packagingOptions {
@@ -72,13 +72,13 @@ android {
 
     productFlavors {
         vivo {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "1f2720441bbd"]
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "6bf2c71d138d"]
         }
         xiaomi {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "b57184eb4568"]
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "7ed38c7a048f"]
         }
         yingyongbao {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "993d98d7b680"]
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "b041dd09daca"]
         }
     }
 

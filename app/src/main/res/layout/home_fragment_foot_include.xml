@@ -4,14 +4,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="20dp"
-    android:paddingTop="20dp"
     >
 
     <LinearLayout
         android:id="@+id/recom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <TextView
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@color/black0"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -74,17 +74,17 @@
             android:paddingRight="10dp"
             android:text="很高兴遇见你"
             android:textColor="@color/black0"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="希望你能在这里招到志同道合的朋友"
             android:textColor="@color/content3"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -95,7 +95,7 @@
             android:paddingRight="10dp"
             android:text="玩的开心"
             android:textColor="@color/content3"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="match_parent"

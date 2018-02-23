@@ -31,6 +31,11 @@ public class ContainsEmojiEditText extends EditText {
         initEditText();
     }
 
+    /**
+     * 需要回调的时候传入回调接口即可，不需要则无需传入;
+     *
+     * @param listener
+     */
     public void setContentListener(EdittextListener listener) {
         this.listener = listener;
     }

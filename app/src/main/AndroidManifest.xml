@@ -63,7 +63,7 @@
     <application
         android:name=".application.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/logo_icon"
+        android:icon="@mipmap/app_logo_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/BaseTheme"
@@ -102,6 +102,7 @@
         <activity
             android:name=".activity.AdvertisementActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             >
         </activity>
 

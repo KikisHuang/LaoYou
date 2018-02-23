@@ -141,7 +141,7 @@ public class TopicTypeDetailsFragment extends BaseFragment implements SpringList
         if (getTopicTypeInstance() != null)
             tp.removeAppBarLayoutStateChangeListener(getTopicTypeInstance().getAppBar());
 
-        tp.CloseAsynck();
+//        tp.CloseAsynck();
     }
 
     @Override

@@ -44,7 +44,7 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
     private boolean Refresh = true;
     private boolean Photo_IsMe;
     private String id = "";
-
+    private String delUrl = "";
 
     protected void click() {
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -54,7 +54,7 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE)
                     if (!recyclerView.canScrollVertically(1) && list.size() > 0) {
                         Refresh = false;
-                        mp.getPhotoListData(id,list.size() - 1);
+                        mp.getPhotoListData(id, list.size() - 1);
                     }
 
             }
@@ -78,7 +78,7 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
         if (Photo_IsMe)
             list.add(null);
 
-        mp.getPhotoListData(id,0);
+        mp.getPhotoListData(id, 0);
 
         adapter = new MyPhotoAdapter(this, list, this, Photo_IsMe);
         recyclerView.setAdapter(adapter);
@@ -137,6 +137,7 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
         if (Photo_IsMe) {
             for (PhotoBean pb : list) {
                 if (pb != null && pb.getUrl().equals(url)) {
+                    delUrl = url;
                     mp.DeletePhoto(String.valueOf(pb.getId()));
                     break;
                 }
@@ -159,6 +160,16 @@ public class MyPhotoActivity extends InitActivity implements MyPhotoListener {
 
     @Override
     public void DeleteSucceed() {
+        for (int i = 0; i < list.size(); i++) {
+            Log.i(TAG, "DeleteSucceed");
+            if (list.get(i) != null && list.get(i).getUrl().equals(delUrl)) {
+                list.remove(i);
+                Log.i(TAG, "删除删除删除删除删除删除");
+                adapter.notifyDataSetChanged();
+                break;
+            }
+        }
+
         Refresh = true;
         mp.RefreshPhotoListData(id);
     }

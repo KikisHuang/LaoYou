@@ -5,7 +5,8 @@ package laoyou.com.laoyou.utils;
  */
 public class Interface {
 
-    public static final String DOMAIN = "http://spib.mozu123.com:8889";
+//    public static final String DOMAIN = "http://spib.mozu123.com:8889";
+    public static final String DOMAIN = "http://spib.mozu123.com";
     public static final String SUFFIX = "/mcServicePlatform_InternetBar/";
 
     public static final String URL = DOMAIN + SUFFIX;
@@ -355,5 +356,9 @@ public class Interface {
      * 获取分享二维码的路径;
      */
     public static final String GETUSERCARDQCURL = "share/getUserCardQCUrl.app";
+    /**
+     * 删除话题圈帖子主题/删除个人照片公用接口;
+     */
+    public static final String DELETECHATTHEME = "chat/delete/chatTheme.app";
 
 }

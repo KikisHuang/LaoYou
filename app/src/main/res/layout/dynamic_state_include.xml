@@ -17,6 +17,7 @@
         android:paddingRight="10dp"
         android:paddingTop="20dp">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,7 +57,10 @@
                         android:id="@+id/topic_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -73,8 +77,20 @@
                             android:singleLine="true"
                             android:text="陌生人，轻度一句话"
                             android:textColor="@color/content3"
-                            android:textSize="13sp" />
+                            android:textSize="13sp"
+                            />
+
+
                     </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/more_down_img"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="right"
+                        android:src="@mipmap/more_down"
+                        android:visibility="gone"
+                        />
                 </LinearLayout>
 
                 <TextView
@@ -118,8 +134,7 @@
                 android:id="@+id/video_img"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                />
+                android:scaleType="centerCrop" />
 
             <ImageView
                 android:id="@+id/play_logo"

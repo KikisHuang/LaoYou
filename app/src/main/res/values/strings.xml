@@ -453,7 +453,7 @@
     <string name="share_fail">分享失败</string>
     <string name="owner">全部</string>
     <string name="service_introduction">欢迎来到网圈，很高兴遇见你，在这里希望你遇到和你志同道合的朋友哦^^</string>
-    <string name="cannot_del_service_chat">不删网圈客服会话</string>
+    <string name="cannot_del_service_chat">不能删除网圈客服会话</string>
 
 
 </resources>

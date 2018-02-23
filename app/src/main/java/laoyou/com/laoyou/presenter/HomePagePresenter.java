@@ -22,10 +22,11 @@ import laoyou.com.laoyou.bean.CheckStatusBean;
 import laoyou.com.laoyou.bean.PhotoBean;
 import laoyou.com.laoyou.bean.TopicTypeBean;
 import laoyou.com.laoyou.bean.UserInfoBean;
+import laoyou.com.laoyou.fragment.FindSonFragment;
 import laoyou.com.laoyou.listener.HomePageListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.ThumbnailListener;
-import laoyou.com.laoyou.thread.ThumbnailAsyncTask;
+import laoyou.com.laoyou.thread.CustomAsyncTask;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.Interface;
@@ -33,7 +34,7 @@ import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
-import static laoyou.com.laoyou.thread.ThumbnailAsyncTask.ThumbNailInstance;
+import static laoyou.com.laoyou.fragment.FindSonFragment.getInstances;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
@@ -204,10 +205,8 @@ public class HomePagePresenter implements HttpResultListener, ThumbnailListener 
                 try {
                     JSONArray status = getJsonAr(response);
                     if (status.length() > 0) {
-
                         List<TopicTypeBean> Nblist = new ArrayList<>();
-                        if (ThumbNailInstance() == null)
-                            new ThumbnailAsyncTask(this).execute(status, Nblist);
+                            new CustomAsyncTask(this).execute(status, Nblist);
 
                     } else
                         listener.onBottom();
@@ -218,6 +217,17 @@ public class HomePagePresenter implements HttpResultListener, ThumbnailListener 
                 break;
             case Fields.ACRESULET2:
                 listener.onRefresh();
+                break;
+            case Fields.ACRESULET3:
+
+                Map<String, String> map = getKeyMap();
+                map.put("page", String.valueOf(0));
+                map.put("pageSize", String.valueOf(page));
+                httpUtils.OkHttpsGet(map, this, Fields.ACRESULET1, Interface.URL + Interface.GETCAREBYPAGE);
+                final List<FindSonFragment> f = getInstances();
+                if (f != null && f.size() == 2) {
+                    f.get(0).onRefresh();
+                }
                 break;
         }
         Cancle();
@@ -291,9 +301,14 @@ public class HomePagePresenter implements HttpResultListener, ThumbnailListener 
     @Override
     public void onThumbnailResult(List<TopicTypeBean> list) {
         listener.onStatusInfo(list);
+   /*     if (ThumbNailInstance() != null)
+            ThumbNailInstance().CloseThumb();*/
 
-        if (ThumbNailInstance() != null)
-            ThumbNailInstance().CloseThumb();
+    }
 
+    public void DelChatTheme(String id) {
+        Map<String, String> map = getKeyMap();
+        map.put("id", id);
+        httpUtils.OkHttpsGet(map, this, Fields.ACRESULET3, Interface.URL + Interface.DELETECHATTHEME);
     }
 }

@@ -11,14 +11,18 @@ import java.util.Map;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.bean.FilesBean;
+import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.ReleaseTopicListener;
+import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.utils.Fields;
+import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
 import static laoyou.com.laoyou.dialog.CustomProgress.Cancle;
+import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
 import static laoyou.com.laoyou.utils.SynUtils.gets;
 
@@ -32,6 +36,12 @@ public class ReleaseTopicPresenter implements HttpResultListener {
 
     public ReleaseTopicPresenter(ReleaseTopicListener listener) {
         this.listener = listener;
+        getUserInfo();
+    }
+
+    private void getUserInfo() {
+        Map<String, String> map = getKeyMap();
+        httpUtils.OkHttpsPost(map, this, Fields.REQUEST2, Interface.URL + Interface.MYINFODETAILS, null, null);
     }
 
     @Override
@@ -41,6 +51,11 @@ public class ReleaseTopicPresenter implements HttpResultListener {
             case Fields.REQUEST1:
                 listener.onSucceed();
                 Cancle();
+                break;
+            case Fields.REQUEST2:
+                UserInfoBean ub = GsonUtil.GsonToBean(getJsonSring(response), UserInfoBean.class);
+                SPreferences.saveMyNickName(ub.getName());
+                listener.ShowUserInfo(ub);
                 break;
         }
     }

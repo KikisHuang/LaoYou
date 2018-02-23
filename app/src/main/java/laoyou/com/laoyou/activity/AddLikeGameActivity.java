@@ -158,10 +158,9 @@ public class AddLikeGameActivity extends InitActivity implements AddLikeGameList
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
-
-        if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom) {
+        if (IsListViewTopOfBottom(firstVisibleItem, visibleItemCount, totalItemCount, listView) == Fields.IsBottom && list.size() > 10) {
             isRefresh = false;
-            ap.page += 10;
+            ap.page = list.size();
             ap.getGameListData();
         }
     }

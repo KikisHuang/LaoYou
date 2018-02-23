@@ -16,14 +16,13 @@ import laoyou.com.laoyou.listener.FindSonListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.ThumbnailListener;
 import laoyou.com.laoyou.save.SPreferences;
-import laoyou.com.laoyou.thread.ThumbnailAsyncTask;
+import laoyou.com.laoyou.thread.CustomAsyncTask;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.Interface;
 import laoyou.com.laoyou.utils.httpUtils;
 import okhttp3.Request;
 
-import static laoyou.com.laoyou.thread.ThumbnailAsyncTask.ThumbNailInstance;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonAr;
 import static laoyou.com.laoyou.utils.JsonUtils.getJsonSring;
 import static laoyou.com.laoyou.utils.JsonUtils.getKeyMap;
@@ -83,8 +82,9 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
 
                 if (!RefreshFlag && ar.length() <= 0) {
 //                    listener.onFailedMsg(gets(R.string.nomore));
-                } else if (ThumbNailInstance() == null)
-                    new ThumbnailAsyncTask(this).execute(ar, toppic);
+                } else
+                    new CustomAsyncTask(this).execute(ar, toppic);
+
 
                 break;
             case Fields.REQUEST3:
@@ -141,6 +141,9 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
     public void getNewIncident(boolean b) {
         RefreshFlag = b;
 
+        if (RefreshFlag)
+            page = 0;
+
         Map<String, String> map = getKeyMap();
         map.put("model", String.valueOf(0));
         map.put("page", String.valueOf(page));
@@ -179,7 +182,7 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
       /*  else if (RefreshFlag)
             listener.onFailedMsg(gets(R.string.nodata));*/
 
-        if (ThumbNailInstance() != null)
-            ThumbNailInstance().CloseThumb();
+        /*if (ThumbNailInstance() != null)
+            ThumbNailInstance().CloseThumb();*/
     }
 }

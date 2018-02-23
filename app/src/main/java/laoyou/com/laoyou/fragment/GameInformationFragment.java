@@ -74,7 +74,6 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
 
         springView = f(R.id.springView);
         SpringUtils.SpringViewInit(springView, getActivity(), this);
-
     }
 
     @Override
@@ -122,7 +121,7 @@ public class GameInformationFragment extends BaseFragment implements SpringListe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        goGameInfoDetailsPage(getActivity(), list.get(position).getId(),list.get(position).getLogo());
+        goGameInfoDetailsPage(getActivity(), list.get(position).getId(), list.get(position).getLogo());
     }
 
 

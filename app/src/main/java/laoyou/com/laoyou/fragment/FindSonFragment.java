@@ -93,6 +93,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
         }
     }
 
+
     @Override
     protected int initContentView() {
         return R.layout.find_son_fragment;
@@ -197,8 +198,12 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
 
     @Override
     public void onRefresh() {
-        isRefresh = true;
-        fp.getHottestAndNewestRefresh();
+/*        isRefresh = true;
+        fp.getHottestAndNewestRefresh();*/
+        if (tag == 0) {
+            isRefresh = true;
+            fp.getHottestAndNewestRefresh();
+        }
     }
 
 

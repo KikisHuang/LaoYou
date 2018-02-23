@@ -217,6 +217,11 @@ public class AddFriendActivity extends InitActivity implements View.OnClickListe
     }
 
     @Override
+    public void ondeleteStatus(String id) {
+
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);

@@ -537,6 +537,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     public void onBottom() {
         foot_layout.setVisibility(View.VISIBLE);
         foot_tv.setVisibility(View.VISIBLE);
+        
+        if (SPreferences.getMyNickName() != null)
+            recom_nick_name.setText("Hi，" + SPreferences.getMyNickName());
 
         if (foot_layout.getLayoutParams().height != Fields.WRAP)
             foot_layout.getLayoutParams().height = Fields.WRAP;
@@ -602,8 +605,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         if (add != null && add.size() > 0) {
             recomeSize = add.size();
 
-            if (SPreferences.getMyNickName() != null)
-                recom_nick_name.setText("Hi，" + SPreferences.getMyNickName());
             if (foot_recom_layout.getChildCount() > 0) {
                 Log.i(TAG, "foot_recom_layout 中有数据");
                 foot_recom_layout.removeAllViews();

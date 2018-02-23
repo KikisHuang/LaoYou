@@ -25,6 +25,7 @@ import java.util.List;
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.adapter.PhotoGridAdapter;
 import laoyou.com.laoyou.application.MyApplication;
+import laoyou.com.laoyou.bean.UserInfoBean;
 import laoyou.com.laoyou.dialog.MyAlertDialog;
 import laoyou.com.laoyou.listener.EdittextListener;
 import laoyou.com.laoyou.listener.ReleaseTopicListener;
@@ -60,8 +61,10 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
     private int contentNum = 0;
     private ReleaseTopicPresenter rp;
     private String topicType = "";
-    private TextView topic_name;
+    private TextView topic_name, user_name;
     private LinearLayout issue_layout;
+    private ImageView user_icon;
+
 
     @Override
     protected void click() {
@@ -88,6 +91,8 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
         issue_layout = f(R.id.issue_layout);
         video_cover_layout = f(R.id.video_cover_layout);
         topic_content_ed = f(R.id.topic_content_ed);
+        user_icon = f(R.id.user_icon);
+        user_name = f(R.id.user_name);
 
         topic_content_ed.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         topic_content_ed.setGravity(Gravity.TOP);
@@ -359,6 +364,12 @@ public class ReleaseTopicActivity extends InitActivity implements View.OnClickLi
     @Override
     public void AddPhoto() {
         PhotoSelect();
+    }
+
+    @Override
+    public void ShowUserInfo(UserInfoBean ub) {
+        Glide.with(MyApplication.getContext()).load(ub.getHeadImgUrl()).into(user_icon);
+        user_name.setText(ub.getName());
     }
 
     @Override

@@ -17,7 +17,7 @@ import laoyou.com.laoyou.listener.AppBarStateChangeListener;
 import laoyou.com.laoyou.listener.HttpResultListener;
 import laoyou.com.laoyou.listener.ThumbnailListener;
 import laoyou.com.laoyou.listener.TopicTypeDetailsListener;
-import laoyou.com.laoyou.thread.ThumbnailAsyncTask;
+import laoyou.com.laoyou.thread.CustomAsyncTask;
 import laoyou.com.laoyou.utils.Fields;
 import laoyou.com.laoyou.utils.GsonUtil;
 import laoyou.com.laoyou.utils.Interface;
@@ -76,8 +76,8 @@ public class TopicTypeDetailsPresenter extends AppBarStateChangeListener impleme
                 }
                /* else if (ar.length() <= 0 && isRefresh)
                     listener.onFailedsMsg(gets(R.string.nodata));*/
-                else if (ThumbNailInstance() == null)
-                    new ThumbnailAsyncTask(this).execute(ar, list);
+                else
+                    new CustomAsyncTask(this).execute(ar, list);
 
                 break;
             //活跃用户列表;
