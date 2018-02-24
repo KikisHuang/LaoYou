@@ -22,8 +22,9 @@ import laoyou.com.laoyou.tencent.model.FriendFuture;
 import laoyou.com.laoyou.tencent.presentation.presenter.FriendshipManagerPresenter;
 import laoyou.com.laoyou.tencent.presentation.viewfeatures.FriendshipMessageView;
 
-public class FriendshipManageMessageActivity extends Activity implements FriendshipMessageView {
+import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 
+public class FriendshipManageMessageActivity extends Activity implements FriendshipMessageView {
 
     private final String TAG = FriendshipManageMessageActivity.class.getSimpleName();
     private static FriendshipManagerPresenter presenter;
@@ -51,7 +52,7 @@ public class FriendshipManageMessageActivity extends Activity implements Friends
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                goHomePage(FriendshipManageMessageActivity.this, list.get(position).getIdentify(), true);
               /*  if (list.get(position).getType() == TIMFutureFriendType.TIM_FUTURE_FRIEND_PENDENCY_IN_TYPE) {
                     index = position;
                     Intent intent = new Intent(FriendshipManageMessageActivity.this, FriendshipHandleActivity.class);

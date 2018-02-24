@@ -102,8 +102,6 @@ public class ShareMyQrCodeActivity extends InitActivity implements View.OnClickL
 
     public void UmShare(int type) {
         if (!shareurl.isEmpty()) {
-
-
             UMWeb web = new UMWeb(shareurl);
             web.setTitle(gets(R.string.business_card));//标题
             web.setThumb(new UMImage(this, R.mipmap.logo_icon));  //缩略图

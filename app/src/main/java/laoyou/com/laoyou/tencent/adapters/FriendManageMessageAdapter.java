@@ -2,7 +2,6 @@ package laoyou.com.laoyou.tencent.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,6 @@ public class FriendManageMessageAdapter extends ArrayAdapter<FriendFuture> {
     private View view;
     private ViewHolder viewHolder;
 
-
     /**
      * Constructor
      *
@@ -77,10 +75,10 @@ public class FriendManageMessageAdapter extends ArrayAdapter<FriendFuture> {
             view.setTag(viewHolder);
         }
 
+
+
         Resources res = getContext().getResources();
         final FriendFuture data = getItem(position);
-
-        Log.i(TAG, "FaceUrl ===" + data.getFaceUrl());
 
         if (data.getFaceUrl() == null || data.getFaceUrl().equals(""))
             viewHolder.avatar.setImageResource(R.drawable.head_other);

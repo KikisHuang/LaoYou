@@ -65,12 +65,6 @@ public class Fields {
 
     public static int[] welImgs = new int[]{R.drawable.wel_one, R.drawable.wel_two, R.drawable.wel_three};
 
-    //刷新动画
-    public static int[] refreshAnimSrcs = new int[]{R.drawable.loading1, R.drawable.loading2, R.drawable.loading3, R.drawable.loading4, R.drawable.loading5, R.drawable.loading6, R.drawable.loading7, R.drawable.loading8, R.drawable.loading9};
-    //下拉动画
-    public static int[] pullAnimSrcs = new int[]{R.drawable.loading1, R.drawable.loading2, R.drawable.loading3, R.drawable.loading4, R.drawable.loading5};
-    //上滑动画
-    public static int[] loadingAnimSrcs = new int[]{R.drawable.more1, R.drawable.more2, R.drawable.more3, R.drawable.more4, R.drawable.more5};
 
     /**
      * 递增长度

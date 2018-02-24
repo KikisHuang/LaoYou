@@ -6,6 +6,7 @@ import android.os.Bundle;
 import laoyou.com.laoyou.save.SPreferences;
 
 import static laoyou.com.laoyou.utils.IntentUtils.goAdvertisementPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goMainPage;
 import static laoyou.com.laoyou.utils.IntentUtils.goWelcomePage;
 
 /**
@@ -24,6 +25,7 @@ public class GuideActivity extends Activity {
     }
 
     private void goAdv() {
+        goMainPage(this);
         goAdvertisementPage(this);
         finish();
     }

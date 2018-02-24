@@ -88,6 +88,7 @@ public class PhotoViewerFragment extends BaseFragment {
                                                                          intent.putExtra("delete_url", url);
                                                                          getActivity().setResult(Activity.RESULT_OK, intent);
                                                                          getActivity().finish();
+                                                                         getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                                                      }
                                                                  }).addSheetItem(gets(R.string.save_photo), ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                                                                      @Override
@@ -123,6 +124,7 @@ public class PhotoViewerFragment extends BaseFragment {
                                                                                          intent.putExtra("delete_url", url);
                                                                                          getActivity().setResult(Activity.RESULT_OK, intent);
                                                                                          getActivity().finish();
+                                                                                         getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                                                                      }
                                                                                  }
 

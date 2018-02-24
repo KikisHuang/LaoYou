@@ -278,6 +278,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
             Glide.with(MyApplication.getContext()).load(atv.getFaceUrl() == null || atv.getFaceUrl().isEmpty() ? R.mipmap.test_icon : atv.getFaceUrl()).apply(getGlideOptions()).into(im);
 
+            income.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (LoginStatusQuery()) {
+                        groupId = atv.getGroupId();
+                        GroupManagerPresenter.applyJoinGroup(groupId, "", back);
+                    } else {
+                        ToastUtil.toast2_bottom(getActivity(), "请先登录！");
+                        goLoginOperPage(getActivity());
+                    }
+                }
+            });
             im.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -537,7 +549,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     public void onBottom() {
         foot_layout.setVisibility(View.VISIBLE);
         foot_tv.setVisibility(View.VISIBLE);
-        
+
         if (SPreferences.getMyNickName() != null)
             recom_nick_name.setText("Hi，" + SPreferences.getMyNickName());
 

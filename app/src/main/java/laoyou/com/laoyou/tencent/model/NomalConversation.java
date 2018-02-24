@@ -56,7 +56,7 @@ public class NomalConversation extends Conversation {
                 if (faceurl != null && !faceurl.isEmpty())
                     return faceurl;
                 else
-                    return R.drawable.head_group;
+                    return null;
         }
         return 0;
     }

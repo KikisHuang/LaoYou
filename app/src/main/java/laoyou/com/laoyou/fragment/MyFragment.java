@@ -86,6 +86,13 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
 
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden)
+            mp.getUseDetails();
+    }
+
+    @Override
     protected void initData() {
         ImageView photo_icon = (ImageView) photo_layout.findViewById(R.id.menu_icon);
         Glide.with(getActivity().getApplicationContext()).load(R.mipmap.camera_icon).into(photo_icon);
@@ -155,7 +162,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener, My
                 goSettingPage(getActivity());
                 break;
             case R.id.qr_code_img:
-                    goShareMyQrCodePage(getActivity(),headImgUrl);
+                goShareMyQrCodePage(getActivity(), headImgUrl);
                 break;
             case R.id.head_layout:
                 if (sex != 99 && user_name_tv.getText().toString().length() > 0)

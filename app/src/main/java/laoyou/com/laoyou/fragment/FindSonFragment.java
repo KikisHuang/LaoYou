@@ -56,6 +56,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
     private boolean isRefresh;
     private static List<FindSonFragment> fragments = new ArrayList<>();
     private int sex = 99;
+    private long vpt = 0;
 
     public static FindSonFragment setTag(int tag) {
         FindSonFragment f = new FindSonFragment();
@@ -151,15 +152,20 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
 
     @Override
     public void IsonLoadmore(int move) {
-        switch (tag) {
-            case 0:
-                isRefresh = false;
-                fp.getNewIncident(false);
-                break;
-            case 1:
-                isRefresh = false;
-                fp.getNearbyData(false, sex);
-                break;
+        if (System.currentTimeMillis() - vpt >= 3000) {
+            vpt = System.currentTimeMillis();
+            switch (tag) {
+                case 0:
+                    isRefresh = false;
+                    fp.page = topics.size();
+                    fp.getNewIncident(false);
+                    break;
+                case 1:
+                    fp.page = list.size();
+                    isRefresh = false;
+                    fp.getNearbyData(false, sex);
+                    break;
+            }
         }
     }
 
@@ -179,7 +185,7 @@ public class FindSonFragment extends BaseFragment implements SpringListener, Fin
             list.clear();
 
         for (NearbyBean nb : nblist) {
-            if (nb.getCloud_tencent_account() != null && !nb.getCloud_tencent_account().isEmpty() && !nb.getId().equals(SPreferences.getUserId()))
+            if (nb.getCloud_tencent_account() != null && !nb.getCloud_tencent_account().isEmpty())
                 list.add(nb);
         }
         nearbyAdapter.notifyDataSetChanged();

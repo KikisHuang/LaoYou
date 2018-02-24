@@ -37,7 +37,7 @@ public class FindSonPresenter implements HttpResultListener, ThumbnailListener {
     private static final String TAG = "FindSonPresenter";
     private FindSonListener listener;
     private boolean RefreshFlag;
-    private int page = 0;
+    public int page = 0;
 
     public FindSonPresenter(FindSonListener listener) {
         this.listener = listener;

@@ -22,6 +22,7 @@ import java.util.List;
 
 import laoyou.com.laoyou.R;
 import laoyou.com.laoyou.application.MyApplication;
+import laoyou.com.laoyou.save.SPreferences;
 import laoyou.com.laoyou.tencent.model.GroupInfo;
 import laoyou.com.laoyou.tencent.model.GroupMemberProfile;
 import laoyou.com.laoyou.tencent.model.UserInfo;
@@ -31,6 +32,7 @@ import laoyou.com.laoyou.tencent.view.ListPickerDialog;
 import laoyou.com.laoyou.tencent.view.TemplateTitle;
 
 import static laoyou.com.laoyou.utils.GlideUtils.getGlideOptions;
+import static laoyou.com.laoyou.utils.IntentUtils.goHomePage;
 
 public class GroupMemberProfileActivity extends FragmentActivity {
 
@@ -71,6 +73,20 @@ public class GroupMemberProfileActivity extends FragmentActivity {
             Glide.with(MyApplication.getContext()).load(faceUrl).apply(getGlideOptions()).into(user_head);
         else
             Glide.with(MyApplication.getContext()).load(R.drawable.head_other).apply(getGlideOptions()).into(user_head);
+
+        user_head.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!userIdentify.isEmpty()) {
+                    if (!userIdentify.equals(SPreferences.getIdentifier()))
+                        goHomePage(GroupMemberProfileActivity.this, userIdentify, true);
+                    else
+                        goHomePage(GroupMemberProfileActivity.this, "", false);
+                }
+
+            }
+        });
 
         title.setBackListener(new View.OnClickListener() {
             @Override

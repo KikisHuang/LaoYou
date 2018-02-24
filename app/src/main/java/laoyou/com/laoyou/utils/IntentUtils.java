@@ -88,14 +88,9 @@ public class IntentUtils {
      * 主页面;
      *
      * @param context 上下文;
-     * @param type    跳转类型 （0主页 ，1广告）;
-     * @param advUrl
      */
-    public static void goMainPage(Context context, int type, String advUrl) {
+    public static void goMainPage(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("type", String.valueOf(type));
-        if (!advUrl.isEmpty())
-            intent.putExtra("advUrl", advUrl);
         startPage(context, intent);
     }
 

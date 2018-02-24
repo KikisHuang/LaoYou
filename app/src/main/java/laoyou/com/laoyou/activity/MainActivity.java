@@ -54,7 +54,6 @@ import static laoyou.com.laoyou.tencent.ui.ConversationFragment.ConversationInst
 import static laoyou.com.laoyou.utils.ActivityCollector.CloseAllActivity;
 import static laoyou.com.laoyou.utils.IntentUtils.goAddLikeGamePage;
 import static laoyou.com.laoyou.utils.IntentUtils.goLoginOperPage;
-import static laoyou.com.laoyou.utils.IntentUtils.goOutSidePage;
 import static laoyou.com.laoyou.utils.SynUtils.LogOut;
 import static laoyou.com.laoyou.utils.SynUtils.LoginStatusQuery;
 import static laoyou.com.laoyou.utils.SynUtils.getRouColors;
@@ -83,7 +82,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     // JobService，执行系统任务
     private JobSchedulerManager mJobManager;
     private ImageView msgUnread;
-    private int type = -1;
 
     @Override
     protected void click() {
@@ -94,8 +92,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     public static MainActivity MainInstance() {
-        if (activity == null)
-            activity = new MainActivity();
         return activity;
     }
 
@@ -103,7 +99,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void init() {
         clearNotification();
         setContentView(R.layout.activity_main);
-        Typejudgment();
         ActivityCollector.addActivity(this, getClass());
         mp = new MainPresenter(this);
         activity = this;
@@ -126,19 +121,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         my_img = f(R.id.my_img);
     }
 
-    private void Typejudgment() {
-        type = Integer.parseInt(getIntent().getStringExtra("type"));
-        if (type == 1)
-            goOutSidePage(this, getIntent().getStringExtra("advUrl"));
-
-        Log.i(TAG, "Main type ===" + type);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
         ActivityCollector.removeAllActivity();
+        activity = null;
     }
 
     public void IMInit() {

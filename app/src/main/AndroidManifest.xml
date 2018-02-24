@@ -89,7 +89,6 @@
             android:name=".activity.GuideActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -102,8 +101,9 @@
         <activity
             android:name=".activity.AdvertisementActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Transparent"
-            >
+            android:theme="@style/SplashTheme">
+
+
         </activity>
 
         <!-- 欢迎页面 -->

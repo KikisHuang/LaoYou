@@ -29,6 +29,7 @@ public class ShareMyQrCodePresenter implements HttpResultListener {
     public ShareMyQrCodePresenter(ShareMyQrCodeListener listener) {
         this.listener = listener;
         getMyQrCode();
+        ShareMyQrCode();
     }
 
     private void getMyQrCode() {
@@ -40,7 +41,12 @@ public class ShareMyQrCodePresenter implements HttpResultListener {
     public void onSucceed(String response, int tag) throws JSONException {
         switch (tag) {
             case Fields.REQUEST1:
-                listener.ShowMyQrCode(getJsonSring(response));
+                String codeurl = getJsonSring(response);
+
+                if (getJsonSring(response).indexOf("http") == -1)
+                    codeurl = "http://service-platform-internet-bar.oss-cn-hangzhou.aliyuncs.com/" + getJsonSring(response);
+
+                listener.ShowMyQrCode(codeurl);
                 break;
             case Fields.REQUEST2:
                 listener.onShareQrCodeUrl(getJsonSring(response));

@@ -97,7 +97,7 @@ public class WelcomeActivity extends InitActivity {
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goMainPage(WelcomeActivity.this, 0, "");
+                    goMainPage(WelcomeActivity.this);
                     finish();
                 }
             });

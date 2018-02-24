@@ -71,9 +71,12 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             else
                 Glide.with(MyApplication.getContext()).load(data.getAvatar()).apply(getGlideOptions()).into(viewHolder.avatar);
         }
+        if (!data.getLastMessageSummary().isEmpty())
+            viewHolder.lastMessage.setText(data.getLastMessageSummary());
 
-        viewHolder.lastMessage.setText(data.getLastMessageSummary());
-        viewHolder.time.setText(TimeUtil.getTimeStr(data.getLastMessageTime()));
+        if (!TimeUtil.getTimeStr(data.getLastMessageTime()).isEmpty())
+            viewHolder.time.setText(TimeUtil.getTimeStr(data.getLastMessageTime()));
+
         long unRead = data.getUnreadNum();
         if (unRead <= 0) {
             viewHolder.unread.setVisibility(View.INVISIBLE);

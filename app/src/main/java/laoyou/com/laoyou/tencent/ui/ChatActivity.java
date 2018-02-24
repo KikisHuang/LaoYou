@@ -49,6 +49,7 @@ import laoyou.com.laoyou.tencent.utils.RecorderUtil;
 import laoyou.com.laoyou.tencent.view.ChatInput;
 import laoyou.com.laoyou.tencent.view.TemplateTitle;
 import laoyou.com.laoyou.tencent.view.VoiceSendingView;
+import laoyou.com.laoyou.utils.Fields;
 
 public class ChatActivity extends FragmentActivity implements ChatView {
 
@@ -128,7 +129,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         switch (type) {
             case C2C:
 //                title.setVisibility(View.GONE);
-                if (FriendshipInfo.getInstance().isFriend(identify)) {
+                if (FriendshipInfo.getInstance().isFriend(identify) && !identify.equals(Fields.SYSTEM_SERVICE_ID)) {
+                    title.setMoreImg(R.drawable.btn_group);
                     title.setMoreImgAction(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -139,7 +141,11 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                     });
                     FriendProfile profile = FriendshipInfo.getInstance().getProfile(identify);
                     title.setTitleText(titleStr = profile == null ? identify : profile.getName());
+                } else if (identify.equals(Fields.SYSTEM_SERVICE_ID)) {
+
+
                 } else {
+                    title.setMoreImg(R.drawable.btn_group);
                     title.setMoreImgAction(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

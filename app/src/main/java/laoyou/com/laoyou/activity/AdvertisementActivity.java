@@ -21,7 +21,7 @@ import laoyou.com.laoyou.listener.AdvertisementListener;
 import laoyou.com.laoyou.presenter.AdvertisementPresenter;
 import laoyou.com.laoyou.utils.ActivityCollector;
 
-import static laoyou.com.laoyou.utils.IntentUtils.goMainPage;
+import static laoyou.com.laoyou.utils.IntentUtils.goOutSidePage;
 import static laoyou.com.laoyou.utils.SynUtils.StringIsNull;
 
 
@@ -34,8 +34,8 @@ public class AdvertisementActivity extends Activity implements View.OnClickListe
     private Handler handler;
     private int time = 5;
     private Timer tm;
-    private String advUrl = "";
     private AdvertisementPresenter attp;
+    private String advUrl = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class AdvertisementActivity extends Activity implements View.OnClickListe
                         break;
                     case 1:
                         skip_tv.setText("跳过 " + time + "s");
-                        goMain(0);
+                        goMain("");
                         break;
                     default:
                         skip_tv.setText("跳过 " + time + "s");
@@ -106,9 +106,12 @@ public class AdvertisementActivity extends Activity implements View.OnClickListe
         }
     }
 
-    private void goMain(int type) {
-        goMainPage(this, type, advUrl);
+    private void goMain(String advUrl) {
+        if (!advUrl.isEmpty())
+            goOutSidePage(this, advUrl);
+
         finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override
@@ -116,11 +119,14 @@ public class AdvertisementActivity extends Activity implements View.OnClickListe
 
         switch (v.getId()) {
             case R.id.skip_tv:
-                goMain(0);
+                goMain("");
+                welcome_img.setEnabled(false);
                 break;
             case R.id.welcome_img:
-                goMain(1);
-                welcome_img.setEnabled(false);
+                if(!advUrl.isEmpty()){
+                    goMain(advUrl);
+                    welcome_img.setEnabled(false);
+                }
                 break;
         }
     }
@@ -147,11 +153,11 @@ public class AdvertisementActivity extends Activity implements View.OnClickListe
             });
 
         } else
-            goMain(0);
+            goMain("");
     }
 
     @Override
     public void onFailedMsg(String msg) {
-        goMain(0);
+        goMain("");
     }
 }

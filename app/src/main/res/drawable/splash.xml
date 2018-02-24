@@ -6,7 +6,7 @@
     <item>
         <!-- 图片 -->
         <bitmap
-            android:gravity="center"
-            android:src="@drawable/app_guide_img" />
+            android:gravity="bottom"
+            android:src="@drawable/splash_adv_bottom_img" />
     </item>
 </layer-list>
