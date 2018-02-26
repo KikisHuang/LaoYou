@@ -1,6 +1,12 @@
 package laoyou.com.laoyou.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -63,8 +69,18 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
         forget_pass = f(R.id.forget_pass);
 //        mShareAPI = UMShareAPI.get(this);
         lp = new LoginOperationPresenter(this);
-
+        SmspermissionCheck();
     }
+
+    /**
+     * 检查短信发送权限;
+     */
+    private void SmspermissionCheck() {
+        if (ContextCompat.checkSelfPermission(LoginOperationActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(LoginOperationActivity.this, new String[]{Manifest.permission.SEND_SMS}, 1);
+        }
+    }
+
 
     @Override
     protected void initData() {
@@ -76,8 +92,8 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.wechat_img:
-//                Show(LoginOperationActivity.this, "登录中", true, null);
-//                lp.getWeChatInfo(LoginOperationActivity.this, mShareAPI);
+//               Show(LoginOperationActivity.this, "登录中", true, null);
+//               lp.getWeChatInfo(LoginOperationActivity.this, mShareAPI);
                 break;
             case R.id.login_layout:
 //                goLoginPage(this);
@@ -154,6 +170,21 @@ public class LoginOperationActivity extends InitActivity implements View.OnClick
         Cancle();
         lp.clear();
         lp = null;
-
     }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //这里写操作 如send（）； send函数中New SendMsg （号码，内容）；
+                    Log.i(TAG,"已获得短信接收权限");
+                } else
+                    Log.i(TAG,"没有短信接收权限");
+
+                break;
+
+            default:
+        }
+    }
+
 }

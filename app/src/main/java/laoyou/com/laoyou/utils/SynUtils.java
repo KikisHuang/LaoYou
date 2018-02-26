@@ -989,7 +989,7 @@ public class SynUtils {
      * @return
      */
     public static boolean IsNull(String str) {
-        return str == null || str.isEmpty() ? true : false;
+        return str == null || str.isEmpty() || str.equals("(null)") ? true : false;
     }
     //view 转bitmap
 

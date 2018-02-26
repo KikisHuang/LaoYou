@@ -59,7 +59,7 @@ public class MyApplication extends Application {
 
         DbInit();
         MultiDex.install(this);
-//      ErrorCrashInit();
+        ErrorCrashInit();
         OkHttpInit();
         UmengInt();
         Foreground.init(this);

@@ -80,7 +80,9 @@ public class MyHomePageActivity extends InitActivity implements ZoomInScrollView
     private List<String> heightItems = new ArrayList<>();
     private File headFile = null;
     private File backFile = null;
+    //是否头像;
     private boolean isHead = false;
+    //是否认证;
     private boolean isAttes = false;
 
 

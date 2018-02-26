@@ -34,10 +34,10 @@ android {
         applicationId "laoyou.com.laoyou"
         minSdkVersion 17
         targetSdkVersion 20
-//        minSdkVersion 20
-//        targetSdkVersion 22
-        versionCode 2
-        versionName "1.1"
+//      minSdkVersion 20
+//      targetSdkVersion 22
+        versionCode 3
+        versionName "1.2"
         multiDexEnabled true
 //      manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"] //默认名称
 

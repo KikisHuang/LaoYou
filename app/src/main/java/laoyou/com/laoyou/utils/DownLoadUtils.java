@@ -78,7 +78,7 @@ public class DownLoadUtils {
                         Message msg = new Message();
                         msg.what = 2;
                         handler.sendMessage(msg);
-                        Log.i(TAG, "下载失败");
+                        Log.e(TAG, "下载失败异常 ==="+e);
                     }
 
                     @Override

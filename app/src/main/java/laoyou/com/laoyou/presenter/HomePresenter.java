@@ -477,7 +477,7 @@ public class HomePresenter implements HttpResultListener, VersionListener, Thumb
 
     @Override
     public void onVersionUp() {
-        Map<String, String> m = getKeyMap();
+        Map<String, String> m = getParamsMap();
         m.put("version", String.valueOf(getVersionCode(MyApplication.getContext())));
         m.put("channelCode", MyApplication.CHANNEL);
         httpUtils.OkHttpsGet(m, this, Fields.REQUEST4, Interface.URL + Interface.GETDOWNLOADPATH);
