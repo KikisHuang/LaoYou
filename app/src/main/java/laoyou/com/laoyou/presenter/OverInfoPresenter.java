@@ -170,7 +170,8 @@ public class OverInfoPresenter implements HttpResultListener, OnCompressListener
         map.put("phone", phone);
         map.put("password", pass);
         map.put("code", code);
-        httpUtils.OkHttpsGet(map, this, Fields.REQUEST1, Interface.URL + Interface.REGISTER);
+        map.put("v2Flag", String.valueOf(1));
+        httpUtils.OkHttpsPost(map, this, Fields.REQUEST1, Interface.URL + Interface.REGISTER,null,null);
     }
 
     public void CheckInfo(File headFile, String name, String phone, String pass, String code, int sex) {

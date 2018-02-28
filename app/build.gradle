@@ -36,8 +36,8 @@ android {
         targetSdkVersion 20
 //      minSdkVersion 20
 //      targetSdkVersion 22
-        versionCode 3
-        versionName "1.2"
+        versionCode 4
+        versionName "1.2.1"
         multiDexEnabled true
 //      manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"] //默认名称
 
@@ -171,5 +171,8 @@ dependencies {
     compile files('libs/soload.jar')
     compile files('libs/tls_sdk.jar')
     compile files('libs/wup-1.0.0-SNAPSHOT.jar')
+    
+    //test compile
+    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.3.0'
 }
 

@@ -10,7 +10,6 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.utils.Log;
 
 import laoyou.com.laoyou.R;
@@ -102,26 +101,27 @@ public class ShareMyQrCodeActivity extends InitActivity implements View.OnClickL
 
     public void UmShare(int type) {
         if (!shareurl.isEmpty()) {
-            UMWeb web = new UMWeb(shareurl);
-            web.setTitle(gets(R.string.business_card));//标题
-            web.setThumb(new UMImage(this, R.mipmap.logo_icon));  //缩略图
-            web.setDescription(SPreferences.getMyNickName() != null && !SPreferences.getMyNickName().isEmpty() ? SPreferences.getMyNickName() + " " + gets(R.string.business_card) : gets(R.string.business_card));//描述
+            UMImage image = new UMImage(ShareMyQrCodeActivity.this, shareurl);//网络图片
+       /*     UMWeb web = new UMWeb(shareurl);
+            web.setTitle(gets(R.string.business_card));//标题*/
+            image.setThumb(new UMImage(this, R.mipmap.logo_icon));  //缩略图
+//            web.setDescription(SPreferences.getMyNickName() != null && !SPreferences.getMyNickName().isEmpty() ? SPreferences.getMyNickName() + " " + gets(R.string.business_card) : gets(R.string.business_card));//描述
             if (type == 0) {
                 new ShareAction(this)
                         .setPlatform(SHARE_MEDIA.QQ)//传入平台
-                        .withMedia(web)
+                        .withMedia(image)
                         .setCallback(this)//回调监听器
                         .share();
             } else if (type == 1) {
                 new ShareAction(this)
                         .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
-                        .withMedia(web)
+                        .withMedia(image)
                         .setCallback(this)//回调监听器
                         .share();
             } else {
                 new ShareAction(this)
                         .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)//传入平台
-                        .withMedia(web)
+                        .withMedia(image)
                         .setCallback(this)//回调监听器
                         .share();
             }
