@@ -45,10 +45,12 @@ public class Interface {
      */
     public static final String MODIFYPASSWORD = "main/modifyPassword.app";
     /**
-     * 注册接口;
+     * v1.0 注册接口;
+     * v2.0 新增参数 v2Flag 传1;
      * 参数： password=密码,phone=手机号(手机号和账号'account'是2个分开的字段，传phone接口会将手机号写入账号！)
      */
     public static final String REGISTER = "main/register.app";
+
     /**
      * 修改用户信息接口;
      * 修改个人信息(昵称/头像) 参数: key = 用户key
